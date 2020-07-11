@@ -47,18 +47,18 @@ function CommonMenuBar() {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={firstToggleOpen}>
               가맹점 찾기
             </p>
-            <div className={firstMenuOpen}>
-              <Link to="/">
+            <div className={firstMenuOpen} onClick={() => setIsFirstOpen(false)}>
+              <Link to="/find-by-map">
                 <p className="dropdown-item">
                   지도에서 찾아보기
                 </p>
               </Link>
-              <Link to="/">
+              <Link to="/merchant-list">
                 <p className="dropdown-item">
                   리스트로 찾아보기
                 </p>
               </Link>
-              <Link to="/">
+              <Link to="/find-best-route">
                 <p className="dropdown-item">
                   최적경로 찾아보기
                 </p>
@@ -70,13 +70,13 @@ function CommonMenuBar() {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={secondToggleOpen} >
               맞춤추천
             </p>
-            <div className={secondMenuOpen}>
-              <Link to="/">
+            <div className={secondMenuOpen} onClick={() => setIsSecondOpen(false)}>
+              <Link to="/recommendation">
                 <p className="dropdown-item">
                   추천가맹점 보기
                 </p>
               </Link>
-              <Link to="/">
+              <Link to="/find-by-tag">
                 <p className="dropdown-item">
                   태그로 검색하기
                 </p>
@@ -88,8 +88,8 @@ function CommonMenuBar() {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={thirdToggleOpen}>
               공지사항
             </p>
-            <div className={thirdMenuOpen}>
-              <Link to="/">
+            <div className={thirdMenuOpen} onClick={() => setIsThirdOpen(false)}>
+              <Link to="/notice">
                 <p className="dropdown-item">
                   공지사항
                 </p>
@@ -101,8 +101,8 @@ function CommonMenuBar() {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={fourthToggleOpen} >
               지역화폐
             </p>
-            <div className={fourthMenuOpen}>
-              <Link to="/">
+            <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
+              <Link to="/buy-local-currency">
                 <p className="dropdown-item">
                   지역화폐 구매하기
                 </p>
