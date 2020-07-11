@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { MainNav, MainMap } from '../boxes';
-import { Logo, SearchBar } from '../items';
+import React from 'react';
+import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
 
 
 function HomePage() {
@@ -10,10 +9,10 @@ function HomePage() {
         <MainNav />
       </div>
       <div className="row">
-        <Logo />
+        <MainLogo />
       </div>
       <div className="row">
-        <SearchBar />
+        <MainSearchBar />
       </div>
       <div className="row">
         <MainMap />
