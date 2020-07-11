@@ -1,9 +1,24 @@
-import * as React from 'react';
+import React from 'react';
+import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
+
 
 function HomePage() {
-    return (
-        <h1>HomePage</h1>
-    );
+  return (
+    <div className="container">
+      <div className="row">
+        <MainNav />
+      </div>
+      <div className="row">
+        <MainLogo />
+      </div>
+      <div className="row">
+        <MainSearchBar />
+      </div>
+      <div className="row">
+        <MainMap />
+      </div>
+    </div>
+  );
 }
 
 export default HomePage;
