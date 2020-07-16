@@ -7,6 +7,7 @@ import Notice from './Notice';
 import BuyLocalCurrency from './BuyLocalCurrency';
 import Login from './Login';
 import TermAndCondition from './TermAndCondition';
+import Join from './Join';
 
 export {
     MerchantList,
@@ -17,5 +18,6 @@ export {
     Notice,
     BuyLocalCurrency,
     Login,
-    TermAndCondition
+    TermAndCondition,
+    Join
 }

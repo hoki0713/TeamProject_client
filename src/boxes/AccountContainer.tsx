@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Login, TermAndCondition } from './board';
+import { Login, TermAndCondition, Join } from './board';
 
 import './AccountPage.css';
 
@@ -12,6 +12,9 @@ const AccountContainer = () => {
       </Route>
       <Route path="/account/term-n-condition">
         <TermAndCondition />
+      </Route>
+      <Route path="/account/join">
+        <Join />
       </Route>
     </div>
   );
