@@ -17,7 +17,7 @@ const Login = () => {
       <button type="submit" className="btn btn-success" id="login-button">로그인</button>
       <div>
         <p>아직 회원이 아니신가요?</p>
-        <Link to="account/join" className="btn btn-primary" id="login-button">회원가입</Link>
+        <Link to="/account/term-n-condition" className="btn btn-primary" id="login-button">회원가입</Link>
       </div>
     </div>
   );

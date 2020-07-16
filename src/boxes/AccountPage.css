@@ -20,3 +20,14 @@
   width: 100%;
   margin-bottom: 1rem;
 }
+
+#term-n-condition-cancel-button {
+  margin-top: 1rem;
+  width: 48%;
+}
+
+#term-n-condition-confirm-button {
+  margin-top: 1rem;
+  width: 48%;
+  float: right;
+}
