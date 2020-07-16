@@ -5,6 +5,7 @@ import Recommendation from './Recommendation';
 import FindByTag from './FindByTag';
 import Notice from './Notice';
 import BuyLocalCurrency from './BuyLocalCurrency';
+import Login from './Login';
 
 export {
     MerchantList,
@@ -13,5 +14,6 @@ export {
     Recommendation,
     FindByTag,
     Notice,
-    BuyLocalCurrency
+    BuyLocalCurrency,
+    Login
 }

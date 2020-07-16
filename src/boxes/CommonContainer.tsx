@@ -7,7 +7,7 @@ import { MerchantList, FindByMap, FindBestRoute, Recommendation, FindByTag, Noti
 
 function CommonContainer() {
   return (
-    <>
+    <div>
       <Route path="/merchant-list">
         <MerchantList />
       </Route>
@@ -30,7 +30,7 @@ function CommonContainer() {
         <BuyLocalCurrency />
       </Route>
 
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,22 @@
+#account-page-logo {
+  max-width: 200px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#account-page-width {
+  max-width: 400px;
+}
+
+#account-page-width>div>form>div>input {
+  margin-bottom: 1rem;
+}
+
+#login-link {
+  float: right;
+}
+
+#login-button {
+  width: 100%;
+  margin-bottom: 1rem;
+}
