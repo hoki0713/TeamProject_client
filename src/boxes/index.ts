@@ -5,6 +5,8 @@ import MainLogo from './MainLogo';
 import CommonHeader from './CommonHeader';
 import CommonMenuBar from './CommonMenuBar';
 import CommonContainer from './CommonContainer';
+import AccountHeader from './AccountHeader';
+import AccountContainer from './AccountContainer';
 
 export {
   MainLogo,
@@ -13,5 +15,7 @@ export {
   MainSearchBar,
   CommonHeader,
   CommonMenuBar,
-  CommonContainer
+  CommonContainer,
+  AccountHeader,
+  AccountContainer
 }

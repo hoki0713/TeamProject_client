@@ -31,10 +31,10 @@ function CommonHeader() {
 
         <div className="col-lg-2">
           <div id="common-header-links">
-            <Link to="/login">
+            <Link to="/account/login">
               <span className="btn-link btn-sm">로그인</span>
             </Link>
-            <Link to="/join">
+            <Link to="/account/term-n-condition">
               <span className="btn-link btn-sm">회원가입</span>
             </Link>
           </div>
