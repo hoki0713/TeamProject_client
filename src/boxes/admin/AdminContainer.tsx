@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { AdminTest } from './board';
+import { AdminTest } from './admin_board';
 
 const AdminContainer = () => {
   return (

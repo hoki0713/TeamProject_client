@@ -1,5 +1,5 @@
 import React from 'react';
-import { Logo } from '../items';
+import { Logo } from '../../items';
 
 import './AccountPage.css';
 

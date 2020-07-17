@@ -1,15 +1,7 @@
-import MainNav from './MainNav';
-import MainMap from './MainMap';
-import MainSearchBar from './MainSearchBar';
-import MainLogo from './MainLogo';
-import CommonHeader from './CommonHeader';
-import CommonMenuBar from './CommonMenuBar';
-import CommonContainer from './CommonContainer';
-import AccountHeader from './AccountHeader';
-import AccountContainer from './AccountContainer';
-import AdminHeader from './AdminHeader';
-import AdminMenuBar from './AdminMenuBar';
-import AdminContainer from './AdminContainer';
+import { MainNav, MainMap, MainSearchBar, MainLogo } from "./main";
+import { CommonHeader, CommonMenuBar, CommonContainer } from "./common";
+import { AccountHeader, AccountContainer } from "./account";
+import { AdminHeader, AdminMenuBar, AdminContainer } from "./admin";
 
 export {
   MainLogo,
@@ -23,5 +15,5 @@ export {
   AccountContainer,
   AdminHeader,
   AdminMenuBar,
-  AdminContainer
-}
+  AdminContainer,
+};
