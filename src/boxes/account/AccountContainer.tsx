@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Login, TermAndCondition, Join } from './board';
+import { Login, TermAndCondition, Join } from './account_board';
 
 import './AccountPage.css';
 
