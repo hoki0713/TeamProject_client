@@ -1,0 +1,26 @@
+#admin-header-logo {
+  max-width: 100px;
+  margin: 0 auto;
+
+}
+
+#admin-header-search-bar {
+    max-width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+#admin-header-links {
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+#admin-menu-bar {
+    margin: 0 auto;
+}
+
+.admin-menu-bar-item {
+    margin-left: 3rem;
+    margin-right: 3rem;
+    cursor: pointer;
+}

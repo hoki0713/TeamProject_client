@@ -8,6 +8,7 @@ import BuyLocalCurrency from './BuyLocalCurrency';
 import Login from './Login';
 import TermAndCondition from './TermAndCondition';
 import Join from './Join';
+import AdminTest from './AdminTest';
 
 export {
     MerchantList,
@@ -19,5 +20,6 @@ export {
     BuyLocalCurrency,
     Login,
     TermAndCondition,
-    Join
+    Join,
+    AdminTest
 }
