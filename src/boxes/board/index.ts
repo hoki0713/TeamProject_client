@@ -9,6 +9,7 @@ import Login from './Login';
 import TermAndCondition from './TermAndCondition';
 import Join from './Join';
 import TestTwo from './TestTwo';
+import AdminTest from './AdminTest';
 
 export {
     MerchantList,
@@ -21,5 +22,6 @@ export {
     Login,
     TermAndCondition,
     Join,
-    TestTwo
+    TestTwo,
+    AdminTest
 }
