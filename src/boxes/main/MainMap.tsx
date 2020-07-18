@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MapImage } from '../items';
+import { MapImage } from '../../items';
 
 const pointArray: object = {
   "연천군": "226,57,327,169",

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { LoginLink, SignUpLink, MenuIcon, ChatbotIcon } from '../items'
+import { LoginLink, SignUpLink, MenuIcon, ChatbotIcon } from '../../items'
 
 function MainNav() {
   return (
