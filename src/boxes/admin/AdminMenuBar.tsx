@@ -55,16 +55,15 @@ const AdminMenuBar = () => {
               className={firstMenuOpen}
               onClick={() => setIsFirstOpen(false)}
             >
-              <Link to="/find-by-map">
-                <p className="dropdown-item">회원수 증감 조회</p>
-              </Link>
-              <Link to="/merchant-list">
+              <Link to="/admin/recommend-store">
                 <p className="dropdown-item">추천가맹점 조회수</p>
               </Link>
-              <Link to="/find-best-route">
+              <Link to="/admin/local-user">
                 <p className="dropdown-item">사용자 이용 지역</p>
               </Link>
+              <Link to ="/admin/currency-amount">
               <p className="dropdown-item">지역화폐 매출</p>
+              </Link>
             </div>
           </li>
 
@@ -80,10 +79,10 @@ const AdminMenuBar = () => {
               className={secondMenuOpen}
               onClick={() => setIsSecondOpen(false)}
             >
-              <Link to="/recommendation">
+              <Link to="/admin/users-list">
                 <p className="dropdown-item">회원목록</p>
               </Link>
-              <Link to="/find-by-tag">
+              <Link to="/admin/notice">
                 <p className="dropdown-item">공지사항</p>
               </Link>
             </div>
@@ -101,10 +100,12 @@ const AdminMenuBar = () => {
               className={thirdMenuOpen}
               onClick={() => setIsThirdOpen(false)}
             >
-              <Link to="/notice">
+              <Link to="/admin/notify-sotre">
                 <p className="dropdown-item">지역화폐 미사용 신고 외</p>
               </Link>
+              <Link to="/admin/enquiry">
                 <p className="dropdown-item">1:1문의</p>
+                </Link>
             </div>
           </li>
 

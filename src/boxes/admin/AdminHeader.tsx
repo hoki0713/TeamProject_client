@@ -23,10 +23,10 @@ const AdminHeader = () => {
 
         <div className="col-lg-2 admin-header-menus">
           <div id="admin-header-links">
-            <Link to="/account/login">
+            <Link to="/">
               <span className="btn-link btn-sm">로그아웃</span>
             </Link>
-            <Link to="/account/term-n-condition">
+            <Link to="/merchant-list">
               <span className="btn-link btn-sm">사용자화면</span>
             </Link>
           </div>
