@@ -14,20 +14,14 @@ const AdminHeader = () => {
           </div>
         </div>
 
+        
         <div className="col-lg-8">
-          <div className="input-group" id="admin-header-search-bar">
-            <input type="text" className="form-control" placeholder="Search" />
-            <div className="input-group-append">
-              <Link to="/merchant-list">
-                <button className="btn btn-primary" type="button">
-                  검색
-                </button>
-              </Link>
-            </div>
-          </div>
+          
         </div>
 
-        <div className="col-lg-2">
+      
+
+        <div className="col-lg-2 admin-header-menus">
           <div id="admin-header-links">
             <Link to="/account/login">
               <span className="btn-link btn-sm">로그아웃</span>
@@ -38,9 +32,9 @@ const AdminHeader = () => {
           </div>
 
         </div>
-
+        </div>
       </div>
-    </div>
+  
   );
 };
 
