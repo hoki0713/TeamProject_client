@@ -1,17 +1,24 @@
-.userlist-menu-h2{
-  float: left;
-
+.userlist-content-title {
+  margin-top: 1rem;
+  margin-bottom: .5rem;
 }
 
-.userlist-menu-h6{
-  float: left;
-  margin-top: 12px;
-  margin-left: 20px;
-  margin-right: 70px;
-  
+.userlist-menu-h2 {
+  display: inline;
+  margin-right: 2rem
+}
+.userlist-menu-h6 {
+  display: inline;
 }
 
+#userlist-select-search-bar {
+  float: right;
+}
+#userlist-select {
+  display: inline-block;
+  width: 120px;
+}
 #userlist-search-bar {
   display: inline-block;
-  width: 200px;
+  width: 300px;
 }
