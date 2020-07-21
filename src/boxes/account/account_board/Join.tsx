@@ -2,7 +2,7 @@ import React from 'react';
 
 const Join = () => {
   return (
-    <div className="container">
+    <div className="container account_join">
       <form>
         <div className="form-group">
           <p>아이디</p>
