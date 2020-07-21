@@ -7,7 +7,7 @@ import { MerchantList, FindByMap, FindBestRoute, Recommendation, FindByTag, Noti
 
 function CommonContainer() {
   return (
-    <div>
+    <div className='container'>
       <Route path="/merchant-list">
         <MerchantList />
       </Route>
