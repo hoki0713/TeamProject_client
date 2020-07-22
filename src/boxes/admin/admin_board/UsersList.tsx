@@ -1,10 +1,9 @@
 import React,{useState} from 'react';
-import Table from 'react-bootstrap/Table'
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
+import { Table } from 'react-bootstrap'
+
 import './UserList.css'
 import { SearchBar } from '../../../items';
-import {Link} from 'react-router-dom';
+
 
 //import Pagination from 'react-bootstrap/Pagination'
 
@@ -36,7 +35,7 @@ function UsersList (){
 
   <div>
   <div className="dropdown">
-  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
       onClick={firstDropMenu}>
    검색기준
   </button>
