@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
   return (
-    <div className="container">
+    <div className="container account_login">
       <form >
         <div className="form-group">
           <input type="text" className="form-control" id="userId" placeholder="아이디"/>
