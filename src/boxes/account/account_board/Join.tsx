@@ -16,17 +16,29 @@ const Join = () => {
 
   const history = useHistory();
 
+  const handleIdCheck = (e) => {
+    e.preventDefault();
+    alert("아이디 중복 체크해야함.");
+  }
+  
+  const handlePasswordCorrection = (e) => {
+    e.preventDefault();
+    if(password !== confirmedPassword) alert("비밀번호가 일치하지 않습니다.");
+    setConfirmedPassword("");
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`userId: ${userId}
-           password: ${password} 
-           confirmed password: ${confirmedPassword}
-           birthday: ${birthDate}
-           name: ${name}
-           gender: ${gender}
-           defaultAddress: ${defaultAddress}
-           optionalAddress: ${optionalAddress}
-           email: ${email}`);
+    alert(`
+    userId: ${userId}
+    password: ${password} 
+    confirmed password: ${confirmedPassword}
+    birthday: ${birthDate}
+    name: ${name}
+    gender: ${gender}
+    defaultAddress: ${defaultAddress}
+    optionalAddress: ${optionalAddress}
+    email: ${email}`);
     history.push('/account/login');
   }
  
@@ -40,17 +52,25 @@ const Join = () => {
             <input
               type="text"
               className="form-control"
+              required
               value={userId}
               onChange={e => setUserId(e.target.value)}
             />
             <div className="input-group-append">
-              <button type="submit" className="btn btn-outline-secondary">중복체크</button>
+              <button 
+                type="submit" 
+                className="btn btn-outline-secondary"
+                onClick={handleIdCheck}
+              >
+                중복체크
+              </button>
             </div>
           </div>
           <p>비밀번호</p>
           <input
             type="password"
             className="form-control"
+            required
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
@@ -58,13 +78,16 @@ const Join = () => {
           <input
             type="password"
             className="form-control"
+            required
             value={confirmedPassword}
             onChange={e => setConfirmedPassword(e.target.value)}
+            onBlur={handlePasswordCorrection}
           />
           <p>이름</p>
           <input
             type="text"
             className="form-control"
+            required
             value={name}
             onChange={e => setName(e.target.value)}
           />
@@ -72,6 +95,7 @@ const Join = () => {
           <input
             type="date"
             className="form-control"
+            required
             value={birthDate}
             onChange={e => setBirthDate(e.target.value)}
           />
@@ -93,6 +117,7 @@ const Join = () => {
             <input
               type="text"
               className="form-control"
+              required
               value={defaultAddress}
               onChange={e => setDefaultAddress(e.target.value)}
             />
@@ -118,6 +143,7 @@ const Join = () => {
             <input
               type="email"
               className="form-control"
+              required
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
