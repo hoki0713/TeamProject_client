@@ -8,6 +8,9 @@ import { SearchBar } from '../../../items';
 
 
 function UsersList() {
+  const handleSearch = (searchWord) => {
+    alert(searchWord);
+  }
 
   return (
     <>
@@ -21,7 +24,9 @@ function UsersList() {
           <option>가입자명</option>
           <option>거주지역</option>
         </select>
-        <span id="userlist-search-bar"><SearchBar/></span>  
+        <span id="userlist-search-bar">
+          <SearchBar onSearch={handleSearch}/>
+        </span>  
       </div>
     </div>
 

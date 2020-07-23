@@ -1,60 +1,136 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { PostcodeButton } from '../../../items';
+import { useHistory } from 'react-router-dom';
+
 
 const Join = () => {
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [defaultAddress, setDefaultAddress] = useState("");
+  const [optionalAddress, setOptionalAddress] = useState("");
+  const [email, setEmail] = useState("");
+
+  const history = useHistory();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`userId: ${userId}
+           password: ${password} 
+           confirmed password: ${confirmedPassword}
+           birthday: ${birthDate}
+           name: ${name}
+           gender: ${gender}
+           defaultAddress: ${defaultAddress}
+           optionalAddress: ${optionalAddress}
+           email: ${email}`);
+    history.push('/account/login');
+  }
+ 
+
   return (
     <div className="container account_join">
       <form>
         <div className="form-group">
           <p>아이디</p>
           <div className="input-group">
-            <input type="text" className="form-control" />
+            <input
+              type="text"
+              className="form-control"
+              value={userId}
+              onChange={e => setUserId(e.target.value)}
+            />
             <div className="input-group-append">
               <button type="submit" className="btn btn-outline-secondary">중복체크</button>
             </div>
           </div>
           <p>비밀번호</p>
-          <input type="password" className="form-control" />
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
           <p>비밀번호 확인</p>
-          <input type="password" className="form-control" />
+          <input
+            type="password"
+            className="form-control"
+            value={confirmedPassword}
+            onChange={e => setConfirmedPassword(e.target.value)}
+          />
           <p>이름</p>
-          <input type="text" className="form-control" />
+          <input
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
           <p>생년월일</p>
-          <input type="text" pattern="[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}" className="form-control" />
+          <input
+            type="date"
+            className="form-control"
+            value={birthDate}
+            onChange={e => setBirthDate(e.target.value)}
+          />
           <p>성별</p>
           <div className="input-group">
-            <select className="custom-select">
-              <option selected>선택</option>
+            <select
+              className="custom-select"
+              required
+              value={gender}
+              onChange={e => setGender(e.target.value)}
+            >
+              <option value="">선택</option>
               <option value="F">여자</option>
               <option value="M">남자</option>
             </select>
           </div>
           <p>거주지 주소(필수)</p>
           <div className="input-group">
-            <input type="text" className="form-control" />
+            <input
+              type="text"
+              className="form-control"
+              value={defaultAddress}
+              onChange={e => setDefaultAddress(e.target.value)}
+            />
             <div className="input-group-append">
-              <button type="submit" className="btn btn-outline-secondary">우편번호검색</button>
+              <PostcodeButton onPostcodeSelected={setDefaultAddress}/>
             </div>
           </div>
-          <input type="text" className="form-control" />
+
           <p>주소 추가(선택)</p>
           <div className="input-group">
-            <input type="text" className="form-control" />
+            <input 
+              type="text" 
+              className="form-control"
+              value={optionalAddress}
+              onChange={e => setOptionalAddress(e.target.value)}  
+            />
             <div className="input-group-append">
-              <button type="submit" className="btn btn-outline-secondary">우편번호검색</button>
+              <PostcodeButton onPostcodeSelected={setOptionalAddress}/>
             </div>
           </div>
-          <input type="text" className="form-control" />
           <p>이메일</p>
           <div className="input-group">
-            <input type="email" className="form-control" />
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-outline-secondary">인증번호 전송</button>
-            </div>
+            <input
+              type="email"
+              className="form-control"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
           </div>
-          <input type="text" className="form-control" placeholder="인증번호를 입력하세요."/>
         </div>
       </form>
-      <button type="submit" className="btn btn-success btn-block mb-1">가입하기</button>
+      <button
+        type="submit"
+        className="btn btn-success btn-block mb-2"
+        onClick={handleSubmit}
+      >
+        가입하기
+      </button>
     </div>
   );
 };
