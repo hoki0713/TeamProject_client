@@ -15,11 +15,6 @@ const userListReducer = (state=[],action) =>{
   }
 } 
 
-export const 
-
-
-
-
 function UsersList() {
   const [select,setSelect] = useState('select')
 
