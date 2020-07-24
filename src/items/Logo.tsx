@@ -1,13 +1,19 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 type logoProps = {
   Image: string;
   Alt: string;
 };
 
-function Logo({ Image, Alt }: logoProps) {
+const Logo = ({ Image, Alt }: logoProps) => {
   return (
-    <img src={Image} alt={Alt} className="logo" />
+    <>
+      <Link to="/">
+        <img src={Image} alt={Alt} className="logo" />
+      </Link>
+    </>
+
   );
 }
 

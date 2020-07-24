@@ -5,6 +5,7 @@ import MapImage from './MapImage';
 import MenuIcon from './MenuIcon';
 import SearchBar from './SearchBar';
 import SignUpLink from './SignUpLink';
+import PostcodeButton from './PostcodeButton';
 
 export {
     ChatbotIcon,
@@ -13,5 +14,6 @@ export {
     MapImage,
     MenuIcon,
     SearchBar,
-    SignUpLink
+    SignUpLink,
+    PostcodeButton
 }
