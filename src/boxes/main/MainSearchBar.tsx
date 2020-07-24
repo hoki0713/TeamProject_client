@@ -1,24 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './MainPage.css';
+import { SearchBar } from '../../items';
 
-function MainSeachBar() {
+const MainSeachBar = () => {
+  const history = useHistory();
+
+  const searchMerchant = (searchWord) => {
+    history.push('/merchant-list');
+  }
 
   return (
     <div className="container" id="main-search-bar">
-      <div className="input-group">
-        <input type="text" className="form-control" placeholder="Search" />
-        <div className="input-group-append">
-          <Link to="/merchant-list">
-            <button className="btn btn-primary" type="button">
-              검색
-          </button>
-          </Link>
-
-        </div>
-      </div>
+      < SearchBar onSearch={searchMerchant}/>
     </div>
-
   );
 }
 

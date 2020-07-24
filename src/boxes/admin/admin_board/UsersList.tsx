@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table'
 import './UserList.css'
+import {SearchBar} from '../../../items';
 
 
 
@@ -20,23 +21,15 @@ const userListReducer = (state=[],action) =>{
 
 function UsersList() {
   const [select,setSelect] = useState('select')
-  const [userSearch,setUserSearch] = useState('');
 
   const selectCheck = e => {
       e.preventDefault()
       setSelect(e.target.value)
   }
-
-  const search = e =>{
-    e.preventDefault()
-    setUserSearch(e.target.value.trim().toLowerCase())
-      alert('123')
-  }
-
-
-
   
-
+  const handleSearch = (searchWord) => {
+    alert(searchWord);
+  }
 
   return (
     <>
@@ -50,18 +43,11 @@ function UsersList() {
           <option value="username">가입자명</option>
           <option value="userlocal">거주지역</option>
         </select>
-        
-      <div className="input-group">
-        <input type="text" className="form-control" placeholder="Search" value={userSearch}/>
-        <div className="input-group-append">
-            <button onClick={search} className="btn btn-primary" type="button">
-              검색
-            </button>
-        
-        </div>
+        <span id="userlist-search-bar">
+          <SearchBar onSearch={handleSearch}/>
+        </span>  
       </div>
     </div>
-      </div>
    
     <h2>{select}</h2>
 
