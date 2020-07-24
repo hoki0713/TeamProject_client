@@ -16,18 +16,18 @@ const Join = () => {
 
   const history = useHistory();
 
-  const handleIdCheck = (e) => {
+  const handleIdCheck = e => {
     e.preventDefault();
     alert("아이디 중복 체크해야함.");
   }
   
-  const handlePasswordCorrection = (e) => {
+  const handlePasswordCorrection = e => {
     e.preventDefault();
     if(password !== confirmedPassword) alert("비밀번호가 일치하지 않습니다.");
     setConfirmedPassword("");
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     alert(`
     userId: ${userId}
