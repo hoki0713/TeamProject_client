@@ -16,7 +16,6 @@ const NotifyStore = () => {
         number:2,
         name:'액',
         adress:'서울'
-
       }
     ]
   }

@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table'
 import './UserList.css'
 import {SearchBar} from '../../../items';
-
-
-
-
 //import Pagination from 'react-bootstrap/Pagination'
-export const userList = data => ({type:"USER_LIST",payload:data})
+
+const USER_LIST = "USER_LIST"
+
+export const userListAction = data => ({type: USER_LIST ,payload:data})
 
 const userListReducer = (state=[],action) =>{
   switch(action.type) {
-    case 'USER_LIST':return action.payload
+    case USER_LIST :return action.payload
     default: return state
   }
 } 
+
+export const 
 
 
 
