@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table'
 import './UserList.css'
-import { SearchBar } from '../../../items';
+
+
+
 
 //import Pagination from 'react-bootstrap/Pagination'
+export const userList = data => ({type:"USER_LIST",payload:data})
+
+const userListReducer = (state=[],action) =>{
+  switch(action.type) {
+    case 'USER_LIST':return action.payload
+    default: return state
+  }
+} 
+
 
 
 
 function UsersList() {
+  const [select,setSelect] = useState('select')
+  const [userSearch,setUserSearch] = useState('');
+
+  const selectCheck = e => {
+      e.preventDefault()
+      setSelect(e.target.value)
+  }
+
+  const search = e =>{
+    e.preventDefault()
+    setUserSearch(e.target.value.trim().toLowerCase())
+      alert('123')
+  }
+
+
+
+  
+
 
   return (
     <>
@@ -15,15 +44,26 @@ function UsersList() {
       <h2 className="userlist-menu-h2"> - 회원목록</h2>
       <h6 className="userlist-menu-h6">총회원수:()</h6>
       <div id="userlist-select-search-bar">
-        <select className="form-control" id="userlist-select">
-          <option selected>선택</option>
-          <option>아이디</option>
-          <option>가입자명</option>
-          <option>거주지역</option>
+        <select className="form-control" id="userlist-select" onChange={selectCheck} value={select}>
+          <option selected value="select1" >선택</option>
+          <option value="userid">아이디</option>
+          <option value="username">가입자명</option>
+          <option value="userlocal">거주지역</option>
         </select>
-        <span id="userlist-search-bar"><SearchBar/></span>  
+        
+      <div className="input-group">
+        <input type="text" className="form-control" placeholder="Search" value={userSearch}/>
+        <div className="input-group-append">
+            <button onClick={search} className="btn btn-primary" type="button">
+              검색
+            </button>
+        
+        </div>
       </div>
     </div>
+      </div>
+   
+    <h2>{select}</h2>
 
 
 

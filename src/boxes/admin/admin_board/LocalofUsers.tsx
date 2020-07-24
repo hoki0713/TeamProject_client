@@ -1,16 +1,31 @@
-import React from 'react';
+import React,{useState} from 'react';
 import './LocalofUsers.css'
 
 const LocalofUsers = () => {
+  const [startDate, setStartDate] =useState("");
+  const [endDate, setEndDate] = useState(""); 
+
+  
+  const startDateClick = e => {
+    e.preventDefault()
+    setStartDate(e.target.value)
+}
+
+const endDateClick = e =>{
+  e.preventDefault()
+  setEndDate(e.target.value)
+}
+
+
   return (
     <div>
       <h1>사용자 이용 지역
       </h1>
       <div className="local-div">
       <h6 className="recommend-data-h6">기간설정 : </h6>
-      <input className="recommend-data" type="date" value="xxx" ></input>
+      <input className="recommend-data" type="date" value={startDate} onChange={startDateClick} ></input>
       <h4 className="recommend-data-h4"> &nbsp; ~ </h4>
-      <input className="recommend-data" type="date" value="xxx" ></input>
+      <input className="recommend-data" type="date" value={endDate} onChange={endDateClick} ></input>
       <input className="recommend-button" type="submit" value="조회"/>
       </div>
 
