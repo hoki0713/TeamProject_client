@@ -1,6 +1,28 @@
 import React, { useState } from 'react';
 import { PostcodeButton } from '../../../items';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+
+const POST_JOIN_MEMBER = 'POST_JOIN_MEMBER';
+
+export const joinMemberAction = data => ({type: POST_JOIN_MEMBER, payload: data});
+
+export const joinMemberReducer = (state = {}, action) => {
+  switch(action.type) {
+    case POST_JOIN_MEMBER: return action.payload;
+    default: return state;
+  }
+};
+
+export const pushJoinMember = data => dispatch => {
+  axios.post("", data).then(
+    response => {
+      dispatch(joinMemberAction(response.data));
+    }
+  ).catch(
+    error => {throw(error)}
+  )
+};
 
 
 const Join = () => {
@@ -29,6 +51,18 @@ const Join = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    const userJson = {
+      userId: userId,
+      password: password,
+      birthday: birthDate,
+      name: name,
+      gender: gender,
+      defaultAddress: defaultAddress,
+      optionalAddress: optionalAddress,
+      email: email
+    }
+    pushJoinMember(userJson);
+
     alert(`
     userId: ${userId}
     password: ${password} 
