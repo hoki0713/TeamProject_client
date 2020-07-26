@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './NotifyStore.css'
 import { Table } from 'react-bootstrap'
 
+// const initialState =[
+//     {
+//       number:1,
+//       name:'리',
+//       adress:'경기도'
+//     },
+//     {
+//       number:2,
+//       name:'액',
+//       adress:'서울'
+//     }
+//   ]
+
+const initialState={
+  input:'',
+  stores:[
+    {
+      number:1,
+      name:'리',
+      adress:'경기도'
+    },
+    {
+      number:2,
+      name:'액',
+      adress:'서울'
+    }
+  ]
+}
 
 const NotifyStore = () => {
-  const initialState={
-    input:'',
-    stores:[
-      {
-        number:1,
-        name:'리',
-        adress:'경기도'
-      },
-      {
-        number:2,
-        name:'액',
-        adress:'서울'
-      }
-    ]
-  }
+  const [storeNo,setStoreNo] = useState(0)
+  
+
 
   return (
     <div>
@@ -32,11 +48,12 @@ const NotifyStore = () => {
         </div>
       </div>
       
+     
       <div>
       <Table responsive className="notifyStore-table">
   <thead>
     <tr>
-      <th>가맹점 번호</th>
+  <th>no</th>
       <th>가맹점 이름</th>
       <th>주 소</th>
       <th>분 류</th>
@@ -45,15 +62,20 @@ const NotifyStore = () => {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>1</td>
+    
+      {initialState.stores.map((stores,i)=>(
+        <tr key={i}>
+        <td>{stores.name}</td>
       <td>Table cell</td>
       <td >Table cell</td>
       <td>Table cell</td>
       <button>a</button>
       <td>Table cell</td>
+      </tr>
+      ))}
+  
       
-    </tr>
+    
   </tbody>
 </Table>
 
