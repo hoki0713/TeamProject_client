@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-
 import { MerchantList, FindByMap, FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency } from './board';
 import { AccountDetail } from '../account/account_board';
 
