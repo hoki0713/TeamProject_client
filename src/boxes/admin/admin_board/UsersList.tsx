@@ -61,6 +61,7 @@ export const userListThunk = () => dispatch =>{
     e.preventDefault()
     alert("클릭")
     dispatch(userListThunk())
+    console.log(resultList)
   }
 
   //const resuletsList = useSelector()
