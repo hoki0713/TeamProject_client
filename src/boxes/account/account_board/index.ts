@@ -1,6 +1,6 @@
 import Login from './Login';
 import TermAndCondition from './TermAndCondition';
-import Join from './Join';
+import Join, { joinMemberReducer } from './Join';
 import AccountDetail from './AccountDetail';
 
 export {
@@ -8,4 +8,5 @@ export {
   TermAndCondition,
   Join,
   AccountDetail,
+  joinMemberReducer,
 }
