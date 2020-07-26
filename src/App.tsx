@@ -7,9 +7,10 @@ import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import { joinMemberReducer, } from './boxes/account/account_board';
+import {userListReducer} from './boxes/admin/admin_board/UsersList'
 
 const rootReducer = combineReducers({
-  joinMemberReducer
+  joinMemberReducer,userListReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

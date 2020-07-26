@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table'
 import './UserList.css'
 import {SearchBar} from '../../../items';
 import axios from 'axios'
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 //import Pagination from 'react-bootstrap/Pagination'
 
 
@@ -19,22 +19,25 @@ export const userListReducer = (state=[],action) =>{
 } 
 
 export const userListThunk = () => dispatch =>{
-  axios.get(`localhost:8080/admins/list`)
+  console.log("api 도착")
+  axios.get(`http://localhost:8080/admins/list`)
     .then(res=>{dispatch(userListAction(res.data))})
     .catch(err=>{throw(err)})
 }
 
 
 
-
-
-
-
-
  const UsersList = () => {
   
    const [userSelect,setUserSelect] = useState("")
-  // const [lists,setLists] = useState([])
+   const [user,setUser] =useState({})
+   const [lists,setLists] = useState([])
+   const resultList = useSelector((x : any) => x.userListReducer)
+    const dispatch = useDispatch()
+   const setUsers = payload =>{
+     setUser({name:payload.name})
+   }
+   
  
 
 
@@ -44,7 +47,20 @@ export const userListThunk = () => dispatch =>{
    }
   
   const handleSearch = (searchWord) => {
+    
+    alert("클릭")
+    dispatch(userListThunk())
+ 
+    console.log("서치", resultList)
+    
+    console.log(setUsers.name)
     alert(searchWord);
+
+  }
+  const searchUser = e =>{
+    e.preventDefault()
+    alert("클릭")
+    dispatch(userListThunk())
   }
 
   //const resuletsList = useSelector()
@@ -56,11 +72,12 @@ export const userListThunk = () => dispatch =>{
       <h6 className="userlist-menu-h6">총회원수:()</h6>
       <div id="userlist-select-search-bar">
         <select className="form-control" id="userlist-select" value={userSelect} onChange={selectCheck}>
-          <option selected value="select1" >선택</option>
+          <option  value="select1" >선택</option>
           <option value="userid">아이디</option>
           <option value="username">가입자명</option>
           <option value="userlocal">거주지역</option>
         </select>
+        <button onClick={searchUser}>클릭</button>
         <span id="userlist-search-bar">
           <SearchBar  onSearch={handleSearch}/>
         </span>  

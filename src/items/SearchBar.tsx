@@ -15,7 +15,7 @@ const SearchBar = ({onSearch}) => {
           onChange={e => setSearchWord(e.target.value)}
         />
         <div className="input-group-append">
-          <Link to="/merchant-list">
+          
             <button 
               className="btn btn-primary" 
               type="button"
@@ -23,7 +23,7 @@ const SearchBar = ({onSearch}) => {
             >
               검색
             </button>
-          </Link>
+       
         </div>
       </div>
     </div>
