@@ -7,8 +7,9 @@ const EnquiryDetail = () => {
         <>
             <div className="userlist-content-title">
                 <h2 className="userlist-menu-h2"> - 1:1문의 디테일</h2>
-                <Link to="/admin/enquiry"></Link>
+                <Link to="/admin/enquiry">
                 <Button variant="light">목록</Button>
+                </Link>
             </div>
             <Table responsive bordered>
                 <thead>
