@@ -8,7 +8,7 @@ import {
     UsersList,
     NotifyStore,
     Enquiry,
-    NoticeWrite
+    NoticeWrite, NoticeDetail, EnquiryDetail
 } from './admin_board';
 
 const AdminContainer = () => {
@@ -29,6 +29,9 @@ const AdminContainer = () => {
       <Route path="/admin/notice-write">
         <NoticeWrite />
       </Route>
+      <Route path="/admin/notice-detail">
+         <NoticeDetail />
+      </Route>
       <Route path="/admin/users-list">
         <UsersList />
       </Route>
@@ -37,6 +40,9 @@ const AdminContainer = () => {
       </Route>
       <Route path="/admin/enquiry">
         <Enquiry />
+      </Route>
+      <Route path="/admin/enquiry-detail">
+        <EnquiryDetail />
       </Route>
     </div>
   );
