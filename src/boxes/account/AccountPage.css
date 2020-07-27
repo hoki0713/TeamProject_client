@@ -1,0 +1,37 @@
+#account-page-logo {
+  max-width: 200px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#account-page-width {
+  max-width: 400px;
+}
+
+.account_login>form>div>input {
+  margin-bottom: 1rem;
+}
+
+#login-link {
+  float: right;
+}
+
+#login-button {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+#term-n-condition-cancel-button {
+  margin-top: 1rem;
+  width: 48%;
+}
+
+#term-n-condition-confirm-button {
+  margin-top: 1rem;
+  width: 48%;
+  float: right;
+}
+
+.account_join>form>div>p {
+  margin-bottom: 0;
+}

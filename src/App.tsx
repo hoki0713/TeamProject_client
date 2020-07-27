@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter } from "react-router-dom";
+import { Page } from './pages';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+import * as serviceWorker from './serviceWorker';
+import { joinMemberReducer, } from './boxes/account/account_board';
+
+const rootReducer = combineReducers({
+  joinMemberReducer
+});
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Provider store={store}>
+        <Page />
+      </Provider>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+serviceWorker.unregister();
