@@ -7,29 +7,49 @@ import './AccountDetail.css';
 import axios from 'axios';
 
 const GET_ACCOUNT_INFO = 'GET_ACCOUNT_INFO';
-const POST_UPDATE_PASSWORD = 'POST_UPDATE_PASSWORD';
+const PATCH_UPDATE_PASSWORD = 'PATCH_UPDATE_PASSWORD';
+const PATCH_UPDATE_USER = 'PATCH_UPDATE_USER';
+const DELETE_USER = 'DELETE_USER';
 
 export const accountInfoAction = data => ({type: GET_ACCOUNT_INFO, payload: data});
-export const updatePasswordAction = data => ({type: POST_UPDATE_PASSWORD, payload:data});
+export const patchPasswordAction = data => ({type: PATCH_UPDATE_PASSWORD, payload: data});
+export const patchUserAction = data => ({type: PATCH_UPDATE_USER, payload: data});
+export const deleteUserAction = data => ({type: DELETE_USER, payload: data});
 
 export const getAccountInfo = userId => dispatch => {
-  axios.get(`http://localhost:8080/users/account-info/${userId}`)
-  .then( response => {
+  axios.get(`http://localhost:8080/users/account-info/${userId}`)  // 나중에 id로 바꿔야함. 로그인할 때 sessionStore에 id 저장하기...
+    .then(response => {
       dispatch(accountInfoAction(response.data));
-    }
-  ).catch(
+    }).catch(
     error => { throw(error) }
   );
 };
 
-export const postUpdatePassword = data => dispatch => {
-  axios.post(`http://localhost:8080/users/updatePassword`, data).then(
-    response => {
-      dispatch(updatePasswordAction(response.data));
-    }
-  ).catch(
+export const patchUpdatePassword = (id, data) => dispatch => {
+  axios.patch(`http://localhost:8080/users/${id}`, data)
+    .then(response => {
+      dispatch(patchPasswordAction(response.data));
+    }).catch(
     error => { throw (error) }
   );
+};
+
+export const patchUpdateUser = (id, data) => dispatch => {
+  axios.patch(`http://localhost:8080/users/${id}`, data)
+    .then(response => {
+    dispatch(patchUserAction(response.data));
+    }).catch(
+      error => { throw (error)}
+    );
+};
+
+export const deleteUser = id => dispatch => {
+  axios.delete(`http://localhost:8080/users/${id}`)
+    .then(response => {
+      dispatch(deleteUserAction(response.data));
+    }).catch(
+      error => { throw (error)}
+    );
 };
 
 export const accountDetailReducer = (state = {}, action) => {
@@ -39,13 +59,16 @@ export const accountDetailReducer = (state = {}, action) => {
     case 'GET_ACCOUNT_INFO': return Object.assign({}, state, {
       accountInfo: action.payload
     });
-    case 'POST_UPDATE_PASSWORD': return action.payload;
+    case 'PATCH_UPDATE_PASSWORD': return action.payload;
+    case 'PATCH_UPDATE_USER': return action.payload;
+    case 'DELETE_USER': return action.payload;
     default: return state;
   }
 }
 
 
 const AccountDetail = () => {
+  const [id, setId] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -71,6 +94,7 @@ const AccountDetail = () => {
       dispatch(getAccountInfo("YwIvRY56"));
       
     } else {
+      setId(accountDetail.id);
       setUserId(accountDetail.userId);
       setName(accountDetail.name);
       setBirthDate(accountDetail.birthDate);
@@ -83,10 +107,16 @@ const AccountDetail = () => {
 
   const handleUpdate = e => {
     e.preventDefault();
+    dispatch(patchUpdateUser(id, {defaultAddress: defaultAddress, optionalAddress: optionalAddress ,email: email}));
+    alert("회원정보 수정이 완료되었습니다.");
+    history.push("/");
   };
 
-  const handleDelete = () => {
-
+  const handleDelete = e => {
+    e.preventDefault();
+    dispatch(deleteUser(id));
+    alert("회원탈퇴 완료");
+    history.push("/");
   };
 
   const handleAddAddress = e => {
@@ -102,7 +132,7 @@ const AccountDetail = () => {
   const handleUpdatePassword = e => {
     e.preventDefault();
     if(newPassword === confirmNewPassword) {
-      dispatch(postUpdatePassword({userId: userId, password: newPassword}));
+      dispatch(patchUpdatePassword(id, {password: newPassword}));
       alert("비밀번호 변경이 완료되었습니다. 다시 로그인 하세요");
       history.push("/account/login");
     } else {
