@@ -1,6 +1,15 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { LocalCurrencyAmount,LocalofUsers,RecommendofStore,Notice,UsersList,NotifyStore,Enquiry } from './admin_board';
+import {
+    LocalCurrencyAmount,
+    LocalofUsers,
+    RecommendofStore,
+    Notice,
+    UsersList,
+    NotifyStore,
+    Enquiry,
+    NoticeWrite
+} from './admin_board';
 
 const AdminContainer = () => {
   return (
@@ -16,6 +25,9 @@ const AdminContainer = () => {
       </Route>
       <Route path="/admin/notice">
         <Notice />
+      </Route>
+      <Route path="/admin/notice-write">
+        <NoticeWrite />
       </Route>
       <Route path="/admin/users-list">
         <UsersList />
