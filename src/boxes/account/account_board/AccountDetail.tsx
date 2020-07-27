@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { PostcodeButton } from '../../../items';
 import { Modal } from 'react-bootstrap';
 import './AccountDetail.css';
@@ -22,7 +23,7 @@ export const getAccountInfo = userId => dispatch => {
 };
 
 export const postUpdatePassword = data => dispatch => {
-  axios.post("", data).then(
+  axios.post(`http://localhost:8080/users/updatePassword`, data).then(
     response => {
       dispatch(updatePasswordAction(response.data));
     }
@@ -46,6 +47,9 @@ export const accountDetailReducer = (state = {}, action) => {
 
 const AccountDetail = () => {
   const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [gender, setGender] = useState("");
@@ -55,6 +59,8 @@ const AccountDetail = () => {
   const [show, setShow] = useState(false);
   const [showOptionalAddress, setShowOptionalAddress] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(true);
+
+  const history = useHistory();
 
   const accountDetail = useSelector((state: any) => state.accountInfo);
   const dispatch = useDispatch();
@@ -71,13 +77,12 @@ const AccountDetail = () => {
       setGender(accountDetail.gender);
       console.log(accountDetail);
     }
-    
   },[accountDetail])
 
   const handleClose = () => setShow(false);
 
-  const handleUpdate = () => {
-
+  const handleUpdate = e => {
+    e.preventDefault();
   };
 
   const handleDelete = () => {
@@ -87,19 +92,28 @@ const AccountDetail = () => {
   const handleAddAddress = e => {
     e.preventDefault();
     setShowOptionalAddress(true);
-
   }
 
   const handleChangePassword = e => {
     e.preventDefault();
     setShow(true);
+  }
 
+  const handleUpdatePassword = e => {
+    e.preventDefault();
+    if(newPassword === confirmNewPassword) {
+      dispatch(postUpdatePassword({userId: userId, password: newPassword}));
+      alert("비밀번호 변경이 완료되었습니다. 다시 로그인 하세요");
+      history.push("/account/login");
+    } else {
+      alert("새로운 비밀번호를 다시 확인하세요.");
+      setConfirmNewPassword("");
+    }
   }
 
   const handleUpdateEmail = e => {
     e.preventDefault();
     setIsReadOnly(!isReadOnly);
-
   }
 
   return (
@@ -135,17 +149,32 @@ const AccountDetail = () => {
               <div>
                 <div>
                   <p className="change-password-modal-p">현재 비밀번호</p>
-                  <input type="password" />
+                  <input 
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)} 
+                  />
                 </div>
                 <div>
                   <p className="change-password-modal-p">새 비밀번호</p>
-                  <input type="password" />
+                  <input 
+                    type="password"
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                  />
                 </div>
                 <div>
                   <p className="change-password-modal-p">새 비밀번호 확인</p>
-                  <input type="password" />
+                  <input 
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={e => setConfirmNewPassword(e.target.value)}
+                  />
                 </div>
-                <button className="btn btn-primary btn-block mb-2 mt-2">
+                <button 
+                  className="btn btn-primary btn-block mb-2 mt-2"
+                  onClick={handleUpdatePassword}
+                >
                   비밀번호 변경하기
                 </button>
 
