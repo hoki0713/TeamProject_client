@@ -3,25 +3,25 @@ import { PostcodeButton } from '../../../items';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const POST_JOIN_MEMBER = 'POST_JOIN_MEMBER';
+const POST_JOIN = 'POST_JOIN';
 
-export const joinMemberAction = data => ({type: POST_JOIN_MEMBER, payload: data});
+export const joinAction = data => ({type: POST_JOIN, payload: data});
 
-export const joinMemberReducer = (state = {}, action) => {
+export const joinReducer = (state = {}, action) => {
   switch(action.type) {
-    case POST_JOIN_MEMBER: return action.payload;
+    case 'POST_JOIN': return action.payload;
     default: return state;
   }
 };
 
-export const pushJoinMember = data => dispatch => {
+export const postJoin = data => dispatch => {
   axios.post("", data).then(
     response => {
-      dispatch(joinMemberAction(response.data));
+      dispatch(joinAction(response.data));
     }
   ).catch(
     error => {throw(error)}
-  )
+  );
 };
 
 
@@ -61,18 +61,18 @@ const Join = () => {
       optionalAddress: optionalAddress,
       email: email
     }
-    pushJoinMember(userJson);
+    postJoin(userJson);
 
-    alert(`
-    userId: ${userId}
-    password: ${password} 
-    confirmed password: ${confirmedPassword}
-    birthday: ${birthDate}
-    name: ${name}
-    gender: ${gender}
-    defaultAddress: ${defaultAddress}
-    optionalAddress: ${optionalAddress}
-    email: ${email}`);
+    // alert(`
+    // userId: ${userId}
+    // password: ${password} 
+    // confirmed password: ${confirmedPassword}
+    // birthday: ${birthDate}
+    // name: ${name}
+    // gender: ${gender}
+    // defaultAddress: ${defaultAddress}
+    // optionalAddress: ${optionalAddress}
+    // email: ${email}`);
     history.push('/account/login');
   }
  

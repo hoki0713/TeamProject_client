@@ -1,13 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Table from 'react-bootstrap/Table'
 import './UserList.css'
 import { SearchBar } from '../../../items';
+import axios from 'axios'
 
 //import Pagination from 'react-bootstrap/Pagination'
 
+const USER_LIST = "USER_LIST"
+
+export const userListAction = data => ({type: USER_LIST ,payload:data})
+export const userListReducer = (state=[],action) =>{
+  switch(action.type) {
+    case USER_LIST :return action.payload
+    default: return state
+  }
+} 
+export const userListThunk = () => dispatch =>{
+  axios.get(`http://localhost:8080/admins/list`)
+    .then(res=>{dispatch(userListAction(res.data))})
+    .catch(err=>{throw(err)})
+}
 
 
-function UsersList() {
+
+const UsersList = () => {
+  const [userSelect, setUserSelect] = useState("");
+
   const handleSearch = (searchWord) => {
     alert(searchWord);
   }
@@ -18,11 +36,11 @@ function UsersList() {
       <h2 className="userlist-menu-h2"> - 회원목록</h2>
       <h6 className="userlist-menu-h6">총회원수:()</h6>
       <div id="userlist-select-search-bar">
-        <select className="form-control" id="userlist-select">
-          <option selected>선택</option>
-          <option>아이디</option>
-          <option>가입자명</option>
-          <option>거주지역</option>
+        <select className="form-control" id="userlist-select" value={userSelect} onChange={e => setUserSelect(e.target.value)}>
+          <option value="select1" >선택</option>
+          <option value="userId" >아이디</option>
+          <option value="name" >가입자명</option>
+          <option value="address" >거주지역</option>
         </select>
         <span id="userlist-search-bar">
           <SearchBar onSearch={handleSearch}/>
@@ -32,7 +50,7 @@ function UsersList() {
 
 
 
-      <div>
+    <div>
         <Table responsive>
           <thead>
             <tr>
@@ -49,76 +67,6 @@ function UsersList() {
           <tbody>
             <tr>
               <td>1</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-            <tr>
-              <td>8</td>
               <td>Table cell</td>
               <td>Table cell</td>
               <td>Table cell</td>
