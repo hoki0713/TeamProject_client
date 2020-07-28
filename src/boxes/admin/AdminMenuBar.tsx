@@ -28,17 +28,12 @@ const AdminMenuBar = () => {
     setIsThirdOpen(!isThirdOpen);
     setIsFouthOpen(false);
   };
-  const fourthToggleOpen = () => {
-    setIsFirstOpen(false);
-    setIsSecondOpen(false);
-    setIsThirdOpen(false);
-    setIsFouthOpen(!isFouthOpen);
-  };
+  
 
   const firstMenuOpen = `dropdown-menu${isFirstOpen ? " show" : ""}`;
   const secondMenuOpen = `dropdown-menu${isSecondOpen ? " show" : ""}`;
   const thirdMenuOpen = `dropdown-menu${isThirdOpen ? " show" : ""}`;
-  const fourthMenuOpen = `dropdown-menu${isFouthOpen ? " show" : ""}`;
+ 
   return (
     <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">

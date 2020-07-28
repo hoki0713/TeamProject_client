@@ -17,6 +17,7 @@
 #userlist-select {
   display: inline-block;
   width: 120px;
+  float: left;
 }
 #userlist-search-bar {
   display: inline-block;

@@ -7,12 +7,13 @@ import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import { joinReducer, accountDetailReducer, loginReducer } from './boxes/account/account_board';
+import {userListReducer} from './boxes/admin/admin_board/UsersList';
 
 const rootReducer = combineReducers({
   joinReducer,
   accountDetailReducer,
-  loginReducer
-
+  loginReducer,
+  userListReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
