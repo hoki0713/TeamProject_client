@@ -108,8 +108,8 @@ const Todos= ({input, todos, onChangeInput, onInsert,  onToggle, onRemove}) => {
     </>
 }
 const Directions= () => {
-    const {input, todos} =
-        useSelector(({todosReducer})=>{
+    const {input, todos}:any =
+        useSelector(({todosReducer}:any)=>{
 
             if (typeof(todosReducer.input) == 'undefined') {
                 alert(`todos.input 은 undefinded 입니다`)
