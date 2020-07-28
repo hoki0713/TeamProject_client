@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Table from 'react-bootstrap/Table'
 import './UserList.css'
 import {SearchBar} from '../../../items';
@@ -7,13 +7,13 @@ import { useSelector,useDispatch } from 'react-redux';
 //import Pagination from 'react-bootstrap/Pagination'
 
 
-//const USER_LIST = "USER_LIST"
+const USER_LIST = "USER_LIST"
 
-export const userListAction = data => ({type:"USER_LIST" ,payload:data})
+export const userListAction = data => ({type:USER_LIST ,payload:data})
 
 export const userListReducer = (state=[],action) =>{
   switch(action.type) {
-    case "USER_LIST" :return action.payload
+    case USER_LIST :return action.payload
     default: return state
   }
 } 
@@ -37,6 +37,13 @@ export const userListThunk = () => dispatch =>{
    const setUsers = payload =>{
      setUser({name:payload.name})
    }
+
+   useEffect(()=>{
+    //if(!resultList.data) dispatch(userListThunk())
+   // else if(resultList.data !== null) console.log(resultList)
+     
+     
+   })
    
  
 
@@ -73,12 +80,12 @@ export const userListThunk = () => dispatch =>{
       <h6 className="userlist-menu-h6">총회원수:()</h6>
       <div id="userlist-select-search-bar">
         <select className="form-control" id="userlist-select" value={userSelect} onChange={selectCheck}>
-          <option  value="select1" >선택</option>
+          <option  >선택</option>
           <option value="userid">아이디</option>
           <option value="username">가입자명</option>
           <option value="userlocal">거주지역</option>
         </select>
-        <button onClick={searchUser}>클릭</button>
+        
         <span id="userlist-search-bar">
           <SearchBar  onSearch={handleSearch}/>
         </span>  
@@ -107,7 +114,7 @@ export const userListThunk = () => dispatch =>{
             <tr>
               <td>1</td>
               <td>Table cell</td>
-              <td>Table cell</td>
+              <td>ta</td>
               <td>Table cell</td>
               <td>Table cell</td>
               <td>Table cell</td>
