@@ -1,5 +1,5 @@
 import React from 'react';
-import {CardDeck, Card, Button} from 'react-bootstrap'
+import {CardDeck, Card, Button, Form, Row, Col} from 'react-bootstrap'
 
 function FindByTag() {
     return (
@@ -39,43 +39,58 @@ function FindByTag() {
             </CardDeck>
             <br/><br/><br/>
             <h3>맞춤검색</h3>
-            <div>
-                <div>
-                    연령
-                    <Button variant="outline-dark">10대</Button>{' '}
-                    <Button variant="outline-dark">20대</Button>{' '}
-                    <Button variant="outline-dark">30대</Button>{' '}
-                    <Button variant="outline-dark">40대</Button>{' '}
-                    <Button variant="outline-dark">50대</Button>{' '}
-                    <Button variant="outline-dark">60대</Button>{' '}
-                </div><br/>
-                <div>
-                    성별
-                    <Button variant="outline-dark">남성</Button>{' '}
-                    <Button variant="outline-dark">여성</Button>{' '}
-                    <Button variant="outline-dark">성별무관</Button>{' '}
-                </div><br/>
-                <div>
-                    관심 업종
-                    <Button variant="outline-dark">체육시설</Button>{' '}
-                    <Button variant="outline-dark">병원및약국</Button>{' '}
-                    <Button variant="outline-dark">카페</Button>{' '}
-                    <Button variant="outline-dark">의류업</Button>{' '}
-                    <Button variant="outline-dark">음식점</Button>{' '}
-                </div><br/>
+            <Form>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={2}>
+                        연령
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Button variant="outline-dark" type="button">10대</Button>{' '}
+                        <Button variant="outline-dark" type="button">20대</Button>{' '}
+                        <Button variant="outline-dark" type="button">30대</Button>{' '}
+                        <Button variant="outline-dark" type="button">40대</Button>{' '}
+                        <Button variant="outline-dark" type="button">50대</Button>{' '}
+                        <Button variant="outline-dark" type="button">60대</Button>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formHorizontalPassword">
+                    <Form.Label column sm={2}>
+                        성별
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Button variant="outline-dark" type="button">남성</Button>{' '}
+                        <Button variant="outline-dark" type="button">여성</Button>{' '}
+                        <Button variant="outline-dark" type="button">성별무관</Button>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formHorizontalPassword">
+                    <Form.Label column sm={2}>
+                        관심 업종
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Button variant="outline-dark" type="button">체육시설</Button>{' '}
+                        <Button variant="outline-dark" type="button">병원및약국</Button>{' '}
+                        <Button variant="outline-dark" type="button">카페</Button>{' '}
+                        <Button variant="outline-dark" type="button">의류업</Button>{' '}
+                        <Button variant="outline-dark" type="button">음식점</Button>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formHorizontalPassword">
+                    <Form.Label column sm={2}>
+                        추천 태그
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Button variant="outline-dark" type="button">#가성비</Button>{' '}
+                        <Button variant="outline-dark" type="button">#소확행</Button>{' '}
+                        <Button variant="outline-dark" type="button">#새로_생긴</Button>{' '}
+                        <Button variant="outline-dark" type="button">#건강</Button>{' '}
+                        <Button variant="outline-dark" >#즐겨찾기_많은</Button>
+                    </Col>
+                    <br/> <br/>
+                </Form.Group>
+                <Button variant="primary" type="submit">맞춤 가맹점 검색</Button>{' '}
+            </Form>
 
-                <div>
-                    추천 태그
-                    <Button variant="outline-dark">#가성비</Button>{' '}
-                    <Button variant="outline-dark">#소확행</Button>{' '}
-                    <Button variant="outline-dark">#새로_생긴</Button>{' '}
-                    <Button variant="outline-dark">#건강</Button>{' '}
-                    <Button variant="outline-dark">#즐겨찾기_많은</Button>{' '}
-                </div><br/>
-
-                <Button variant="primary">맞춤 가맹점 검색</Button>{' '}
-
-            </div>
         </>
     );
 }
