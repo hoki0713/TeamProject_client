@@ -1,4 +1,4 @@
-import React,{useState,useEffect, useCallback} from 'react';
+import React,{useState,useEffect} from 'react';
 import './LocalofUsers.css'
 
 
@@ -18,12 +18,6 @@ const LocalofUsers = () => {
 
 
 const endDateClick = e =>{
-  //  if(endDate === ""){
-  //     setEndDate(startDate)
-  // }
-
-  
-
   setEndDate(e.target.value)
   console.log(endDate)  
 }
@@ -54,10 +48,7 @@ const start_end_date =e =>{
 
   return (
     <div>
-      <h1>사용자 이용 지역
-      </h1>
-      <h3>시작:{startDate}</h3>
-      <h3>종료:{endDate}</h3>
+      <h1>사용자 이용 지역</h1>
       <div className="local-div">
       <h6 className="recommend-data-h6">기간설정 : </h6>
       <input className="recommend-data"  min="2020-01-01" type="date" value={startDate} onChange={startDateClick}></input>

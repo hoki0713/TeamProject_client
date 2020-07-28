@@ -12,7 +12,7 @@ const RecommendofStore = () => {
   
 
   const search = () =>{
-    alert(`추천가맹점 조회 클릭`)
+    if(startDate>endDate) {alert('시작날짜보다 빠를 수 없습니다.'); setEndDate("")}
   }
 
   const ageSelectCheck = e =>{
@@ -41,9 +41,7 @@ const RecommendofStore = () => {
         </div>
         <br/>
         <br/>
-      <h1>시작날짜:{startDate}</h1>
-      <h2>끝나는날짜:{endDate}</h2>
-
+     
         
        
         <div className="option-btn">
@@ -70,8 +68,6 @@ const RecommendofStore = () => {
             <option value="manufacturing">제조업</option>
           </select>
         </div>
-  <h6>연령대:{ageSelect}/성별:{genderSelect}/업종:{industrySelect}</h6>
-
         <input  onClick={search} className="recommend-button" type="submit" value="조회" />
 
        <div>
