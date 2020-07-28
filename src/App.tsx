@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
-import { joinReducer, accountDetailReducer} from './boxes/account/account_board';
+import { joinReducer, accountDetailReducer, loginReducer } from './boxes/account/account_board';
 
 const rootReducer = combineReducers({
   joinReducer,
-  accountDetailReducer
+  accountDetailReducer,
+  loginReducer
 
 });
 
