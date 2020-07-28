@@ -6,7 +6,7 @@ function CommonPage() {
         <div className="container">
             <CommonHeader />
             <CommonMenuBar />
-            <CommonContainer /> 
+            <CommonContainer/>
         </div>
     );
 }
