@@ -1,4 +1,4 @@
-import Login from './Login';
+import Login, { loginReducer } from './Login';
 import TermAndCondition from './TermAndCondition';
 import Join, { joinReducer } from './Join';
 import AccountDetail, { accountDetailReducer } from './AccountDetail';
@@ -9,5 +9,6 @@ export {
   Join,
   AccountDetail,
   joinReducer,
-  accountDetailReducer
+  accountDetailReducer,
+  loginReducer
 }
