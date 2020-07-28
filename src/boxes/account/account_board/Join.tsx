@@ -11,8 +11,8 @@ export const joinAction = data => ({type: POST_JOIN, payload: data});
 export const idCheckAction = data => ({type: GET_ID_CHECK, payload: data});
 
 export const postJoin = data => dispatch => {
-  axios.post(`http://localhost:8080/users/`, data).then(
-    response => {
+  axios.post(`http://localhost:8080/users/`, data)
+  .then(response => {
       dispatch(joinAction(response.data));
     }
   ).catch(
@@ -55,36 +55,26 @@ const Join = () => {
     dispatch(getIdCheck(userId));
   }
   
-  const handlePasswordCorrection = e => {
-    e.preventDefault();
+  const handlePasswordCorrection = ()=> {
     if(password !== confirmedPassword) alert("비밀번호가 일치하지 않습니다.");
     setConfirmedPassword("");
   }
 
   const handleSubmit = e => {
     e.preventDefault();
+    handlePasswordCorrection();
     const userJson = {
       userId: userId,
       password: password,
-      birthday: birthDate,
+      birthDate: birthDate,
       name: name,
       gender: gender,
-      defaultAddress: defaultAddress,
-      optionalAddress: optionalAddress,
+      defaultAddr: defaultAddress,
+      optionalAddr: optionalAddress,
       email: email
     }
-    postJoin(userJson);
-
-    // alert(`
-    // userId: ${userId}
-    // password: ${password} 
-    // confirmed password: ${confirmedPassword}
-    // birthday: ${birthDate}
-    // name: ${name}
-    // gender: ${gender}
-    // defaultAddress: ${defaultAddress}
-    // optionalAddress: ${optionalAddress}
-    // email: ${email}`);
+    console.log(userJson)
+    dispatch(postJoin(userJson));
     history.push('/account/login');
   }
  
@@ -127,7 +117,6 @@ const Join = () => {
             required
             value={confirmedPassword}
             onChange={e => setConfirmedPassword(e.target.value)}
-            onBlur={handlePasswordCorrection}
           />
           <p>이름</p>
           <input
