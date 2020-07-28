@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
@@ -7,11 +7,12 @@ const POST_LOGIN_REQUEST = 'POST_LOGIN_REQUEST';
 
 export const loginRequestAction = data => ({type: POST_LOGIN_REQUEST, payload: data});
 
-export const postLoginRequest = data => dispatch => {
-  axios.post(`http://localhost:8080/user/login`, data)
+export const postLoginRequest = data => async dispatch => {
+  axios.post(`http://localhost:8080/users/login`, data)
     .then(response => {
-      dispatch(loginRequestAction(response.data));
-    }).catch(error => {throw(error)});
+      dispatch(loginRequestAction(response.data))
+      sessionStorage.setItem("userId", response.data.userId);
+    }).catch(error => { throw(error) });
 };
 
 export const loginReducer = (state = {}, action) => {
@@ -25,11 +26,15 @@ const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
+  const history = useHistory();
+
   const dispatch = useDispatch();
 
   const handleLoginButton = e => {
     e.preventDefault();
     dispatch(postLoginRequest({userId: userId, password: password}));
+    alert(`${userId}님 안녕하세요.`);
+    history.push("/mypage");
   }
 
   return (
