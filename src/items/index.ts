@@ -7,6 +7,8 @@ import SearchBar from './SearchBar';
 import SignUpLink from './SignUpLink';
 import PostcodeButton from './PostcodeButton';
 import PaginationItem from "./Pagination";
+import LoginedAccountChecker from './LoginedAccountChecker';
+
 export {
     ChatbotIcon,
     LoginLink,
@@ -16,5 +18,6 @@ export {
     SearchBar,
     SignUpLink,
     PostcodeButton,
-    PaginationItem
+    PaginationItem,
+    LoginedAccountChecker
 }
