@@ -8,7 +8,7 @@
   max-width: 400px;
 }
 
-#account-page-width>div>form>div>input {
+.account_login>form>div>input {
   margin-bottom: 1rem;
 }
 
@@ -30,4 +30,8 @@
   margin-top: 1rem;
   width: 48%;
   float: right;
+}
+
+.account_join>form>div>p {
+  margin-bottom: 0;
 }

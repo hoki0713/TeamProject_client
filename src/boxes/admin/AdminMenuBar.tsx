@@ -49,20 +49,20 @@ const AdminMenuBar = () => {
               data-toggle="dropdown"
               onClick={firstToggleOpen}
             >
-              가맹점 찾기
+              통계
             </p>
             <div
               className={firstMenuOpen}
               onClick={() => setIsFirstOpen(false)}
             >
-              <Link to="/find-by-map">
-                <p className="dropdown-item">지도에서 찾아보기</p>
+              <Link to="/admin/recommend-store">
+                <p className="dropdown-item">추천가맹점 조회수</p>
               </Link>
-              <Link to="/merchant-list">
-                <p className="dropdown-item">리스트로 찾아보기</p>
+              <Link to="/admin/local-user">
+                <p className="dropdown-item">사용자 이용 지역</p>
               </Link>
-              <Link to="/find-best-route">
-                <p className="dropdown-item">최적경로 찾아보기</p>
+              <Link to ="/admin/currency-amount">
+              <p className="dropdown-item">지역화폐 매출</p>
               </Link>
             </div>
           </li>
@@ -73,17 +73,17 @@ const AdminMenuBar = () => {
               data-toggle="dropdown"
               onClick={secondToggleOpen}
             >
-              맞춤추천
+              관리
             </p>
             <div
               className={secondMenuOpen}
               onClick={() => setIsSecondOpen(false)}
             >
-              <Link to="/recommendation">
-                <p className="dropdown-item">추천가맹점 보기</p>
+              <Link to="/admin/users-list">
+                <p className="dropdown-item">회원목록</p>
               </Link>
-              <Link to="/find-by-tag">
-                <p className="dropdown-item">태그로 검색하기</p>
+              <Link to="/admin/notice">
+                <p className="dropdown-item">공지사항</p>
               </Link>
             </div>
           </li>
@@ -94,35 +94,22 @@ const AdminMenuBar = () => {
               data-toggle="dropdown"
               onClick={thirdToggleOpen}
             >
-              공지사항
+              민원처리
             </p>
             <div
               className={thirdMenuOpen}
               onClick={() => setIsThirdOpen(false)}
             >
-              <Link to="/notice">
-                <p className="dropdown-item">공지사항</p>
+              <Link to="/admin/notify-sotre">
+                <p className="dropdown-item">지역화폐 미사용 신고 외</p>
               </Link>
+              <Link to="/admin/enquiry">
+                <p className="dropdown-item">1:1문의</p>
+                </Link>
             </div>
           </li>
 
-          <li className="nav-item dropdown admin-menu-bar-item">
-            <p
-              className="nav-link dropdown-toggle"
-              data-toggle="dropdown"
-              onClick={fourthToggleOpen}
-            >
-              지역화폐
-            </p>
-            <div
-              className={fourthMenuOpen}
-              onClick={() => setIsFouthOpen(false)}
-            >
-              <Link to="/buy-local-currency">
-                <p className="dropdown-item">지역화폐 구매하기</p>
-              </Link>
-            </div>
-          </li>
+        
         </ul>
       </nav>
     </div>

@@ -1,9 +1,13 @@
 import Login from './Login';
 import TermAndCondition from './TermAndCondition';
-import Join from './Join';
+import Join, { joinReducer } from './Join';
+import AccountDetail, { accountDetailReducer } from './AccountDetail';
 
 export {
   Login,
   TermAndCondition,
-  Join
+  Join,
+  AccountDetail,
+  joinReducer,
+  accountDetailReducer
 }

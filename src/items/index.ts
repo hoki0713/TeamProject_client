@@ -5,7 +5,8 @@ import MapImage from './MapImage';
 import MenuIcon from './MenuIcon';
 import SearchBar from './SearchBar';
 import SignUpLink from './SignUpLink';
-
+import PostcodeButton from './PostcodeButton';
+import PaginationItem from "./Pagination";
 export {
     ChatbotIcon,
     LoginLink,
@@ -13,5 +14,7 @@ export {
     MapImage,
     MenuIcon,
     SearchBar,
-    SignUpLink
+    SignUpLink,
+    PostcodeButton,
+    PaginationItem
 }

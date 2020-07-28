@@ -1,0 +1,21 @@
+#account-detail {
+  max-width: 400px;
+}
+
+#account-detail-title {
+  text-align: center;
+  margin: 2rem;
+}
+
+#account-detail-add-address-btn {
+  margin-top: .5rem;
+}
+
+#account-detail-update-email-btn {
+  margin-top: .5rem;
+}
+
+.change-password-modal-p {
+  display: inline-block;
+  width: 50%;
+}
