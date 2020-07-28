@@ -6,8 +6,7 @@ import axios from 'axios'
 import { useSelector,useDispatch } from 'react-redux';
 //import Pagination from 'react-bootstrap/Pagination'
 
-
-//const USER_LIST = "USER_LIST"
+const USER_LIST = "USER_LIST"
 
 export const userListAction = data => ({type:"USER_LIST" ,payload:data})
 
@@ -25,8 +24,6 @@ export const userListThunk = () => dispatch =>{
     .catch(err=>{throw(err)})
 }
 
-
-
  const UsersList = () => {
   
    const [userSelect,setUserSelect] = useState("")
@@ -38,14 +35,12 @@ export const userListThunk = () => dispatch =>{
      setUser({name:payload.name})
    }
    
- 
-
 
    const selectCheck = e => {
        e.preventDefault()
        setUserSelect(e.target.value)
    }
-  
+ 
   const handleSearch = (searchWord) => {
     
     alert("클릭")
@@ -89,7 +84,7 @@ export const userListThunk = () => dispatch =>{
 
 
 
-      <div>
+    <div>
         <Table responsive>
           <thead>
             <tr>
