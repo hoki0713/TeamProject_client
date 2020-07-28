@@ -1,13 +1,37 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import './LocalCurrencyAmount.css'
 import { Table } from 'react-bootstrap'
 import { SearchBar } from '../../../items'
+import { Line,Doughnut } from 'react-chartjs-2'
 
 const LocalCurrencyAmount = () => {
   const[startDate,setStartDate] = useState("")
   const[endDate,setEndDate] =useState("")
   const[citySelect,setCitySelect]=useState("")
   const[useStatusSelect,setUseStatusSelect] = useState("")
+  const [chartData,setChartData] =useState({})
+
+
+  const a =50
+  const chart = () =>{
+    setChartData({
+      labels:['monday','tuesday','wednesday','thursday','friday'],
+      datasets:[
+        {
+          label:'level of thickness',
+          data:[a,5,15,76,5],
+          backgroundColor:[
+            'rgba(00,19,192,0.6)'
+          ],
+          borderwidth:4
+        }
+      ]
+    })
+  }
+
+  useEffect(()=>{
+    chart()
+  },[])
 
   const handleSearch = (searchWord) =>{
     alert(searchWord)
@@ -30,21 +54,22 @@ const LocalCurrencyAmount = () => {
     <div>
       <h1>지역화폐 매출</h1>
       <div>
-        <img className="localcurrency-img" src="https://www.thoughtco.com/thmb/eHY1wWdh-9JF6HJ8s1cAwxLcPaQ=/1647x1098/filters:fill%28auto,1%29/Pie-Chart-copy-58b844263df78c060e67c91c-9e3477304ba54a0da43d2289a5a90b45.jpg" alt=""/>
+      <Line data={chartData}/>
+      <Doughnut data={chartData}/>
       </div>
-
       <h2>지역화폐 매출 목록</h2>
+  
       
-      <select  id="recommend-select" value={citySelect} onChange={citySelectChange}>
+      <select  id="recommend-select" value={citySelect}  onChange={citySelectChange}>
             <option selected>시도</option>
-            <option value="ten">의정부시</option>
-            <option value="twenty">고양시</option>
-            <option value="thirty">수원시</option>
+            <option >의정부시</option>
+            <option>고양시</option>
+            <option>수원시</option>
           </select>
           <select  id="recommend-select" value={useStatusSelect} onChange={useStatusSelectChange}>
             <option selected>상태</option>
-            <option value="ten">사용완료</option>
-            <option value="twenty">미사용</option>
+            <option value="use">사용완료</option>
+            <option value="unused">미사용</option>
           </select>
           <div>
           <input className="recommend-data" type="date" value={startDate} onChange={e => setStartDate(e.target.value)}></input>
