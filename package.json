@@ -27,8 +27,8 @@
     "react-scripts": "3.4.1",
     "react-simple-chatbot": "^0.6.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
     "redux-actions": "^2.6.5",
+    "redux-thunk": "^2.3.0",
     "typescript": "3.9.7"
   },
   "scripts": {
