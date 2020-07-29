@@ -5,10 +5,10 @@ import { SearchBar } from '../../../items'
 import { Line,Doughnut } from 'react-chartjs-2'
 
 const LocalCurrencyAmount = () => {
-  const[startDate,setStartDate] = useState("")
-  const[endDate,setEndDate] =useState("")
-  const[citySelect,setCitySelect]=useState("")
-  const[useStatusSelect,setUseStatusSelect] = useState("")
+  const [startDate,setStartDate] = useState("")
+  const [endDate,setEndDate] =useState("")
+  const [citySelect,setCitySelect]=useState("")
+  const [useStatusSelect,setUseStatusSelect] = useState("")
   const [chartData,setChartData] =useState({})
 
 
@@ -60,24 +60,24 @@ const LocalCurrencyAmount = () => {
       <h2>지역화폐 매출 목록</h2>
   
       
-      <select  id="recommend-select" value={citySelect}  onChange={citySelectChange}>
+      <select  id="localcurrency_cityselect" value={citySelect}  onChange={citySelectChange}>
             <option selected>시도</option>
             <option >의정부시</option>
             <option>고양시</option>
             <option>수원시</option>
           </select>
-          <select  id="recommend-select" value={useStatusSelect} onChange={useStatusSelectChange}>
+          <select  id="localcurrency_statusselect" value={useStatusSelect} onChange={useStatusSelectChange}>
             <option selected>상태</option>
             <option value="use">사용완료</option>
             <option value="unused">미사용</option>
           </select>
           <div>
-          <input className="recommend-data" type="date" value={startDate} onChange={e => setStartDate(e.target.value)}></input>
-          <h4 className="recommend-data-h4"> &nbsp; ~ </h4>
-          <input className="recommend-data" type="date" value={endDate} onChange={e => setEndDate(e.target.value)}></input>
-          <span id="userlist-search-bar">
+          <input className="currency_startdate" type="date" value={startDate} onChange={e => setStartDate(e.target.value)}></input>
+          <h4 className="currency_date_h4">  ~ </h4>
+          <input className="currency_enddate" type="date" value={endDate} onChange={e => setEndDate(e.target.value)}></input>
+          <div id="localCurrency_search_bar">
           <SearchBar  onSearch={handleSearch}/>
-        </span> 
+        </div> 
         </div>
         <br/>
       <Table className="Table">

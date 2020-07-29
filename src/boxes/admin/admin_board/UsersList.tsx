@@ -17,9 +17,11 @@ export const userListReducer = (state=[],action) =>{
   }
 } 
 
-export const userListThunk = () => dispatch =>{
+
+
+export const userListThunk = searchWord => dispatch =>{
   console.log("api 도착")
-  axios.get(`http://localhost:8080/admins/list`)
+  axios.get(`http://localhost:8080/admins/list/${searchWord}`)
     .then(res=>{dispatch(userListAction(res.data))})
     .catch(err=>{throw(err)})
 }
@@ -51,18 +53,19 @@ export const userListThunk = () => dispatch =>{
   const handleSearch = (searchWord) => {
     
     alert("클릭")
-    dispatch(userListThunk())
+    if(searchWord === "") searchWord ="null"
+    alert(searchWord)
+    dispatch(userListThunk(searchWord))
  
     console.log("서치", resultList)
     
     console.log(setUsers.name)
-    alert(searchWord);
-
+    
   }
   const searchUser = e =>{
     e.preventDefault()
     alert("클릭")
-    dispatch(userListThunk())
+   // dispatch(userListThunk())
     console.log(resultList)
   }
 

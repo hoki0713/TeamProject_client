@@ -9,6 +9,8 @@ import UsersList from './UsersList';
 import NotifyStore from './NotifyStore';
 import Enquiry from './Enquiry';
 import EnquiryDetail from "./EnquiryDetail";
+import StoreDetail from './StoreDetail'
+import UserDetail from './UserDetail'
 export {
   
   RecommendofStore,
@@ -20,7 +22,9 @@ export {
   UsersList,
   NotifyStore,
   Enquiry,
-  EnquiryDetail
+  EnquiryDetail,
+  StoreDetail,
+  UserDetail
 
 }
 
