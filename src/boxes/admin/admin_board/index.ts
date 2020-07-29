@@ -1,4 +1,4 @@
-import AdminTest from './AdminTest';
+
 import RecommendofStore from './RecommendofStore';
 import LocalofUsers from './LocalofUsers';
 import LocalCurrencyAmount from './LocalCurrencyAmount';
@@ -10,7 +10,7 @@ import NotifyStore from './NotifyStore';
 import Enquiry from './Enquiry';
 import EnquiryDetail from "./EnquiryDetail";
 export {
-  AdminTest,
+  
   RecommendofStore,
   LocalofUsers,
   LocalCurrencyAmount,
@@ -23,3 +23,4 @@ export {
   EnquiryDetail
 
 }
+

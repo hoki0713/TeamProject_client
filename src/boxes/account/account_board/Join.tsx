@@ -2,26 +2,37 @@ import React, { useState } from 'react';
 import { PostcodeButton } from '../../../items';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 const POST_JOIN = 'POST_JOIN';
+const GET_ID_CHECK = 'GET_ID_CHECK';
 
 export const joinAction = data => ({type: POST_JOIN, payload: data});
-
-export const joinReducer = (state = {}, action) => {
-  switch(action.type) {
-    case 'POST_JOIN': return action.payload;
-    default: return state;
-  }
-};
+export const idCheckAction = data => ({type: GET_ID_CHECK, payload: data});
 
 export const postJoin = data => dispatch => {
-  axios.post("", data).then(
-    response => {
+  axios.post(`http://localhost:8080/users/`, data)
+  .then(response => {
       dispatch(joinAction(response.data));
     }
   ).catch(
     error => {throw(error)}
   );
+};
+
+export const getIdCheck = userId => dispatch => {
+  axios.get(`http://localhost:8080/users/idCheck/{userId}`)
+    .then(response => {
+      dispatch(idCheckAction(response.data));
+    }).catch(error => {throw (error)});
+};
+
+export const joinReducer = (state = {}, action) => {
+  switch(action.type) {
+    case 'POST_JOIN': return action.payload;
+    case 'GET_ID_CHECK': return action.payload;
+    default: return state;
+  }
 };
 
 
@@ -36,43 +47,34 @@ const Join = () => {
   const [optionalAddress, setOptionalAddress] = useState("");
   const [email, setEmail] = useState("");
 
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const handleIdCheck = e => {
     e.preventDefault();
-    alert("아이디 중복 체크해야함.");
+    dispatch(getIdCheck(userId));
   }
   
-  const handlePasswordCorrection = e => {
-    e.preventDefault();
+  const handlePasswordCorrection = ()=> {
     if(password !== confirmedPassword) alert("비밀번호가 일치하지 않습니다.");
     setConfirmedPassword("");
   }
 
   const handleSubmit = e => {
     e.preventDefault();
+    handlePasswordCorrection();
     const userJson = {
       userId: userId,
       password: password,
-      birthday: birthDate,
+      birthDate: birthDate,
       name: name,
       gender: gender,
-      defaultAddress: defaultAddress,
-      optionalAddress: optionalAddress,
+      defaultAddr: defaultAddress,
+      optionalAddr: optionalAddress,
       email: email
     }
-    postJoin(userJson);
-
-    // alert(`
-    // userId: ${userId}
-    // password: ${password} 
-    // confirmed password: ${confirmedPassword}
-    // birthday: ${birthDate}
-    // name: ${name}
-    // gender: ${gender}
-    // defaultAddress: ${defaultAddress}
-    // optionalAddress: ${optionalAddress}
-    // email: ${email}`);
+    console.log(userJson)
+    dispatch(postJoin(userJson));
     history.push('/account/login');
   }
  
@@ -115,7 +117,6 @@ const Join = () => {
             required
             value={confirmedPassword}
             onChange={e => setConfirmedPassword(e.target.value)}
-            onBlur={handlePasswordCorrection}
           />
           <p>이름</p>
           <input

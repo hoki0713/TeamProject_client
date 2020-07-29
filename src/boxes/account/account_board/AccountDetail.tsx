@@ -91,7 +91,7 @@ const AccountDetail = () => {
   useEffect(() => {
 
     if(!accountDetail) {
-      dispatch(getAccountInfo("YwIvRY56"));
+      dispatch(getAccountInfo(sessionStorage.getItem("userId")));
       
     } else {
       setId(accountDetail.id);

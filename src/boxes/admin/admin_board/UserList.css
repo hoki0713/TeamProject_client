@@ -17,8 +17,11 @@
 #userlist-select {
   display: inline-block;
   width: 120px;
+ 
 }
 #userlist-search-bar {
   display: inline-block;
   width: 300px;
 }
+
+.form-control{}

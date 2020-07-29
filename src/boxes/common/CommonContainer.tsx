@@ -6,6 +6,7 @@ import { AccountDetail } from '../account/account_board';
 
 
 function CommonContainer() {
+
   return (
     <div className='container'>
       <Route path="/merchant-list">
