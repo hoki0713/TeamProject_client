@@ -1,56 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PostcodeButton } from '../../../items';
 import { Modal } from 'react-bootstrap';
 import './AccountDetail.css';
 import axios from 'axios';
-
-const GET_ACCOUNT_INFO = 'GET_ACCOUNT_INFO';
-const PATCH_UPDATE_PASSWORD = 'PATCH_UPDATE_PASSWORD';
-const PATCH_UPDATE_USER = 'PATCH_UPDATE_USER';
-const DELETE_USER = 'DELETE_USER';
-
-export const accountInfoAction = data => ({type: GET_ACCOUNT_INFO, payload: data});
-export const patchPasswordAction = data => ({type: PATCH_UPDATE_PASSWORD, payload: data});
-export const patchUserAction = data => ({type: PATCH_UPDATE_USER, payload: data});
-export const deleteUserAction = data => ({type: DELETE_USER, payload: data});
-
-export const getAccountInfo = userId => dispatch => {
-  axios.get(`http://localhost:8080/users/account-info/${userId}`)  // 나중에 id로 바꿔야함. 로그인할 때 sessionStore에 id 저장하기...
-    .then(response => {
-      dispatch(accountInfoAction(response.data));
-    }).catch(
-    error => { throw(error) }
-  );
-};
-
-export const patchUpdatePassword = (id, data) => dispatch => {
-  axios.patch(`http://localhost:8080/users/${id}`, data)
-    .then(response => {
-      dispatch(patchPasswordAction(response.data));
-    }).catch(
-    error => { throw (error) }
-  );
-};
-
-export const patchUpdateUser = (id, data) => dispatch => {
-  axios.patch(`http://localhost:8080/users/${id}`, data)
-    .then(response => {
-    dispatch(patchUserAction(response.data));
-    }).catch(
-      error => { throw (error)}
-    );
-};
-
-export const deleteUser = id => dispatch => {
-  axios.delete(`http://localhost:8080/users/${id}`)
-    .then(response => {
-      dispatch(deleteUserAction(response.data));
-    }).catch(
-      error => { throw (error)}
-    );
-};
 
 const AccountDetail = () => {
   const [id, setId] = useState("");
@@ -64,52 +17,37 @@ const AccountDetail = () => {
   const [defaultAddress, setDefaultAddress] = useState("");
   const [optionalAddress, setOptionalAddress] = useState("");
   const [email, setEmail] = useState("");
+  const [accountDetail, setAccountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'));
   const [show, setShow] = useState(false);
   const [showOptionalAddress, setShowOptionalAddress] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(true);
 
   const history = useHistory();
 
-  const accountDetail = useSelector((state: any) => state.account);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-
-    if(!accountDetail) {
-      dispatch(getAccountInfo(sessionStorage.getItem("userId")));
-      
-    } else {
-      setId(accountDetail.id);
-      setUserId(accountDetail.userId);
-      setName(accountDetail.name);
-      setBirthDate(accountDetail.birthDate);
-      setGender(accountDetail.gender);
-      setDefaultAddress(accountDetail.defaultAddr);
-      if(accountDetail.optionalAddr) setOptionalAddress(accountDetail.optionalAddr);    
-      console.log(accountDetail);
-    }
-  },[accountDetail])
-
-  const handleClose = () => setShow(false);
-
   const handleUpdate = e => {
     e.preventDefault();
-    dispatch(patchUpdateUser(id, {defaultAddress: defaultAddress, optionalAddress: optionalAddress ,email: email}));
-    alert("회원정보 수정이 완료되었습니다.");
-    history.push("/");
+    const data = { defaultAddr: defaultAddress, optionalAddr: optionalAddress, email: email };
+    axios.patch(`http://localhost:8080/users/${id}`, data)
+      .then(response => {
+        sessionStorage.setItem("accountDetail", JSON.stringify(response.data));
+        setAccountDetail(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'))
+        alert("회원정보 수정이 완료되었습니다.");
+      }).catch(
+        error => { throw (error) }
+      );
   };
 
   const handleDelete = e => {
     e.preventDefault();
-    dispatch(deleteUser(id));
-    alert("회원탈퇴 완료");
-    history.push("/");
+    axios.delete(`http://localhost:8080/users/${id}`)
+      .then(() => {
+        sessionStorage.clear();
+        alert("회원탈퇴 완료");
+        history.push("/");
+      }).catch(
+        error => { throw (error) }
+      );
   };
-
-  const handleAddAddress = e => {
-    e.preventDefault();
-    setShowOptionalAddress(true);
-  }
 
   const handleChangePassword = e => {
     e.preventDefault();
@@ -118,20 +56,51 @@ const AccountDetail = () => {
 
   const handleUpdatePassword = e => {
     e.preventDefault();
-    if(newPassword === confirmNewPassword) {
-      dispatch(patchUpdatePassword(id, {password: newPassword}));
-      alert("비밀번호 변경이 완료되었습니다. 다시 로그인 하세요");
-      history.push("/account/login");
-    } else {
-      alert("새로운 비밀번호를 다시 확인하세요.");
-      setConfirmNewPassword("");
-    }
+    axios.post(`http://localhost:8080/users/${id}`, { password: password })
+      .then(() => {
+        if (newPassword === confirmNewPassword) {
+          axios.patch(`http://localhost:8080/users/${id}`, { password: newPassword })
+            .then(() => {
+              sessionStorage.clear();
+              alert("비밀번호 변경이 완료되었습니다. 다시 로그인 하세요");
+              history.push("/account/login");
+            }).catch(
+              error => {
+                throw (error);
+              });
+        } else {
+          alert("새로운 비밀번호를 다시 확인하세요.");
+          setConfirmNewPassword("");
+        }
+      }).catch(error => {
+        alert("현재 비밀번호가 일치하지 않습니다.");
+        setPassword("");
+        throw (error);
+      });
+  };
+
+  const handleClose = () => setShow(false);
+
+  const handleAddAddress = e => {
+    e.preventDefault();
+    setShowOptionalAddress(true);
   }
 
   const handleUpdateEmail = e => {
     e.preventDefault();
-    setIsReadOnly(!isReadOnly);
+    setIsReadOnly(false);
   }
+
+  useEffect(() => {
+    setId(accountDetail.id);
+    setUserId(accountDetail.userId);
+    setName(accountDetail.name);
+    setBirthDate(accountDetail.birthDate);
+    setGender(accountDetail.gender);
+    setDefaultAddress(accountDetail.defaultAddr);
+    if (accountDetail.optionalAddr) setOptionalAddress(accountDetail.optionalAddr);
+    setEmail(accountDetail.email);
+  }, [accountDetail])
 
   return (
     <div className="container" id="account-detail">
@@ -166,15 +135,15 @@ const AccountDetail = () => {
               <div>
                 <div>
                   <p className="change-password-modal-p">현재 비밀번호</p>
-                  <input 
+                  <input
                     type="password"
                     value={password}
-                    onChange={e => setPassword(e.target.value)} 
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </div>
                 <div>
                   <p className="change-password-modal-p">새 비밀번호</p>
-                  <input 
+                  <input
                     type="password"
                     value={newPassword}
                     onChange={e => setNewPassword(e.target.value)}
@@ -182,13 +151,13 @@ const AccountDetail = () => {
                 </div>
                 <div>
                   <p className="change-password-modal-p">새 비밀번호 확인</p>
-                  <input 
+                  <input
                     type="password"
                     value={confirmNewPassword}
                     onChange={e => setConfirmNewPassword(e.target.value)}
                   />
                 </div>
-                <button 
+                <button
                   className="btn btn-primary btn-block mb-2 mt-2"
                   onClick={handleUpdatePassword}
                 >
@@ -281,13 +250,23 @@ const AccountDetail = () => {
 
           <p>이메일</p>
           <div className="input-group">
-            <input
-              type="email"
-              className="form-control"
-              readOnly={isReadOnly}
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
+            {isReadOnly &&
+              <input
+                type="email"
+                className="form-control"
+                readOnly
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            }
+            {!isReadOnly &&
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            }
             <button
               className="btn btn-warning btn-block mb-2"
               id="account-detail-update-email-btn"

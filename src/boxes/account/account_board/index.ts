@@ -2,12 +2,15 @@ import Login from './Login';
 import TermAndCondition from './TermAndCondition';
 import Join from './Join';
 import AccountDetail from './AccountDetail';
-import accountReducer from './AccountReducer';
+import FindId from './FindId';
+import FindPassword from './FindPassword';
 
 export {
   Login,
   TermAndCondition,
   Join,
   AccountDetail,
-  accountReducer
+  FindId,
+  FindPassword
+
 }

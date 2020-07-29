@@ -6,11 +6,9 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
-import { accountReducer } from './boxes/account/account_board';
 import { userListReducer } from './boxes/admin/admin_board/UsersList';
 
 const rootReducer = combineReducers({
-  account: accountReducer,
   userListReducer
 });
 
