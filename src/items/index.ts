@@ -19,5 +19,5 @@ export {
     SignUpLink,
     PostcodeButton,
     PaginationItem,
-    LoginedAccountChecker
+    LoginedAccountChecker,
 }

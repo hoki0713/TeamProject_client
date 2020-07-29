@@ -7,20 +7,13 @@ const POST_LOGIN_REQUEST = 'POST_LOGIN_REQUEST';
 
 export const loginRequestAction = data => ({type: POST_LOGIN_REQUEST, payload: data});
 
-export const postLoginRequest = data => async dispatch => {
+export const postLoginRequest = data => dispatch => {
   axios.post(`http://localhost:8080/users/login`, data)
     .then(response => {
       dispatch(loginRequestAction(response.data))
       sessionStorage.setItem("userId", response.data.userId);
     }).catch(error => { throw(error) });
 };
-
-export const loginReducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'POST_LOGIN_REQUEST': return action.payload;
-    default: return state;
-  }
-}
 
 const Login = () => {
   const [userId, setUserId] = useState("");

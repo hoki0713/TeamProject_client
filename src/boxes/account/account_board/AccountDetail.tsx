@@ -52,21 +52,6 @@ export const deleteUser = id => dispatch => {
     );
 };
 
-export const accountDetailReducer = (state = {}, action) => {
-  console.log("reducer running");
-  console.log(action);
-  switch(action.type) {
-    case 'GET_ACCOUNT_INFO': return Object.assign({}, state, {
-      accountInfo: action.payload
-    });
-    case 'PATCH_UPDATE_PASSWORD': return action.payload;
-    case 'PATCH_UPDATE_USER': return action.payload;
-    case 'DELETE_USER': return action.payload;
-    default: return state;
-  }
-}
-
-
 const AccountDetail = () => {
   const [id, setId] = useState("");
   const [userId, setUserId] = useState("");
@@ -85,7 +70,7 @@ const AccountDetail = () => {
 
   const history = useHistory();
 
-  const accountDetail = useSelector((state: any) => state.accountInfo);
+  const accountDetail = useSelector((state: any) => state.account);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -99,6 +84,8 @@ const AccountDetail = () => {
       setName(accountDetail.name);
       setBirthDate(accountDetail.birthDate);
       setGender(accountDetail.gender);
+      setDefaultAddress(accountDetail.defaultAddr);
+      if(accountDetail.optionalAddr) setOptionalAddress(accountDetail.optionalAddr);    
       console.log(accountDetail);
     }
   },[accountDetail])
