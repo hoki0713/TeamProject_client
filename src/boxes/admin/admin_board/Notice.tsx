@@ -1,10 +1,58 @@
-import React from 'react';
-import {Button} from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Button, Table} from 'react-bootstrap';
 import {PaginationItem, SearchBar} from "../../../items";
-import Table from "react-bootstrap/Table";
 import {Link} from "react-router-dom";
+import axios from 'axios'
+import {useDispatch, useSelector} from "react-redux";
 
+const POST_LIST = "POST_LIST"
+export const postListAction = data =>({
+    type:POST_LIST,
+    payload : data
+})
+
+export const postListReducer = (state=[],action)=>{
+    switch (action.type){
+        case POST_LIST : return action.payload
+        default : return state
+    }
+}
+
+
+const initialState = {
+    input:'',
+    posts:[
+        {
+          postNo : 1,
+          category : '사이트',
+          title : '사이트 임시 점검 예정',
+          regDate : '2020/07/29',
+          readCount : 55,
+          link : 'O'
+        },
+        {
+            postNo : 2,
+            category : '지역화폐',
+            title : '김포페이 서비스 연장 안내',
+            regDate : '2020/07/31',
+            readCount : 82,
+            link : 'X'
+        }
+    ]
+}
+/*export const postListThunk = ()=>dispatch=>{
+    console.log('api 도착')
+    axios.get()
+}*/
 const Notice = () => {
+
+    const [post, setPost] = useState({})
+    const [postList, setPostList] =useState([])
+    const resultList = useSelector((x:any)=>x.postListReducer)
+    const dispatch = useDispatch()
+
+
+
     const handleSearch = (searchWord) => {
         alert(searchWord);
     }
@@ -40,67 +88,22 @@ const Notice = () => {
                         <th>번호</th>
                         <th>구분</th>
                         <th>제목</th>
-                        <th>작성자</th>
                         <th>등록일</th>
                         <th>조회수</th>
                         <th>링크</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                                           </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                                          </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                                          </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                                          </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                                           </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                        <td>Table cell</td>
-                                           </tr>
+                    {initialState.posts.map((posts,i)=>(
+                        <tr key={i}>
+                            <td>{posts.postNo}</td>
+                            <td> {posts.category}</td>
+                            <td>{posts.title}</td>
+                            <td>{posts.regDate}</td>
+                            <td>{posts.readCount}</td>
+                            <td>{posts.link}</td>
+                        </tr>))}
+
                     </tbody>
                 </Table>
                 <PaginationItem/>

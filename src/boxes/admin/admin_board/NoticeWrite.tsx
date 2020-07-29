@@ -1,8 +1,34 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import {Form, Col, Button} from 'react-bootstrap'
 import {Link} from "react-router-dom";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 const NoticeWrite = () => {
+    const [value, setValue] = useState('');
+
+
+    const modules = {
+        toolbar: [
+            [{ 'header': [1, 2, false] }], [{ 'font': [] }],
+            ['bold', 'italic', 'underline','strike', 'blockquote'],[{ 'align': [] }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{'list': 'ordered'}, {'list': 'bullet'}],
+            ['link', 'image'],
+
+            ['clean'],
+
+        ],
+    }
+
+       const formats = [
+            'header', 'font',
+            'bold', 'italic', 'underline', 'strike', 'blockquote','align',
+           'color', 'background',
+           'list', 'bullet',
+            'link', 'image',
+        ]
+
     return (
         <>
             <div className="userlist-content-title">
@@ -23,10 +49,14 @@ const NoticeWrite = () => {
                     </Col>
                 </Form.Row>
                 <Form.Label>내용</Form.Label>
-                <Form.Control as="textarea" rows={10}/>
-                <Form.Label>첨부 링크</Form.Label>
+                <ReactQuill theme="snow"
+                            value={value} onChange={setValue}
+                            modules={modules}
+                            formats={formats}
+                />
+               {/* <Form.Label>첨부 링크</Form.Label>
                 <Form.Control as="input"/>
-                <Form.File label="파일 첨부"/>
+                <Form.File label="파일 첨부"/>*/}
             </Form>
             <br/>
             <div>

@@ -15,6 +15,7 @@ const Enquiry = () => {
                 <div id="userlist-select-search-bar">
                     <select className="form-control" id="userlist-select">
                         <option selected>진행 상태</option>
+                        <option>전체</option>
                         <option>미해결</option>
                         <option>해결</option>
                     </select>
