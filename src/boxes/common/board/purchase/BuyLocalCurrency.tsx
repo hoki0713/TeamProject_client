@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import './purchase.css'
-import PurchaseMapImg from "../../../../items/PurchaseMapImg";
+import PurchaseMapImg from "../../../../items/PurchaseMapimg";
 import { Link } from 'react-router-dom';
+
 
 export const CurrencyImg =()=> {
     const [imgsrc]=useState("https://t1.daumcdn.net/cfile/tistory/994CBF355E7EE0570A")
@@ -11,9 +12,10 @@ export const CurrencyImg =()=> {
 
 
 function BuyLocalCurrency() {
-    const payment=()=>{window.open('/payment','window_name','width=700,height=800,location=center,status=no,scrollbars=yes')}
+    const payment=()=>{window.open('/account/login','window_name','width=700,height=800,location=center,status=no,scrollbars=yes')}
 
     return (
+
         <div className="currency">
             <table className="currency_table">
                 <tr><td><h3>지역사랑화폐</h3></td><td></td><td></td></tr>
