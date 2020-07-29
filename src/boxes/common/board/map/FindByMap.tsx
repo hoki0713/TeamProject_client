@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// @ts-ignore
 import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
 import side from './side.jpg'
 import './map.css'

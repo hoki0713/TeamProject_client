@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-// @ts-ignore
+
 import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
 import Directions from "./Directions";
 import { createStore } from 'redux'
 import {rootReducer} from "./Directions";
 import { Provider } from 'react-redux'
-function FindBestRoute({input, todos, onChangeInput, onInsert,  onToggle, onRemove}:any) {
+function FindBestRoute() {
 
   const ncpId = 'lyiy7i7pk0';
   const title ='서강대학교';

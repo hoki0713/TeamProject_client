@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './purchase.css'
-import PurchaseMapImg from "../../../../items/PurchaseMapimg";
 import { Link } from 'react-router-dom';
+import PurchaseMap from "./PurchaseMap";
 
 
 export const CurrencyImg =()=> {
@@ -19,7 +19,7 @@ function BuyLocalCurrency() {
         <div className="currency">
             <table className="currency_table">
                 <tr><td><h3>지역사랑화폐</h3></td><td></td><td></td></tr>
-                <tr><td><CurrencyImg/><br/><input type="checkbox"/><h5>5,000원</h5></td><td><CurrencyImg/><br/><input type="checkbox"/><h5>10,000원</h5></td><td rowSpan={2}><PurchaseMapImg/></td></tr>
+                <tr><td><CurrencyImg/><br/><input type="checkbox"/><h5>5,000원</h5></td><td><CurrencyImg/><br/><input type="checkbox"/><h5>10,000원</h5></td><td rowSpan={2}><PurchaseMap/></td></tr>
                 <tr><td><CurrencyImg/><br/><input type="checkbox"/><h5>15,000원</h5></td><td></td><td></td></tr>
                 <tr><td></td><td><br/><button type="button" className="btn btn-primary" onClick={payment}>결제하기</button></td>
                     <td><br/><Link to='/find-by-map'><Link to='/find-by-map'><button type="button" className="btn btn-danger" >취소하기</button></Link></Link>

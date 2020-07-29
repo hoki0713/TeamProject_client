@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { MerchantList, FindByMap, FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency } from './board';
 import { AccountDetail } from '../account/account_board';
+import MerchanDetail from "./board/map/MerchanDetail";
 
 
 
@@ -33,7 +34,9 @@ function CommonContainer() {
       <Route path="/mypage">
         <AccountDetail />
       </Route>
-
+        <Route path="/storeDetail">
+            <MerchanDetail/>
+        </Route>
     </div>
   );
 }

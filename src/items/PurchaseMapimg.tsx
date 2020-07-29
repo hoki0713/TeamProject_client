@@ -7,7 +7,7 @@ type MapImageProps = {
 function PurchaseMapImg({ Image, Alt }: MapImageProps) {
     return (
         <div className="purchaseMap">
-            <img src={Image} alt={Alt} width="500px" height="500px"/>
+            <img src={Image} alt={Alt} useMap="#purchaswMap" width="500px" height="500px"/>
         </div>
     );
 }
