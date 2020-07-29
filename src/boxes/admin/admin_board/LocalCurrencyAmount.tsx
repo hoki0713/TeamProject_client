@@ -5,10 +5,10 @@ import { SearchBar } from '../../../items'
 import { Line,Doughnut } from 'react-chartjs-2'
 
 const LocalCurrencyAmount = () => {
-  const[startDate,setStartDate] = useState("")
-  const[endDate,setEndDate] =useState("")
-  const[citySelect,setCitySelect]=useState("")
-  const[useStatusSelect,setUseStatusSelect] = useState("")
+  const [startDate,setStartDate] = useState("")
+  const [endDate,setEndDate] =useState("")
+  const [citySelect,setCitySelect]=useState("")
+  const [useStatusSelect,setUseStatusSelect] = useState("")
   const [chartData,setChartData] =useState({})
 
 
