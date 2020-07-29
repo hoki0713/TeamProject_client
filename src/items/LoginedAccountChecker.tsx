@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const LoginedAccountChecker = ( {loginedAccount, onClick}) => {
-  //() => setLoginedAccount(!loginedAccount)
+const LoginedAccountChecker = ({loginedAccount}) => {
   return (
     <div>
       {!loginedAccount &&
             <div id="common-header-links">
-              <button onClick={onClick}>임시버튼</button>
               <Link to="/account/login">
                 <span className="btn-link btn-sm">로그인</span>
               </Link>
@@ -19,7 +17,6 @@ const LoginedAccountChecker = ( {loginedAccount, onClick}) => {
 
           {loginedAccount &&
             <div id="common-header-links">
-              <button onClick={onClick}>임시버튼</button>
               <Link to="/account/login">
                 <span className="btn-link btn-sm">로그아웃</span>
               </Link>
