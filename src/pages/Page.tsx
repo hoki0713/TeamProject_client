@@ -5,6 +5,7 @@ import CommonPage from './CommonPage';
 import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
 import AccountDetailPage from './AccountDetailPage';
+import { StatisticPage } from "../boxes/statistic";
 
 function Page() {
   return (

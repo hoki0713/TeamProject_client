@@ -1,0 +1,62 @@
+import React, { useState, useEffect } from "react";
+import { Doughnut } from "react-chartjs-2";
+import "./StatUser.css";
+import axios from "axios";
+
+const StatUser = () => {
+  const [keyArr, setKeyArr] = useState([]);
+  const [valueArr, setValueArr] = useState([]);
+  const [chartData, setChartData] = useState({});
+
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random()*16)];
+    }
+    return color;
+  }
+  
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/statistics`)
+      .then((response) => {
+        const values = [];
+        const keys = [];
+        response.data.forEach(obj => {
+          Object.entries(obj).forEach(([key, value]) => {
+            keys.push(key);
+            values.push(value);
+          })
+        });
+        setKeyArr(keys);
+        setValueArr(values);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },[])
+
+  useEffect(() => {
+    setChartData({
+      labels: keyArr,
+      datasets: [
+        {
+          data: valueArr,
+          backgroundColor: keyArr.map((key) => getRandomColor())
+        },
+      ],
+    });
+  },[keyArr, valueArr])
+
+  return (
+    <>
+      <div id="doughnutChart">
+        <Doughnut data={chartData} />
+      </div>
+    </>
+  );
+};
+
+export default StatUser;
