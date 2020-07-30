@@ -2,7 +2,7 @@ import React from 'react';
 import {PaginationItem, SearchBar} from "../../../items";
 import {Link} from "react-router-dom";
 import {Button, Table} from "react-bootstrap";
-
+import './AdminBoard.css'
 const Enquiry = () => {
     const handleSearch = (searchWord) => {
         alert(searchWord);
@@ -10,20 +10,19 @@ const Enquiry = () => {
 
     return (
         <>
-            <div className="userlist-content-title">
-                <h2 className="userlist-menu-h2"> - 1:1 문의</h2>
-                <div id="userlist-select-search-bar">
-                    <select className="form-control" id="userlist-select">
-                        <option selected>진행 상태</option>
-                        <option>전체</option>
+            <div className="content-title">
+                <h2 className="menu-h2"> - 1:1 문의</h2>
+                <div id="select-search-bar">
+                    <select className="form-control" id="select">
+                        <option selected>전체</option>
                         <option>미해결</option>
                         <option>해결</option>
                     </select>
-                    <span id="userlist-search-bar">
+                    <span id="search-bar">
           <SearchBar onSearch={handleSearch}/>
                     </span></div>
             </div>
-            <Table responsive bordered>
+            <Table responsive bordered hover style={{textAlign:"center"}}>
                 <thead>
                 <tr>
                     <th>문의번호</th>

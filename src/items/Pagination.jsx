@@ -3,8 +3,8 @@ import {Pagination} from 'react-bootstrap/'
 
 const PaginationItem = () => {
     const paginationStyle={
-        float:"left",
-
+        justifyContent: 'center',
+        padding : '0px',
     }
     let active = 2;
     let items = [];

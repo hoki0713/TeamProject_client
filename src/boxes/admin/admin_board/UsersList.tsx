@@ -74,6 +74,7 @@ export const userListThunk = searchWord => dispatch =>{
   return (
     <div>
     <div className="userlist-content-title">
+    </div>
       <h2 className="userlist-menu-h2"> - 회원목록</h2>
       <h6 className="userlist-menu-h6">총회원수:()</h6>
       <div id="userlist-select-search-bar">
@@ -88,7 +89,7 @@ export const userListThunk = searchWord => dispatch =>{
           <SearchBar  onSearch={handleSearch}/>
         </span>  
       </div>
-    </div>
+
    
    
 
