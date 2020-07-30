@@ -25,12 +25,10 @@ const LocalCurrencyAmount = () => {
   const [useStatusSelect,setUseStatusSelect] = useState("")
   const [chartData,setChartData] =useState({})
 
-  const currencyChartThunk= () =>{
-    axios.get(`http://localhost:8080/admins/recommend-chart`)
-  }
 
 
   const a =50
+
   const chart = () =>{
     setChartData({
       labels:['김포시','연천군','파주시'],
@@ -41,7 +39,9 @@ const LocalCurrencyAmount = () => {
           backgroundColor:[
             'rgba(05,19,192,0.6)','rgba(05,19,1,0.6)','rgba(03,1,1,2.6)'
           ],
-          borderwidth:4
+          gridLines:{
+            display: false
+          }
         }
       ]
     })
@@ -71,8 +71,23 @@ const LocalCurrencyAmount = () => {
   return (
     <div>
       <h1>지역화폐 매출</h1>
-      <div>
-      <Line data={chartData}/>
+      <div style={{height:"500px",width:"500px"}}>
+      <Line data={chartData} options={{
+        responsive:true,
+        title:{text:"THICCNESS SCATIL",display:true},
+        scales:{
+          yAxes: [
+            {
+              ticks:{
+                autoSkip:true,
+                maxTicksLimit:10,
+                baginAtZero:true
+              
+              }
+            }
+          ]
+        }
+      }}/>
       <Doughnut data={chartData}/>
       </div>
       <h2>지역화폐 매출 목록</h2>

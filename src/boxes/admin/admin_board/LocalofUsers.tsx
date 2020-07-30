@@ -2,22 +2,67 @@ import React,{useState,useEffect} from 'react';
 import './LocalofUsers.css'
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
+import { Doughnut } from 'react-chartjs-2';
 
 const LOCAL_USERS = "LOCAL_USERS"
 
 export const localUserAction = (data:any)=>({type:LOCAL_USERS, payload:data})
 
+export const localUserReducer = (state=[],action) =>{
+  switch(action.type){
+    case  LOCAL_USERS : return action.payload
+    default : return state;
+  }
+}
+
 const LocalofUsers = () => {
   const [startDate, setStartDate] =useState("");
   const [endDate, setEndDate] = useState(""); 
+  const [keyArr,setKeyArr] = useState([]);
+  const [valueArr,setValueArr] = useState([]);
+  const [chartData , setChartData] = useState({});
+
   const dispatch = useDispatch()
 
+ //const result = useSelector(x:)
 
-  const localUserThunk = () =>{
+
+  
+  useEffect(()=>{
+    const valuelist=[]
     axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
-     .then(res=>{dispatch(localUserAction(res.data))})
-     .catch(err=>{throw(err)})
-  }
+    .then((res)=>{
+      //setValueArr(res.data)
+      //console.log(valueArr)
+      //dispatch(localUserAction(res.data))
+      // res.data.forEach(item=>{valuelist.push({
+          
+      // })})
+      // const values = [];
+      // const keys =[]
+      // Object.entries(res.data).forEach(([key,value])=>{
+        
+      // })
+    
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  },[])
+  
+  console.log(valueArr)
+
+  useEffect(()=>{
+    setChartData({
+      labels:['a','b','c'],
+      datasets:[
+        {
+            data:[valueArr[0],valueArr[1],valueArr[2]]
+        }
+      ]
+    })
+  })
+
 
   // useEffect(() => {
   //   if(startDate === "") setStartDate(Date)
@@ -73,7 +118,10 @@ const start_end_date =e =>{
       <input className="recommend-button" type="submit" onClick={start_end_date} value="조회"/>
       </div>
 
-     <button onClick={localUserThunk}>aaaa</button>
+     {/* <button onClick={localUserThunk}>aaaa</button> */}
+     <div>
+       <Doughnut data={chartData}/>
+     </div>
     </div>
   );
 };
