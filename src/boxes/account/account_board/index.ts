@@ -6,6 +6,7 @@ import FindId from './FindId';
 import FindPassword from './FindPassword';
 import PurchaseHistory from './PurchaseHistory';
 import MyReview from './MyReview';
+import MyFavorites from './MyFavorites';
 
 export {
   Login,
@@ -15,6 +16,7 @@ export {
   FindId,
   FindPassword,
   PurchaseHistory,
-  MyReview
+  MyReview,
+  MyFavorites
 
 }

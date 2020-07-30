@@ -1,81 +1,73 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
-const MyReview = () => {
+const MyFavorites = () => {
+  const [storeName, setStoreName] = useState("비트분식");
+  const [numOfRatingStar, setNumOfRatingStar] = useState("★★★★★");
+  const [merchantAddress, setMerchantAddress] = useState("서울시 여러분 담배꽁초");
+  const [merchantPhoneNumber, setMerchantPhoneNumber] = useState("02-0000-0000");
   const [show, setShow] = useState(false);
-  const [storeName, setStoreName] = useState("");
-  const [numOfRatingStar, setNumOfRatingStar] = useState("");
 
   const handleClose = () => setShow(false);
 
-  const handleModify = e => {
+  const history = useHistory();
+
+  const handleWriteReview = e => {
     e.preventDefault();
     setShow(true);
   }
 
-  const handleDelete = e => {
+  const handleReport = e => {
     e.preventDefault();
+    
   }
-
-  const handleAddReview = e => {
-    e.preventDefault();
-    setShow(true);
-  }
-
+  
   const handleSave = e => {
     e.preventDefault();
     setShow(false);
+    history.push("/mypage/my-review");
   }
 
   return (
     <div className="container">
-      <h2>내 리뷰</h2>
+      <h2>즐겨찾기</h2>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">No.</th>
             <th scope="col">업체명</th>
-            <th scope="col">리뷰</th>
-            <th scope="col">별점</th>
-            <th scope="col">수정</th>
-            <th scope="col">삭제</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+            <th scope="col">리뷰쓰기</th>
+            <th scope="col">신고하기</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">1</th>
-            <td>비트분식</td>
-            <td>맛있었다.</td>
-            <td>★★★★★</td>
+            <td>{storeName}</td>
+            <td>{merchantAddress}</td>
+            <td>{merchantPhoneNumber}</td>
             <td>
               <button
                 className="btn btn-outline-primary btn-sm"
-                onClick={handleModify}
+                onClick={handleWriteReview}
               >
-                수정하기
+                리뷰쓰기
               </button>
             </td>
             <td>
               <button
                 className="btn btn-outline-secondary btn-sm"
-                onClick={handleDelete}
+                onClick={handleReport}
               >
-                삭제하기
+                신고하기
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div>
-        <button
-          className="btn btn-outline-primary btn-block"
-          onClick={handleAddReview}
-        >
-          추가하기
-        </button>
-      </div>
-
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -114,13 +106,11 @@ const MyReview = () => {
             >
               작성완료
             </button>
-
           </div>
         </Modal.Body>
       </Modal>
-
     </div>
   );
 };
 
-export default MyReview;
+export default MyFavorites;
