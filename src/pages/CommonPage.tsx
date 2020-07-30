@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {CommonHeader, CommonMenuBar, CommonContainer} from '../boxes';
 
-function CommonPage() {
+const CommonPage = () => {
     const [isLogined, setIsLogined] = useState(false);
     const [accountDetail] = useState(sessionStorage.getItem("accountDetail"));
 
