@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Login, TermAndCondition, Join, FindId, FindPassword, AccountDetail, PurchaseHistory } from './account_board';
+import { Login, TermAndCondition, Join, FindId, FindPassword } from './account_board';
 
 import './AccountPage.css';
 

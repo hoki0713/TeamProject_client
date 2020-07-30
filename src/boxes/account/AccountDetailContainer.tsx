@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { AccountDetail, PurchaseHistory } from  './account_board';
+import { AccountDetail, PurchaseHistory, MyReview } from  './account_board';
 
 const AccountDetailContainer = () => {
   return (
@@ -10,6 +10,9 @@ const AccountDetailContainer = () => {
       </Route>
       <Route path="/mypage/purchase-history">
         <PurchaseHistory />
+      </Route>
+      <Route path="/mypage/my-review">
+        <MyReview />
       </Route>
     </div>
   );

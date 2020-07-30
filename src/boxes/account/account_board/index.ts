@@ -5,6 +5,7 @@ import AccountDetail from './AccountDetail';
 import FindId from './FindId';
 import FindPassword from './FindPassword';
 import PurchaseHistory from './PurchaseHistory';
+import MyReview from './MyReview';
 
 export {
   Login,
@@ -13,6 +14,7 @@ export {
   AccountDetail,
   FindId,
   FindPassword,
-  PurchaseHistory
+  PurchaseHistory,
+  MyReview
 
 }
