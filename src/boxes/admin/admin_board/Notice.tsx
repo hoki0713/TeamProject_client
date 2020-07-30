@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Table} from 'react-bootstrap';
+import {Button, Table, Container, Row, Col} from 'react-bootstrap';
 import {PaginationItem, SearchBar} from "../../../items";
 import {Link} from "react-router-dom";
 import axios from 'axios'
@@ -112,12 +112,15 @@ const Notice = () => {
                     </tbody>
                 </Table>
 
-                <div>
-                        <PaginationItem/>
-                        <Link to="/admin/notice-write">
-                        <Button variant="primary" id="button-center">글쓰기</Button>
-                        </Link>
-                </div>
+                <Container fluid>
+                    <Row noGutters>
+                        <Col sm={11}> <PaginationItem/></Col>
+                        <Col> <Link to="/admin/notice-write">
+                            <Button variant="primary" id="button-right">글쓰기</Button>
+                        </Link></Col>
+                    </Row>
+
+                </Container>
 
             </div>
 

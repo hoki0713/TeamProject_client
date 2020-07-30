@@ -1,18 +1,20 @@
 import React from 'react';
-import {Button, Table, Form, Col} from "react-bootstrap";
+import {Button, Table, Form, Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-
+import './AdminBoard.css'
 const EnquiryDetail = () => {
     return (
         <>
-            <div className="userlist-content-title">
-                <h2 className="userlist-menu-h2"> - 1:1문의 디테일</h2>
+            <div className="content-title">
+                <h2 className="menu-h2"> - 1:1문의 디테일</h2>
+                <div id="button-right">
                 <Link to="/admin/enquiry">
-                <Button variant="light">목록</Button>
+                <Button variant="outline-dark">목록</Button>
                 </Link>
+                </div>
             </div>
             <Table responsive bordered>
-                <thead>
+                <thead style={{textAlign:"center"}}>
                 <tr>
                     <th>어플은 없습니까?</th>
                     <th>turtle</th>
@@ -29,7 +31,7 @@ const EnquiryDetail = () => {
                 </tbody>
             </Table>
             <Table bordered responsive>
-                <thead>
+                <thead style={{textAlign:"center"}}>
                 <tr>
                     <td>
                         관리자 댓글
@@ -46,21 +48,25 @@ const EnquiryDetail = () => {
                 </tbody>
 
             </Table>
-            <div>
-                <Button variant="light">댓글 수정</Button>{' '}
-                <Button variant="light">댓글 삭제</Button>{' '}
+            <div id="button-right">
+                <Button variant="outline-dark">댓글 수정</Button>{' '}
+                <Button variant="outline-dark">댓글 삭제</Button>{' '}
 
             </div>
-                    <br/>
-            <Form.Row>
-                    <Form.Label>댓글</Form.Label>
-                <Col>
-                    <Form.Control as="textarea" rows={3}/>
-                </Col>
-
-                <Button variant="light">입력</Button>{' '}
-
-            </Form.Row>
+                    <br/><br/><br/>
+            <Form>
+                <Form.Group as={Row} >
+                    <Col sm={1} style={{textAlign:'center'}}>
+                    <Form.Label >
+                        댓글
+                    </Form.Label>
+                    </Col>
+                    <Col sm={10}>
+                        <Form.Control as="textarea" rows={3}/>
+                    </Col>
+                    <Button variant="outline-dark">입력</Button>{' '}
+                </Form.Group>
+            </Form>
         </>
     );
 };

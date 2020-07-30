@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import './AdminBoard.css'
+
 const NoticeWrite = () => {
     const [value, setValue] = useState('');
 
