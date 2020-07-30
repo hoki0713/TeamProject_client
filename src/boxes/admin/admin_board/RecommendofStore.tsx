@@ -1,6 +1,16 @@
 import React,{useState} from "react";
 import "./RecommendofStore.css";
+import axios from "axios";
 
+const RECOMMEND_STORE ="RECOMMEND_STORE"
+
+export const recommendAction = data =>({type:RECOMMEND_STORE,payload:data})
+
+export const recommendReducer = (state=[],action) => {
+  switch(action.type){
+    case RECOMMEND_STORE : return action.payload
+  }
+}
 
 const RecommendofStore = () => {
 
@@ -9,7 +19,12 @@ const RecommendofStore = () => {
   const [ageSelect, setAgeSelect] = useState("");
   const [genderSelect,setGenderSelect] = useState("");
   const [industrySelect,setIndustrySelect] = useState("");
-  
+
+  const recommendThunk = () => dispatch =>{
+    axios.get(`http://localhost:8080/admins/recommend-chart`)
+    
+
+  }
 
   const search = () =>{
     if(startDate>endDate) {alert('시작날짜보다 빠를 수 없습니다.'); setEndDate("")}

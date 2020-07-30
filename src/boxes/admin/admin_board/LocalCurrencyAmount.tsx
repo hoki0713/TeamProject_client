@@ -3,6 +3,20 @@ import './LocalCurrencyAmount.css'
 import { Table } from 'react-bootstrap'
 import { SearchBar } from '../../../items'
 import { Line,Doughnut } from 'react-chartjs-2'
+import axios from 'axios';
+
+const CURRENCY_AMOUNT ="CURRENCY_AMOUNT"
+
+export const currencyAction = data => ({type:CURRENCY_AMOUNT,payload:data})
+
+export const currencyReducer = (state=[],action)=>{
+  switch(action.type){
+    case CURRENCY_AMOUNT:return action.payload
+    default:return state
+  }
+}
+
+
 
 const LocalCurrencyAmount = () => {
   const [startDate,setStartDate] = useState("")
@@ -11,17 +25,21 @@ const LocalCurrencyAmount = () => {
   const [useStatusSelect,setUseStatusSelect] = useState("")
   const [chartData,setChartData] =useState({})
 
+  const currencyChartThunk= () =>{
+    axios.get(`http://localhost:8080/admins/recommend-chart`)
+  }
+
 
   const a =50
   const chart = () =>{
     setChartData({
-      labels:['monday','tuesday','wednesday','thursday','friday'],
+      labels:['김포시','연천군','파주시'],
       datasets:[
         {
           label:'level of thickness',
-          data:[a,5,15,76,5],
+          data:[306,20,302],
           backgroundColor:[
-            'rgba(00,19,192,0.6)'
+            'rgba(05,19,192,0.6)','rgba(05,19,1,0.6)','rgba(03,1,1,2.6)'
           ],
           borderwidth:4
         }

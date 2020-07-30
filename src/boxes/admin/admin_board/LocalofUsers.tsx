@@ -1,10 +1,23 @@
 import React,{useState,useEffect} from 'react';
 import './LocalofUsers.css'
+import axios from 'axios'
+import { useDispatch } from 'react-redux';
 
+const LOCAL_USERS = "LOCAL_USERS"
+
+export const localUserAction = (data:any)=>({type:LOCAL_USERS, payload:data})
 
 const LocalofUsers = () => {
   const [startDate, setStartDate] =useState("");
   const [endDate, setEndDate] = useState(""); 
+  const dispatch = useDispatch()
+
+
+  const localUserThunk = () =>{
+    axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
+     .then(res=>{dispatch(localUserAction(res.data))})
+     .catch(err=>{throw(err)})
+  }
 
   // useEffect(() => {
   //   if(startDate === "") setStartDate(Date)
@@ -22,6 +35,9 @@ const endDateClick = e =>{
   console.log(endDate)  
 }
 
+const chartClick = e=>{
+  
+}
 // const test = () =>{
 //   alert(`test start: ${startDate} endDate:${endDate}`)
 //   let a = startDate.split('-')
@@ -57,7 +73,7 @@ const start_end_date =e =>{
       <input className="recommend-button" type="submit" onClick={start_end_date} value="조회"/>
       </div>
 
-      <img className="local-img" src="https://support.content.office.net/ko-kr/media/bc64f210-3fc7-4bea-a34b-4557f8547177.jpg" alt=""/>
+     <button onClick={localUserThunk}>aaaa</button>
     </div>
   );
 };
