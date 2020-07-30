@@ -7,6 +7,7 @@ import FindPassword from './FindPassword';
 import PurchaseHistory from './PurchaseHistory';
 import MyReview from './MyReview';
 import MyFavorites from './MyFavorites';
+import MyQuestion from './MyQeustion';
 
 export {
   Login,
@@ -17,6 +18,6 @@ export {
   FindPassword,
   PurchaseHistory,
   MyReview,
-  MyFavorites
-
+  MyFavorites,
+  MyQuestion
 }
