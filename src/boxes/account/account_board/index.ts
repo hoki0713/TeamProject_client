@@ -4,6 +4,7 @@ import Join from './Join';
 import AccountDetail from './AccountDetail';
 import FindId from './FindId';
 import FindPassword from './FindPassword';
+import PurchaseHistory from './PurchaseHistory';
 
 export {
   Login,
@@ -11,6 +12,7 @@ export {
   Join,
   AccountDetail,
   FindId,
-  FindPassword
+  FindPassword,
+  PurchaseHistory
 
 }
