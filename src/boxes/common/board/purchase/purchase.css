@@ -1,0 +1,24 @@
+.currency{
+    width: 100%;
+    height: 100%;
+    padding: 5%;
+
+}
+.currency_table {
+
+}
+.purchaseMap{
+    width: 500px;
+    height: 500px;
+}
+.currency_left{
+    width:50%;
+
+}
+.currency_right{
+
+}
+.currency_img{
+    width: 200px;
+    height: 200px;
+}

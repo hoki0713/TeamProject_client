@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-// @ts-ignore
+
 import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
 import Directions from "./Directions";
 import { createStore } from 'redux'
 import {rootReducer} from "./Directions";
 import { Provider } from 'react-redux'
-function FindBestRoute({input, todos, onChangeInput, onInsert,  onToggle, onRemove}:any) {
+function FindBestRoute() {
 
   const ncpId = 'lyiy7i7pk0';
   const title ='서강대학교';
@@ -39,7 +39,7 @@ function FindBestRoute({input, todos, onChangeInput, onInsert,  onToggle, onRemo
                 onClick={()=>{alert('알러트이벤')}}
                 title={title}
                 animation={1}
-            ></Marker>
+            />
             <Marker
                 position={secondLoca}
                 onClick={()=>{alert('22')}}
