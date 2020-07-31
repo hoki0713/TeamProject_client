@@ -1,0 +1,38 @@
+.localcurrency-img{
+  width: 1000px;
+  height: 500px;
+}
+
+#localcurrency_statusselect {
+  margin-top: 25px;
+  margin-left: 20px;
+  float: left;
+}
+
+#localcurrency_cityselect{
+  margin-top: 25px;
+  float: left;
+}
+
+.currency_startdate{
+  margin-top: 25px;
+  margin-left: 20px;
+  float: left;
+}
+
+.currency_date_h4{
+  margin-top: 25px;
+  margin-left: 20px;
+  float: left;
+
+}
+.currency_enddate{
+  margin-top: 25px;
+  margin-left: 20px;
+
+}
+
+#localCurrency_search_bar{
+  display: inline-block;
+  width: 400px;
+}

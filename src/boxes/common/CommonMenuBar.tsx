@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 
 import './CommonPage.css';
 
-function CommonMenuBar() {
+const CommonMenuBar = ({isLogined}) => {
+  
+
   const [isFirstOpen, setIsFirstOpen] = useState(false);
   const [isSecondOpen, setIsSecondOpen] = useState(false);
   const [isThirdOpen, setIsThirdOpen] = useState(false);
@@ -38,7 +40,7 @@ function CommonMenuBar() {
   const secondMenuOpen = `dropdown-menu${isSecondOpen ? " show" : ""}`
   const thirdMenuOpen = `dropdown-menu${isThirdOpen ? " show" : ""}`
   const fourthMenuOpen = `dropdown-menu${isFouthOpen ? " show" : ""}`
-  
+
   return (
     <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -101,13 +103,26 @@ function CommonMenuBar() {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={fourthToggleOpen} >
               지역화폐
             </p>
-            <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
-              <Link to="/buy-local-currency">
-                <p className="dropdown-item">
-                  지역화폐 구매하기
+            {isLogined &&
+              <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
+                <Link to="/buy-local-currency">
+                  <p className="dropdown-item">
+                    지역화폐 구매하기
                 </p>
-              </Link>
-            </div>
+                </Link>
+              </div>
+            }
+
+            {!isLogined &&
+              <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
+                <Link to="/account/login">
+                  <p className="dropdown-item">
+                    지역화폐 구매하기
+                  </p>
+                </Link>
+              </div>
+            }
+
           </li>
 
         </ul>

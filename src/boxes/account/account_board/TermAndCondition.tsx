@@ -51,21 +51,21 @@ const TermAndCondition = ({ termOfService, privacyPolicy, userLocation }: termAn
     <div className="container">
       <form>
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" checked={checkAll} onClick={handleCheckAll} />
+          <input className="form-check-input" type="checkbox" checked={checkAll} onChange={handleCheckAll} />
           <label>전체동의</label>
         </div>
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" value="termOfService" checked={check1} onClick={handleCheck1} />
+          <input className="form-check-input" type="checkbox" value="termOfService" checked={check1} onChange={handleCheck1} />
           <label>이용약관 동의 (필수)</label>
         </div>
         <textarea className="form-control" value={termOfService} readOnly />
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" value="privacyPolicy" checked={check2} onClick={handleCheck2} />
+          <input className="form-check-input" type="checkbox" value="privacyPolicy" checked={check2} onChange={handleCheck2} />
           <label>개인정보 수집 및 이용에 대한 안내 (필수)</label>
         </div>
         <textarea className="form-control" value={privacyPolicy} readOnly />
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" value="userLocation" checked={check3} onClick={handleCheck3} />
+          <input className="form-check-input" type="checkbox" value="userLocation" checked={check3} onChange={handleCheck3} />
           <label>위치정보 이용약관 동의 (필수)</label>
         </div>
         <textarea className="form-control" value={userLocation} readOnly />

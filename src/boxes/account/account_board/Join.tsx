@@ -3,28 +3,6 @@ import { PostcodeButton } from '../../../items';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const POST_JOIN = 'POST_JOIN';
-
-export const joinAction = data => ({type: POST_JOIN, payload: data});
-
-export const joinReducer = (state = {}, action) => {
-  switch(action.type) {
-    case 'POST_JOIN': return action.payload;
-    default: return state;
-  }
-};
-
-export const postJoin = data => dispatch => {
-  axios.post("", data).then(
-    response => {
-      dispatch(joinAction(response.data));
-    }
-  ).catch(
-    error => {throw(error)}
-  );
-};
-
-
 const Join = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -40,13 +18,21 @@ const Join = () => {
 
   const handleIdCheck = e => {
     e.preventDefault();
-    alert("아이디 중복 체크해야함.");
+    axios.get(`http://localhost:8080/users/idCheck/${userId}`)
+      .then(response => {
+        alert("이미 존재하는 아이디 입니다.");
+        setUserId("");
+      }).catch(error => {
+        alert("사용한 가능한 아이디 입니다.");
+      })
   }
-  
-  const handlePasswordCorrection = e => {
-    e.preventDefault();
-    if(password !== confirmedPassword) alert("비밀번호가 일치하지 않습니다.");
-    setConfirmedPassword("");
+
+  const handlePasswordCorrection = () => {
+    if (password !== confirmedPassword) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   const handleSubmit = e => {
@@ -54,28 +40,26 @@ const Join = () => {
     const userJson = {
       userId: userId,
       password: password,
-      birthday: birthDate,
+      birthDate: birthDate,
       name: name,
       gender: gender,
-      defaultAddress: defaultAddress,
-      optionalAddress: optionalAddress,
+      defaultAddr: defaultAddress,
+      optionalAddr: optionalAddress,
       email: email
     }
-    postJoin(userJson);
+    if (handlePasswordCorrection()) {
+      axios.post(`http://localhost:8080/users/`, userJson)
+        .then(response => {
+          history.push('/account/login');
+        }
+        ).catch(
+          error => { throw (error) }
+        );
+    }
 
-    // alert(`
-    // userId: ${userId}
-    // password: ${password} 
-    // confirmed password: ${confirmedPassword}
-    // birthday: ${birthDate}
-    // name: ${name}
-    // gender: ${gender}
-    // defaultAddress: ${defaultAddress}
-    // optionalAddress: ${optionalAddress}
-    // email: ${email}`);
-    history.push('/account/login');
+
   }
- 
+
 
   return (
     <div className="container account_join">
@@ -91,8 +75,8 @@ const Join = () => {
               onChange={e => setUserId(e.target.value)}
             />
             <div className="input-group-append">
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="btn btn-outline-secondary"
                 onClick={handleIdCheck}
               >
@@ -115,7 +99,6 @@ const Join = () => {
             required
             value={confirmedPassword}
             onChange={e => setConfirmedPassword(e.target.value)}
-            onBlur={handlePasswordCorrection}
           />
           <p>이름</p>
           <input
@@ -156,20 +139,20 @@ const Join = () => {
               onChange={e => setDefaultAddress(e.target.value)}
             />
             <div className="input-group-append">
-              <PostcodeButton onPostcodeSelected={setDefaultAddress}/>
+              <PostcodeButton onPostcodeSelected={setDefaultAddress} />
             </div>
           </div>
 
           <p>주소 추가(선택)</p>
           <div className="input-group">
-            <input 
-              type="text" 
+            <input
+              type="text"
               className="form-control"
               value={optionalAddress}
-              onChange={e => setOptionalAddress(e.target.value)}  
+              onChange={e => setOptionalAddress(e.target.value)}
             />
             <div className="input-group-append">
-              <PostcodeButton onPostcodeSelected={setOptionalAddress}/>
+              <PostcodeButton onPostcodeSelected={setOptionalAddress} />
             </div>
           </div>
           <p>이메일</p>

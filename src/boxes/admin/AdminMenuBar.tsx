@@ -28,17 +28,12 @@ const AdminMenuBar = () => {
     setIsThirdOpen(!isThirdOpen);
     setIsFouthOpen(false);
   };
-  const fourthToggleOpen = () => {
-    setIsFirstOpen(false);
-    setIsSecondOpen(false);
-    setIsThirdOpen(false);
-    setIsFouthOpen(!isFouthOpen);
-  };
+  
 
   const firstMenuOpen = `dropdown-menu${isFirstOpen ? " show" : ""}`;
   const secondMenuOpen = `dropdown-menu${isSecondOpen ? " show" : ""}`;
   const thirdMenuOpen = `dropdown-menu${isThirdOpen ? " show" : ""}`;
-  const fourthMenuOpen = `dropdown-menu${isFouthOpen ? " show" : ""}`;
+ 
   return (
     <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -101,7 +96,7 @@ const AdminMenuBar = () => {
               onClick={() => setIsThirdOpen(false)}
             >
               <Link to="/admin/notify-sotre">
-                <p className="dropdown-item">지역화폐 미사용 신고 외</p>
+                <p className="dropdown-item">지역화폐 미사용 신고/가맹점 리스트</p>
               </Link>
               <Link to="/admin/enquiry">
                 <p className="dropdown-item">1:1문의</p>
