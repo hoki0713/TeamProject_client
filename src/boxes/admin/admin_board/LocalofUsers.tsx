@@ -21,7 +21,7 @@ const LocalofUsers = () => {
   const [keyArr,setKeyArr] = useState([]);
   const [valueArr,setValueArr] = useState([]);
   const [chartData , setChartData] = useState({});
-
+ 
   const dispatch = useDispatch()
 
  //const result = useSelector(x:)
@@ -29,21 +29,20 @@ const LocalofUsers = () => {
 
   
   useEffect(()=>{
-    const valuelist=[]
+   
     axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
     .then((res)=>{
-      //setValueArr(res.data)
-      //console.log(valueArr)
-      //dispatch(localUserAction(res.data))
-      // res.data.forEach(item=>{valuelist.push({
-          
-      // })})
-      // const values = [];
-      // const keys =[]
-      // Object.entries(res.data).forEach(([key,value])=>{
-        
-      // })
-    
+     // chartData.datasets= res.data
+      setChartData({
+        labels:['a','b','c'],
+        datasets:[
+          {
+            data:res.data,
+            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+          }
+        ]
+      })
+      dispatch(localUserAction(res.data))
     })
     .catch((err)=>{
       throw err;
@@ -53,21 +52,11 @@ const LocalofUsers = () => {
   console.log(valueArr)
 
   useEffect(()=>{
-    setChartData({
-      labels:['a','b','c'],
-      datasets:[
-        {
-            data:[valueArr[0],valueArr[1],valueArr[2]]
-        }
-      ]
-    })
+    
   })
 
 
-  // useEffect(() => {
-  //   if(startDate === "") setStartDate(Date)
-  //   if(endDate === "") setEndDate(Date)
-  // })
+
 
   const startDateClick = e => {
     e.preventDefault()
