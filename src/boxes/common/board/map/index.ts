@@ -1,9 +1,11 @@
 import FindBestRoute from './FindBestRoute';
-import FindByMap from './FindByMap';
-import MerchantList from './MerchantList';
+import FindByMap,{mapLocaReducer} from './FindByMap';
+import MerchantList, { storeListReducer } from './MerchantList';
 
 export {
   FindBestRoute,
   FindByMap,
-  MerchantList
+  MerchantList,
+  storeListReducer,
+  mapLocaReducer
 }

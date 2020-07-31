@@ -39,7 +39,7 @@ function FindBestRoute() {
                 onClick={()=>{alert('알러트이벤')}}
                 title={title}
                 animation={1}
-            ></Marker>
+            />
             <Marker
                 position={secondLoca}
                 onClick={()=>{alert('22')}}

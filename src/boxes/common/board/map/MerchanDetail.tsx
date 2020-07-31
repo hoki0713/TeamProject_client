@@ -23,7 +23,7 @@ const MerchanDetail = () => {
                         onClick={()=>{alert('알러트이벤')}}
                         title={title}
                         animation={1}
-                    ></Marker>
+                    />
 
                 </NaverMap>
             </RenderAfterNavermapsLoaded><br/>

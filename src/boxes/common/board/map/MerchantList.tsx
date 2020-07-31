@@ -1,28 +1,48 @@
-import React,{useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-
+import axios from 'axios'
+import {useSelector, useDispatch} from "react-redux";
+import {StoreReport} from "./Modals";
 
 const GET_STORE_REQUEST = 'GET_STORE_REQUEST';
 
 
-export const storeRequestAction=data=>({type: GET_STORE_REQUEST, payload:data});
-export const storeReducer = (state={}, action)=>{
+export const storeListAction=data=>({type: GET_STORE_REQUEST, payload:data});
+export const storeListReducer = (state=[], action)=>{
     switch (action.type) {
         case GET_STORE_REQUEST :return action.payload;
         default: return state;
 
     }
 }
+export const storeListThunk = searchWord => dispatch => {
+    console.log("storeListThunk")
+    axios.get(`http://localhost:8080/stores/${searchWord}`)
+        .then(res=>{dispatch(storeListAction(res.data))})
+        .catch(err=>{throw(err)})
+}
+
 
 const MerchantList=()=> {
+
+    const [modalShow, setModalShow] = useState(false);
     const [state,setState]=useState('');
     const [dong,setDong]=useState('');
     const [cate,setCate]=useState('');
     const [detail, setDetail] =useState('')
-    const stateCheck=e=>{setState(e.target.value); };
+    const [searchWD, setSearchWD]=useState('')
+    const stateCheck=e=>{setState(e.target.value);};
     const dongCheck=e=>{setDong(e.target.value); };
     const cateCheck=e=>{setCate(e.target.value); };
+    const dispatch = useDispatch()
+
+    const storeList =useSelector((x:any)=> x.storeListReducer)
+    // useEffect(()=>{
+    //     (!storeList.data) ? dispatch(storeListThunk(searchWD)): console.log(searchWD)
+    // })
+
+
 
     const Img = ()=>{
         return(<Link
@@ -31,6 +51,27 @@ const MerchantList=()=> {
         </Link>)}
   return (
     <div className="container">
+        <StoreReport show={modalShow} onHide={() => setModalShow(false)}/>
+        <table className="search_box">
+            <tr>
+                <td>
+        <input
+            type="text"
+            placeholder="Search"
+            value={searchWD}
+            onChange={e => setSearchWD(e.target.value)}
+        /></td><td>
+            <button
+                className="btn btn-primary"
+                type="button"
+                // onClick={() => dispatch(storeListThunk(searchWD))}
+                onClick={()=>{alert(searchWD)}}
+            >
+                검색
+            </button>
+            </td>
+            </tr>
+        </table>
         <Table striped bordered hover className="list_table">
             <thead>
             <tr>
@@ -60,6 +101,7 @@ const MerchantList=()=> {
 
                 </select></th>
                 <th>지도에서 보기</th>
+                <th>신고하</th>
             </tr>
             </thead>
             <tbody>
@@ -69,6 +111,8 @@ const MerchantList=()=> {
                 <td>Otto</td>
                 <td>Otto</td>
                 <td><Img/></td>
+                <td><img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={30} height={30}
+                         onClick={()=>{setModalShow(true)}}/></td>
             </tr>
             <tr>
                 <td>2</td>
@@ -76,6 +120,7 @@ const MerchantList=()=> {
                 <td>Thornton</td>
                 <td>Thornton</td>
                 <td><Img/></td>
+                <td>신고아이콘</td>
             </tr>
             <tr>
                 <td>3</td>
@@ -83,6 +128,7 @@ const MerchantList=()=> {
                 <td>@twitter</td>
                 <td>@twitter</td>
                 <td><Img/></td>
+                <td>신고아이콘</td>
             </tr>
 
             </tbody>
