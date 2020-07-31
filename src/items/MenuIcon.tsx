@@ -6,11 +6,21 @@ type MenuIconProps = {
   Alt: string;
 }
 
-function MenuIcon({ Image, Alt }: MenuIconProps) {
+const MenuIcon = ({ Image, Alt }: MenuIconProps) => {
   return (
-    <Link to="/" className="nav-link">
-      <img src={Image} alt={Alt} />
-    </Link>
+    <>
+      <div className="btn-group">
+        <button className="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src={Image} alt={Alt} />
+        </button>
+        <div className="dropdown-menu">
+          <Link className="dropdown-item" to="/">Action</Link>
+          <Link className="dropdown-item" to="/">Another action</Link>
+          <Link className="dropdown-item" to="/">Something else here</Link>
+        </div>
+      </div>
+    </>
+
   );
 }
 

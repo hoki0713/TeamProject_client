@@ -12,11 +12,13 @@ const Login = () => {
     if (userId && password) {
       axios.post(`http://localhost:8080/users/login`, { userId: userId, password: password })
         .then(response => {
+          console.log(response);
           sessionStorage.setItem("accountDetail", JSON.stringify(response.data));
-          history.push("/mypage")
-        }).catch(error => {
+          if (response.status === 200) history.push("/");
+        })
+        .catch( () => {
           alert("아이디와 비밀번호를 다시 확인하세요.");
-          throw (error);
+          window.location.reload();
         });
     } else {
       alert(`아이디와 비밀번호를 입력하세요.`);
