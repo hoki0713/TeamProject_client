@@ -21,7 +21,7 @@ const LoginedAccountChecker = ({loginedAccount}) => {
                 <span className="btn-link btn-sm">로그아웃</span>
               </Link>
               <Link to="/mypage">
-                <span className="btn-link btn-sm">마이페이지</span>
+                <span className="btn-link btn-sm">내 정보</span>
               </Link>
             </div>
           }

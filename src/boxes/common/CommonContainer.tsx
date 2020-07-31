@@ -1,11 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { MerchantList, FindByMap, FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency } from './board';
-import { AccountDetail } from '../account/account_board';
 
 
-
-function CommonContainer() {
+const CommonContainer = () => {
 
   return (
     <div className='container'>
@@ -29,9 +27,6 @@ function CommonContainer() {
       </Route>
       <Route path="/buy-local-currency">
         <BuyLocalCurrency />
-      </Route>
-      <Route path="/mypage">
-        <AccountDetail />
       </Route>
 
     </div>
