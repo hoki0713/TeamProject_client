@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import './NotifyStore.css'
 import { Table } from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
-// const initialState =[
-//     {
-//       number:1,
-//       name:'리',
-//       adress:'경기도'
-//     },
-//     {
-//       number:2,
-//       name:'액',
-//       adress:'서울'
-//     }
-//   ]
 
 const initialState={
   input:'',
@@ -21,18 +10,28 @@ const initialState={
     {
       number:1,
       name:'리',
-      adress:'경기도'
+      adress:'경기도',
+      type:'일반음식',
+      register:'2020-01-01'
     },
     {
       number:2,
       name:'액',
-      adress:'서울'
+      adress:'서울',
+      type:'기계',
+      register:'2020-01-02'
     }
   ]
 }
 
 const NotifyStore = () => {
-  const [storeNo,setStoreNo] = useState(0)
+
+    const nameClick= (name) =>{
+      alert(name)
+      //<td onClick={e=> {alert(`${stores.name}`)}}>{stores.name}</td>
+      //<td onClick={nameClick({stores.name})}>{stores.name}</td>
+    }
+
   
 
 
@@ -51,12 +50,12 @@ const NotifyStore = () => {
      
       <div>
       <Table responsive className="notifyStore-table">
-  <thead>
+  <thead>   
     <tr>
-  <th>no</th>
+      <th>no</th>
       <th>가맹점 이름</th>
       <th>주 소</th>
-      <th>분 류</th>
+      <th>업 종</th>
       <th>등록일</th>
       <th>가맹점 표시 해제</th>
     </tr>
@@ -64,15 +63,17 @@ const NotifyStore = () => {
   <tbody>
     
       {initialState.stores.map((stores,i)=>(
-        <tr key={i}>
-        <td>{stores.name}</td>
-      <td>Table cell</td>
-      <td >Table cell</td>
-      <td>Table cell</td>
-      <button>a</button>
-      <td>Table cell</td>
+      <tr key={i}>
+      <td>{stores.number}</td>
+     <Link to="/admin/store-detail"> <td  onClick={e=> {alert(`${stores.name}`)}}>{stores.name}</td></Link>
+      <td>{stores.adress}</td>
+      <td>{stores.type}</td>
+      <td>{stores.register}</td>
+      <td><button>a</button></td>
+      
       </tr>
       ))}
+      
   
       
     

@@ -8,7 +8,7 @@ import {
     UsersList,
     NotifyStore,
     Enquiry,
-    NoticeWrite, NoticeDetail, EnquiryDetail
+    NoticeWrite, NoticeDetail, EnquiryDetail,StoreDetail,UserDetail
 } from './admin_board';
 
 const AdminContainer = () => {
@@ -43,6 +43,12 @@ const AdminContainer = () => {
       </Route>
       <Route path="/admin/enquiry-detail">
         <EnquiryDetail />
+      </Route>
+      <Route path="/admin/store-detail">
+        <StoreDetail />
+      </Route>
+      <Route path="/admin/user-detail">
+        <UserDetail />
       </Route>
     </div>
   );

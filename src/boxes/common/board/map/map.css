@@ -103,3 +103,6 @@ input:checked + .slider:before {
 .list_tr3 {
     height: 75%;
 }
+.search_box{
+    float: right;
+}

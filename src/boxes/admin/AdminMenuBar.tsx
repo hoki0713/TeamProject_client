@@ -96,7 +96,7 @@ const AdminMenuBar = () => {
               onClick={() => setIsThirdOpen(false)}
             >
               <Link to="/admin/notify-sotre">
-                <p className="dropdown-item">지역화폐 미사용 신고 외</p>
+                <p className="dropdown-item">지역화폐 미사용 신고/가맹점 리스트</p>
               </Link>
               <Link to="/admin/enquiry">
                 <p className="dropdown-item">1:1문의</p>

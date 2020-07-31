@@ -1,15 +1,62 @@
-import React,{useState,useEffect, useCallback} from 'react';
+import React,{useState,useEffect} from 'react';
 import './LocalofUsers.css'
+import axios from 'axios'
+import { useDispatch } from 'react-redux';
+import { Doughnut } from 'react-chartjs-2';
 
+const LOCAL_USERS = "LOCAL_USERS"
+
+export const localUserAction = (data:any)=>({type:LOCAL_USERS, payload:data})
+
+export const localUserReducer = (state=[],action) =>{
+  switch(action.type){
+    case  LOCAL_USERS : return action.payload
+    default : return state;
+  }
+}
 
 const LocalofUsers = () => {
   const [startDate, setStartDate] =useState("");
   const [endDate, setEndDate] = useState(""); 
+  const [keyArr,setKeyArr] = useState([]);
+  const [valueArr,setValueArr] = useState([]);
+  const [chartData , setChartData] = useState({});
+ 
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   if(startDate === "") setStartDate(Date)
-  //   if(endDate === "") setEndDate(Date)
-  // })
+ //const result = useSelector(x:)
+
+
+  
+  useEffect(()=>{
+   
+    axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
+    .then((res)=>{
+     // chartData.datasets= res.data
+      setChartData({
+        labels:['a','b','c'],
+        datasets:[
+          {
+            data:res.data,
+            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+          }
+        ]
+      })
+      dispatch(localUserAction(res.data))
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  },[])
+  
+  console.log(valueArr)
+
+  useEffect(()=>{
+    
+  })
+
+
+
 
   const startDateClick = e => {
     e.preventDefault()
@@ -18,16 +65,13 @@ const LocalofUsers = () => {
 
 
 const endDateClick = e =>{
-  //  if(endDate === ""){
-  //     setEndDate(startDate)
-  // }
-
-  
-
   setEndDate(e.target.value)
   console.log(endDate)  
 }
 
+const chartClick = e=>{
+  
+}
 // const test = () =>{
 //   alert(`test start: ${startDate} endDate:${endDate}`)
 //   let a = startDate.split('-')
@@ -54,10 +98,7 @@ const start_end_date =e =>{
 
   return (
     <div>
-      <h1>사용자 이용 지역
-      </h1>
-      <h3>시작:{startDate}</h3>
-      <h3>종료:{endDate}</h3>
+      <h1>사용자 이용 지역</h1>
       <div className="local-div">
       <h6 className="recommend-data-h6">기간설정 : </h6>
       <input className="recommend-data"  min="2020-01-01" type="date" value={startDate} onChange={startDateClick}></input>
@@ -66,7 +107,10 @@ const start_end_date =e =>{
       <input className="recommend-button" type="submit" onClick={start_end_date} value="조회"/>
       </div>
 
-      <img className="local-img" src="https://support.content.office.net/ko-kr/media/bc64f210-3fc7-4bea-a34b-4557f8547177.jpg" alt=""/>
+     {/* <button onClick={localUserThunk}>aaaa</button> */}
+     <div>
+       <Doughnut data={chartData}/>
+     </div>
     </div>
   );
 };
