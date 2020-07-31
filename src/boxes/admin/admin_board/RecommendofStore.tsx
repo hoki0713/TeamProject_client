@@ -1,6 +1,7 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import "./RecommendofStore.css";
 import axios from "axios";
+import { Line } from 'react-chartjs-2'
 
 const RECOMMEND_STORE ="RECOMMEND_STORE"
 
@@ -19,6 +20,7 @@ const RecommendofStore = () => {
   const [ageSelect, setAgeSelect] = useState("");
   const [genderSelect,setGenderSelect] = useState("");
   const [industrySelect,setIndustrySelect] = useState("");
+  const [chartData,setChartData] = useState({})
 
   const recommendThunk = () => dispatch =>{
     axios.get(`http://localhost:8080/admins/recommend-chart`)
@@ -39,6 +41,24 @@ const RecommendofStore = () => {
   const industrySelectCheck = e=>{
     setIndustrySelect(e.target.value)
   }
+
+  const chart = () =>{
+    setChartData({
+      labels:['가맹점1','가맹점2','가맹점3'],
+      datasets:[
+        {
+          data:[11,40,50],
+          backgroundColor:[
+            '#151515','#848484','#D8D8D8'
+          ]
+        }
+      ]
+    })
+  }
+
+  useEffect(()=>{
+    chart()
+  },[])
 
 
   return (
@@ -86,7 +106,7 @@ const RecommendofStore = () => {
         <input  onClick={search} className="recommend-button" type="submit" value="조회" />
 
        <div>
-         <img className="recommend-chart" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/SampleBurndownChart.svg/330px-SampleBurndownChart.svg.png" alt=""/>
+          <Line data={chartData} />
        </div>
 
         
