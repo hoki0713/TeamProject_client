@@ -65,7 +65,7 @@ const NotifyStore = () => {
       {initialState.stores.map((stores,i)=>(
       <tr key={i}>
       <td>{stores.number}</td>
-      <td  onClick={e=> {alert(`${stores.name}`)}}>{stores.name}</td>
+     <Link to="/admin/store-detail"> <td  onClick={e=> {alert(`${stores.name}`)}}>{stores.name}</td></Link>
       <td>{stores.adress}</td>
       <td>{stores.type}</td>
       <td>{stores.register}</td>

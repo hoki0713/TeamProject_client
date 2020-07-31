@@ -4,6 +4,7 @@ import './UserList.css'
 import {SearchBar} from '../../../items';
 import axios from 'axios'
 import { useSelector,useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom'
 //import Pagination from 'react-bootstrap/Pagination'
 
 const USER_LIST = "USER_LIST"
@@ -31,7 +32,7 @@ export const userListThunk = searchWord => dispatch =>{
    const [userSelect,setUserSelect] = useState("")
    const [user,setUser] =useState({})
    const [lists,setLists] = useState([])
-   const resultList = useSelector((x : any) => x.userListReducer)
+   const resultList = useSelector((state : any) => state.userListReducer)
     const dispatch = useDispatch()
    const setUsers = payload =>{
      setUser({name:payload.name})
@@ -111,13 +112,13 @@ export const userListThunk = searchWord => dispatch =>{
           <tbody>
             <tr>
               <td>1</td>
-              <td>Table cell</td>
-              <td>ta</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
+             <Link to="/admin/user-detail"> <td>userId</td></Link>
+              <td>name</td>
+              <td>birthday</td>
+              <td>gender</td>
+              <td>local</td>
+              <td>email</td>
+              <td>register</td>
             </tr>
           </tbody>
         </Table>
