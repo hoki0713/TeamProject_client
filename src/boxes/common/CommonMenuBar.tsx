@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './CommonPage.css';
 
-const CommonMenuBar = ({isLogined, setIsLogined}) => {
+const CommonMenuBar = ({isLogined}) => {
   
 
   const [isFirstOpen, setIsFirstOpen] = useState(false);

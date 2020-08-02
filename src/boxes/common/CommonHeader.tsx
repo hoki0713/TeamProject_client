@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Logo, SearchBar, LoginedAccountChecker } from '../../items';
 import './CommonPage.css'
 
 
-const CommonHeader = () => {
-  const [loginedAccount, setLoginedAccount] = useState(false);
-
-  const setLogin = e => {
-    e.preventDefault();
-    setLoginedAccount(!loginedAccount);
-  }
+const CommonHeader = ({loginedAccount}) => {
 
   const history = useHistory();
   const handleSearch = (searchWord) => {
@@ -33,7 +27,7 @@ const CommonHeader = () => {
         </div>
 
         <div className="col-lg-2">
-          <LoginedAccountChecker loginedAccount={loginedAccount} onClick={setLogin}/>
+          <LoginedAccountChecker loginedAccount={loginedAccount}/>
         </div>
       </div>
     </div >
