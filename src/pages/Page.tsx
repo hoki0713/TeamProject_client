@@ -4,6 +4,8 @@ import HomePage from "./HomePage";
 import CommonPage from './CommonPage';
 import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
+import AccountDetailPage from './AccountDetailPage';
+import { StatisticPage } from "../boxes/statistic";
 
 function Page() {
   return (
@@ -13,6 +15,9 @@ function Page() {
       </Route>
       <Route path="/account">
         <AccountPage />
+      </Route>
+      <Route path="/mypage">
+        <AccountDetailPage />
       </Route>
       <Route path="/admin">
         <AdminPage />

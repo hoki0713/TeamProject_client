@@ -1,8 +1,7 @@
 import React from 'react';
 import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
 
-
-function HomePage() {
+const HomePage = () => {
   return (
     <div className="container">
       <div className="row">

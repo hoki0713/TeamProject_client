@@ -1,71 +1,61 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-
-const POST_LOGIN_REQUEST = 'POST_LOGIN_REQUEST';
-
-export const loginRequestAction = data => ({type: POST_LOGIN_REQUEST, payload: data});
-
-export const postLoginRequest = data => async dispatch => {
-  axios.post(`http://localhost:8080/users/login`, data)
-    .then(response => {
-      dispatch(loginRequestAction(response.data))
-      sessionStorage.setItem("userId", response.data.userId);
-    }).catch(error => { throw(error) });
-};
-
-export const loginReducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'POST_LOGIN_REQUEST': return action.payload;
-    default: return state;
-  }
-}
 
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
-
   const history = useHistory();
-
-  const dispatch = useDispatch();
 
   const handleLoginButton = e => {
     e.preventDefault();
-    dispatch(postLoginRequest({userId: userId, password: password}));
-    alert(`${userId}님 안녕하세요.`);
-    history.push("/mypage");
+    if (userId && password) {
+      axios.post(`http://localhost:8080/users/login`, { userId: userId, password: password })
+        .then(response => {
+          sessionStorage.setItem("accountDetail", JSON.stringify(response.data));
+          history.push("/mypage")
+        }).catch(error => {
+          alert("아이디와 비밀번호를 다시 확인하세요.");
+          throw (error);
+        });
+    } else {
+      alert(`아이디와 비밀번호를 입력하세요.`);
+    }
   }
 
   return (
     <div className="container account_login">
       <form >
         <div className="form-group">
-          <input 
-            type="text" 
-            className="form-control" 
-            id="userId" 
+          <input
+            type="text"
+            className="form-control"
+            id="userId"
             placeholder="아이디"
             value={userId}
             onChange={e => setUserId(e.target.value)}
           />
-          <input 
-            type="password" 
-            className="form-control" 
-            id="password" 
-            placeholder="비밀번호" 
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="비밀번호"
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
           <div>
             <label><input type="checkbox" /> 자동로그인</label>
-            <span id="login-link"><Link to="/">아이디/비밀번호 찾기</Link></span>
+            <span id="login-link">
+              <Link to="/account/find-id">
+                아이디/비밀번호 찾기
+              </Link>
+            </span>
           </div>
         </div>
       </form>
-      <button 
-        type="submit" 
-        className="btn btn-success" 
+      <button
+        type="submit"
+        className="btn btn-success"
         id="login-button"
         onClick={handleLoginButton}
       >

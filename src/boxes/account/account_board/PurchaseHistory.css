@@ -1,0 +1,9 @@
+#modal-button-container {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.warningMsg {
+  font-size: 10px;
+}
