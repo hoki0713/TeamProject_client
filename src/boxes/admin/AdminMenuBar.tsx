@@ -37,11 +37,11 @@ const AdminMenuBar = () => {
   return (
     <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-        <span className="navbar-admin-span text-white">Admin</span>
+        <span className="navbar-admin-span text-white ">관리자</span>
         <ul className="navbar-nav" id="admin-menu-bar">
           <li className="nav-item dropdown admin-menu-bar-item">
             <p
-              className="nav-link dropdown-toggle text-white"
+              className="nav-link dropdown-toggle text-white "
               data-toggle="dropdown"
               onClick={firstToggleOpen}
             >
