@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Table} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Link} from "react-router-dom"
 import axios from 'axios'
 import {useSelector, useDispatch} from "react-redux";
 import {StoreReport} from "./Modals";
+import './search.jpg'
 
 const GET_STORE_REQUEST = 'GET_STORE_REQUEST';
 
@@ -47,31 +48,11 @@ const MerchantList=()=> {
     const Img = ()=>{
         return(<Link
             to="/storeDetail">
-            <img src="https://icon-icons.com/icons2/1744/PNG/32/3643762-find-glass-magnifying-search-zoom_113420.png"/>
+            <img src="https://en.pimg.jp/046/639/461/1/46639461.jpg" width={30} height={30}/>
         </Link>)}
   return (
     <div className="container">
         <StoreReport show={modalShow} onHide={() => setModalShow(false)}/>
-        <table className="search_box">
-            <tr>
-                <td>
-        <input
-            type="text"
-            placeholder="Search"
-            value={searchWD}
-            onChange={e => setSearchWD(e.target.value)}
-        /></td><td>
-            <button
-                className="btn btn-primary"
-                type="button"
-                // onClick={() => dispatch(storeListThunk(searchWD))}
-                onClick={()=>{alert(searchWD)}}
-            >
-                검색
-            </button>
-            </td>
-            </tr>
-        </table>
         <Table striped bordered hover className="list_table">
             <thead>
             <tr>

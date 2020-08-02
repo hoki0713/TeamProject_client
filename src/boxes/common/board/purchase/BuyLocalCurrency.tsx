@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import './purchase.css'
 import { Link } from 'react-router-dom';
 import PurchaseMap from "./PurchaseMap";
+import {MapModal} from "../map/Modals";
+import Payment from "./Payment";
 
 
 export const CurrencyImg =()=> {
@@ -12,11 +14,13 @@ export const CurrencyImg =()=> {
 
 
 function BuyLocalCurrency() {
-    const payment=()=>{window.open('/account/login','window_name','width=700,height=800,location=center,status=no,scrollbars=yes')}
 
+    const [modalShow, setModalShow] = useState(false);
+    const payment=()=>{setModalShow(true)}
     return (
 
         <div className="currency">
+            <Payment show={modalShow} onHide={() => setModalShow(false)} />
             <table className="currency_table">
                 <tr><td><h3>지역사랑화폐</h3></td><td></td><td></td></tr>
                 <tr><td><CurrencyImg/><br/><input type="checkbox"/><h5>5,000원</h5></td><td><CurrencyImg/><br/><input type="checkbox"/><h5>10,000원</h5></td><td rowSpan={2}><PurchaseMap/></td></tr>

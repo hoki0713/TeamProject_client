@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MapImage } from '../../items';
+import { Link } from 'react-router-dom';
 
 const pointArray: object = {
   "연천군": "226, 57, 327, 169",
@@ -40,7 +41,7 @@ function MainMap() {
       <MapImage />
       <map name="mainMap" id="mainMap">
         {Object.entries(pointArray).map(([key, value])=>
-          <area shape="rect" coords={value} alt={key} onClick={ () => alert(`${key} 클릭!`)} />
+            <Link to={'/find-by-map'}><area shape="rect" coords={value} alt={key} onClick={ () => alert(`${key} 클릭!`)} /></Link>
         )}
       </map>
     </div>
