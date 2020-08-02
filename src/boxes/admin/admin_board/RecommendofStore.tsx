@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react";
 import "./RecommendofStore.css";
 import axios from "axios";
-import { Line } from 'react-chartjs-2'
+import { Line, Bar, Doughnut } from 'react-chartjs-2'
 
 const RECOMMEND_STORE ="RECOMMEND_STORE"
 
@@ -17,10 +17,9 @@ const RecommendofStore = () => {
 
   const [startDate, setStartDate] =useState("");
   const [endDate, setEndDate] = useState("");
-  const [ageSelect, setAgeSelect] = useState("");
-  const [genderSelect,setGenderSelect] = useState("");
-  const [industrySelect,setIndustrySelect] = useState("");
+  const [localSelect, setLocalSelect] = useState("");
   const [chartData,setChartData] = useState({})
+  const [genderChartData,setGenderChartData] = useState({})
 
   const recommendThunk = () => dispatch =>{
     axios.get(`http://localhost:8080/admins/recommend-chart`)
@@ -32,15 +31,25 @@ const RecommendofStore = () => {
     if(startDate>endDate) {alert('시작날짜보다 빠를 수 없습니다.'); setEndDate("")}
   }
 
-  const ageSelectCheck = e =>{
-    setAgeSelect(e.target.value)
+  const startDateClick = e =>{
+    e.preventDefault()
+    setStartDate(e.target.value)
   }
-  const genderSelectCheck = e=>{
-    setGenderSelect(e.target.value)
+
+  const endDateClick = e =>{
+    e.preventDefault()
+    setEndDate(e.target.value)
   }
-  const industrySelectCheck = e=>{
-    setIndustrySelect(e.target.value)
+
+  const start_end_date = e=>{
+    e.preventDefault()
+    if(startDate>endDate){ alert('시작날짜보다 빠를수 없습니다.'); setEndDate("")}
   }
+
+  const localSelectCheck = e =>{
+    setLocalSelect(e.target.value)
+  }
+
 
   const chart = () =>{
     setChartData({
@@ -50,12 +59,24 @@ const RecommendofStore = () => {
           data:[11,40,50],
           backgroundColor:[
             '#151515','#848484','#D8D8D8'
-          ]
+          ],
+          lineTension: 0
+        }
+      ]
+    })
+    setGenderChartData({
+      labels:['남','여'],
+      datasets:[
+        {
+          data:[40,60],
+          backgroundColor:['rgb(051,051,051,5)']
+          
         }
       ]
     })
   }
 
+ 
   useEffect(()=>{
     chart()
   },[])
@@ -63,56 +84,53 @@ const RecommendofStore = () => {
 
   return (
     <div>
-      <h5>-추천 가맹점 조회</h5>
+      <h1>-회원 통계</h1>
 
-      <div className="recommendLine">
-        <div>
-          <h4 className="recommend-data-main-h4">필수입력</h4>
-          <h6 className="recommend-data-h6">기간설정 : </h6>
-          <input className="recommend-data" type="date" value={startDate} onChange={e => setStartDate(e.target.value)}></input>
-          <h4 className="recommend-data-h4"> &nbsp; ~ </h4>
-          <input className="recommend-data" type="date" value={endDate} onChange={e => setEndDate(e.target.value)}></input>
-          
-        </div>
-        <br/>
-        <br/>
-     
-        
-       
-        <div className="option-btn">
-        <h4 className="recommend-detail-h4">상세조회</h4>
-        <h6 className="recommend-detail-h6">연령대 : </h6>
-          <select  id="recommend-select" value={ageSelect} onChange={ageSelectCheck}>
-            <option selected>연령대</option>
-            <option value="ten">10대</option>
-            <option value="twenty">20대</option>
-            <option value="thirty">30대</option>
-            <option value="forty">40대</option>
-            
+      <div className="userLocal-Total">
+        <h5 className="font-weight-bold">전체 지역</h5>
+        <Bar data={chartData}/>
+      </div>
+    <div className="parent">
+      <div>
+      <h5 className="LocalTotal-h5 font-weight-bold">기준 :</h5>
+      <select  id="userLocal-select" value={localSelect} onChange={localSelectCheck}>
+            <option selected>지역별</option>
+            <option value="koyang">고양시</option>
+            <option value="uijeongbu">의정부시</option> 
           </select>
-          <h6 className="recommend-detail-h6">성별 : </h6>
-          <select  id="recommend-select" value={genderSelect} onChange={genderSelectCheck}>
-            <option selected>성별</option>
-            <option value="woman">여자</option>
-            <option value="man">남자</option>
-          </select>
-          <h6 className="recommend-detail-h6">업종 : </h6>
-          <select  id="recommend-select" value={industrySelect} onChange={industrySelectCheck}>
-            <option value="food" selected>음식점</option>
-            <option value="clothing">의류업</option>
-            <option value="manufacturing">제조업</option>
-          </select>
-        </div>
-        <input  onClick={search} className="recommend-button" type="submit" value="조회" />
+          </div>
+          <div className="localTotal-genderDoughnut">
+            <h6 className="LocalTotal-h6 font-weight-bold">성별</h6>
+            <Doughnut data={genderChartData}/>
+          </div>
+      
 
-       <div>
-          <Line data={chartData} />
-       </div>
-
-        
-
+      <div className="localTotal-ageBar">
+      <h6 className="LocalTotal-h6 font-weight-bold">나이</h6>
+        <Bar data={chartData}/>
+      </div>
       </div>
 
+      
+        <div className="userTotal-div">
+        <h5 className="userTotal-data font-weight-bold">기준(기간설정) : &nbsp;</h5>
+        <input className="userTotal-data"  min="2020-01-01" type="date" value={startDate} onChange={startDateClick}></input>
+        <h4 className="userTotal-data"> &nbsp; ~  &nbsp; </h4>
+        <input  min="" type="date" value={endDate} onChange={endDateClick} ></input>
+        <input className="userTotal-button btn btn-outline-primary" type="submit" onClick={start_end_date} value="조회"/>
+        </div>
+
+        <div className="userJoin-chart">
+        <h6 className="LocalTotalJoin-h6 font-weight-bold">가입일</h6>
+          <Line data={chartData} options={{
+            responsive:true,
+
+          }}/>
+        </div>
+     
+
+
+     
     </div>
   );
 };

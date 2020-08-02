@@ -1,60 +1,56 @@
-.recommendLine{
-  border: solid;
-  width: 900px;
-  height: 100px;
-}
-
-.recommend-data-h6{
-  margin-top: 15px;
+.LocalTotal-h5{
+  margin-right: 20px;
   float: left;
-  margin-left: 30px;
+  
 }
 
-.recommend-data{
-  margin-top: 10px;
-  margin-left: 20px;
+#userLocal-select{
+ float: left;
+}
+.userLocal-Total{
+  width: 60%;
+  margin-bottom: 20px;
+}
+
+.LocalTotal-h6{
+  text-align: center;
+}
+.LocalTotalJoin-h6{
+  margin-top: 20px;
+  text-align: center;
+}
+
+.localTotal-genderDoughnut{
+  width: 50%;
   float: left;
+  flex:1;
+
 }
 
-.recommend-data-h4{
-  margin-top: 10px;
+.localTotal-ageBar{
+  width: 50%;
   float: left;
+  flex:1;
 }
 
-.recommend-button{
-
-  margin-left: 15px;
+.parent{
+  display: flex;
 }
 
-.recommend-data-main-h4{
-  float: left;
-  margin-top: 10px;
-  margin-left: 30px;
+.userTotal-div{
+  margin-top: 40px;
 }
 
-#recommend-select{
-  width: 100px;
-}
-
-
-
-.option-btn select{
-  margin-left: 20px;
-  float: left;
-}
-
-.recommend-detail-h4 {
-  margin-bottom: 25px;
-  margin-left: 30px;
+.userTotal-data{
   float: left;
 }
 
-.recommend-detail-h6{
-  float: left;
-  margin-left: 30px;
+.userTotal-button{
+  margin-left: 10px;
+  height: 35px;
 }
 
-.recommend-chart{
-  margin-top: 50px;
-  width: 1000px;
+.userJoin-chart{
+  width: 50%;
+  
 }
