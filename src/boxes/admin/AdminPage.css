@@ -4,6 +4,15 @@
 
 }
 
+
+.nav-link{
+    margin: 0 auto;
+}
+
+.navbar-admin-span{
+    font-size: xx-large;
+}
+
 #admin-header-search-bar {
     max-width: 80%;
     margin: 0 auto;

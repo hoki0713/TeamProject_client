@@ -24,26 +24,14 @@ const LocalofUsers = () => {
  
   const dispatch = useDispatch()
 
- //const result = useSelector(x:)
+ 
 
 
   
   useEffect(()=>{
    
     axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
-    .then((res)=>{
-     // chartData.datasets= res.data
-      setChartData({
-        labels:['a','b','c'],
-        datasets:[
-          {
-            data:res.data,
-            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-          }
-        ]
-      })
-      dispatch(localUserAction(res.data))
-    })
+    .then((res)=>{})
     .catch((err)=>{
       throw err;
     })
@@ -51,9 +39,23 @@ const LocalofUsers = () => {
   
   console.log(valueArr)
 
+  const chart = ()=>{
+    setChartData({
+      labels:['test1','test2','test3','test4'],
+      datasets:[
+        {
+          data:[40,80,50,90],
+          backgroundColor:[
+            '#FF0000','#0101DF','#FF8000','#F7FE2E'
+          ]
+        }
+      ]
+    })
+  }
+
   useEffect(()=>{
-    
-  })
+   chart()
+  },[])
 
 
 
@@ -107,7 +109,6 @@ const start_end_date =e =>{
       <input className="recommend-button" type="submit" onClick={start_end_date} value="조회"/>
       </div>
 
-     {/* <button onClick={localUserThunk}>aaaa</button> */}
      <div>
        <Doughnut data={chartData}/>
      </div>
