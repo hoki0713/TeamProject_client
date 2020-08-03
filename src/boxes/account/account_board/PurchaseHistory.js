@@ -28,8 +28,11 @@ const PurchaseHistory = () => {
   const handleshowVoucherDetailModalClose = () =>
     setShowVoucherDetailModal(false);
 
-  const handleUseVoucher = (e) => {
-    e.preventDefault();
+  const handleUseVoucher = (info, voucherCode) => {
+    setVoucherName(info.localCurrencyVoucherName);
+    setVoucherCode(voucherCode);
+    setPriceOfVoucher(info.unitPrice);
+    setEmail(accountDetail.email);
     setShowUseVoucherModal(true);
   };
 
@@ -56,8 +59,12 @@ const PurchaseHistory = () => {
     setShowSendVoucherModal(false);
   };
 
-  const handleShowVoucherDetail = (e) => {
-    e.preventDefault();
+  const handleShowVoucherDetail = (info, voucherCode) => {
+    setVoucherName(info.localCurrencyVoucherName);
+    setVoucherCode(voucherCode);
+    setPriceOfVoucher(info.unitPrice);
+    setSalesDate(info.salesDate);
+    setCurrencyState(info.currencyState);
     setShowVoucherDetailModal(true);
   };
 
@@ -66,22 +73,24 @@ const PurchaseHistory = () => {
   }, [accountDetail]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/sales/purchase-history/19373`)
-      .then((response) => {
-        const keyArr = [];
-        const valueArr = [];
-        Object.entries(response.data).forEach(([key, value]) => {
-          keyArr.push(key);
-          valueArr.push(value);
+    if (id) {
+      axios
+        .get(`http://localhost:8080/sales/purchase-history/${id}`)
+        .then((response) => {
+          const keyArr = [];
+          const valueArr = [];
+          Object.entries(response.data).forEach(([key, value]) => {
+            keyArr.push(key);
+            valueArr.push(value);
+          });
+          setVoucherCodeArr(keyArr);
+          setVoucherInfoArr(valueArr);
+        })
+        .catch((error) => {
+          throw error;
         });
-        setVoucherCodeArr(keyArr);
-        setVoucherInfoArr(valueArr);
-      })
-      .catch((error) => {
-        throw error;
-      });
-  }, []);
+    }
+  }, [id]);
 
   return (
     <div className="container">
@@ -106,18 +115,38 @@ const PurchaseHistory = () => {
               <td>{info.localCurrencyVoucherName}</td>
               <td>{info.unitPrice}</td>
               <td>{info.currencyState}</td>
-              <td>
-                <button
-                  className="btn btn-outline-primary btn-sm"
-                  onClick={handleUseVoucher}
-                >
-                  사용하기
-                </button>
-              </td>
+              {info.currencyState !== "미사용" && (
+                <td>
+                  <button
+                    className="btn btn-outline-secondary btn-sm"
+                    disabled
+                    onClick={() => {
+                      handleUseVoucher(info, voucherCodeArr[i]);
+                    }}
+                  >
+                    사용하기
+                  </button>
+                </td>
+              )}
+              {info.currencyState === "미사용" && (
+                <td>
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => {
+                      handleUseVoucher(info, voucherCodeArr[i]);
+                    }}
+                  >
+                    사용하기
+                  </button>
+                </td>
+              )}
+
               <td>
                 <button
                   className="btn btn-outline-secondary btn-sm"
-                  onClick={handleShowVoucherDetail}
+                  onClick={() => {
+                    handleShowVoucherDetail(info, voucherCodeArr[i]);
+                  }}
                 >
                   상세정보
                 </button>
@@ -133,6 +162,7 @@ const PurchaseHistory = () => {
         </Modal.Header>
         <Modal.Body>
           <div>
+            <p>지역화폐명: {voucherName}</p>
             <p>지역화폐 코드 : {voucherCode}</p>
             <p>금액 : {priceOfVoucher}</p>
             <p>수신 이메일 : {email}</p>
@@ -199,6 +229,7 @@ const PurchaseHistory = () => {
         </Modal.Header>
         <Modal.Body>
           <div>
+            <p>지역화폐명 : {voucherName}</p>
             <p>지역화폐 코드 : {voucherCode}</p>
             <p>금액 : {priceOfVoucher}</p>
             <p>구매일시: {salesDate}</p>
