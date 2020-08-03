@@ -4,7 +4,8 @@ import {CardDeck, Card, Button, Form, Row, Col} from 'react-bootstrap'
 function FindByTag() {
     return (
         <>
-            <h1>태그로 찾기</h1>
+        <div style={{textAlign : 'center'}}><br/>
+            <h1>태그로 찾기</h1><br/>
             <CardDeck>
                 <Card>
                     <Card.Body>
@@ -36,9 +37,9 @@ function FindByTag() {
                         </Card.Text>
                     </Card.Body>
                 </Card>
-            </CardDeck>
+            </CardDeck>        </div>
             <br/><br/><br/>
-            <h3>맞춤검색</h3>
+            <h3 style={{textAlign : "center"}}>맞춤검색</h3><br/>
             <Form>
                 <Form.Group as={Row}>
                     <Form.Label column sm={2}>
@@ -88,7 +89,8 @@ function FindByTag() {
                     </Col>
                     <br/> <br/>
                 </Form.Group>
-                <Button variant="primary" type="submit">맞춤 가맹점 검색</Button>{' '}
+                <div style={{textAlign:"center"}}>
+                <Button variant="primary" type="submit" >맞춤 가맹점 검색</Button>{' '}</div>
             </Form>
 
         </>
