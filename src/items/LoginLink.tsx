@@ -1,20 +1,26 @@
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-type LoginLinkProps = {
-  name: string;
-}
+const LoginLink = ({ loginedAccount }) => {
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  }
 
-function LoginLink({ name }: LoginLinkProps) {
   return (
-      <Link to="/account/login" className="nav-link">
-        {name}
-      </Link>
+    <>
+      {!loginedAccount &&
+        <Link to="/account/login" className="nav-link">
+          로그인
+        </Link>
+      }
+      {loginedAccount &&
+        <Link to="/" className="nav-link" onClick={handleLogout}>
+          로그아웃
+        </Link>
+      }
+    </>
   );
-}
-
-LoginLink.defaultProps = {
-  name: "로그인"
 };
 
 export default LoginLink;
