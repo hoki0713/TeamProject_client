@@ -47,6 +47,7 @@ const RecommendofStore = () => {
   }
 
   const localSelectCheck = e =>{
+    e.preventDefault()
     setLocalSelect(e.target.value)
   }
 

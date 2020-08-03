@@ -29,10 +29,72 @@
 .currency_enddate{
   margin-top: 25px;
   margin-left: 20px;
+  float: left;
 
 }
 
 #localCurrency_search_bar{
   display: inline-block;
   width: 400px;
+}
+
+
+
+
+
+
+
+.currencyTotal-h5{
+  margin-top: 50px;
+  margin-left: 180px;
+}
+
+.currencyTotal-line{
+  width: 50%;
+  float: left;
+}
+
+.currencyTotal-h5-input{
+  float: left;
+  margin-right: 20px;
+}
+
+.currencyTotal-data{
+  float: left;
+}
+
+.currencyTotal-button{
+  margin-left: 20px;
+}
+
+#currencyTotal-select-currency{
+  margin-top: 20px;
+}
+
+.curreny-div{
+  width: 1150px;
+}
+
+.currencyTotal-Bar{
+  width: 50%;
+  margin-left: 570px;
+  margin-top:10px
+}
+
+.currencyUse-h5{
+  margin-left: 575px;
+  margin-top:20px;
+}
+
+.currencyTotalUse-h6{
+  margin-left: 575px;
+}
+
+#currencyTotal-useSelect-currency{
+  margin-left: 575px;
+  margin-top: 20px;
+}
+
+.currencyTotal-div{
+  margin-top: 20px;
 }

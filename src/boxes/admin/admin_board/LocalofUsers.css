@@ -1,10 +1,19 @@
-.local-div{
-  float: right;
+.storeTotal-h5{
+  margin-top: 50px;
+  margin-left: 20px;
 }
 
-.local-img{
-  margin-top: 100px;
-  width: 1000px;
-  height: 500px;
+.storeTotal-h6{
+  margin-left: 30px;
+}
 
+#storeTotal-select-local{
+  margin-top: 20px;
+margin-left: 30px;
+height: 40px;
+}
+
+.storeTotalLocal-Line{
+  width: 50%;
+  height: 40%;
 }
