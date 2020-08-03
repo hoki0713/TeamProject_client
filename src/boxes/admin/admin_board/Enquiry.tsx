@@ -22,7 +22,7 @@ const Enquiry = () => {
           <SearchBar onSearch={handleSearch}/>
                     </span></div>
             </div>
-            <Table responsive bordered hover style={{textAlign:"center"}}>
+            <Table responsive hover style={{textAlign:"center"}}>
                 <thead>
                 <tr>
                     <th>문의번호</th>
@@ -53,7 +53,7 @@ const Enquiry = () => {
                 <tr>
                     <td>3</td>
                     <td>turtle</td>
-                    <td>어플은 없습니까?</td>
+                    <Link to="/admin/enquiry-detail"> <td>어플은 없습니까?</td></Link>
                     <td>2020/07/20</td>
                     <td>2020/07/22</td>
                     <td>해결</td>

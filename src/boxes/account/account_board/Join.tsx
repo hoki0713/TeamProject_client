@@ -37,6 +37,7 @@ const Join = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    alert('회원가입 버튼 클릭')
     const userJson = {
       userId: userId,
       password: password,
@@ -55,6 +56,8 @@ const Join = () => {
         ).catch(
           error => { throw (error) }
         );
+    } else {
+      alert(`비밀번호를 확인하세요.`);
     }
 
 
