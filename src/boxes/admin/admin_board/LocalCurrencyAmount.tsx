@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import './LocalCurrencyAmount.css'
 import { Table } from 'react-bootstrap'
 import { SearchBar } from '../../../items'
-import { Line,Doughnut } from 'react-chartjs-2'
+import { Line,Doughnut,Bar, Polar } from 'react-chartjs-2'
 import axios from 'axios';
 
 const CURRENCY_AMOUNT ="CURRENCY_AMOUNT"
@@ -26,8 +26,12 @@ const LocalCurrencyAmount = () => {
   const [chartData,setChartData] =useState({})
 
 
+  // setChartData({
 
-  const a =50
+  // })
+  
+
+
 
   const chart = () =>{
     setChartData({
@@ -67,12 +71,17 @@ const LocalCurrencyAmount = () => {
     setUseStatusSelect(e.target.value)
   }
 
+  const test = e =>{
+    e.preventDefault()
+    alert(e)
+  }
+
   
   return (
     <div>
       <h1>지역화폐 매출</h1>
       <div style={{height:"500px",width:"500px"}}>
-      <Line data={chartData} options={{
+      <Bar data={chartData} options={{
         responsive:true,
         title:{text:"THICCNESS SCATIL",display:true},
         scales:{
@@ -82,13 +91,16 @@ const LocalCurrencyAmount = () => {
                 autoSkip:true,
                 maxTicksLimit:10,
                 baginAtZero:true
-              
               }
             }
           ]
+        },
+        tooltips:{
+          displayColors: false,
+          backgroundColor: '#0a6dff',
         }
       }}/>
-      <Doughnut data={chartData}/>
+      <Polar data={chartData}/>
       </div>
       <h2>지역화폐 매출 목록</h2>
   
