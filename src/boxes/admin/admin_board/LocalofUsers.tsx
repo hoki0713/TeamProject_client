@@ -35,16 +35,18 @@ const LocalofUsers = () => {
     setIndustrySelect(e.target.value)
   }
 
+  
+
 
   
-  useEffect(()=>{
+  // useEffect(()=>{
    
-    axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
-    .then((res)=>{})
-    .catch((err)=>{
-      throw err;
-    })
-  },[])
+  //   axios.get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
+  //   .then((res)=>{})
+  //   .catch((err)=>{
+  //     throw err;
+  //   })
+  // },[])
   
   console.log(valueArr)
 
@@ -91,6 +93,7 @@ const LocalofUsers = () => {
     <div>
       <h1>가맹점 통계</h1>
 
+      
       <div className="storeTotal-div">
         <h5 className="storeTotal-h5 font-weight-bold">지역별로 가맹점</h5>
         <h6 className="storeTotal-h6">-지역별로 가맹점 등록수 통계</h6>
@@ -104,7 +107,9 @@ const LocalofUsers = () => {
      <div className="storeTotalLocal-Line">
        <Line data={chartData}/>
      </div>
+     
 
+   
      <div className="storeTotal-div">
         <h5 className="storeTotal-h5 font-weight-bold">업종별로 가맹점</h5>
         <h6 className="storeTotal-h6">-업종별로 가맹점 등록수 통계</h6>
@@ -119,6 +124,7 @@ const LocalofUsers = () => {
      <div className="storeTotalLocal-Line">
        <Line data={chartData}/>
      </div>
+    
     </div>
   );
 };

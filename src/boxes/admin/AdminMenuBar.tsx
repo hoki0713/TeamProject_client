@@ -51,8 +51,8 @@ const AdminMenuBar = () => {
               className={firstMenuOpen}
               onClick={() => setIsFirstOpen(false)}
             >
-              <Link to="/admin/recommend-store">
-                <p className="dropdown-item">추천가맹점 조회수</p>
+              <Link to="/admin/user-statistic">
+                <p className="dropdown-item">회원 통계</p>
               </Link>
               <Link to="/admin/local-user">
                 <p className="dropdown-item">사용자 이용 지역</p>
