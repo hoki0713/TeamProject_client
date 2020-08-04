@@ -9,12 +9,12 @@ type MenuIconProps = {
 const MenuIcon = ({ Image, Alt }: MenuIconProps) => {
   return (
     <>
-      <div className="btn-group">
+      <div className="dropdown">
         <button className="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <img src={Image} alt={Alt} />
         </button>
-        <div className="dropdown-menu">
-          <Link className="dropdown-item" to="/">Action</Link>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div><Link className="dropdown-item" to="/">Action</Link></div>
           <Link className="dropdown-item" to="/">Another action</Link>
           <Link className="dropdown-item" to="/">Something else here</Link>
         </div>

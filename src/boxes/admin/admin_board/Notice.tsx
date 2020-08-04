@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Table, Container, Row, Col} from 'react-bootstrap';
-import {PaginationItem, SearchBar} from "../../../items";
-import {Link} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Button, Table, Container, Row, Col } from 'react-bootstrap';
+import { PaginationItem, SearchBar } from "../../../items";
+import { Link } from "react-router-dom";
 import axios from 'axios'
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import './AdminBoard.css'
 
 const POST_LIST = "POST_LIST"
@@ -14,9 +14,9 @@ export const postListAction = data => ({
 
 export const postListReducer = (state = [], action) => {
     switch (action.type) {
-        case POST_LIST :
+        case POST_LIST:
             return action.payload
-        default :
+        default:
             return state
     }
 }
@@ -45,11 +45,11 @@ const initialState = {
         }
     ]
 }
-export const postListThunk = searchWord=>dispatch=>{
+export const postListThunk = searchWord => dispatch => {
     console.log('api 도착')
     axios.get(`http://localhost/posts/notice/list/${searchWord}`)
-        .then(res=>{dispatch(postListAction(res.data))})
-        .catch(err=>{throw(err)})
+        .then(res => { dispatch(postListAction(res.data)) })
+        .catch(err => { throw (err) })
 }
 const Notice = () => {
 
@@ -57,11 +57,11 @@ const Notice = () => {
     const [postList, setPostList] = useState([])
     const resultList = useSelector((x: any) => x.postListReducer)
     const dispatch = useDispatch()
-    const setPosts = payload=>{
-        setPost({title:payload.postTitle})
+    const setPosts = payload => {
+        setPost({ title: payload.postTitle })
     }
-    useEffect(()=>{
-        
+    useEffect(() => {
+
     }, [])
 
 
@@ -86,43 +86,42 @@ const Notice = () => {
                         <option>사이트</option>
                     </select>
                     <span id="search-bar">
-          <SearchBar onSearch={handleSearch}/>
+                        <SearchBar onSearch={handleSearch} />
                     </span>
                 </div>
             </div>
 
 
             <div>
-                <Table responsive bordered hover style={{textAlign:"center"}}>
+                <Table responsive hover style={{ textAlign: "center" }}>
                     <thead >
-                    <tr>
-                        <th>번호</th>
-                        <th>구분</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>등록일</th>
-                        <th>조회수</th>
-                        <th>파일</th>
-                    </tr>
+                        <tr>
+                            <th>번호</th>
+                            <th>구분</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>등록일</th>
+                            <th>조회수</th>
+                            <th>파일</th>
+                        </tr>
                     </thead>
                     <tbody >
-                    {initialState.posts.map((posts, i) => (
-                        <tr key={i}>
-                            <td >{posts.postNo}</td>
-                            <td> {posts.category}</td>
-                            <td>{posts.title}</td>
-                            <td>{posts.writer}</td>
-                            <td>{posts.regDate}</td>
-                            <td>{posts.readCount}</td>
-                            <td>{posts.file}</td>
-                        </tr>))}
-
+                        {initialState.posts.map((posts, i) => (
+                            <tr key={i}>
+                                <td >{posts.postNo}</td>
+                                <td> {posts.category}</td>
+                                <Link to="/admin/notice-detail"><td>{posts.title}</td></Link>
+                                <td>{posts.writer}</td>
+                                <td>{posts.regDate}</td>
+                                <td>{posts.readCount}</td>
+                                <td>{posts.file}</td>
+                            </tr>))}
                     </tbody>
                 </Table>
 
                 <Container fluid>
                     <Row noGutters>
-                        <Col sm={11}> <PaginationItem/></Col>
+                        <Col sm={11}> <PaginationItem /></Col>
                         <Col> <Link to="/admin/notice-write">
                             <Button variant="primary" id="button-right">글쓰기</Button>
                         </Link></Col>
