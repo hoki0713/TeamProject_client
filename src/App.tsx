@@ -9,10 +9,13 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import { storeListReducer } from "./boxes/common/board/map";
 import { userListReducer } from './boxes/admin/admin_board/UsersList';
+import { recommendListReducer} from "./boxes/common/board/recommandation/Recommendation";
 
 const rootReducer = combineReducers({
   userListReducer,
-  storeListReducer
+  storeListReducer,
+  recommendListReducer
+
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
