@@ -17,6 +17,8 @@ const PurchaseHistory = () => {
   const [email, setEmail] = useState("");
   const [salesDate, setSalesDate] = useState("");
   const [currencyState, setCurrencyState] = useState("");
+  const [isGift, setIsGift] = useState(false);
+  const [recipientEmail, setRecipientEmail] = useState("");
 
   const [id, setId] = useState("");
   const [accountDetail] = useState(
@@ -65,6 +67,8 @@ const PurchaseHistory = () => {
     setPriceOfVoucher(info.unitPrice);
     setSalesDate(info.salesDate);
     setCurrencyState(info.currencyState);
+    setIsGift(info.giftYn);
+    setRecipientEmail(info.recipientEmail);
     setShowVoucherDetailModal(true);
   };
 
@@ -234,6 +238,9 @@ const PurchaseHistory = () => {
             <p>금액 : {priceOfVoucher}</p>
             <p>구매일시: {salesDate}</p>
             <p>상태 : {currencyState}</p>
+            {isGift && <p>선물여부 : Y</p>}
+            {!isGift && <p>선물여부 : N</p>}
+            <p>수신이메일 : {recipientEmail}</p>
             <button
               className="btn btn-warning ml-3"
               onClick={handleshowVoucherDetailModalClose}
