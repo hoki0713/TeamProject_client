@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const LoginedAccountChecker = ({loginedAccount}) => {
+  const handleLogout = () => {
+    alert("로그아웃 되었습니다. 다시 로그인하세요.");
+    sessionStorage.clear();
+  }
+
   return (
     <div>
       {!loginedAccount &&
@@ -18,7 +23,9 @@ const LoginedAccountChecker = ({loginedAccount}) => {
           {loginedAccount &&
             <div id="common-header-links">
               <Link to="/account/login">
-                <span className="btn-link btn-sm">로그아웃</span>
+                <span className="btn-link btn-sm" onClick={handleLogout}>
+                  로그아웃  
+                </span>
               </Link>
               <Link to="/mypage">
                 <span className="btn-link btn-sm">내 정보</span>

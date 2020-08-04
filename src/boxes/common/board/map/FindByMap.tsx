@@ -35,10 +35,10 @@ const FindByMap=()=> {
     const ncpId = 'lyiy7i7pk0';
     const title ='서강대학교';
     const myLoca='서울시 중랑구 ㅇㅇㅇ 거구장';
-    const [firstLoca,setFirstLoca]= useState({lat: 37.551191, lng: 126.940970});
-    const [secondLoca]=useState({lat: 37.551180, lng: 126.952200});
-    const [thirdLoca]=useState({lat: 37.553980, lng: 126.972550});
-    const [center, setCenter]=useState({lat: 37.551191, lng: 126.940970})
+    const [firstLoca,setFirstLoca]= useState({lat: 37.736997, lng: 127.034891});
+    const [secondLoca]=useState({lat: 37.746097, lng: 127.039861});
+    const [thirdLoca]=useState({lat: 37.746097, lng: 127.094861});
+    const [center, setCenter]=useState({lat: 37.746997, lng: 127.034861})
     const handleChange=()=>{if(!loca){setLoca(true); setCenter({lat:37.553080,lng: 126.972550})}else {setLoca(false);}};
   return (
           <>

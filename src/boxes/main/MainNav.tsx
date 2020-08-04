@@ -1,22 +1,18 @@
-import * as React from 'react';
+import React from 'react';
+import { LoginLink, SignUpLink, MenuIcon } from '../../items'
 
-import { LoginLink, SignUpLink, MenuIcon, ChatbotIcon } from '../../items'
-
-function MainNav() {
+const MainNav = ({loginedAccount}) => {
   return (
     <div className="container">
       <ul className="nav justify-content-end">
         <li className="nav-item">
-          <LoginLink />
+          <LoginLink loginedAccount={loginedAccount}/>
         </li>
         <li className="nav-item">
-          <SignUpLink />
+          <SignUpLink loginedAccount={loginedAccount}/>
         </li>
         <li className="nav-item">
           <MenuIcon />
-        </li>
-        <li className="nav-item">
-          <ChatbotIcon />
         </li>
       </ul>
     </div>
