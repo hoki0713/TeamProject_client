@@ -4,32 +4,29 @@ import side from './side.jpg'
 import './map.css'
 import {MapModal, StoreReport} from "./Modals";
 import axios from 'axios'
-import {setFlagsFromString} from "v8";
 
-const GET_STORELOCA='GET_STORELOCA'
+const STORE_LIST = "STORE_LIST"
 
-export const mapLocaAction = data => ({type:GET_STORELOCA, payload: data})
-export const mapLocaReducer =(state={},action)=>{
+export const storeAction = data => ({type:STORE_LIST, payload: data})
+export const storeReducer =(state={},action)=>{
     switch (action.type) {
-        case GET_STORELOCA:return action.payload;
+        case STORE_LIST:return action.payload;
         default: return state;
     }
 }
 export const mapLocathunk = searchWD =>dispatch=>{
-    axios.get(`http://localhost:8080/stores/location/${searchWD}`)
-        .then(res=>{
-            dispatch(mapLocaAction(res.data))
+    axios.get('http://localhost:8080/stores/list')
+        .then(({data})=>{
+            dispatch(storeAction(data))
+            console.log(`${data.list[0].latitude},${data.list[0].longitude}`)
         })
         .catch(err=>{throw(err)})
 }
 
 
 
-
-
-
 const FindByMap=()=> {
-
+    const storeList:any[]=[]
     const [modalShow, setModalShow] = useState(false);
     const [loca, setLoca]=useState(false);
     const ncpId = 'lyiy7i7pk0';
@@ -40,7 +37,14 @@ const FindByMap=()=> {
     const [thirdLoca]=useState({lat: 37.746097, lng: 127.094861});
     const [center, setCenter]=useState({lat: 37.746997, lng: 127.034861})
     const handleChange=()=>{if(!loca){setLoca(true); setCenter({lat:37.553080,lng: 126.972550})}else {setLoca(false);}};
-  return (
+    const getStoreList=()=>{
+
+    }
+    useEffect((()=>{
+        getStoreList()
+    }),[])
+
+    return (
           <>
               <h3>지도로 찾기</h3>
               <MapModal show={modalShow} onHide={() => setModalShow(false)} />
@@ -87,6 +91,19 @@ const FindByMap=()=> {
                               title={title}
                               animation={0}
                           />
+
+                          {
+                              storeList.map((store, i) => (
+                                  <Marker
+                                      key={i}
+                                      position={{lat:store.latitude, lng: store.longitude}}
+                                      animation={0}
+                                      onClick={()=>{alert(store.storeName)}}
+                                  >
+                                  </Marker>
+                              ))
+                          }
+
                       </NaverMap>
                   </RenderAfterNavermapsLoaded></td>
                       <td className="td-right">
