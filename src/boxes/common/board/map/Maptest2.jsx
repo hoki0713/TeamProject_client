@@ -112,13 +112,13 @@ const Maptest2=()=> {
         console.log('newLat',newLat)
     }
     const onPlaceSelected = (place)=>{
-        const address = place.formatted_address,
-            addressArray= place.address_components,
-            city= this.getCity(addressArray),
-            area= this.getArea(addressArray),
-            state= this.getState(addressArray),
-            newLat= place.geometry.location.lat(),
-            newLng= place.geometry.location.lng();
+        const address = place.formatted_address;
+        const addressArray= place.address_components;
+        const city= this.getCity(addressArray);
+        const area= this.getArea(addressArray);
+        const state= this.getState(addressArray);
+        const newLat= place.geometry.location.lat();
+        const newLng= place.geometry.location.lng();
         this.setState({   // 받아온 값(city,area,State)들을 위에 state에 넣어주기 위해
             address: (address) ? address: "",
             city:(city)? city:"",
@@ -147,7 +147,7 @@ const Maptest2=()=> {
             >
                 <InfoWindow>
                     <div>
-                        Hello
+                        인포창
                     </div>
                 </InfoWindow>
             </Marker>
@@ -164,7 +164,7 @@ const Maptest2=()=> {
                 defaultPosition={{lat: 37.551191, lng: 126.940970}}
                 path= {pathCoordinates}
                 options={{
-                    strokeColor: "#ff2527",
+                    strokeColor: "#d502b9",
                     strokeOpacity: 0.75,
                     strokeWeight: 2,
                     icons: [
@@ -186,7 +186,7 @@ const Maptest2=()=> {
 
             </Descriptions>
             <MapWithAMarker
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrQuKKwt0DtPF8vxKPx6dRq3us6me2LO8&v=3.exp&libraries=geometry,drawing,places"
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY&v=3.exp&libraries=geometry,drawing,places"
                 loadingElement={<div style={{ height: `100%` }} />}
                 containerElement={<div style={{ height: `400px` }} />}
                 mapElement={<div style={{ height: `100%` }} />}

@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-export const MapModal=(props)=> {
-    const [storeLoca]=useState('경상남도 창원시 마산회원구 양덕동 157-17')
+export const MapModal=(props,{storeInfo})=> {
     const [storePhone]=useState('055-233-4325')
     const [reportShow, setReportShow]=useState(false)
     const [reviewShow, setReviewShow]=useState(false)
@@ -14,15 +13,16 @@ export const MapModal=(props)=> {
             <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        밀양순대국밥
+                        밀양 잔치국수 <br/>
+
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="show-grid">
                     <Container>
                         <Row>
                             <Col xs={12} md={8}>
-                                {storeLoca}<br/>
-                                {storePhone}
+                                서울시 중랑구 도곡동 523-1<br/>
+                                000-000-0000
                             </Col>
                             <Col xs={6} md={4}>
                                 <img src='http://bdap.postech.ac.kr/UPLOAD//GWPFile_per_BoardNo/80/20161114132407014640.bmp'
