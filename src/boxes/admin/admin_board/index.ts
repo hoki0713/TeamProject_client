@@ -1,5 +1,5 @@
 
-import RecommendofStore from './RecommendofStore';
+import UserTotalStatistic from './UserTotalStatistic';
 import LocalofUsers from './LocalofUsers';
 import LocalCurrencyAmount from './LocalCurrencyAmount';
 import Notice from './Notice';
@@ -13,7 +13,7 @@ import StoreDetail from './StoreDetail'
 import UserDetail from './UserDetail'
 export {
   
-  RecommendofStore,
+  UserTotalStatistic,
   LocalofUsers,
   LocalCurrencyAmount,
   Notice,

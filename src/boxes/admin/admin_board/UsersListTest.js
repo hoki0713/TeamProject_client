@@ -36,7 +36,7 @@ const UsersList = () => {
   const [userSelect, setUserSelect] = useState("");
   const [user, setUser] = useState({});
   const [lists, setLists] = useState([]);
-  const resultList = useSelector((state: any) => state.userListReducer);
+  const resultList = useSelector((state) => state.userListReducer);
   const dispatch = useDispatch();
   const [searchWord,setSearchWord]=useState("");
   const setUsers = (payload) => {
@@ -46,24 +46,25 @@ const UsersList = () => {
 
 
 
-  // useEffect(() => {
-  //   if(!resultList.data) {
-  //     const searchWord = "null";
-  //     axios
-  //       .get(`http://localhost:8080/admins/list/${searchWord}`)
-  //       .then((res)=>{
-  //         console.log(res.data)
-  //           const indexArr = [];
-  //           const usersArr =[];
-  //           setLists(res.data)
-           
-  //       })
-  //       .catch((err)=>{
-  //           throw err;
-  //       })
-  //   }
+  useEffect(() => {
+    if(!resultList.data) {
+      const searchWord = "null";
+      axios
+        .get(`http://localhost:8080/admins/list/${searchWord}`)
+        .then((res)=>{
+            const indexArr = [];
+            const usersArr =[];
+            Object.entries(res.data).forEach(([index,value])=>{
+              indexArr.push(index);
+              usersArr.push(value);
+            })
+        })
+        .catch((err)=>{
+            throw err;
+        })
+    }
     
-  // },[]);
+  },[]);
 
   const selectCheck = (e) => {
     e.preventDefault();
@@ -72,17 +73,19 @@ const UsersList = () => {
 
   const handleSearch = (searchWord) => {
     setSearchWord(searchWord);
-    if (searchWord === "") {searchWord = "null";}
-    
+    if (searchWord === "") searchWord = "null";
+  
     dispatch(userListThunk(searchWord));
 
-    
+    console.log("서치", resultList);
+
+    console.log(setUsers.name);
   };
   const searchUser = (e) => {
     e.preventDefault();
     alert("클릭");
     // dispatch(userListThunk())
-    
+    console.log(resultList);
   };
 
   //const resuletsList = useSelector()
@@ -117,6 +120,7 @@ const UsersList = () => {
             <th>No</th>
             <th>아이디</th>
             <th>가입자명</th>
+            <th>생일</th>
             <th>성별</th>
             <th>거주지역</th>
             <th>이메일</th>
@@ -124,20 +128,19 @@ const UsersList = () => {
           </tr>
         </thead>
         <tbody>
-          {lists.map((item,i)=>(
-               <tr key={i}>
-               <td>{i+1}</td>
-               <Link to="/admin/user-detail">
-                 <td>{item[i]}</td>
-               </Link>
-               <td>name</td>
-               <td>gender</td>
-               <td>local</td>
-               <td>email</td>
-               <td>register</td>
-             </tr>
-          ))}
-         
+          <tr>
+            <td>1</td>
+            <Link to="/admin/user-detail">
+              {" "}
+              <td>userId</td>
+            </Link>
+            <td>name</td>
+            <td>birthday</td>
+            <td>gender</td>
+            <td>local</td>
+            <td>email</td>
+            <td>register</td>
+          </tr>
         </tbody>
       </table>
 
