@@ -20,7 +20,7 @@ export const userTotaldReducer = (state = [], action) => {
   }
 };
 
-const RecommendofStore = () => {
+const UserTotalStatistic = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [localSelect, setLocalSelect] = useState("");
@@ -218,4 +218,4 @@ const RecommendofStore = () => {
   );
 };
 
-export default RecommendofStore;
+export default UserTotalStatistic;

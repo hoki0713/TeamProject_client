@@ -14,7 +14,16 @@ height: 40px;
 }
 
 .storeTotalLocal-Line{
-  width: 50%;
+  width: 100%;
   
 }
 
+#graph-store-count-by-local {
+  display: inline-block;
+  width: 45%;
+}
+
+#graph-store-count-by-type {
+  display: inline-block;
+  width: 45%;
+}
