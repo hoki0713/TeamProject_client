@@ -1,5 +1,6 @@
 import React from 'react';
 import PurchaseMapImg from "../../../../items/PurchaseMapimg";
+import './goyang.png'
 
 const pointArray: object = {
     "연천군": "180, 51, 238, 95",
@@ -36,13 +37,13 @@ const pointArray: object = {
 }
 
 
-function PurchaseMap() {
+function PurchaseMap({setImgsrc}) {
     return (
     <div>
         <PurchaseMapImg/>
         <map name="purchaswMap" id="purchaswMap">
             {Object.entries(pointArray).map(([key,value])=>
-                <area shape="rect" coords={value} alt={key} onClick={()=>alert(`${key} 클릭!`)}/>)}
+                <area shape="rect" coords={value} alt={key} onClick={()=>setImgsrc('./goyang.png')}/>)}
         </map>
     </div>
     );
