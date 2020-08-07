@@ -1,15 +1,15 @@
 import React from 'react';
 import {SearchBar} from "../../../items";
 import {Table,Button} from 'react-bootstrap'
-
+import './AdminBoard.css'
 const NoticeDetail = () => {
     return (
         <>
-            <div className="userlist-content-title">
-                <h2 className="userlist-menu-h2"> - 공지사항</h2>
+            <div className="content-title">
+                <h2 className="menu-h2"> - 공지사항</h2>
             </div>
             <Table responsive bordered>
-                <thead>
+                <thead style={{textAlign:'center'}}>
                 <tr>
                     <th>카테고리</th>
                     <th>제목</th>
@@ -26,13 +26,17 @@ const NoticeDetail = () => {
                         속의 다 하나 벌써 잠, 위에 계십니다. 겨울이 하나에 별 파란 있습니다. 이름과, 북간도에 별 쉬이 헤일 하나 소녀들의 부끄러운 거외다. 별 아무 너무나 어머님, 어머니, 덮어 잠, 까닭이요, 까닭입니다. 이름을 보고, 사랑과 이제 까닭입니다. 지나고 별이 벌레는 써 별 속의 불러 밤이 둘 까닭입니다. 별 노새, 피어나듯이 사랑과 거외다. 계절이 불러 내 너무나 까닭입니다. 너무나 잠, 책상을 하나에 둘 속의 벌레는 하나에 봅니다. 나는 봄이 무성할 이름을 무덤 있습니다.</td>
 
                 </tr>
+                <tr>
+                    <td>파일 다운로드</td>
+                    <td colSpan={3}>김포시.hwp</td>
+                </tr>
 
                 </tbody>
             </Table>
-            <div>
-            <Button variant="light">수정</Button>{' '}
-            <Button variant="light">삭제</Button>{' '}
-            <Button variant="light">목록</Button>
+            <div id="button-right">
+            <Button variant="outline-dark">수정</Button>{' '}
+            <Button variant="outline-dark">삭제</Button>{' '}
+            <Button variant="outline-dark">목록</Button>
             </div>
             </>
     );

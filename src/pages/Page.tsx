@@ -6,7 +6,6 @@ import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
 import AccountDetailPage from './AccountDetailPage';
 
-
 function Page() {
   return (
     <Switch>
