@@ -35,13 +35,23 @@ const pointArray: object = {
   '성남시': "298, 514 , 336, 548",
   '시흥시': "146, 524 , 192, 552" 
 }
+
+interface MapState {
+  location: string
+}
+const selectIsOn = (state:MapState) => state.location
 function MainMap() {
+
   return (
     <div className="container">
       <MapImage />
       <map name="mainMap" id="mainMap">
         {Object.entries(pointArray).map(([key, value])=>
-            <Link to={'/find-by-map'}><area shape="rect" coords={value} alt={key} onClick={ () => alert(`${key} 클릭!`)} /></Link>
+            <Link to={'/find-by-map'}>
+              <area shape="rect" coords={value} alt={key}
+                    onClick={ () => {alert(`${key} 클릭!`);
+                    selectIsOn(value)
+            }} /></Link>
         )}
       </map>
     </div>
