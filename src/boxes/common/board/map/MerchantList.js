@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useDispatch} from "react-redux";
 import {StoreReport} from "./Modals";
 import './search.jpg'
-import {storeThunk,storeList} from "./FindByMap";
+import {storeThunk,storeList} from "./mapThunks";
 
 
 const GET_STORE_REQUEST = 'GET_STORE_REQUEST';

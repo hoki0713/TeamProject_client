@@ -1,107 +1,81 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useCallback} from 'react';
 import {
-    withScriptjs,
-    withGoogleMap,
     GoogleMap,
     Marker,
-} from "react-google-maps";
+    InfoWindow, LoadScript
+} from "@react-google-maps/api";
 import side from './side.jpg'
 import Geocode from 'react-geocode'
 import './map.css'
 import { Review, Star, StoreReport} from "./Modals";
-import axios from 'axios'
 import {useDispatch} from "react-redux";
 import home from './mapIcons/homeIcon.png'
+import store from './mapIcons/store.png'
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import {fav, reportIcon, review, star} from "./mapIcons/icons";
+import {storeList,storeThunk} from "./mapThunks";
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
-// Geocode.fromLatLng(lat, lng).then(
-//     response => {
-//         const address = response.results[0].formatted_address;
-//         console.log(address);
-//     },
-//     error => {
-//         console.log(error);
-//     }
-// );
 
 
 
-export let storeList=[];
-export const storeThunk = loca =>dispatch=>{
 
-    console.log(`storeThunk ${loca}`)
-    axios.get(`http://localhost:8080/stores/mapClick/${loca}`)
-        .then(({data})=>{
-            storeList=[]
-            console.log(`1번${data.list[0].latitude},${data.list[0].longitude}`)
-            data.list.forEach(elem=>{
-                storeList.push(elem)
-            });
-            console.log(JSON.stringify(storeList[0]))
-            return storeList
-        })
-        .catch(err=>{throw(err)});
 
+let center = {
+    lat: 0, lng: 0
 }
 
-
-
-
 const FindByMap=()=> {
+        const containerStyle = {
+            width: '600px',
+            height: '600px'
+        };
+        const [map, setMap] = useState(null)
+        const onUnmount = useCallback(function callback(map) {
+        setMap(null)
+    }, [])
+        const [modalShow, setModalShow] = useState(false);
+        const [loca, setLoca]=useState(false);
+        let [homePosit,setHomePosit]=useState({})
+        const [storeInfo,setStoreInfo]=useState({})
+        const myLoca='서울시 중랑구 ㅇㅇㅇ 거구장';
+        const [selectedAddr, setSelectedAddr] = useState('')
+        const [infoShow, setInfoShow] =useState(false)
+        const dispatch=useDispatch()
+        const showHome=e=>{
+            e.preventDefault()
+            center={lat: 37.746897, lng: 127.040861};
+            setLoca(true);}
+        const [selected, setSelected] = useState({lat: '', lng: ''});
 
-    const [modalShow, setModalShow] = useState(false);
-    const [loca, setLoca]=useState(false);
-    const [homePosit,setHomePosit]=useState({})
-    const [storeInfo,setStoreInfo]=useState({})
-    const myLoca='서울시 중랑구 ㅇㅇㅇ 거구장';
-    const [center, setCenter]=useState({lat: 37.746997, lng: 127.044861})
-    const dispatch=useDispatch()
-    const showHome=e=>{
-        e.preventDefault()
-        if(!loca){setCenter({lat: 37.746897, lng: 127.040861});
-            setLoca(true);
-        }else {setLoca(false);}};
-    const FindMap = withScriptjs(withGoogleMap(props =>
-        <GoogleMap
-            defaultZoom={16}
-            defaultCenter={center}
-            defaultTilt={2}
-        >
-            <FindMapMarker  setModalShow={setModalShow} homePosit={homePosit}/>
-        </GoogleMap>));
 
-    const FindMapMarker=()=>{
-        return(
-            <div>
-                {storeList.map((store, i) => (
-                    <Marker
-                        key={i}
-                        position={{lat:store.latitude, lng: store.longitude}}
-                        animation={4}
-                        onClick={()=>{
-                            setModalShow(true)
-                            setStoreInfo(store);
-                        }}
-                        title={store.storeName}
-                    />))}
-                <Marker
-                    position={homePosit}
-                    icon={{url: home,
-                        scaledSize: new window.google.maps.Size(40, 40),
-                    }}
-                    title={'집'}
-                    animation={2}
-                />
-            </div>
-        )
-    }
+
+        Geocode.fromLatLng(selected.lat, selected.lng).then(
+            response => {
+                const address = response.results[0].formatted_address;
+                setSelectedAddr(address);
+                console.log(address);
+            },
+            error => {
+                console.error(error);
+            },
+        );
+        useEffect(()=>{
+            dispatch(storeThunk(sessionStorage.getItem("location")));
+            center={lat: 37.746897, lng: 127.040861};
+            if(sessionStorage.getItem("location").defaultAddr ==="경기도 파주시"){
+                setHomePosit({lat: 37.746897, lng: 127.040861});
+
+            }
+
+        },[center],);
+
     const MapModal=(props)=> {
-        const [reportShow, setReportShow]=useState(false)
-        const [reviewShow, setReviewShow]=useState(false)
-        const [starShow, setStarShow]=useState(false)
-        const iconsize=25
+        const [reportShow, setReportShow]=useState(false);
+        const [reviewShow, setReviewShow]=useState(false);
+        const [starShow, setStarShow]=useState(false);
+        const iconsize=25;
         return (
             <>
                 <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
@@ -136,26 +110,24 @@ const FindByMap=()=> {
                                     {sessionStorage.getItem("accountDetail")
                                         ?
                                         <table>
-                                            <tr><td> <img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={iconsize} height={iconsize}
+                                            <tr><td> <img src={reportIcon} width={iconsize} height={iconsize}
                                                           onClick={()=>{setReportShow(true)}}
                                             />&nbsp;신고하기</td></tr>
-                                            <tr><td><img src={'https://w7.pngwing.com/pngs/380/478/png-transparent-star-shape-computer-icons-stars-angle-triangle-orange-thumbnail.png'} width={iconsize} height={iconsize}
+                                            <tr><td><img src={fav} width={iconsize} height={iconsize}
                                                          onClick={()=>{setStarShow(true)}}
                                             />&nbsp;즐겨찾기</td></tr>
-                                            <tr><td><img src={'https://image.flaticon.com/icons/svg/259/259500.svg'} width={iconsize} height={iconsize}
+                                            <tr><td><img src={review} width={iconsize} height={iconsize}
                                                          onClick={()=>{setReviewShow(true)}}
                                             />&nbsp;리뷰</td></tr>
                                         </table>:
                                         <Link to={'/account/login'}>
                                             <table>
-                                                <tr><td>
-                                                    <img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={iconsize} height={iconsize}
-                                                    />&nbsp;신고하기</td></tr>
-                                                <tr><td><img src={'https://w7.pngwing.com/pngs/380/478/png-transparent-star-shape-computer-icons-stars-angle-triangle-orange-thumbnail.png'} width={iconsize} height={iconsize}
+                                                <tr><td> <img src={reportIcon} width={iconsize} height={iconsize}
+                                                />&nbsp;신고하기</td></tr>
+                                                <tr><td><img src={fav} width={iconsize} height={iconsize}
                                                 />&nbsp;즐겨찾기</td></tr>
-                                                <tr><td><img src={'https://image.flaticon.com/icons/svg/259/259500.svg'} width={iconsize} height={iconsize}
+                                                <tr><td><img src={review} width={iconsize} height={iconsize}
                                                 />&nbsp;리뷰</td></tr>
-
                                             </table>
                                         </Link>
                                     }
@@ -167,50 +139,94 @@ const FindByMap=()=> {
                         <Button onClick={props.onHide}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-                <StoreReport show={reportShow} onHide={()=>setReportShow(false)}/>
-                <Review show={reviewShow} onHide={()=>setReviewShow(false)}/>
-                <Star show={starShow} onHide={()=>setStarShow(false)}/>
+                <StoreReport storeInfo show={reportShow} onHide={()=>setReportShow(false)}/>
+                <Review storeInfo show={reviewShow} onHide={()=>setReviewShow(false)}/>
+                <Star storeInfo show={starShow} onHide={()=>setStarShow(false)}/>
             </>
         );
     }
-    useEffect(()=>{
-        setHomePosit({lat: 37.746897, lng: 127.040861})
-        dispatch(storeThunk(sessionStorage.getItem("location")))
-
-    },[storeList],)
-
-    return (
-        <>
-            <h3>지도로 찾기</h3>
 
 
-            <MapModal  show={modalShow} onHide={() => setModalShow(false)} />
 
-            <table className="findmap">
-                <tr><td>
-                    {sessionStorage.getItem("accountDetail")&&<><img src={home} alt={"집"} onClick={showHome} style={{width:50, height:50, cursor:'pointer'}}/>
-                    <h6>내 위치</h6></>}
-                </td>
-                    <td>{loca&&<h6>{myLoca}</h6>}</td>
-                    <td></td>
-                </tr>
-                <tr><td colSpan={2} className="td-left">
-                    <FindMap
-                        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY&v=3.exp&libraries=geometry,drawing,places"
-                        loadingElement={<div style={{ height: `100%` }} />}
-                        containerElement={<div style={{ height: `600px` }} />}
-                        mapElement={<div style={{ height: `100%` }} />}
-                    />
-                </td>
-                    <td className="td-right">
-                        <table className="mapSide">
-                            <tr><td><img src={side} alt="사이드이미지"/></td></tr>
-                        </table>
+
+
+         return (
+            <>
+                <h3>지도로 찾기</h3>
+
+
+               <MapModal show={modalShow} onHide={() => setModalShow(false)}/>
+                <table className="findmap">
+                    <tr><td>
+                        {sessionStorage.getItem("accountDetail")&&<>
+                            <img src={home} alt={"집"} onClick={(e)=>showHome(e)}
+                                 style={{width:50, height:50, cursor:'pointer'}}/>
+                            <h6>내 위치</h6></>}
                     </td>
-                </tr>
-            </table>
-        </>
-    );
-}
+                        <td>{loca&&<h6>{myLoca}</h6>}</td>
+                        <td></td>
+                    </tr>
+                    <tr><td colSpan={2} className="td-left">
+                        <LoadScript
+                            googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
+                            libraries={['places']}>
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={center}
+                            onUnmount={onUnmount}
+                            zoom={16}
 
-export default FindByMap
+
+                        >
+
+                            {storeList.map((store, i) => (
+                                <Marker
+                                    key={i}
+                                    position={{lat:store.latitude, lng: store.longitude}}
+                                    animation={4}
+                                    iconsize={40}
+                                    icon={store}
+                                    onClick={()=>{
+                                        setModalShow(true);
+                                        setStoreInfo(store);
+                                    }}
+                                    title={store.storeName}
+                                >
+
+                                </Marker>
+                            ))}
+                            {infoShow&&<InfoWindow
+                                position={{lat:storeInfo.latitude, lng: storeInfo.longitude}}
+                                clickable={true}
+                                onCloseClick={() => setInfoShow(false)}
+                            ><h2>인포창</h2></InfoWindow>}
+                            <Marker
+                                position={homePosit}
+                                icon={{url: home,
+                                    scaledSize: 40,
+                                }}
+                                title={'집'}
+                                animation={2}
+                            >
+
+                            </Marker>
+
+
+
+
+                        </GoogleMap>
+                        </LoadScript>
+
+                    </td>
+                        <td className="td-right">
+                            <table className="mapSide">
+                                <tr><td><img src={side} alt="사이드이미지"/></td></tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </>
+        );
+    }
+;
+export default FindByMap;

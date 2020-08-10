@@ -2,11 +2,9 @@ import * as React from 'react';
 import { MapImage } from '../../items';
 import { Link } from 'react-router-dom';
 import {useEffect} from "react";
-import {useDispatch} from "react-redux";
-import {storeThunk} from "../common/board/map/FindByMap";
 
 const pointArray: object = {
-  "연천군": "226, 57, 327, 169",
+  "연천군": "226, 57, 327, 169 ",
   "포천시": "338, 145, 417, 224",
   "파주시": "111, 195, 214, 299",
   "동두천시": "278, 199, 334, 237",
