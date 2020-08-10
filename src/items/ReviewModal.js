@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import StarRating from "./StarRating";
-import axios from 'axios';
+import axios from "axios";
 
-const ReviewModal = ({ show, handleClose, storeName, accountDetail, storeId }) => {
+const ReviewModal = ({
+  show,
+  handleClose,
+  storeName,
+  accountDetail,
+  storeId,
+}) => {
   const [ratingValue, setRatingValue] = useState(0);
   const [review, setReview] = useState("");
 
@@ -31,8 +37,6 @@ const ReviewModal = ({ show, handleClose, storeName, accountDetail, storeId }) =
       });
   };
 
-  
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -40,26 +44,47 @@ const ReviewModal = ({ show, handleClose, storeName, accountDetail, storeId }) =
       </Modal.Header>
       <Modal.Body>
         <form>
-          <div className="form-group row">
-            <label className="col-sm-2 col-form-label">상호명</label>
-            <div class="col-sm-10">
-              <input
-                type="text"
-                readonly
-                class="form-control-plaintext"
-                value={storeName}
-              />
+          {storeName && (
+            <div className="form-group row">
+              <label className="col-sm-2 col-form-label">상호명</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  readonly
+                  className="form-control-plaintext"
+                  value={storeName}
+                />
+              </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">평점</label>
-            <div class="col-sm-10">
+          )}
+          {!storeName && (
+            <div className="form-group row">
+              <label className="col-sm-2 col-form-label">상호명</label>
+              <div className="col-sm-10 input-group" style={{"margin-top" : "0px"}}>
+                <div className="input-group-prepend">
+                  <span className="input-group-text">{storeId}</span>
+                </div>
+                <input
+                  type="text"
+                  readonly
+                  className="form-control"
+                  value={storeName}
+                />
+                <div className="input-group-append">
+                  <button className="btn btn-outline-primary">검색</button>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="form-group row">
+            <label className="col-sm-2 col-form-label">평점</label>
+            <div className="col-sm-10">
               <StarRating ratingValue={ratingValue} ratingClick={ratingClick} />
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">리뷰</label>
-            <div class="col-sm-10">
+          <div className="form-group row">
+            <label className="col-sm-2 col-form-label">리뷰</label>
+            <div className="col-sm-10">
               <textarea
                 rows="5"
                 className="form-control"
