@@ -21,7 +21,7 @@ function FindByTag() {
                 </ListGroup>
             </Card>
                 <Card>
-                <Card.Header>20대 남자 관심업종 TOP 5</Card.Header>
+                <Card.Header>나의 관심업종 TOP 5</Card.Header>
                 <ListGroup variant="flush">
                     <ListGroup.Item>일반휴게음식</ListGroup.Item>
                     <ListGroup.Item>유통업 영리</ListGroup.Item>
@@ -33,7 +33,7 @@ function FindByTag() {
                 </ListGroup>
                 </Card>
                 <Card>
-                <Card.Header>40대 여자 관심업종 TOP 5</Card.Header>
+                <Card.Header>여자 관심업종 TOP 5</Card.Header>
                 <ListGroup variant="flush">
                     <ListGroup.Item>일반휴게음식</ListGroup.Item>
                     <ListGroup.Item>학원</ListGroup.Item>
@@ -45,7 +45,7 @@ function FindByTag() {
                 </ListGroup>
                 </Card>
                 <Card>
-                <Card.Header>60대 여자 관심업종 TOP 5</Card.Header>
+                <Card.Header>30대 관심업종 TOP 5</Card.Header>
                 <ListGroup variant="flush">
                     <ListGroup.Item>일반휴게음식</ListGroup.Item>
                     <ListGroup.Item>유통업 영리</ListGroup.Item>

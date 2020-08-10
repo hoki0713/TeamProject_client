@@ -3,7 +3,6 @@ import axios from 'axios';
 import {CardDeck, Card, Container, Row, Col} from 'react-bootstrap'
 import './Recommendation.css'
 import {useDispatch, useSelector} from "react-redux";
-import {userListAction} from "../../../admin/admin_board/UsersList";
 
 const RECOMMEND_LIST = "RECOMMEND_LIST";
 
@@ -20,6 +19,7 @@ export const recommendListReducer = (state=[], action)=>{
 // };
 
 function Recommendation() {
+    const recommendList : any[]= []
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'))
     const [id, setId] = useState("");
     const [store, setStore] = useState({});
@@ -43,9 +43,11 @@ function Recommendation() {
 
         if(id) {
             axios.get(`http://localhost:8080/recommends/individual/${id}`)
-                .then((res) => {
-                    dispatch(recommendListAction(res.data))
-                    console.log('엑시오스 소통 성공')
+                .then(({data})=>{
+                    data.list.forEach(elem => {
+                        recommendList.push(elem)
+                    });
+                    console.log(recommendList.toString())
                 })
                 .catch(
                     error => {
@@ -61,7 +63,7 @@ function Recommendation() {
         <>
             <div className="scrollContainer">
 
-                    {resultList.store.map((store, i)=>(
+                    {recommendList.map((store, i)=>(
                         <Card className="cardItem" key={i}>
                             <Card.Body>
                                 <Card.Title>{store.name}</Card.Title>
