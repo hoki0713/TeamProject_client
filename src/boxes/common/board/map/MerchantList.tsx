@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Table} from 'react-bootstrap';
+import {Table, Pagination} from 'react-bootstrap';
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import {useSelector, useDispatch} from "react-redux";
 import {StoreReport} from "./Modals";
 import './search.jpg'
+import {storeThunk,storeList} from "./FindByMap";
+
 
 const GET_STORE_REQUEST = 'GET_STORE_REQUEST';
 
@@ -31,18 +33,17 @@ const MerchantList=()=> {
     const [state,setState]=useState('');
     const [dong,setDong]=useState('');
     const [cate,setCate]=useState('');
-    const [detail, setDetail] =useState('')
-    const [searchWD, setSearchWD]=useState('')
     const stateCheck=e=>{setState(e.target.value);};
     const dongCheck=e=>{setDong(e.target.value); };
     const cateCheck=e=>{setCate(e.target.value); };
     const dispatch = useDispatch()
 
-    const storeList =useSelector((x:any)=> x.storeListReducer)
     // useEffect(()=>{
     //     (!storeList.data) ? dispatch(storeListThunk(searchWD)): console.log(searchWD)
     // })
-
+    useEffect(()=>{
+        dispatch(storeThunk())
+    })
 
 
     const Img = ()=>{
@@ -81,39 +82,56 @@ const MerchantList=()=> {
                     <option value={'4'}>수퍼</option>
 
                 </select></th>
-                <th>지도에서 보기</th>
-                <th>신고하</th>
+                <th></th>
+                <th></th>
+                <th></th>
+
             </tr>
             </thead>
+
             <tbody>
             <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>Otto</td>
-                <td><Img/></td>
-                <td><img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={30} height={30}
-                         onClick={()=>{setModalShow(true)}}/></td>
+                <td></td>
+                <td>가게명</td>
+                <td>가게주소</td>
+                <td>업종</td>
+                <td>전화번호</td>
+                <td>지도에서 보기</td>
+                <td>신고하기</td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>Thornton</td>
-                <td><Img/></td>
-                <td>신고아이콘</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@twitter</td>
-                <td><Img/></td>
-                <td>신고아이콘</td>
-            </tr>
+            {storeList.map((store,i)=>(
+                <tr>
+                    <td>{i}</td>
+                    <td>{store.storeName}</td>
+                    <td>{store.address}</td>
+                    <td>{store.storeType}</td>
+                    <td>{store.storePhone}</td>
+                    <td>지도</td>
+                    <td><img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={30} height={30}
+                             onClick={()=>{setModalShow(true)}}/></td>
+                </tr>)
+
+            )}
 
             </tbody>
         </Table>
+        <Pagination>
+            <Pagination.First />
+            <Pagination.Prev />
+            <Pagination.Item>{1}</Pagination.Item>
+            <Pagination.Ellipsis />
+
+            <Pagination.Item>{10}</Pagination.Item>
+            <Pagination.Item>{11}</Pagination.Item>
+            <Pagination.Item active>{12}</Pagination.Item>
+            <Pagination.Item>{13}</Pagination.Item>
+            <Pagination.Item disabled>{14}</Pagination.Item>
+
+            <Pagination.Ellipsis />
+            <Pagination.Item>{20}</Pagination.Item>
+            <Pagination.Next />
+            <Pagination.Last />
+        </Pagination>
 
     </div>
   );
