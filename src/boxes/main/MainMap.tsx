@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { MapImage } from '../../items';
 import { Link } from 'react-router-dom';
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {storeThunk} from "../common/board/map/FindByMap";
 
 const pointArray: object = {
   "연천군": "226, 57, 327, 169",
@@ -36,12 +39,11 @@ const pointArray: object = {
   '시흥시': "146, 524 , 192, 552" 
 }
 
-interface MapState {
-  location: string
-}
-const selectIsOn = (state:MapState) => state.location
-function MainMap() {
 
+function MainMap() {
+  useEffect(()=>{
+    sessionStorage.setItem("location","")
+  })
   return (
     <div className="container">
       <MapImage />
@@ -50,7 +52,7 @@ function MainMap() {
             <Link to={'/find-by-map'}>
               <area shape="rect" coords={value} alt={key}
                     onClick={ () => {alert(`${key} 클릭!`);
-                    selectIsOn(value)
+                    sessionStorage.setItem("location", key)
             }} /></Link>
         )}
       </map>

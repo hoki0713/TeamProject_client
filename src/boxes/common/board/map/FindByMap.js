@@ -28,18 +28,19 @@ Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 
 
+export let storeList=[];
+export const storeThunk = loca =>dispatch=>{
 
-export const storeList=[]
-export const storeThunk = () =>dispatch=>{
-
-    console.log("storeThunk")
-    axios.get('http://localhost:8080/stores/ui')
+    console.log(`storeThunk ${loca}`)
+    axios.get(`http://localhost:8080/stores/mapClick/${loca}`)
         .then(({data})=>{
+            storeList=[]
             console.log(`1번${data.list[0].latitude},${data.list[0].longitude}`)
             data.list.forEach(elem=>{
                 storeList.push(elem)
             });
             console.log(JSON.stringify(storeList[0]))
+            return storeList
         })
         .catch(err=>{throw(err)});
 
@@ -52,17 +53,16 @@ const FindByMap=()=> {
 
     const [modalShow, setModalShow] = useState(false);
     const [loca, setLoca]=useState(false);
-    const [key,setKey]=useState(0)
     const [homePosit,setHomePosit]=useState({})
     const [storeInfo,setStoreInfo]=useState({})
     const myLoca='서울시 중랑구 ㅇㅇㅇ 거구장';
     const [center, setCenter]=useState({lat: 37.746997, lng: 127.044861})
+    const dispatch=useDispatch()
     const showHome=e=>{
         e.preventDefault()
         if(!loca){setCenter({lat: 37.746897, lng: 127.040861});
             setLoca(true);
         }else {setLoca(false);}};
-    const dispatch = useDispatch()
     const FindMap = withScriptjs(withGoogleMap(props =>
         <GoogleMap
             defaultZoom={16}
@@ -81,8 +81,8 @@ const FindByMap=()=> {
                         position={{lat:store.latitude, lng: store.longitude}}
                         animation={4}
                         onClick={()=>{
-                            setModalShow(true);
-                            setStoreInfo(store)
+                            setModalShow(true)
+                            setStoreInfo(store);
                         }}
                         title={store.storeName}
                     />))}
@@ -107,7 +107,7 @@ const FindByMap=()=> {
                 <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            밀양 잔치국수 <br/>
+                            {storeInfo.storeName} <br/>
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="show-grid">
@@ -115,8 +115,7 @@ const FindByMap=()=> {
                             <Row>
                                 <Col xs={12} md={8}>
                                     {storeInfo.address}<br/>
-                                    000-000-0000
-                                    인덱스: {key}
+                                    {storeInfo.storePhone}
                                 </Col>
                                 <Col xs={6} md={4}>
                                     <img src='http://bdap.postech.ac.kr/UPLOAD//GWPFile_per_BoardNo/80/20161114132407014640.bmp'
@@ -134,8 +133,7 @@ const FindByMap=()=> {
 
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    {true
-                                        // sessionStorage.getItem('user')
+                                    {sessionStorage.getItem("accountDetail")
                                         ?
                                         <table>
                                             <tr><td> <img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={iconsize} height={iconsize}
@@ -175,27 +173,23 @@ const FindByMap=()=> {
             </>
         );
     }
-
     useEffect(()=>{
         setHomePosit({lat: 37.746897, lng: 127.040861})
-        dispatch(storeThunk())
-    },[],)
+        dispatch(storeThunk(sessionStorage.getItem("location")))
+
+    },[storeList],)
 
     return (
         <>
             <h3>지도로 찾기</h3>
 
 
-            <MapModal  show={modalShow} onHide={() => setModalShow(false)} key={key}/>
+            <MapModal  show={modalShow} onHide={() => setModalShow(false)} />
 
             <table className="findmap">
                 <tr><td>
-                    <h5>내 위치</h5>
-                    <label className="switch">
-                        <input type="checkbox"  onChange={showHome}/>
-                        <span className="slider round"/>
-                    </label>
-
+                    {sessionStorage.getItem("accountDetail")&&<><img src={home} alt={"집"} onClick={showHome} style={{width:50, height:50, cursor:'pointer'}}/>
+                    <h6>내 위치</h6></>}
                 </td>
                     <td>{loca&&<h6>{myLoca}</h6>}</td>
                     <td></td>
