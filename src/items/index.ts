@@ -9,7 +9,8 @@ import PostcodeButton from './PostcodeButton';
 import PaginationItem from "./Pagination";
 import LoginedAccountChecker from './LoginedAccountChecker';
 import FindIdPasswordLink from './FindIdPasswordLink';
-import StarRating from './StarRating';
+import StarRating from './StarRating.js';
+import ReviewModal from './ReviewModal';
 
 export {
     ChatbotIcon,
@@ -24,4 +25,5 @@ export {
     LoginedAccountChecker,
     FindIdPasswordLink,
     StarRating,
+    ReviewModal
 }
