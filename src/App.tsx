@@ -15,8 +15,7 @@ import { recommendListReducer} from "./boxes/common/board/recommandation/Recomme
 const rootReducer = combineReducers({
   userListReducer,
   storeListReducer,
-  recommendListReducer,
-  storeReducer
+  recommendListReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
