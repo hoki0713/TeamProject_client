@@ -16,6 +16,8 @@ const PurchaseHistory = () => {
   const [priceOfVoucher, setPriceOfVoucher] = useState("");
   const [email, setEmail] = useState("");
   const [salesDate, setSalesDate] = useState("");
+  const [useDate, setUseDate] = useState("");
+  const [cancelDate, setCancelDate] = useState("");
   const [currencyState, setCurrencyState] = useState("");
   const [isGift, setIsGift] = useState(false);
   const [recipientEmail, setRecipientEmail] = useState("");
@@ -40,11 +42,45 @@ const PurchaseHistory = () => {
 
   const handleConfirmUseVoucher = (e) => {
     e.preventDefault();
+    const currentDate = new Date();
+    const formatedMonth =
+      currentDate.getMonth() + 1 > 10
+        ? currentDate.getMonth() + 1
+        : `0${currentDate.getMonth() + 1}`;
+    const formatedDate =
+      currentDate.getDate() >= 10
+        ? currentDate.getDate()
+        : `0${currentDate.getDate()}`;
+    const formatedCurrentDate = `${currentDate.getFullYear()}-${formatedMonth}-${formatedDate}`;
+    const data = {
+      currencyState: "사용완료",
+      useDate: formatedCurrentDate,
+      recipientEmail: accountDetail.email,
+    };
+    axios
+      .patch(`http://localhost:8080/sales/${voucherCode}`, data)
+      .then((response) => {
+        updateCurrencyStateInArr(voucherCode, response.data);
+      })
+      .catch((error) => {
+        throw error;
+      });
     setShowUseVoucherModal(false);
   };
 
+  const updateCurrencyStateInArr = (voucherCode, data) => {
+    const voucherCodeindex = voucherCodeArr.indexOf(voucherCode);
+    const tempVoucherInfoArr = [...voucherInfoArr];
+    tempVoucherInfoArr[voucherCodeindex].currencyState = data.currencyState;
+    tempVoucherInfoArr[voucherCodeindex].useDate = data.useDate;
+    tempVoucherInfoArr[voucherCodeindex].giftYn = data.giftYn;
+    tempVoucherInfoArr[voucherCodeindex].recipientEmail = data.recipientEmail;
+    setVoucherInfoArr(tempVoucherInfoArr);
+  }
+
   const handleSendVoucher = (e) => {
     e.preventDefault();
+    setRecipientEmail("");
     setShowUseVoucherModal(false);
     setShowSendVoucherModal(true);
   };
@@ -57,6 +93,30 @@ const PurchaseHistory = () => {
 
   const handleSend = (e) => {
     e.preventDefault();
+    const currentDate = new Date();
+    const formatedMonth =
+      currentDate.getMonth() + 1 > 10
+        ? currentDate.getMonth() + 1
+        : `0${currentDate.getMonth() + 1}`;
+    const formatedDate =
+      currentDate.getDate() >= 10
+        ? currentDate.getDate()
+        : `0${currentDate.getDate()}`;
+    const formatedCurrentDate = `${currentDate.getFullYear()}-${formatedMonth}-${formatedDate}`;
+    const data = {
+      currencyState: "사용완료",
+      useDate: formatedCurrentDate,
+      recipientEmail: recipientEmail,
+      giftYn: true,
+    };
+    axios
+      .patch(`http://localhost:8080/sales/${voucherCode}`, data)
+      .then((response) => {
+        updateCurrencyStateInArr(voucherCode, response.data);
+      })
+      .catch((error) => {
+        throw error;
+      });
     setShowUseVoucherModal(false);
     setShowSendVoucherModal(false);
   };
@@ -66,6 +126,8 @@ const PurchaseHistory = () => {
     setVoucherCode(voucherCode);
     setPriceOfVoucher(info.unitPrice);
     setSalesDate(info.salesDate);
+    setUseDate(info.useDate);
+    setCancelDate(info.cancelDate);
     setCurrencyState(info.currencyState);
     setIsGift(info.giftYn);
     setRecipientEmail(info.recipientEmail);
@@ -204,10 +266,13 @@ const PurchaseHistory = () => {
             <p>금액 : {priceOfVoucher}</p>
             <p>발신 이메일 : {email}</p>
             <div>
-              <p>받는 사람</p>
-              <input type="text" />
-              <p>이메일</p>
-              <input type="email" />
+              <p>수신 이메일</p>
+              <input
+                type="email"
+                className="form-control mb-2"
+                value={recipientEmail}
+                onChange={(e) => setRecipientEmail(e.target.value)}
+              />
             </div>
             <p className="warningMsg">
               * 선물하기를 누른 후에는 취소가 불가능합니다.
@@ -236,7 +301,9 @@ const PurchaseHistory = () => {
             <p>지역화폐명 : {voucherName}</p>
             <p>지역화폐 코드 : {voucherCode}</p>
             <p>금액 : {priceOfVoucher}</p>
-            <p>구매일시: {salesDate}</p>
+            <p>구매일자 : {salesDate}</p>
+            {cancelDate && <p>취소일자 : {cancelDate}</p>}
+            {!cancelDate && <p>사용일자 : {useDate}</p>}
             <p>상태 : {currencyState}</p>
             {isGift && <p>선물여부 : Y</p>}
             {!isGift && <p>선물여부 : N</p>}

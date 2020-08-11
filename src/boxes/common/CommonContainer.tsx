@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { MerchantList, FindByMap, FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency } from './board';
+import {MerchantList, FindByMap,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
 import MerchanDetail from "./board/map/MerchanDetail";
+import Maptest2 from "./board/map/Maptest2";
+import MapT from "./board/map/MapT";
 
 
 const CommonContainer = () => {
@@ -11,9 +13,9 @@ const CommonContainer = () => {
       <Route path="/merchant-list">
         <MerchantList />
       </Route>
-      <Route path="/find-by-map">
-        <FindByMap />
-      </Route>
+        <Route path="/find-by-map">
+            <FindByMap/>
+        </Route>
       <Route path="/find-best-route">
         <FindBestRoute />
       </Route>
@@ -32,6 +34,10 @@ const CommonContainer = () => {
       <Route path="/storeDetail">
         <MerchanDetail/>
       </Route>
+        <Route path={'/maptest'}>
+            <MapT/>
+        </Route>
+
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {CardDeck, Card, Button, Form, Row, Col} from 'react-bootstrap'
+import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap'
 
 function FindByTag() {
     return (
@@ -7,37 +7,91 @@ function FindByTag() {
         <div style={{textAlign : 'center'}}><br/>
             <h1>태그로 찾기</h1><br/>
             <CardDeck>
-                <Card>
-                    <Card.Body>
-                        <Card.Title>20대 남성의 키워드</Card.Title>
-                        <Card.Text>가성비, 소확행
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
+            <Card style={{ width: '18rem' }}>
 
+                <Card.Header>전체 관심업종 TOP 5</Card.Header>
+                <ListGroup variant="flush">
+                    <ListGroup.Item>일반휴게음식</ListGroup.Item>
+                    <ListGroup.Item>유통업 영리</ListGroup.Item>
+                    <ListGroup.Item>학원</ListGroup.Item>
+                    <ListGroup.Item>음료식품</ListGroup.Item>
+                    <ListGroup.Item>의원</ListGroup.Item>
+                    <ListGroup.Item>보건위생</ListGroup.Item>
+                    <ListGroup.Item>연료판매점</ListGroup.Item>
+                </ListGroup>
+            </Card>
                 <Card>
-                    <Card.Body>
-                        <Card.Title>30대 여성의 키워드</Card.Title>
-                        <Card.Text>우리아이, 자기계발
-                        </Card.Text>
-                    </Card.Body>
+                <Card.Header>나의 관심업종 TOP 5</Card.Header>
+                <ListGroup variant="flush">
+                    <ListGroup.Item>일반휴게음식</ListGroup.Item>
+                    <ListGroup.Item>유통업 영리</ListGroup.Item>
+                    <ListGroup.Item>레저업소</ListGroup.Item>
+                    <ListGroup.Item>의원</ListGroup.Item>
+                    <ListGroup.Item>음료식품</ListGroup.Item>
+                    <ListGroup.Item>보건위생</ListGroup.Item>
+                    <ListGroup.Item>학원</ListGroup.Item>
+                </ListGroup>
                 </Card>
                 <Card>
-                    <Card.Body>
-                        <Card.Title>40대 남성의 키워드</Card.Title>
-                        <Card.Text>체력증진, 럭셔리
-                        </Card.Text>
-                    </Card.Body>
+                <Card.Header>여자 관심업종 TOP 5</Card.Header>
+                <ListGroup variant="flush">
+                    <ListGroup.Item>일반휴게음식</ListGroup.Item>
+                    <ListGroup.Item>학원</ListGroup.Item>
+                    <ListGroup.Item>유통업 영리</ListGroup.Item>
+                    <ListGroup.Item>음료식품</ListGroup.Item>
+                    <ListGroup.Item>회원제형태</ListGroup.Item>
+                    <ListGroup.Item>의원</ListGroup.Item>
+                    <ListGroup.Item>보건위생</ListGroup.Item>
+                </ListGroup>
                 </Card>
                 <Card>
-                    <Card.Body>
-                        <Card.Title>60대 여성의 키워드</Card.Title>
-                        <Card.Text>웰빙, 은퇴생활
+                <Card.Header>30대 관심업종 TOP 5</Card.Header>
+                <ListGroup variant="flush">
+                    <ListGroup.Item>일반휴게음식</ListGroup.Item>
+                    <ListGroup.Item>유통업 영리</ListGroup.Item>
+                    <ListGroup.Item>음료식품</ListGroup.Item>
+                    <ListGroup.Item>의원</ListGroup.Item>
+                    <ListGroup.Item>보건위생</ListGroup.Item>
+                    <ListGroup.Item>약국</ListGroup.Item>
+                    <ListGroup.Item>연료판매점</ListGroup.Item>
+                </ListGroup>
+                </Card>
+                </CardDeck>
 
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            </CardDeck>        </div>
+
+            {/*<CardDeck>*/}
+            {/*    <Card>*/}
+            {/*        <Card.Body>*/}
+            {/*            <Card.Title>20대 남성의 키워드</Card.Title>*/}
+            {/*            <Card.Text>가성비, 소확행*/}
+            {/*            </Card.Text>*/}
+            {/*        </Card.Body>*/}
+            {/*    </Card>*/}
+
+            {/*    <Card>*/}
+            {/*        <Card.Body>*/}
+            {/*            <Card.Title>30대 여성의 키워드</Card.Title>*/}
+            {/*            <Card.Text>우리아이, 자기계발*/}
+            {/*            </Card.Text>*/}
+            {/*        </Card.Body>*/}
+            {/*    </Card>*/}
+            {/*    <Card>*/}
+            {/*        <Card.Body>*/}
+            {/*            <Card.Title>40대 남성의 키워드</Card.Title>*/}
+            {/*            <Card.Text>체력증진, 럭셔리*/}
+            {/*            </Card.Text>*/}
+            {/*        </Card.Body>*/}
+            {/*    </Card>*/}
+            {/*    <Card>*/}
+            {/*        <Card.Body>*/}
+            {/*            <Card.Title>60대 여성의 키워드</Card.Title>*/}
+            {/*            <Card.Text>웰빙, 은퇴생활*/}
+
+            {/*            </Card.Text>*/}
+            {/*        </Card.Body>*/}
+            {/*    </Card>*/}
+            {/*</CardDeck>        */}
+        </div>
             <br/><br/><br/>
             <h3 style={{textAlign : "center"}}>맞춤검색</h3><br/>
             <Form>

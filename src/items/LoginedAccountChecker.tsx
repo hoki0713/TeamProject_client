@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const LoginedAccountChecker = ({loginedAccount}) => {
+const LoginedAccountChecker = ({ loginedAccount, isAdmin }) => {
   const handleLogout = () => {
     alert("로그아웃 되었습니다. 다시 로그인하세요.");
     sessionStorage.clear();
@@ -10,28 +10,33 @@ const LoginedAccountChecker = ({loginedAccount}) => {
   return (
     <div>
       {!loginedAccount &&
-            <div id="common-header-links">
-              <Link to="/account/login">
-                <span className="btn-link btn-sm">로그인</span>
-              </Link>
-              <Link to="/account/term-n-condition">
-                <span className="btn-link btn-sm">회원가입</span>
-              </Link>
-            </div>
-          }
+        <div id="common-header-links">
+          <Link to="/account/login">
+            <span className="btn-link btn-sm">로그인</span>
+          </Link>
+          <Link to="/account/term-n-condition">
+            <span className="btn-link btn-sm">회원가입</span>
+          </Link>
+        </div>
+      }
 
-          {loginedAccount &&
-            <div id="common-header-links">
-              <Link to="/account/login">
-                <span className="btn-link btn-sm" onClick={handleLogout}>
-                  로그아웃  
+      {loginedAccount &&
+        <div id="common-header-links">
+          <Link to="/account/login">
+            <span className="btn-link btn-sm" onClick={handleLogout}>
+              로그아웃
                 </span>
-              </Link>
-              <Link to="/mypage">
-                <span className="btn-link btn-sm">내 정보</span>
-              </Link>
-            </div>
+          </Link>
+          <Link to="/mypage">
+            <span className="btn-link btn-sm">내 정보</span>
+          </Link>
+          {isAdmin &&
+            <Link to="/admin/user-statistic">
+              <span className="btn-link btn-sm">DashBoard</span>
+            </Link>
           }
+        </div>
+      }
     </div>
   );
 };

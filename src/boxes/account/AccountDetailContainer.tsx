@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { AccountDetail, PurchaseHistory, MyReview, MyFavorites, MyQuestion } from  './account_board';
+import { AccountDetail, PurchaseHistory, MyReview, MyQuestion, MyFavorites } from  './account_board';
 
 const AccountDetailContainer = () => {
   return (
