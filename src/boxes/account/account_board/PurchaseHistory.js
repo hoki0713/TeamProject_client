@@ -60,15 +60,23 @@ const PurchaseHistory = () => {
     axios
       .patch(`http://localhost:8080/sales/${voucherCode}`, data)
       .then((response) => {
-        setCurrencyState(response.data.currencyState);
-        setUseDate(response.data.useDate);
-        window.location.reload();
+        updateCurrencyStateInArr(voucherCode, response.data);
       })
       .catch((error) => {
         throw error;
       });
     setShowUseVoucherModal(false);
   };
+
+  const updateCurrencyStateInArr = (voucherCode, data) => {
+    const voucherCodeindex = voucherCodeArr.indexOf(voucherCode);
+    const tempVoucherInfoArr = [...voucherInfoArr];
+    tempVoucherInfoArr[voucherCodeindex].currencyState = data.currencyState;
+    tempVoucherInfoArr[voucherCodeindex].useDate = data.useDate;
+    tempVoucherInfoArr[voucherCodeindex].giftYn = data.giftYn;
+    tempVoucherInfoArr[voucherCodeindex].recipientEmail = data.recipientEmail;
+    setVoucherInfoArr(tempVoucherInfoArr);
+  }
 
   const handleSendVoucher = (e) => {
     e.preventDefault();
@@ -104,9 +112,7 @@ const PurchaseHistory = () => {
     axios
       .patch(`http://localhost:8080/sales/${voucherCode}`, data)
       .then((response) => {
-        setCurrencyState(response.data.currencyState);
-        setUseDate(response.data.useDate);
-        window.location.reload();
+        updateCurrencyStateInArr(voucherCode, response.data);
       })
       .catch((error) => {
         throw error;

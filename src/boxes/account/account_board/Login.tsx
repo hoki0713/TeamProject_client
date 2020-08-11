@@ -12,7 +12,6 @@ const Login = () => {
     if (userId && password) {
       axios.post(`http://localhost:8080/users/login`, { userId: userId, password: password })
         .then(response => {
-          console.log(response);
           sessionStorage.setItem("accountDetail", JSON.stringify(response.data));
           if (response.status === 200) history.push("/");
         })
