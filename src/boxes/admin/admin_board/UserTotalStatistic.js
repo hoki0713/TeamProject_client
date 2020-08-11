@@ -3,7 +3,6 @@ import "./UserTotalStatistic.css";
 import axios from "axios";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 import { useDispatch } from "react-redux";
-import { SSL_OP_TLS_ROLLBACK_BUG } from "constants";
 
 const RECOMMEND_STORE = "RECOMMEND_STORE";
 
@@ -27,141 +26,145 @@ const UserTotalStatistic = () => {
   const [localSelect, setLocalSelect] = useState("");
   const [chartData, setChartData] = useState({});
   const [genderChartData, setGenderChartData] = useState({});
-  const [ageChartData,setAgeChartData] = useState({});
-  const [keys,setKeys] = useState([]);
-  const [values,setValues] = useState([]);
-  const [genderKeys,setGenderKeys] =useState([]);
-  const[genderValues,setGenderValues] = useState([]);
-  const [ageKeys,setAgeKeys] = useState([]);
-  const [ageValues,setAgeValues] = useState([]);
+  const [ageChartData, setAgeChartData] = useState({});
+  const [keys, setKeys] = useState([]);
+  const [values, setValues] = useState([]);
+  const [genderKeys, setGenderKeys] = useState([]);
+  const [genderValues, setGenderValues] = useState([]);
+  const [ageKeys, setAgeKeys] = useState([]);
+  const [ageValues, setAgeValues] = useState([]);
 
   const dispatch = useDispatch();
 
-  const color = () =>{
+  const color = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-  }
-  const userAgeThunk= (localSelect) =>(dispatch) =>{
+  };
+
+  const userAgeThunk = (localSelect) => (dispatch) => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${localSelect}`)
-      .then((res)=>{
-        console.log(res.data.age)
-          const genderValues = [];
-          const getnderKeys = [];
-          const ageKeys = [];
-          const ageValues = [];
-          Object.entries(res.data.gender).forEach(([key,value])=>{
-            getnderKeys.push(key);
-            genderValues.push(value)
-          })
-          Object.entries(res.data.age).forEach(([key,value])=>{
-            ageKeys.push(key)
-            ageValues.push(value)
-          })
-          setGenderKeys(getnderKeys);
-          setGenderValues(genderValues);
-          setAgeKeys(ageKeys);
-          setAgeValues(ageValues);
+      .then((res) => {
+        console.log(res.data.age);
+        const genderValues = [];
+        const getnderKeys = [];
+        const ageKeys = [];
+        const ageValues = [];
+        Object.entries(res.data.gender).forEach(([key, value]) => {
+          getnderKeys.push(key);
+          genderValues.push(value);
+        });
+        Object.entries(res.data.age).forEach(([key, value]) => {
+          ageKeys.push(key);
+          ageValues.push(value);
+        });
+        setGenderKeys(getnderKeys);
+        setGenderValues(genderValues);
+        setAgeKeys(ageKeys);
+        setAgeValues(ageValues);
       })
-      .catch((err)=>{
+      .catch((err) => {
         throw err;
-      })
-  }
-  useEffect(()=>{
-    if(localSelect !== ""){dispatch(userAgeThunk(localSelect))}
-  },[localSelect])
-
-  useEffect(()=>{
+      });
+  };
+  useEffect(() => {
     axios
-    .get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
-    .then((res) => {
-      const values = [];
-      const keys = [];
-      Object.entries(res.data).forEach(([key,value])=>{
+      .get(`http://localhost:8080/admins/userTotal-chart/${"null"}`)
+      .then((res) => {
+        console.log(res.data.age);
+        const genderValues = [];
+        const getnderKeys = [];
+        const ageKeys = [];
+        const ageValues = [];
+        Object.entries(res.data.gender).forEach(([key, value]) => {
+          getnderKeys.push(key);
+          genderValues.push(value);
+        });
+        Object.entries(res.data.age).forEach(([key, value]) => {
+          ageKeys.push(key);
+          ageValues.push(value);
+        });
+        setGenderKeys(getnderKeys);
+        setGenderValues(genderValues);
+        setAgeKeys(ageKeys);
+        setAgeValues(ageValues);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }, []);
+
+  useEffect(() => {
+    if (localSelect !== "") {
+      dispatch(userAgeThunk(localSelect));
+    }
+    axios
+      .get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
+      .then((res) => {
+        const values = [];
+        const keys = [];
+        Object.entries(res.data).forEach(([key, value]) => {
           keys.push(key);
-          values.push(value)
+          values.push(value);
+        });
+        setKeys(keys);
+        setValues(values);
       })
-      setKeys(keys);
-      setValues(values);
-    })
-    .catch((err) => {
-      throw err;
-    });
-    axios
-    .get(`http://localhost:8080/admins/userTotal-chart/${"null"}`)
-    .then((res) => {
-      console.log(res.data.age)
-      const genderValues = [];
-      const getnderKeys = [];
-      const ageKeys = [];
-      const ageValues = [];
-      Object.entries(res.data.gender).forEach(([key,value])=>{
-        getnderKeys.push(key);
-        genderValues.push(value)
-      })
-      Object.entries(res.data.age).forEach(([key,value])=>{
-        ageKeys.push(key)
-        ageValues.push(value)
-      })
-      setGenderKeys(getnderKeys);
-      setGenderValues(genderValues);
-      setAgeKeys(ageKeys);
-      setAgeValues(ageValues);
-    })
-    .catch((err) => {
-      throw err;
-    });
-  },[localSelect])
-
-  
-  useEffect(()=>{
-      setChartData({
-        labels:keys,
-        datasets:[
-          {label:'Locals',
-            data:values,
-            backgroundColor:keys.map((key)=>color())
-          }
-      ,     ]
-      });
-
-      setGenderChartData({
-        labels:genderKeys,
-        datasets:[
-          {
-            label:'',
-            data:genderValues,
-            backgroundColor:['rgb(051,051,255,0.5)','rgb(153,153,255,0.5)']
-          }
-        ]
-      });
-      setAgeChartData({
-        labels:ageKeys,
-        datasets:[
-          {
-            data:ageValues
-          }
-        ]
-      })
-  },[genderKeys,genderValues,keys,values,ageKeys,ageValues,localSelect])
-
-  
-
-  const joinDateThunk = ({startDate,endDate}) => (dispatch) =>{
-    axios
-    .get(`http://localhost:8080/admins/joinDate-chart/${startDate}/${endDate}`)
-    .then((res)=>{
-        dispatch(userTotalAction(res.data))
-        console.log(res.data)
-    })
-    .catch((err)=>{
+      .catch((err) => {
         throw err;
-    })
-  }
+      });
+  }, [localSelect]);
+
+  useEffect(() => {
+    setChartData({
+      labels: keys,
+      datasets: [
+        {
+          label: "Locals",
+          data: values,
+          backgroundColor: keys.map((key) => color()),
+        },
+      ],
+    });
+
+    setGenderChartData({
+      labels: genderKeys,
+      datasets: [
+        {
+          label: "",
+          data: genderValues,
+          backgroundColor: ["rgb(051,051,255,0.5)", "rgb(153,153,255,0.5)"],
+        },
+      ],
+    });
+    setAgeChartData({
+      labels: ageKeys,
+      datasets: [
+        { label:"Age",
+          data: ageValues,
+          backgroundColor:'rgb(000,051,255,0.5)'
+        },
+      ],
+    });
+  }, [genderKeys, genderValues, keys, values, ageKeys, ageValues, localSelect]);
+
+  const joinDateThunk = ({ startDate, endDate }) => (dispatch) => {
+    axios
+      .get(
+        `http://localhost:8080/admins/joinDate-chart/${startDate}/${endDate}`
+      )
+      .then((res) => {
+        dispatch(userTotalAction(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
 
   const startDateClick = (e) => {
     e.preventDefault();
@@ -179,11 +182,10 @@ const UserTotalStatistic = () => {
       alert("시작날짜보다 빠를수 없습니다.");
       setEndDate("");
     }
-    dispatch(joinDateThunk({startDate,endDate}))
+    dispatch(joinDateThunk({ startDate, endDate }));
 
-   let day= startDate.split("-");
-   console.log(day[1])
-   
+    let day = startDate.split("-");
+    console.log(day[1]);
   };
 
   const localSelectCheck = (e) => {
@@ -191,7 +193,6 @@ const UserTotalStatistic = () => {
     setLocalSelect(e.target.value);
   };
 
-  
   return (
     <div>
       <h1>-회원 통계</h1>
@@ -207,10 +208,9 @@ const UserTotalStatistic = () => {
             id="userLocal-select"
             value={localSelect}
             onChange={localSelectCheck}
-            
           >
-             <option selected >지역선택</option>
-            <option  value="고양" >고양시</option>
+            <option selected>지역선택</option>
+            <option value="고양">고양시</option>
             <option value="의정부">의정부시</option>
             <option value="부천">부천시</option>
             <option value="양평">양평시</option>
@@ -227,7 +227,6 @@ const UserTotalStatistic = () => {
             <option value="가평">가평시</option>
             <option value="용인">용인시</option>
             <option value="여주">여주시</option>
-            
           </select>
         </div>
         <div className="localTotal-genderDoughnut">
@@ -237,7 +236,7 @@ const UserTotalStatistic = () => {
 
         <div className="localTotal-ageBar">
           <h6 className="LocalTotal-h6 font-weight-bold">나이</h6>
-          <Bar data={ageChartData} />
+          <Line data={ageChartData} />
         </div>
       </div>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import {
     LocalCurrencyAmount,
-    LocalofUsers,
+    StoreTotalStatistic,
     UserTotalStatistic,
     Notice,
     UsersList,
@@ -17,8 +17,8 @@ const AdminContainer = () => {
       <Route path="/admin/currency-amount">
         <LocalCurrencyAmount />
       </Route>
-      <Route path="/admin/local-user">
-      <LocalofUsers />
+      <Route path="/admin/store-statistic">
+      <StoreTotalStatistic />
       </Route>
       <Route path="/admin/user-statistic">
       <UserTotalStatistic/>

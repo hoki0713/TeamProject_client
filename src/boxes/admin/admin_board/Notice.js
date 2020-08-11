@@ -22,29 +22,6 @@ export const postListReducer = (state = [], action) => {
 }
 
 
-const initialState = {
-    input: '',
-    posts: [
-        {
-            postNo: 1,
-            category: '사이트',
-            title: '사이트 임시 점검 예정',
-            writer: '관리자',
-            regDate: '2020/07/29',
-            readCount: 55,
-            file: 'O'
-        },
-        {
-            postNo: 2,
-            category: '지역화폐',
-            title: '김포페이 서비스 연장 안내',
-            writer: '김포시',
-            regDate: '2020/07/31',
-            readCount: 82,
-            file: 'X'
-        }
-    ]
-}
 export const postListThunk = searchWord => dispatch => {
     console.log('api 도착')
     axios.get(`http://localhost/posts/notice/list/${searchWord}`)
@@ -55,13 +32,23 @@ const Notice = () => {
 
     const [post, setPost] = useState({})
     const [postList, setPostList] = useState([])
-    const resultList = useSelector((x: any) => x.postListReducer)
+    const resultList = useSelector((x) => x.postListReducer)
     const dispatch = useDispatch()
     const setPosts = payload => {
         setPost({ title: payload.postTitle })
     }
-    useEffect(() => {
 
+  
+    useEffect(() => {
+        axios
+        .get('http://localhost:8080/posts/postlist')
+        .then((res)=>{
+        setPostList(res.data)
+        console.log(res.data)
+        })
+        .catch((err)=>{
+        throw err;
+        })
     }, [])
 
 
@@ -101,20 +88,16 @@ const Notice = () => {
                             <th>제목</th>
                             <th>작성자</th>
                             <th>등록일</th>
-                            <th>조회수</th>
-                            <th>파일</th>
                         </tr>
                     </thead>
                     <tbody >
-                        {initialState.posts.map((posts, i) => (
+                        {postList.map((info, i) => (
                             <tr key={i}>
-                                <td >{posts.postNo}</td>
-                                <td> {posts.category}</td>
-                                <Link to="/admin/notice-detail"><td>{posts.title}</td></Link>
-                                <td>{posts.writer}</td>
-                                <td>{posts.regDate}</td>
-                                <td>{posts.readCount}</td>
-                                <td>{posts.file}</td>
+                                <td >{i+1}</td>
+                                <td> {info.category}</td>
+                               <td> <Link to="">{info.postTitle}</Link></td>
+                                <td>{info.user_id}</td>
+                                <td>{info.regDate}</td>
                             </tr>))}
                     </tbody>
                 </Table>
