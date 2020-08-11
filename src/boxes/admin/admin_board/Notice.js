@@ -32,19 +32,36 @@ const Notice = () => {
 
     const [post, setPost] = useState({})
     const [postList, setPostList] = useState([])
+    const [postId,setPostId] = useState("");
     const resultList = useSelector((x) => x.postListReducer)
     const dispatch = useDispatch()
     const setPosts = payload => {
         setPost({ title: payload.postTitle })
     }
 
+
+    const getNotice = postId =>{
+        console.log(postId)
+        axios
+            .get(`http://localhost:8080/posts/post/${postId}`)
+            .then((res)=>{
+                    sessionStorage.setItem("notice",JSON.stringify(res.data))
+                    console.log(res.data)
+                    window.location.href="/admin/notice-detail"
+            })
+            .catch((err)=>{
+                throw err;
+            })
+    }
+
+   
   
     useEffect(() => {
         axios
         .get('http://localhost:8080/posts/postlist')
         .then((res)=>{
         setPostList(res.data)
-        console.log(res.data)
+        
         })
         .catch((err)=>{
         throw err;
@@ -62,13 +79,13 @@ const Notice = () => {
                 <h2 className="menu-h2"> - 공지사항</h2>
                 <div id="select-search-bar">
                     <select id="select" className="form-control">
-                        <option selected>선택</option>
+                        <option value="">선택</option>
                         <option>제목</option>
                         <option>내용</option>
                         <option>제목 및 내용</option>
                     </select>
                     <select className="form-control" id="select">
-                        <option selected>카테고리</option>
+                        <option value="">카테고리</option>
                         <option>지역</option>
                         <option>사이트</option>
                     </select>
@@ -95,12 +112,13 @@ const Notice = () => {
                             <tr key={i}>
                                 <td >{i+1}</td>
                                 <td> {info.category}</td>
-                               <td> <Link to="">{info.postTitle}</Link></td>
+                               <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
                                 <td>{info.user_id}</td>
                                 <td>{info.regDate}</td>
                             </tr>))}
                     </tbody>
                 </Table>
+              
 
                 <Container fluid>
                     <Row noGutters>

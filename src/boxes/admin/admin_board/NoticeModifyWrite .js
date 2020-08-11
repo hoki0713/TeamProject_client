@@ -5,20 +5,26 @@ import ReactQuill from "react-quill";
 import './AdminBoard.css'
 import axios from 'axios'
 
-const NoticeWrite = () => {
+const NoticeModifyWrite = () => {
     const [contents, setContents] = useState("");
     const [postTitle,setPostTitle] = useState("");
     const [category,setCategory] = useState("");
-    
     const [accountDetail] = useState(
       JSON.parse(sessionStorage.getItem("accountDetail"))
     );
+    const [notice,setNotice] = useState(
+        JSON.parse(sessionStorage.getItem("notice"))
+    )
 
     const [id,setId] = useState("");
 
     useEffect(()=>{
         setId(accountDetail.id);
-    },[accountDetail])
+        setContents(notice.contents);
+        setPostTitle(notice.postTitle);
+        setCategory(notice.category)
+    },[accountDetail,notice])
+
 
 
     const handleQuill = value =>{
@@ -129,4 +135,4 @@ const newNotice = e =>{
     );
 };
 
-export default NoticeWrite;
+export default NoticeModifyWrite;
