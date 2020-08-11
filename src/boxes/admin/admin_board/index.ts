@@ -1,5 +1,5 @@
 
-import UserTotalStatistic from './UserTotalStatistic';
+import UserTotalStatistic from './UserTotalStatistic.js'
 import LocalofUsers from './LocalofUsers';
 import LocalCurrencyAmount from './LocalCurrencyAmount';
 import Notice from './Notice';
