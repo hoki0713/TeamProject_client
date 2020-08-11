@@ -4,11 +4,13 @@ import CommonFooter from "../boxes/common/CommonFooter";
 
 const CommonPage = () => {
     const [isLogined, setIsLogined] = useState(false);
-    const [accountDetail] = useState(sessionStorage.getItem("accountDetail"));
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'));
 
     useEffect(() => {
         if (accountDetail) {
             setIsLogined(true);
+            if(accountDetail.adminKey) setIsAdmin(true);
         } else {
             setIsLogined(false);
         }
@@ -16,7 +18,10 @@ const CommonPage = () => {
 
     return (
         <div className="container">
-            <CommonHeader loginedAccount={isLogined} />
+            <CommonHeader 
+                loginedAccount={isLogined} 
+                isAdmin={isAdmin}
+            />
             <CommonMenuBar isLogined={isLogined} />
             <CommonContainer />
             <CommonFooter/>
