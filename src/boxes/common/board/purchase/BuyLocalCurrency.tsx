@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import './purchase.css'
 import {Link} from 'react-router-dom';
 import PurchaseMap from "./PurchaseMap";
-import {MapModal} from "../map/Modals";
 import Payment from "./Payment";
 
 

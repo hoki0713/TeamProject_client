@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { MapImage } from '../../items';
 import { Link } from 'react-router-dom';
+import {useEffect} from "react";
 
 const pointArray: object = {
-  "연천군": "226, 57, 327, 169",
+  "연천군": "226, 57, 327, 169 ",
   "포천시": "338, 145, 417, 224",
   "파주시": "111, 195, 214, 299",
   "동두천시": "278, 199, 334, 237",
@@ -35,13 +36,22 @@ const pointArray: object = {
   '성남시': "298, 514 , 336, 548",
   '시흥시': "146, 524 , 192, 552" 
 }
+
+
 function MainMap() {
+  useEffect(()=>{
+    sessionStorage.setItem("location","")
+  })
   return (
     <div className="container">
       <MapImage />
       <map name="mainMap" id="mainMap">
         {Object.entries(pointArray).map(([key, value])=>
-            <Link to={'/find-by-map'}><area shape="rect" coords={value} alt={key} onClick={ () => alert(`${key} 클릭!`)} /></Link>
+            <Link to={'/find-by-map'}>
+              <area shape="rect" coords={value} alt={key}
+                    onClick={ () => {alert(`${key} 클릭!`);
+                    sessionStorage.setItem("location", key)
+            }} /></Link>
         )}
       </map>
     </div>
