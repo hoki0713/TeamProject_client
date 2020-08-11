@@ -17,8 +17,10 @@ const MyReview = () => {
 
   const handleClose = () => setShow(false);
 
-  const handleModify = (e) => {
-    e.preventDefault();
+  const handleModifyReview = (reviewId, info) => {
+    setStoreId(info.storeId);
+    setStoreName(info.storeName);
+    setReviewId(reviewId);
     setShow(true);
   };
 
@@ -92,7 +94,9 @@ const MyReview = () => {
               <td>
                 <button
                   className="btn btn-outline-primary btn-sm"
-                  onClick={handleModify}
+                  onClick={() => {
+                    handleModifyReview(reviewIdArr[i], info);
+                  }}
                 >
                   수정하기
                 </button>
@@ -125,6 +129,7 @@ const MyReview = () => {
         storeName={storeName}
         accountDetail={accountDetail}
         storeId={storeId}
+        reviewId={reviewId}
       />
     </div>
   );
