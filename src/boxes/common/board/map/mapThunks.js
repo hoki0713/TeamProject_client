@@ -2,8 +2,7 @@ import axios from "axios";
 
 export let storeList=[];
 export const storeThunk = loca =>dispatch=>{
-
-    console.log(`storeThunk ${loca}`)
+    console.log(`storeThunk ${loca}`);
     axios.get(`http://localhost:8080/stores/mapClick/${loca}`)
         .then(({data})=>{
             storeList=[]
@@ -12,7 +11,6 @@ export const storeThunk = loca =>dispatch=>{
                 storeList.push(elem)
             });
             console.log(JSON.stringify(storeList[0]))
-            return storeList
         })
         .catch(err=>{throw(err)});
 

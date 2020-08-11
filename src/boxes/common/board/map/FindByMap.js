@@ -1,39 +1,43 @@
 import React, { useEffect, useState, useCallback} from 'react';
+import 'react-google-maps'
 import {
     GoogleMap,
     Marker,
-    InfoWindow, LoadScript
+    InfoWindow, LoadScript,
 } from "@react-google-maps/api";
 import side from './side.jpg'
 import Geocode from 'react-geocode'
+
 import './map.css'
 import { Review, Star, StoreReport} from "./Modals";
 import {useDispatch} from "react-redux";
-import home from './mapIcons/homeIcon.png'
-import store from './mapIcons/store.png'
+import normal from './mapIcons/normal.png'
+import home from './mapIcons/fav.png'
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {fav, reportIcon, review, star} from "./mapIcons/icons";
 import {storeList,storeThunk} from "./mapThunks";
 
+
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 
 
-
-
-let center = {
-    lat: 0, lng: 0
-}
+const libraries = ['drawing']
 
 const FindByMap=()=> {
         const containerStyle = {
             width: '600px',
             height: '600px'
         };
+
         const [map, setMap] = useState(null)
         const onUnmount = useCallback(function callback(map) {
         setMap(null)
+    }, [])
+    const [center,setCenter]=useState({lat: 37.746897, lng: 127.040861})
+    const onLoad = React.useCallback(function callback(map) {
+        setMap(map)
     }, [])
         const [modalShow, setModalShow] = useState(false);
         const [loca, setLoca]=useState(false);
@@ -45,7 +49,6 @@ const FindByMap=()=> {
         const dispatch=useDispatch()
         const showHome=e=>{
             e.preventDefault()
-            center={lat: 37.746897, lng: 127.040861};
             setLoca(true);}
         const [selected, setSelected] = useState({lat: '', lng: ''});
 
@@ -62,11 +65,12 @@ const FindByMap=()=> {
             },
         );
         useEffect(()=>{
-            dispatch(storeThunk(sessionStorage.getItem("location")));
-            center={lat: 37.746897, lng: 127.040861};
+            console.log("in useEffect")
+            if(!storeList) {
+                dispatch(storeThunk(sessionStorage.getItem("location")));
+            console.log("useEffect")}
             if(sessionStorage.getItem("location").defaultAddr ==="경기도 파주시"){
                 setHomePosit({lat: 37.746897, lng: 127.040861});
-
             }
 
         },[center],);
@@ -169,13 +173,13 @@ const FindByMap=()=> {
                     <tr><td colSpan={2} className="td-left">
                         <LoadScript
                             googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
-                            libraries={['places']}>
+                            libraries={libraries}>
                         <GoogleMap
                             mapContainerStyle={containerStyle}
                             center={center}
                             onUnmount={onUnmount}
                             zoom={16}
-
+                            onLoad={onLoad}
 
                         >
 
@@ -184,11 +188,14 @@ const FindByMap=()=> {
                                     key={i}
                                     position={{lat:store.latitude, lng: store.longitude}}
                                     animation={4}
-                                    iconsize={40}
-                                    icon={store}
+                                    icon={{url:normal,
+                                        scaledSize: {width:30, height:30}
+                                    }}
+
                                     onClick={()=>{
                                         setModalShow(true);
                                         setStoreInfo(store);
+                                        setCenter({lat:store.latitude, lng: store.longitude})
                                     }}
                                     title={store.storeName}
                                 >
@@ -201,14 +208,16 @@ const FindByMap=()=> {
                                 onCloseClick={() => setInfoShow(false)}
                             ><h2>인포창</h2></InfoWindow>}
                             <Marker
-                                position={homePosit}
+                                position={{lat: 37.746897, lng: 127.040861}}
                                 icon={{url: home,
-                                    scaledSize: 40,
+                                    scaledSize: {width:40, height:40},
                                 }}
                                 title={'집'}
                                 animation={2}
                             >
-
+                                <InfoWindow>
+                                    <h1>일단인포</h1>
+                                </InfoWindow>
                             </Marker>
 
 
