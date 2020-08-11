@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CommonHeader, CommonMenuBar, CommonContainer } from '../boxes';
+import CommonFooter from "../boxes/common/CommonFooter";
 
 const CommonPage = () => {
     const [isLogined, setIsLogined] = useState(false);
@@ -18,6 +19,7 @@ const CommonPage = () => {
             <CommonHeader loginedAccount={isLogined} />
             <CommonMenuBar isLogined={isLogined} />
             <CommonContainer />
+            <CommonFooter/>
         </div>
     );
 }

@@ -101,14 +101,3 @@
 // }
 //
 // export default FindByMap
-import React from 'react';
-
-const NaverMap = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
-
-export default NaverMap;

@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
-import { storeListReducer,storeReducer } from "./boxes/common/board/map";
+import { storeListReducer } from "./boxes/common/board/map";
 import { userListReducer } from './boxes/admin/admin_board/UsersList';
 import { recommendListReducer} from "./boxes/common/board/recommandation/Recommendation";
 

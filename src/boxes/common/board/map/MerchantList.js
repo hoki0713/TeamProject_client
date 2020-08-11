@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {Table, Pagination} from 'react-bootstrap';
 import {Link} from "react-router-dom"
 import axios from 'axios'
-import {useSelector, useDispatch} from "react-redux";
+import { useDispatch} from "react-redux";
 import {StoreReport} from "./Modals";
 import './search.jpg'
-import {storeThunk,storeList} from "./FindByMap";
+import {storeThunk,storeList} from "./mapThunks";
 
 
 const GET_STORE_REQUEST = 'GET_STORE_REQUEST';
@@ -38,12 +38,10 @@ const MerchantList=()=> {
     const cateCheck=e=>{setCate(e.target.value); };
     const dispatch = useDispatch()
 
-    // useEffect(()=>{
-    //     (!storeList.data) ? dispatch(storeListThunk(searchWD)): console.log(searchWD)
-    // })
+
     useEffect(()=>{
-        dispatch(storeThunk())
-    })
+        dispatch(storeThunk(""))
+    },[storeList])
 
 
     const Img = ()=>{
@@ -101,7 +99,7 @@ const MerchantList=()=> {
             </tr>
             {storeList.map((store,i)=>(
                 <tr>
-                    <td>{i}</td>
+                    <td>{i+1}</td>
                     <td>{store.storeName}</td>
                     <td>{store.address}</td>
                     <td>{store.storeType}</td>
