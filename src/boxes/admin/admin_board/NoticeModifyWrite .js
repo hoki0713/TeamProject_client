@@ -37,6 +37,7 @@ const newNotice = e =>{
     e.preventDefault()
     alert(`확인`)
     const notice = {
+        postId:postId,
         userId:accountDetail.id,
         category:category,
         postTitle:postTitle,
@@ -49,7 +50,7 @@ const newNotice = e =>{
         .patch(`http://localhost:8080/posts/update/${postId}`, notice)
         .then((res)=>{
                 console.log(res.data)
-                
+                window.location.href="/admin/notice"
         })
         .catch((err)=>{
             throw err;

@@ -60,7 +60,7 @@ const Notice = () => {
         axios
         .get('http://localhost:8080/posts/postlist')
         .then((res)=>{
-        setPostList(res.data)
+             setPostList(res.data)
         
         })
         .catch((err)=>{
@@ -113,7 +113,8 @@ const Notice = () => {
                                 <td >{i+1}</td>
                                 <td> {info.category}</td>
                                <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
-                                <td>{info.user_id}</td>
+                                {info.category==="사이트" && <td>관리자</td>  
+                                || info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>
                             </tr>))}
                     </tbody>
