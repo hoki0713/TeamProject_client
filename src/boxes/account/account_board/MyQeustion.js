@@ -108,7 +108,6 @@ const MyQeustion = () => {
     axios
       .get(`http://localhost:8080/posts/questions/${id}`)
       .then((response) => {
-        console.log(response.data);
         const values = [];
         const keys = [];
         Object.entries(response.data).forEach(([key, value]) => {
