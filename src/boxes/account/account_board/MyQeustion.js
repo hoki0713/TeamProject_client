@@ -44,6 +44,8 @@ const MyQeustion = () => {
     setSelectedQuestionContents("");
     setSelectedQuestionTitle("");
     setSelectedQuestionComment("");
+    setQuestionTitle("");
+    setContents("");
     setIsEdit(false);
     setShow(false);
   };
