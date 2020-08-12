@@ -3,7 +3,6 @@ import "./UserTotalStatistic.css";
 import axios from "axios";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 import { useDispatch } from "react-redux";
-import { SSL_OP_TLS_ROLLBACK_BUG } from "constants";
 
 const RECOMMEND_STORE = "RECOMMEND_STORE";
 
@@ -28,7 +27,6 @@ const UserTotalStatistic = () => {
   const [chartData, setChartData] = useState({});
   const [genderChartData, setGenderChartData] = useState({});
   const [ageChartData, setAgeChartData] = useState({});
-
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
   const [genderKeys, setGenderKeys] = useState([]);
@@ -47,8 +45,32 @@ const UserTotalStatistic = () => {
     return color;
   };
 
-  const userAgeThunk = (localSelect) => (dispatch) => {};
-
+  const userAgeThunk = (localSelect) => (dispatch) => {
+    axios
+      .get(`http://localhost:8080/admins/userTotal-chart/${localSelect}`)
+      .then((res) => {
+        console.log(res.data.age);
+        const genderValues = [];
+        const getnderKeys = [];
+        const ageKeys = [];
+        const ageValues = [];
+        Object.entries(res.data.gender).forEach(([key, value]) => {
+          getnderKeys.push(key);
+          genderValues.push(value);
+        });
+        Object.entries(res.data.age).forEach(([key, value]) => {
+          ageKeys.push(key);
+          ageValues.push(value);
+        });
+        setGenderKeys(getnderKeys);
+        setGenderValues(genderValues);
+        setAgeKeys(ageKeys);
+        setAgeValues(ageValues);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
   useEffect(() => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${"null"}`)
@@ -78,53 +100,23 @@ const UserTotalStatistic = () => {
 
   useEffect(() => {
     if (localSelect !== "") {
-      axios
-        .get(`http://localhost:8080/admins/userTotal-chart/${localSelect}`)
-        .then((res) => {
-          console.log(res.data.age);
-          const genderValues = [];
-          const getnderKeys = [];
-          const ageKeys = [];
-          const ageValues = [];
-
-          Object.entries(res.data.gender).forEach(([key, value]) => {
-            getnderKeys.push(key);
-            genderValues.push(value);
-          });
-
-          Object.entries(res.data.age).forEach(([key, value]) => {
-            ageKeys.push(key);
-            ageValues.push(value);
-          });
-
-          setGenderKeys(getnderKeys);
-          setGenderValues(genderValues);
-          setAgeKeys(ageKeys);
-          setAgeValues(ageValues);
-        })
-        .catch((err) => {
-          throw err;
-        });
+      dispatch(userAgeThunk(localSelect));
     }
-    if (localSelect === "") {
-      axios
-        .get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
-        .then((res) => {
-          const values = [];
-          const keys = [];
-
-          Object.entries(res.data).forEach(([key, value]) => {
-            keys.push(key);
-            values.push(value);
-          });
-
-          setKeys(keys);
-          setValues(values);
-        })
-        .catch((err) => {
-          throw err;
+    axios
+      .get(`http://localhost:8080/admins/chart/ratio-of-user-region`)
+      .then((res) => {
+        const values = [];
+        const keys = [];
+        Object.entries(res.data).forEach(([key, value]) => {
+          keys.push(key);
+          values.push(value);
         });
-    }
+        setKeys(keys);
+        setValues(values);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }, [localSelect]);
 
   useEffect(() => {
@@ -152,8 +144,9 @@ const UserTotalStatistic = () => {
     setAgeChartData({
       labels: ageKeys,
       datasets: [
-        {
+        { label:"Age",
           data: ageValues,
+          backgroundColor:'rgb(000,051,255,0.5)'
         },
       ],
     });
@@ -243,7 +236,7 @@ const UserTotalStatistic = () => {
 
         <div className="localTotal-ageBar">
           <h6 className="LocalTotal-h6 font-weight-bold">나이</h6>
-          <Bar data={ageChartData} />
+          <Line data={ageChartData} />
         </div>
       </div>
 
