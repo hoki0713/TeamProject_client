@@ -4,12 +4,12 @@ import StarRating from "./StarRating";
 import axios from "axios";
 
 const ReviewModal = ({
-  show,
   handleClose,
   storeName,
   accountDetail,
   storeId,
   reviewId,
+  onSubmit
 }) => {
   const [ratingValue, setRatingValue] = useState(0);
   const [review, setReview] = useState("");
@@ -70,6 +70,7 @@ const ReviewModal = ({
       .then(() => {
         alert("저장성공");
         setReview("");
+        onSubmit();
         handleClose();
       })
       .catch((error) => {
@@ -89,6 +90,8 @@ const ReviewModal = ({
       .patch(`http://localhost:8080/posts/reviews/${reviewId}`, data)
       .then(() => {
         alert("수정완료");
+        setReview("");
+        onSubmit();
         handleClose();
       })
       .catch((error) => {
@@ -120,7 +123,7 @@ const ReviewModal = ({
 
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={true} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>내 리뷰 추가</Modal.Title>
         </Modal.Header>
