@@ -34,7 +34,7 @@ const newNotice = e =>{
         postTitle:postTitle,
         contents:contents
     }
-    if(category ==="" || postTitle ==="" || contents ===""){
+    if(category ==="" || postTitle ==="" || contents ==="" ||category==="카테고리"){
         alert('입력창을 다채워주세요')
     }else{
         axios
@@ -52,6 +52,8 @@ const newNotice = e =>{
 
     
 }
+
+
 
 
     const modules = {
@@ -93,7 +95,7 @@ const newNotice = e =>{
                         <Form.Control as="select"
                         value={category}
                         onChange={e=>setCategory(e.target.value)} >
-                            <option selected>카테고리</option>
+                            <option value="카테고리" selected>카테고리</option>
                             <option value="지역화폐">지역화폐</option>
                             <option value="사이트">사이트</option>
                         </Form.Control>

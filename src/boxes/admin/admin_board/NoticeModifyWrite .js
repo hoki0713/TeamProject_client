@@ -9,6 +9,7 @@ const NoticeModifyWrite = () => {
     const [contents, setContents] = useState("");
     const [postTitle,setPostTitle] = useState("");
     const [category,setCategory] = useState("");
+    const [postId,setPostId] = useState("");
     const [accountDetail] = useState(
       JSON.parse(sessionStorage.getItem("accountDetail"))
     );
@@ -23,6 +24,7 @@ const NoticeModifyWrite = () => {
         setContents(notice.contents);
         setPostTitle(notice.postTitle);
         setCategory(notice.category)
+        setPostId(notice.postId)
     },[accountDetail,notice])
 
 
@@ -40,15 +42,14 @@ const newNotice = e =>{
         postTitle:postTitle,
         contents:contents
     }
-    if(category ==="" || postTitle ==="" || contents ===""){
+    if(category ==="" || postTitle ==="" || contents ==="" || category==="카테고리" ){
         alert('입력창을 다채워주세요')
     }else{
         axios
-        .post(`http://localhost:8080/posts/notice/create`, notice)
+        .patch(`http://localhost:8080/posts/update/${postId}`, notice)
         .then((res)=>{
                 console.log(res.data)
-                window.location.href="/admin/notice"
-
+                
         })
         .catch((err)=>{
             throw err;
@@ -71,8 +72,7 @@ const newNotice = e =>{
             ['clean'],
 
         ],
-        clipboard: {
-            // toggle to add extra line breaks when pasting HTML:
+        clipboard:{
             matchVisual: false,
           },
     }
@@ -99,7 +99,7 @@ const newNotice = e =>{
                         <Form.Control as="select"
                         value={category}
                         onChange={e=>setCategory(e.target.value)} >
-                            <option selected>카테고리</option>
+                            <option value="카테고리" selected>카테고리</option>
                             <option value="지역화폐">지역화폐</option>
                             <option value="사이트">사이트</option>
                         </Form.Control>
