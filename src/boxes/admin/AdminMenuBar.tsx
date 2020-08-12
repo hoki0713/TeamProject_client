@@ -54,8 +54,8 @@ const AdminMenuBar = () => {
               <Link to="/admin/user-statistic">
                 <p className="dropdown-item">회원 통계</p>
               </Link>
-              <Link to="/admin/local-user">
-                <p className="dropdown-item">사용자 이용 지역</p>
+              <Link to="/admin/store-statistic">
+                <p className="dropdown-item">가맹점 통계</p>
               </Link>
               <Link to ="/admin/currency-amount">
               <p className="dropdown-item">지역화폐 매출</p>

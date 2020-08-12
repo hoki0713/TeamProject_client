@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./LocalofUsers.css";
+import "./StoreTotalStatistic.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Doughnut, Line } from "react-chartjs-2";
+
 
 const LOCAL_USERS = "LOCAL_USERS";
 
@@ -20,7 +21,7 @@ export const storeStatisticReducer = (state = [], action) => {
   }
 };
 
-const LocalofUsers = () => {
+const StoreTotalStatistic = () => {
   const [valueArr, setValueArr] = useState([]);
   const [chartData, setChartData] = useState({});
   const [localSelect, setLocalSelect] = useState("");
@@ -137,4 +138,4 @@ const LocalofUsers = () => {
   );
 };
 
-export default LocalofUsers;
+export default StoreTotalStatistic;
