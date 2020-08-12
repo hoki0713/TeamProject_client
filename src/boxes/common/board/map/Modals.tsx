@@ -29,24 +29,7 @@ export const StoreReport=(props)=> {
 };
 
 
-export const Review = (props) => {
-    return (
-        <div>
-            <Modal {...props}>
-                <Modal.Header closeButton></Modal.Header>
-                <Modal.Title>리뷰남기기</Modal.Title>
-                <Modal.Body>
-                    <img src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
-                         width={50} height={30}/>
-                    <textarea name="" id="" cols={30} rows={10}></textarea></Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={props.onHide}>취소</Button>
-                    <Button variant="outline-primary" onClick={props.onHide}>리뷰남기기</Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-    );
-};
+
 
 export const Star =(props)=> {
     const [store,setStore]=useState('밀양순대국밥')
