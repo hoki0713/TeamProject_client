@@ -31,7 +31,8 @@ function Recommendation() {
     const [storeType, setStoreType] = useState("")
     const [keys, setKeys] = useState([])
     const [values, setValues] = useState([])
-    const [userbased, setUserbased] = useState([])
+    const [userBased, setUserBased] = useState([])
+    const [itemBased, setItemBased] = useState([])
     const [bestStores, setBestStores] = useState([])
     const resultList = useSelector((state) => state.recommendListReducer);
     const dispatch = useDispatch()
@@ -55,7 +56,7 @@ function Recommendation() {
                     console.log(res.data)
                     console.log(res.data.userBased)
                     setBestStores(res.data.bestStore)
-                    setUserbased(res.data.userBased)
+                    setUserBased(res.data.userBased)
 
                     // data.list.forEach(elem => {
                     //     recommendList.push(elem)
@@ -75,7 +76,7 @@ function Recommendation() {
             <h2>simin님을 위한 우리 동네 추천 가맹점</h2><br/>
             <h4>회원님과 유사한 회원들이 좋아하는 가맹점</h4>
             <div className="scrollContainer">
-                {userbased.map((store, i) => (
+                {userBased.map((store, i) => (
                         <Card className="cardItem" key={i}>
                             <Card.Img variant="top"
                                       src={store.imgUrl}/>
@@ -83,7 +84,7 @@ function Recommendation() {
                             <Card.Body>
                                 <Card.Title>{store.storeName}</Card.Title>
                                 <Card.Text>
-                                    {store.mainCode}+{store.address}
+                                    {store.address}
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
@@ -94,7 +95,23 @@ function Recommendation() {
                 )}
             </div>
             <h4>즐겨찾기한 #순남시래기와 유사한 추천 가맹점</h4>
-            <h4>내가 즐겨찾기한 #무지개빙수와 유사한 타업종 추천 가맹점</h4>
+            <div className="scrollContainer">
+                {itemBased.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img variant="top"
+                                  src={store.imgUrl}/>
+
+                        <Card.Body>
+                            <Card.Title>{store.storeName}</Card.Title>
+                            <Card.Text>
+                                {store.address}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                        </Card.Footer>
+                    </Card>))}
+            </div>
             <h4>우리 동네 #노고산동에서 인기 있는 가맹점</h4>
             <div className="scrollContainer">
                 {bestStores.map((store, i) => (
@@ -105,7 +122,7 @@ function Recommendation() {
                             <Card.Body>
                                 <Card.Title>{store.storeName}</Card.Title>
                                 <Card.Text>
-                                    {store.mainCode}+{store.address}
+                                    {store.address}
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
