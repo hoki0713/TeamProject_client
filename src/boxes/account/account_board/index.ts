@@ -7,7 +7,7 @@ import FindPassword from './FindPassword';
 import PurchaseHistory from './PurchaseHistory.js'
 import MyReview from './MyReview.js';
 import MyFavorites from './MyFavorites';
-import MyQuestion from './MyQeustion';
+import MyQuestion from './MyQeustion.js';
 
 export {
   Login,
