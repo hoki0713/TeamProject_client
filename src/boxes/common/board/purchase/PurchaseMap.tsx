@@ -71,13 +71,14 @@ const localPayImgArray: object = {
 }
 
 
-function PurchaseMap({setImgsrc}) {
+function PurchaseMap({setImgsrc, setLocalName}) {
     return (
         <div>
             <PurchaseMapImg/>
             <map name="purchaseMap" id="purchaseMap">
                 {Object.entries(pointArray).map(([key,value])=>
-                    <area shape="rect" coords={value} alt={key} onClick={()=>setImgsrc(localPayImgArray[key])}/>)}
+                    <area shape="rect" coords={value} alt={key} onClick={()=>
+                    {setImgsrc(localPayImgArray[key]); setLocalName(key)}}/>)}
             </map>
         </div>
     );
