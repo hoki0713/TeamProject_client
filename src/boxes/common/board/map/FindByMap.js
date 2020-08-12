@@ -50,10 +50,7 @@ const FindByMap=()=> {
         const showHome=e=>{
             e.preventDefault()
             setLoca(true);}
-        const [selected, setSelected] = useState({lat: '', lng: ''});
-
-
-
+        const [selected, setSelected] = useState({lat: 0, lng: 0});
         Geocode.fromLatLng(selected.lat, selected.lng).then(
             response => {
                 const address = response.results[0].formatted_address;
@@ -66,14 +63,14 @@ const FindByMap=()=> {
         );
         useEffect(()=>{
             console.log("in useEffect")
-            if(!storeList) {
+            if(!storeList[0]) {
                 dispatch(storeThunk(sessionStorage.getItem("location")));
             console.log("useEffect")}
             if(sessionStorage.getItem("location").defaultAddr ==="경기도 파주시"){
                 setHomePosit({lat: 37.746897, lng: 127.040861});
             }
 
-        },[center],);
+        },[LoadScript,storeList],);
 
     const MapModal=(props)=> {
         const [reportShow, setReportShow]=useState(false);
@@ -96,14 +93,14 @@ const FindByMap=()=> {
                                     {storeInfo.storePhone}
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    <img src='http://bdap.postech.ac.kr/UPLOAD//GWPFile_per_BoardNo/80/20161114132407014640.bmp'
-                                         alt={'국밥집'} width={50} height={50}/>
+                                    <img src={storeInfo.imgUrl}
+                                         alt={storeInfo.storeName} width={80} height={80}/>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col xs={6} md={4}>
-                                    탕,국,찌개
+                                    {storeInfo.storeType}
                                 </Col>
                                 <Col xs={6} md={4}>
                                     별점 <img src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
@@ -219,10 +216,6 @@ const FindByMap=()=> {
                                     <h1>일단인포</h1>
                                 </InfoWindow>
                             </Marker>
-
-
-
-
                         </GoogleMap>
                         </LoadScript>
 
