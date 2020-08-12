@@ -39,7 +39,8 @@ const ReviewModal = ({
 
   const handleSearchStore = (e) => {
     e.preventDefault();
-    axios
+    if(storeNameModal) {
+      axios
       .get(`http://localhost:8080/stores/findStore/${storeNameModal}`)
       .then((response) => {
         const values = [];
@@ -55,6 +56,10 @@ const ReviewModal = ({
       .catch((error) => {
         throw error;
       });
+    } else {
+      alert("상호명을 입력하세요.");
+    }
+    
   };
 
   const handleSave = (e) => {
