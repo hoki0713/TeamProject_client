@@ -15,7 +15,11 @@ const MyReview = () => {
   );
   const [id, setId] = useState("");
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => { 
+    setShow(false);
+    setStoreName("");
+    setStoreId("");
+  };
 
   const handleModifyReview = (reviewId, info) => {
     setStoreId(info.storeId);
@@ -24,8 +28,16 @@ const MyReview = () => {
     setShow(true);
   };
 
-  const handleDelete = (e) => {
-    e.preventDefault();
+  const handleDelete = (reviewId) => {
+    axios
+    .delete(`http://localhost:8080/posts/reviews/${reviewId}`)
+    .then(() => {
+      alert("삭제완료");
+    })
+    .catch((error) => {
+      throw error;
+    })
+
   };
 
   const handleAddReview = (e) => {
@@ -68,7 +80,7 @@ const MyReview = () => {
           throw error;
         });
     }
-  }, [id]);
+  }, [id, userReviewArr]);
 
   return (
     <div className="container">
@@ -104,7 +116,7 @@ const MyReview = () => {
               <td>
                 <button
                   className="btn btn-outline-secondary btn-sm"
-                  onClick={handleDelete}
+                  onClick={() => { handleDelete(reviewIdArr[i]) }}
                 >
                   삭제하기
                 </button>
