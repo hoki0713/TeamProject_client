@@ -16,7 +16,6 @@ const rootReducer = combineReducers({
   userListReducer,
   storeListReducer,
   recommendListReducer,
-  storeReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
