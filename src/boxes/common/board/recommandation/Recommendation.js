@@ -4,6 +4,7 @@ import {CardDeck, Card, Container, Row, Col} from 'react-bootstrap'
 import './Recommendation.css'
 import {useDispatch, useSelector} from "react-redux";
 
+
 const RECOMMEND_LIST = "RECOMMEND_LIST";
 
 export const recommendListAction = (data) => ({type: RECOMMEND_LIST, payload: data});
@@ -29,11 +30,9 @@ function Recommendation() {
     const [storeList, setStoreList] = useState([])
     const [storeName, setStoreName] = useState("")
     const [storeType, setStoreType] = useState("")
-    const [keys, setKeys] = useState([])
-    const [values, setValues] = useState([])
     const [userBased, setUserBased] = useState([])
     const [itemBased, setItemBased] = useState([])
-    const [bestStores, setBestStores] = useState([])
+    const [bestStore, setBestStore] = useState([])
     const resultList = useSelector((state) => state.recommendListReducer);
     const dispatch = useDispatch()
     const setStores = (payload) => {
@@ -53,10 +52,11 @@ function Recommendation() {
             axios.get(`http://localhost:8080/recommends/individual/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
-                    console.log(res.data)
+                    console.log(res.data.bestStore)
                     console.log(res.data.userBased)
-                    setBestStores(res.data.bestStore)
+                    setBestStore(res.data.bestStore)
                     setUserBased(res.data.userBased)
+                    setItemBased(res.data.itemBased)
 
                     // data.list.forEach(elem => {
                     //     recommendList.push(elem)
@@ -78,11 +78,11 @@ function Recommendation() {
             <div className="scrollContainer">
                 {userBased.map((store, i) => (
                         <Card className="cardItem" key={i}>
-                            <Card.Img variant="top"
+                            <Card.Img id="card-image" variant="top"
                                       src={store.imgUrl}/>
 
                             <Card.Body>
-                                <Card.Title>{store.storeName}</Card.Title>
+                                <Card.Title id="card-title">{store.storeName}</Card.Title>
                                 <Card.Text>
                                     {store.address}
                                 </Card.Text>
@@ -93,12 +93,14 @@ function Recommendation() {
                         </Card>
                     )
                 )}
+
             </div>
+            <br/><br/><br/><br/>
             <h4>즐겨찾기한 #순남시래기와 유사한 추천 가맹점</h4>
             <div className="scrollContainer">
                 {itemBased.map((store, i) => (
                     <Card className="cardItem" key={i}>
-                        <Card.Img variant="top"
+                        <Card.Img style={{height:"50%"}} variant="top"
                                   src={store.imgUrl}/>
 
                         <Card.Body>
@@ -112,11 +114,12 @@ function Recommendation() {
                         </Card.Footer>
                     </Card>))}
             </div>
+            <br/><br/><br/><br/>
             <h4>우리 동네 #노고산동에서 인기 있는 가맹점</h4>
             <div className="scrollContainer">
-                {bestStores.map((store, i) => (
+                {bestStore.map((store, i) => (
                         <Card className="cardItem" key={i}>
-                            <Card.Img variant="top"
+                            <Card.Img style={{height:"50%"}} variant="top"
                                       src={store.imgUrl}/>
 
                             <Card.Body>
@@ -130,6 +133,7 @@ function Recommendation() {
                             </Card.Footer>
                         </Card>))}
             </div>
+            <br/><br/>
             </>)
     }
 export default Recommendation;
