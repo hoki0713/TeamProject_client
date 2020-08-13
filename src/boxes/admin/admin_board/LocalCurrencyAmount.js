@@ -102,6 +102,8 @@ const LocalCurrencyAmount = () => {
       })
   },[totalKeys,totalValues,salesTotalValues,salesTotalKeys])
 
+
+
   const start_end_date = e => {
     e.preventDefault();
 
@@ -123,8 +125,6 @@ const LocalCurrencyAmount = () => {
         throw err;
       })
     }
-
-
   };
 
   const currencyNameCheck = (e) =>{
@@ -146,11 +146,6 @@ const LocalCurrencyAmount = () => {
   }
   }
 
-  
-
-  
-
-  
 
   const handleSearch = (searchWord) => {
     alert(searchWord);
