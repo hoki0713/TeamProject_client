@@ -104,7 +104,7 @@ const Notice = () => {
                                 <td> {info.category}</td>
                                <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
                              {info.category==="사이트" && <td>관리자</td>} 
-                            |{ info.category==="지역화폐" && <td>경기지역화폐</td> }
+                            { info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>
                             </tr>))}
                     </tbody>

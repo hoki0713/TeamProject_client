@@ -36,6 +36,8 @@ const LocalCurrencyAmount = () => {
   const [salesTotalValues,setSalesTotalValues] = useState([]);
   const [salesTotalChart,setSalesTotalChart] = useState({});
   const [useSelectCheck,setUseSelectCheck] = useState("");
+  const [useChart,setUseChart]=useState({});
+  
   
 
 
@@ -55,6 +57,7 @@ const LocalCurrencyAmount = () => {
     .catch((err)=>{
       throw err;
     })
+
     if(currencyName ===""){
     axios
     .get(`http://localhost:8080/admins/voucher/sales-total`)
@@ -77,12 +80,23 @@ const LocalCurrencyAmount = () => {
       throw err;
     })
   }
-  },[currencyName])
+
+  if(useSelectCheck ===""){
+    axios
+    .get()
+    .then(()=>{
+
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  }
+  },[currencyName,useSelectCheck])
 
   useEffect(()=>{
 
       setChartData({
-        labels: totalKeys,
+        labels: totalKeys.sort(),
         datasets:[
           {
             data:totalValues,
@@ -92,7 +106,7 @@ const LocalCurrencyAmount = () => {
         ]
       })
       setSalesTotalChart({
-        labels: salesTotalKeys,
+        labels: salesTotalKeys.sort(),
         datasets:[
           {
             data:salesTotalValues,
@@ -111,19 +125,33 @@ const LocalCurrencyAmount = () => {
       alert("시작날짜보다 빠를수 없습니다.");
       setEndDate("");
     }
+
     if(currencyName === "") 
     {alert(`화폐명을 선택해주세요`)} 
     else if(startDate ==="" ||endDate ===""  ){
       alert(`기간을 선택해주세요`)
-    }else{
+    }else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
+     else{
       axios
       .get(`http://localhost:8080/admins/voucher/name-list/${currencyName}/${startDate}/${endDate}`)
       .then((res)=>{
+        const monthLocalTotalKeys=[];
+        const monthLocalTotalValues=[];
         console.log(res.data)
+
+        Object.entries(res.data).forEach(([key,value])=>{
+            monthLocalTotalKeys.push(key)
+            monthLocalTotalValues.push(value.unitPrice)
+        })
+
+        setSalesTotalKeys(monthLocalTotalKeys);
+      setSalesTotalValues(monthLocalTotalValues);
       })
       .catch((err)=>{
         throw err;
       })
+
+    
     }
   };
 
@@ -133,6 +161,7 @@ const LocalCurrencyAmount = () => {
     setCurrencyName(e.target.value)
   }
 
+
   const use_start_end_date = e =>{
     e.preventDefault();
 
@@ -141,9 +170,11 @@ const LocalCurrencyAmount = () => {
       setUseEndDate("");
     }else if(useStartDate ==="" ||useEndDate ===""  ){
       alert(`기간을 선택해주세요`)
-    }else{
-  
-  }
+    }else if(useSelectCheck===""){alert(`사용여부를 선택 해주세요`)}
+     else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
+    else{
+
+    }
   }
 
 
@@ -280,11 +311,12 @@ const LocalCurrencyAmount = () => {
           <select
             id="currencyTotal-useSelect-currency"
             value={useSelectCheck}
-            onChange={e=>setUseSelectCheck(e.tartget.value)}
+            onChange={e=>setUseSelectCheck(e.target.value)}
           >
-            <option selected>사용여부</option>
-            <option value="useOne">사용</option>
-            <option value="unUsedOne">미사용</option>
+            <option value="" selected>사용여부</option>
+            <option value="사용">사용</option>
+            <option value="미사용">미사용</option>
+            <option value="취소완료">취소완료</option>
           </select>
           
 
