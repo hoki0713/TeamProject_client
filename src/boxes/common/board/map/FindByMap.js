@@ -6,7 +6,6 @@ import {
     Marker,
     InfoWindow, LoadScript,
 } from "@react-google-maps/api";
-import side from './side.jpg'
 import Geocode from 'react-geocode'
 
 import './map.css'
@@ -22,7 +21,7 @@ import {
     chinaIcon,
     conviStore,
     drug,
-    cafe, hotelIcon, soju, bab, normal
+    cafe, hotelIcon, soju, bab, normal, home
 } from './mapIcons/imgIndex'
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
@@ -32,7 +31,7 @@ Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 
 
-const libraries = ['drawing']
+export const libraries = ['drawing']
 
 const FindByMap=()=> {
         const containerStyle = {
@@ -45,43 +44,36 @@ const FindByMap=()=> {
         const onUnmount = useCallback(function callback(map) {
         setMap(null)
         }, [])
-        const [center,setCenter]=useState({lat: 37.746897, lng: 127.040861});
+        const [center,setCenter]=useState({lat: 0, lng: 0});
         const [modalShow, setModalShow] = useState(false);
         let [homePosit,setHomePosit]=useState({});
         const [storeInfo,setStoreInfo]=useState({});
         const myLoca = JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr;
-        const [userLatLng,setUserLatLng]=useState({lat:0, lng:0});
-        const [infoShow, setInfoShow] =useState(false);
         const [storeList, setStoreList] =useState([]);
-
-        const showHome=e=>{
-            e.preventDefault()
-            setCenter(homePosit);}
         const mapRef = useRef();
-        const panTo = useCallback(({lat, lng}) => {
-            //<Search panTo <- 여기로
-            mapRef.current.panTo({lat, lng});
-            mapRef.current.setZoom(16);
+        const onMapLoad = useCallback(map => {
+            setMap(mapRef.current)
         }, []);
-        const onMapLoad = React.useCallback(map => {
-            mapRef.current = map;
-        }, []);
-        const getLatLng = () =>{
-            Geocode.fromAddress(myLoca).then(
+
+        const showHome=()=>{
+            setCenter(homePosit);
+            if(center==homePosit)window.location.reload();
+        }
+        const getLatLng = (location) =>{
+            Geocode.fromAddress(location).then(
                 response => {
                     const resLatLng = response.results[0].geometry.location;
-                    setUserLatLng({lat:resLatLng.lat, lng:resLatLng.lng})
-                    console.log(resLatLng);
+                    setHomePosit({lat:resLatLng.lat, lng:resLatLng.lng});
+                    setCenter({lat:resLatLng.lat, lng:resLatLng.lng})
+                    console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
                 },
                 error => {
                     console.error(error);
                 }
             );
         }
-
-
         useEffect(()=>{
-            console.log("in useEffect")
+            console.log("useEffect getStoreList")
             if(!storeList[0]) {
                 axios.get(`http://localhost:8080/stores/mapClick/의정부`)
                     .then(({data})=>{
@@ -103,30 +95,27 @@ const FindByMap=()=> {
                     })
                     .catch(err=>{throw(err)});
            }
-
-
         },[storeList],);
-        useEffect(()=>{
-                setHomePosit({lat: 37.746897, lng: 127.040861});
 
-        },[setHomePosit])
         useEffect(()=>{
+            console.log("useEffect setUserAddr")
             setUserAddr(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
-        },[userAddr])
+        },[userAddr]);
         useEffect(()=>{
-            getLatLng()
-        },[])
-    const StoreReport=(props)=> {
+            console.log("useEffect getUserLatLng")
+            getLatLng(myLoca);
+        },[myLoca]);
+
+
+        const StoreReport=(props)=> {
         const [checkShow,setCheckShow]=useState(false);
-        useEffect(()=>{
-            console.log(props.storeInfo.storeName)
-        },[props])
-        const Check =(props)=>{
-            return<>
-                <Modal
-                    scaleSize={"sm"}/>
-            </>
-        }
+
+            const Check =(props)=>{
+                return<>
+                    <Modal
+                        scaleSize={"sm"}/>
+                </>
+            }
         return (
             <div>
 
@@ -227,11 +216,14 @@ const FindByMap=()=> {
                     </Modal.Footer>
                 </Modal>
                 <StoreReport setReportShow storeInfo show={reportShow} onHide={()=>setReportShow(false)}/>
-                <ReviewModal show={reviewShow} handleClose={()=>setReviewShow(false)}
-                storeName={storeInfo.storeName}
-                accountDetail={JSON.stringify(sessionStorage.getItem("accountDetail"))}
-                storeId={storeInfo.id}
-                reviewId={null}/>
+                { reviewShow &&
+                <ReviewModal handleClose={()=>setReviewShow(false)}
+                             storeName={storeInfo.storeName}
+                             accountDetail={JSON.stringify(sessionStorage.getItem("accountDetail"))}
+                             storeId={storeInfo.id}
+                             reviewId={null}/>
+                }
+
                 <Star storeInfo show={starShow} onHide={()=>setStarShow(false)}/>
             </>
         );
@@ -252,15 +244,7 @@ const FindByMap=()=> {
                         {sessionStorage.getItem("accountDetail")&&<>
                             <img src={homeIcon} alt={"집"} onClick={e => {
                                 e.preventDefault();
-                                navigator.geolocation.getCurrentPosition(
-                                    position => {
-                                        panTo({
-                                            lat: position.coords.latitude,
-                                            lng: position.coords.longitude,
-                                        });
-                                    },
-                                    () => null,
-                                );
+                                showHome()
                             }} style={{width:50, height:50, cursor:'pointer'}}/>
                             <h6>내 위치</h6></>}
                     </td>
@@ -297,11 +281,6 @@ const FindByMap=()=> {
                                     }}
                                 />
                             ))}
-                            {infoShow&&<InfoWindow
-                                position={{lat:storeInfo.latitude, lng: storeInfo.longitude}}
-                                clickable={true}
-                                onCloseClick={() => setInfoShow(false)}
-                            ><h2>인포창</h2></InfoWindow>}
                             {sessionStorage.getItem("accountDetail")&&
                             <Marker
                                 position={homePosit}
@@ -321,7 +300,7 @@ const FindByMap=()=> {
                     </td>
                         <td className="td-right">
                             <table className="mapSide">
-                                <tr><td><img src={side} alt="사이드이미지"/></td></tr>
+                                <tr></tr>
                             </table>
                         </td>
                     </tr>
