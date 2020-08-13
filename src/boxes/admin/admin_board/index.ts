@@ -7,7 +7,7 @@ import NoticeWrite from './NoticeWrite.js';
 import NoticeDetail from "./NoticeDetail.js";
 import UsersList from './UsersList';
 import NotifyStore from './NotifyStore';
-// import Enquiry from './Enquiry';
+import Enquiry from './Enquiry.js';
 import EnquiryDetail from "./EnquiryDetail";
 import StoreDetail from './StoreDetail'
 import UserDetail from './UserDetail'
@@ -22,7 +22,7 @@ export {
   NoticeDetail,
   UsersList,
   NotifyStore,
-  // Enquiry,
+   Enquiry,
   EnquiryDetail,
   StoreDetail,
   UserDetail,

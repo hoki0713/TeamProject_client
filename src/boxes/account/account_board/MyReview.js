@@ -15,7 +15,12 @@ const MyReview = () => {
   );
   const [id, setId] = useState("");
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setReviewId("");
+    setStoreName("");
+    setStoreId("");
+  };
 
   const handleModifyReview = (reviewId, info) => {
     setStoreId(info.storeId);
@@ -24,8 +29,16 @@ const MyReview = () => {
     setShow(true);
   };
 
-  const handleDelete = (e) => {
-    e.preventDefault();
+  const handleDelete = (reviewId) => {
+    axios
+      .delete(`http://localhost:8080/posts/reviews/${reviewId}`)
+      .then(() => {
+        alert("삭제완료");
+        refreshList(id);
+      })
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const handleAddReview = (e) => {
@@ -38,8 +51,8 @@ const MyReview = () => {
     for (let i = 0; i < numOfStars; i++) {
       stars += "★";
     }
-    if(5-numOfStars) {
-      for (let i = 0; i < 5-numOfStars; i++) {
+    if (5 - numOfStars) {
+      for (let i = 0; i < 5 - numOfStars; i++) {
         stars += "☆";
       }
     }
@@ -50,23 +63,27 @@ const MyReview = () => {
     setId(accountDetail.id);
   }, [accountDetail]);
 
+  const refreshList = (id) => {
+    axios
+      .get(`http://localhost:8080/posts/reviews/${id}`)
+      .then((response) => {
+        const values = [];
+        const keys = [];
+        Object.entries(response.data).forEach(([key, value]) => {
+          keys.push(key);
+          values.push(value);
+        });
+        setReviewIdArr(keys);
+        setUserReviewArr(values);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   useEffect(() => {
     if (id) {
-      axios
-        .get(`http://localhost:8080/posts/reviews/${id}`)
-        .then((response) => {
-          const values = [];
-          const keys = [];
-          Object.entries(response.data).forEach(([key, value]) => {
-            keys.push(key);
-            values.push(value);
-          });
-          setReviewIdArr(keys);
-          setUserReviewArr(values);
-        })
-        .catch((error) => {
-          throw error;
-        });
+      refreshList(id);
     }
   }, [id]);
 
@@ -104,7 +121,9 @@ const MyReview = () => {
               <td>
                 <button
                   className="btn btn-outline-secondary btn-sm"
-                  onClick={handleDelete}
+                  onClick={() => {
+                    handleDelete(reviewIdArr[i]);
+                  }}
                 >
                   삭제하기
                 </button>
@@ -122,15 +141,16 @@ const MyReview = () => {
           추가하기
         </button>
       </div>
-
-      <ReviewModal
-        show={show}
-        handleClose={handleClose}
-        storeName={storeName}
-        accountDetail={accountDetail}
-        storeId={storeId}
-        reviewId={reviewId}
-      />
+      {show && (
+        <ReviewModal
+          handleClose={handleClose}
+          storeName={storeName}
+          accountDetail={accountDetail}
+          storeId={storeId}
+          reviewId={reviewId}
+          onSubmit={() => refreshList(id)}
+        />
+      )}
     </div>
   );
 };

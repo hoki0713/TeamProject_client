@@ -58,39 +58,6 @@ function FindByTag() {
                 </Card>
                 </CardDeck>
 
-
-            {/*<CardDeck>*/}
-            {/*    <Card>*/}
-            {/*        <Card.Body>*/}
-            {/*            <Card.Title>20대 남성의 키워드</Card.Title>*/}
-            {/*            <Card.Text>가성비, 소확행*/}
-            {/*            </Card.Text>*/}
-            {/*        </Card.Body>*/}
-            {/*    </Card>*/}
-
-            {/*    <Card>*/}
-            {/*        <Card.Body>*/}
-            {/*            <Card.Title>30대 여성의 키워드</Card.Title>*/}
-            {/*            <Card.Text>우리아이, 자기계발*/}
-            {/*            </Card.Text>*/}
-            {/*        </Card.Body>*/}
-            {/*    </Card>*/}
-            {/*    <Card>*/}
-            {/*        <Card.Body>*/}
-            {/*            <Card.Title>40대 남성의 키워드</Card.Title>*/}
-            {/*            <Card.Text>체력증진, 럭셔리*/}
-            {/*            </Card.Text>*/}
-            {/*        </Card.Body>*/}
-            {/*    </Card>*/}
-            {/*    <Card>*/}
-            {/*        <Card.Body>*/}
-            {/*            <Card.Title>60대 여성의 키워드</Card.Title>*/}
-            {/*            <Card.Text>웰빙, 은퇴생활*/}
-
-            {/*            </Card.Text>*/}
-            {/*        </Card.Body>*/}
-            {/*    </Card>*/}
-            {/*</CardDeck>        */}
         </div>
             <br/><br/><br/>
             <h3 style={{textAlign : "center"}}>맞춤검색</h3><br/>
