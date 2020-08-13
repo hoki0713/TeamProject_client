@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./LocalCurrencyAmount.css";
 import { Table } from "react-bootstrap";
 import { SearchBar } from "../../../items";
-import { Line, Doughnut, Bar, Polar } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import axios from "axios";
 
 const CURRENCY_AMOUNT = "CURRENCY_AMOUNT";
@@ -24,57 +24,133 @@ export const currencyReducer = (state = [], action) => {
 const LocalCurrencyAmount = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [useStartDate,setUseStartDate] = useState("");
+  const [useEndDate,setUseEndDate] = useState("");
   const [citySelect, setCitySelect] = useState("");
   const [useStatusSelect, setUseStatusSelect] = useState("");
   const [chartData, setChartData] = useState({});
   const [currencyName, setCurrencyName] = useState("");
+  const [totalKeys,setTotalKeys] = useState([]);
+  const [totalValues,setTotalValues] = useState([]);
+  const [salesTotalKeys,setSalesTotalKeys] = useState([]);
+  const [salesTotalValues,setSalesTotalValues] = useState([]);
+  const [salesTotalChart,setSalesTotalChart] = useState({});
+  const [useSelectCheck,setUseSelectCheck] = useState("");
+  
 
-  const startDateClick = (e) => {
-    e.preventDefault();
-    setStartDate(e.target.value);
-  };
 
-  const endDateClick = (e) => {
-    e.preventDefault();
-    setEndDate(e.target.value);
-  };
+  useEffect(()=>{
+    axios
+    .get(`http://localhost:8080/admins/currency/month/total`)
+    .then((res)=>{
+      const dataKey=[];
+      const dataValue=[];
+      Object.entries(res.data).forEach(([key,value])=>{
+          dataKey.push(key);
+          dataValue.push(value);
+      });
+      setTotalKeys(dataKey);
+      setTotalValues(dataValue);
+    })
+    .catch((err)=>{
+      throw err;
+    })
+    if(currencyName ===""){
+    axios
+    .get(`http://localhost:8080/admins/voucher/sales-total`)
+    .then((res)=>{
+     
+      const datakeys = [];
+      const datavalues = [];
 
-  const start_end_date = (e) => {
+      Object.entries(res.data).forEach(([key,value])=>{
+   
+        datakeys.push(key)
+        datavalues.push(value)
+      })
+      setSalesTotalKeys(datakeys);
+      setSalesTotalValues(datavalues);
+      
+      
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  }
+  },[currencyName])
+
+  useEffect(()=>{
+
+      setChartData({
+        labels: totalKeys,
+        datasets:[
+          {
+            data:totalValues,
+            backgroundColor:['rgb(153,153,153,0.2)','rgb(255,153,000,1)','rgb(255,255,000,1)','rgb(000,153,000,1)',
+          'rgb(000,000,204,1)','rgb(000,000,051,1)','rgb(102,000,102,1)','rgb(102,204,255,1)']
+          }
+        ]
+      })
+      setSalesTotalChart({
+        labels: salesTotalKeys,
+        datasets:[
+          {
+            data:salesTotalValues,
+            backgroundColor:'rgb(000,000,051,0.5)'
+          }
+        ]
+      })
+  },[totalKeys,totalValues,salesTotalValues,salesTotalKeys])
+
+  const start_end_date = e => {
     e.preventDefault();
+
     if (startDate > endDate) {
       alert("시작날짜보다 빠를수 없습니다.");
       setEndDate("");
     }
+    if(currencyName === "") 
+    {alert(`화폐명을 선택해주세요`)} 
+    else if(startDate ==="" ||endDate ===""  ){
+      alert(`기간을 선택해주세요`)
+    }else{
+      axios
+      .get(`http://localhost:8080/admins/voucher/name-list/${currencyName}/${startDate}/${endDate}`)
+      .then((res)=>{
+        console.log(res.data)
+      })
+      .catch((err)=>{
+        throw err;
+      })
+    }
+
+
   };
 
-  const currencyNameSelectCheck = (e) => {
+  const currencyNameCheck = (e) =>{
+    e.preventDefault()
+
+    setCurrencyName(e.target.value)
+  }
+
+  const use_start_end_date = e =>{
     e.preventDefault();
-    setCurrencyName(e.target.value);
-  };
 
-  const chart = () => {
-    setChartData({
-      labels: ["김포시", "연천군", "파주시"],
-      datasets: [
-        {
-          label: "level of thickness",
-          data: [306, 20, 302],
-          backgroundColor: [
-            "rgba(05,19,192,0.6)",
-            "rgba(05,19,1,0.6)",
-            "rgba(03,1,1,2.6)",
-          ],
-          gridLines: {
-            display: false,
-          },
-        },
-      ],
-    });
-  };
+    if (useStartDate > useEndDate) {
+      alert("시작날짜보다 빠를수 없습니다.");
+      setUseEndDate("");
+    }else if(useStartDate ==="" ||useEndDate ===""  ){
+      alert(`기간을 선택해주세요`)
+    }else{
+  
+  }
+  }
 
-  useEffect(() => {
-    chart();
-  }, []);
+  
+
+  
+
+  
 
   const handleSearch = (searchWord) => {
     alert(searchWord);
@@ -82,21 +158,6 @@ const LocalCurrencyAmount = () => {
       alert(`시작날짜보다 빠를 수 없습니다.`);
       setEndDate("");
     }
-  };
-
-  const citySelectChange = (e) => {
-    e.preventDefault();
-    setCitySelect(e.target.value);
-  };
-
-  const useStatusSelectChange = (e) => {
-    e.preventDefault();
-    setUseStatusSelect(e.target.value);
-  };
-
-  const test = (e) => {
-    e.preventDefault();
-    alert(e);
   };
 
   return (
@@ -128,16 +189,16 @@ const LocalCurrencyAmount = () => {
           <input
             className="currencyTotal-data"
             min="2020-01-01"
-            type="date"
+            type="month"
             value={startDate}
-            onChange={startDateClick}
+            onChange={e=>setStartDate(e.target.value)}
           ></input>
           <h4 className="currencyTotal-data"> &nbsp; ~ &nbsp; </h4>
           <input
             min=""
-            type="date"
+            type="month"
             value={endDate}
-            onChange={endDateClick}
+            onChange={e=>setEndDate(e.target.value)}
           ></input>
           <input
             className="currencyTotal-button btn btn-outline-primary"
@@ -158,18 +219,18 @@ const LocalCurrencyAmount = () => {
         <select
           id="currencyTotal-select-currency"
           value={currencyName}
-          onChange={currencyNameSelectCheck}
+          onChange={currencyNameCheck}
         >
-          <option selected>화폐명</option>
-          <option value="koyang">고양시 지역화폐</option>
-          <option value="uijeongbu">의정부시 지역화폐</option>
+          <option value="" selected>화폐명</option>
+          <option value="고양">고양시 지역화폐</option>
+          <option value="의정부">의정부시 지역화폐</option>
         </select>
 
         <div>
           <div className="currencyTotal-Bar">
 
           <Bar
-            data={chartData}
+            data={salesTotalChart}
             options={{
               responsive: true,
               title: { text: "THICCNESS SCATIL", display: true },
@@ -178,8 +239,6 @@ const LocalCurrencyAmount = () => {
                   {
                     ticks: {
                       autoSkip: true,
-                      maxTicksLimit: 10,
-                      baginAtZero: true,
                     },
                   },
                 ],
@@ -191,6 +250,29 @@ const LocalCurrencyAmount = () => {
             }}
           />
     </div>
+    <div className="useDate-input">
+          <h5 className="currencyTotal-h5-input font-weight-bold">필수 입력:</h5>
+          <input
+            className="currencyTotal-data"
+            min="2020-01-01"
+            type="month"
+            value={useStartDate}
+            onChange={e=>setUseStartDate(e.target.value)}
+          ></input>
+          <h4 className="currencyTotal-data"> &nbsp; ~ &nbsp; </h4>
+          <input
+            min=""
+            type="month"
+            value={useEndDate}
+            onChange={e=>setUseEndDate(e.target.value)}
+          ></input>
+          <input
+            className="currencyTotal-button btn btn-outline-primary"
+            type="submit"
+            onClick={use_start_end_date}
+            value="조회"
+          />
+        </div>
           <div className="currencyTotal-div">
             <h5 className="currencyUse-h5 font-weight-bold">
               사용여부에 따른 통계
@@ -199,15 +281,17 @@ const LocalCurrencyAmount = () => {
               -사용/미사용으로 나눠서 기간별로 통계
             </h6>
           </div>
+          
           <select
             id="currencyTotal-useSelect-currency"
-            value={currencyName}
-            onChange={currencyNameSelectCheck}
+            value={useSelectCheck}
+            onChange={e=>setUseSelectCheck(e.tartget.value)}
           >
             <option selected>사용여부</option>
             <option value="useOne">사용</option>
             <option value="unUsedOne">미사용</option>
           </select>
+          
 
           <div className="currencyTotal-Bar">
             <Bar data={chartData} />
@@ -219,7 +303,7 @@ const LocalCurrencyAmount = () => {
         <select
           id="localcurrency_cityselect"
           value={citySelect}
-          onChange={citySelectChange}
+          onChange={e=>setCitySelect(e.target.value)}
         >
           <option selected>시도</option>
           <option>의정부시</option>
@@ -229,7 +313,7 @@ const LocalCurrencyAmount = () => {
         <select
           id="localcurrency_statusselect"
           value={useStatusSelect}
-          onChange={useStatusSelectChange}
+          onChange={e=>setUseStatusSelect(e.target.value)}
         >
           <option selected>상태</option>
           <option value="use">사용완료</option>

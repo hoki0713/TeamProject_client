@@ -37,9 +37,7 @@ const StoreDetail = () => {
     no: 1,
   };
 
-  const nameClick = (e) => {
-    e.preventDefault();
-  };
+
 
   return (
     <div className="container store-detail-wrapper">

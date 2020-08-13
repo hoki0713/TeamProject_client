@@ -1,6 +1,4 @@
 import React,{useState,useEffect} from 'react';
-import {SearchBar} from "../../../items";
-import {Link} from 'react-router-dom'
 import {Table,Button} from 'react-bootstrap'
 import './AdminBoard.css'
 import axios from 'axios';

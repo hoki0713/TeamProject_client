@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Table, Container, Row, Col } from 'react-bootstrap';
 import { PaginationItem, SearchBar } from "../../../items";
 import { Link } from "react-router-dom";
-import axios from 'axios'
-import { useDispatch, useSelector } from "react-redux";
-import './AdminBoard.css'
+import axios from 'axios';
+import './AdminBoard.css';
 
 const POST_LIST = "POST_LIST"
 export const postListAction = data => ({
@@ -29,17 +28,8 @@ export const postListThunk = searchWord => dispatch => {
         .catch(err => { throw (err) })
 }
 const Notice = () => {
-
-    const [post, setPost] = useState({})
     const [postList, setPostList] = useState([])
-    const [postId,setPostId] = useState("");
-    const resultList = useSelector((x) => x.postListReducer)
-    const dispatch = useDispatch()
-    const setPosts = payload => {
-        setPost({ title: payload.postTitle })
-    }
-
-
+ 
     const getNotice = postId =>{
         console.log(postId)
         axios
@@ -113,8 +103,8 @@ const Notice = () => {
                                 <td >{i+1}</td>
                                 <td> {info.category}</td>
                                <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
-                                {info.category==="사이트" && <td>관리자</td>  
-                                || info.category==="지역화폐" && <td>경기지역화폐</td> }
+                             {info.category==="사이트" && <td>관리자</td>} 
+                            |{ info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>
                             </tr>))}
                     </tbody>

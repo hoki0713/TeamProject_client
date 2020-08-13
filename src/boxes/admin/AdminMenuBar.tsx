@@ -8,25 +8,22 @@ const AdminMenuBar = () => {
   const [isFirstOpen, setIsFirstOpen] = useState(false);
   const [isSecondOpen, setIsSecondOpen] = useState(false);
   const [isThirdOpen, setIsThirdOpen] = useState(false);
-  const [isFouthOpen, setIsFouthOpen] = useState(false);
+
 
   const firstToggleOpen = () => {
     setIsFirstOpen(!isFirstOpen);
     setIsSecondOpen(false);
     setIsThirdOpen(false);
-    setIsFouthOpen(false);
   };
   const secondToggleOpen = () => {
     setIsFirstOpen(false);
     setIsSecondOpen(!isSecondOpen);
     setIsThirdOpen(false);
-    setIsFouthOpen(false);
   };
   const thirdToggleOpen = () => {
     setIsFirstOpen(false);
     setIsSecondOpen(false);
     setIsThirdOpen(!isThirdOpen);
-    setIsFouthOpen(false);
   };
   
 

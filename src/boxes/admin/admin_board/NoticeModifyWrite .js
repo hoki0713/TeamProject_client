@@ -13,7 +13,7 @@ const NoticeModifyWrite = () => {
     const [accountDetail] = useState(
       JSON.parse(sessionStorage.getItem("accountDetail"))
     );
-    const [notice,setNotice] = useState(
+    const [notice] = useState(
         JSON.parse(sessionStorage.getItem("notice"))
     )
 
@@ -35,7 +35,6 @@ const NoticeModifyWrite = () => {
 
 const newNotice = e =>{
     e.preventDefault()
-    alert(`확인`)
     const notice = {
         postId:postId,
         userId:accountDetail.id,

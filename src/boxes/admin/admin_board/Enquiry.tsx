@@ -1,7 +1,7 @@
 import React from 'react';
 import {PaginationItem, SearchBar} from "../../../items";
 import {Link} from "react-router-dom";
-import {Button, Table} from "react-bootstrap";
+import { Table} from "react-bootstrap";
 import './AdminBoard.css'
 const Enquiry = () => {
     const handleSearch = (searchWord) => {
