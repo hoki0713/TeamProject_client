@@ -1506,26 +1506,26 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.4.4.tgz#11d5db19bd178936ec89cd84519c4de439574398"
   integrity sha512-1oO6+dN5kdIA3sKPZhRGJTfGVP4SWV6KqlMOwry4J3HfyD68sl/3KmG7DeYUzvN+RbhXDnv/D8vNNB8168tAMg==
 
-"@react-google-maps/api@1.9.9":
-  version "1.9.9"
-  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.9.9.tgz#6cf2e7429770ca9b9454224e9b48c66d315256a8"
-  integrity sha512-yy/mh0uqF5JCGGzoGYaBoFBbtdr1XKgRlQvalOQ1pITguhRwRIELOHesIJQvAOrdqgCmE3noCa838pFIPZ1Sag==
+"@react-google-maps/api@^1.9.9":
+  version "1.9.12"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.9.12.tgz#382e0dacdc67a6046fb6fb91b54ec1449b7ba17b"
+  integrity sha512-YpYZOMduxiQIt8+njdffoqD4fYdOugudoafnAD1N+mEUrVnFlslUPMQ+gOJwuYdlkTAR5NZUbCt80LJWEN+ZnA==
   dependencies:
-    "@react-google-maps/infobox" "1.9.9"
-    "@react-google-maps/marker-clusterer" "1.9.9"
-    acorn "7.3.1"
+    "@react-google-maps/infobox" "1.9.11"
+    "@react-google-maps/marker-clusterer" "1.9.11"
+    acorn "7.4.0"
     acorn-jsx "^5.2.0"
     invariant "2.2.4"
 
-"@react-google-maps/infobox@1.9.9":
-  version "1.9.9"
-  resolved "https://registry.yarnpkg.com/@react-google-maps/infobox/-/infobox-1.9.9.tgz#cef278590524604e453cd6792a4f48f22e94c3a5"
-  integrity sha512-pneWal21CHa7eSjBLy5aG11boFXHPKvwV88K2TuwzQV1ncDOIWoZO/S9fZQc6Pzd4F0V8tf9la1c9P9audDiMQ==
+"@react-google-maps/infobox@1.9.11":
+  version "1.9.11"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/infobox/-/infobox-1.9.11.tgz#ebb2e6de68de95fdb204315d143deb2aaa0c16f2"
+  integrity sha512-22ewm+OpOh69ikypG29idsdRz2OWeFsN+8zvYBzSETxKP782rmUGqhSIvXXmHa8TOcktm7EaEqOWWvZwaxymag==
 
-"@react-google-maps/marker-clusterer@1.9.9":
-  version "1.9.9"
-  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.9.9.tgz#5b967d26c12a2726700720570d1afff47598d922"
-  integrity sha512-MA+Z+S77csV+httWjZhmE1pOJitmB9Jk1BnNO7ub+81jae5ipY3lf7kXpVBLeNmWy/AXs61bchuXRyzsKyLdqQ==
+"@react-google-maps/marker-clusterer@1.9.11":
+  version "1.9.11"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.9.11.tgz#15721764e6d309ac7b70c29889886602f7d5ffae"
+  integrity sha512-yIABKlkORju131efXUZs/tL7FCK9IXtvy2M9SQRZy/mwgoOIYeoJlPPaBjn81DQqZLRj6AdAocydk+MnjWqFiQ==
 
 "@restart/context@^2.1.4":
   version "2.1.4"
@@ -2202,10 +2202,10 @@ acorn-walk@^6.0.1:
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-6.2.0.tgz#123cb8f3b84c2171f1f7fb252615b1c78a6b1a8c"
   integrity sha512-7evsyfH1cLOCdAzZAd43Cic04yKydNx0cF+7tiA19p1XnLLPU4dpCQOqpjqwokFe//vS0QqfqqjCS2JkiIs0cA==
 
-acorn@7.3.1, acorn@^7.1.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.3.1.tgz#85010754db53c3fbaf3b9ea3e083aa5c5d147ffd"
-  integrity sha512-tLc0wSnatxAQHVHUapaHdz72pi9KUyHjq5KyHjGg9Y8Ifdc79pTh2XvI6I1/chZbnM7QtNKzh66ooDogPZSleA==
+acorn@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.0.tgz#e1ad486e6c54501634c6c397c5c121daa383607c"
+  integrity sha512-+G7P8jJmCHr+S+cLfQxygbWhXy+8YTVGzAkpEbcLo2mLoL7tij/VG41QSHACSf5QgYRhMZYHuNc6drJaO0Da+w==
 
 acorn@^5.5.3:
   version "5.7.4"
@@ -2216,6 +2216,11 @@ acorn@^6.0.1, acorn@^6.0.4, acorn@^6.2.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.1.tgz#531e58ba3f51b9dacb9a6646ca4debf5b14ca474"
   integrity sha512-ZVA9k326Nwrj3Cj9jlh3wGFutC2ZornPNARZwsNYqQYgN0EsV2d53w5RN/co65Ohn4sUAUtb1rSUAOD6XN9idA==
+
+acorn@^7.1.1:
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.3.1.tgz#85010754db53c3fbaf3b9ea3e083aa5c5d147ffd"
+  integrity sha512-tLc0wSnatxAQHVHUapaHdz72pi9KUyHjq5KyHjGg9Y8Ifdc79pTh2XvI6I1/chZbnM7QtNKzh66ooDogPZSleA==
 
 address@1.1.2, address@^1.0.1:
   version "1.1.2"
