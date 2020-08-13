@@ -15,5 +15,7 @@ import favStar from './favStar.png'
 import storeIcon from './store.png'
 import hotelIcon from './hotelIcon.png'
 import chinaIcon from './chinaFoodIcon.png'
-export {chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
+import conviStore from './conviStore.png'
+import soju from './sojuIcon.png'
+export {soju, conviStore,chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
     hospIcon,normal,phoneB,recom,review,selected,storeIcon}
