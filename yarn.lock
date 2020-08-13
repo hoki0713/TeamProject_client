@@ -1506,6 +1506,46 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.4.4.tgz#11d5db19bd178936ec89cd84519c4de439574398"
   integrity sha512-1oO6+dN5kdIA3sKPZhRGJTfGVP4SWV6KqlMOwry4J3HfyD68sl/3KmG7DeYUzvN+RbhXDnv/D8vNNB8168tAMg==
 
+"@progress/kendo-popup-common@^1.2.2":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-popup-common/-/kendo-popup-common-1.7.0.tgz#d0d29dbc5eacdaba8803aa3d0f69f8a8ad05dbff"
+  integrity sha512-KxPIXDkirDpJaF/UWFKbe8QpbO5CwdQH/HyNT5Fj1qZb25YaO68VZCisls2qkcEVPHBlXesDcN3QJlt4vJ6tJw==
+
+"@progress/kendo-react-common@3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-react-common/-/kendo-react-common-3.15.0.tgz#cc0081673a9be901a41dddbb35cee0037bda3650"
+  integrity sha512-Ytaa42/nvkmcn5f3UUfm18qxFpJG6TT5MGZkPEOaACuzPNX6EfMDNByxhdC1KMuvLCGPuWIj1YAcLTUI/hxq0A==
+  dependencies:
+    "@telerik/kendo-draggable" "^2.1.0"
+    prop-types "^15.6.0"
+
+"@progress/kendo-react-dropdowns@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-react-dropdowns/-/kendo-react-dropdowns-3.15.0.tgz#dbffb2dc16b0147a2e0cbedee228e819605e7222"
+  integrity sha512-mVZ1ohyxQgmaML6GsxMgdoo7x/bws0wCZQEFp6qsLF1H5Qgv0pBPYPA8OnPaScRNfKRZx3kNaXjGLBv1VIMAuQ==
+  dependencies:
+    "@progress/kendo-react-common" "3.15.0"
+    "@progress/kendo-react-labels" "3.15.0"
+    "@progress/kendo-react-popup" "3.15.0"
+    prop-types "^15.6.0"
+
+"@progress/kendo-react-labels@3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-react-labels/-/kendo-react-labels-3.15.0.tgz#35e97bcf2c537984440a387ddc8c114e47485148"
+  integrity sha512-LCujne/H0nMajShAmGmUne7bVG0RImBQBKORvvYqiTS0lnTLsRbuUr3jeeGGh7B6Q4zNfS3lYfSGTbr8c6CNBA==
+  dependencies:
+    "@progress/kendo-react-common" "3.15.0"
+    prop-types "^15.6.0"
+
+"@progress/kendo-react-popup@3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-react-popup/-/kendo-react-popup-3.15.0.tgz#d805caeca694ce71d9545afd9fe4cda6909fa1c1"
+  integrity sha512-4ExRIGzBQfW1mdgLqXOXgNJo4X3amdXA+yhH0gbLDeMF/gb3nukiZxlie1DbFr7hzleDlHHRYTsw8oUfc4JxeQ==
+  dependencies:
+    "@progress/kendo-popup-common" "^1.2.2"
+    "@progress/kendo-react-common" "3.15.0"
+    prop-types "^15.6.0"
+
 "@react-google-maps/api@^1.9.9":
   version "1.9.12"
   resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.9.12.tgz#382e0dacdc67a6046fb6fb91b54ec1449b7ba17b"
@@ -1647,6 +1687,11 @@
     "@svgr/plugin-jsx" "^4.3.3"
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
+
+"@telerik/kendo-draggable@^2.1.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@telerik/kendo-draggable/-/kendo-draggable-2.2.0.tgz#651ee63e8978c3c9d8548a3ece37280ce5944863"
+  integrity sha512-78ofOzRpisqPjG51LfLQ4FEWoGJXs4PkzyJSdVklyFw6gtAnj/T6dp7mHIMj8BivVkN9FjNgf4Eo/mdYs9fusQ==
 
 "@testing-library/dom@*":
   version "7.20.0"
@@ -3367,7 +3412,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6:
+classnames@2.x, classnames@>=1.1.4, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -10086,7 +10131,7 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
-react-bootstrap@^1.3.0:
+react-bootstrap@>=0.18.0, react-bootstrap@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-1.3.0.tgz#d9dde4ad554e9cd21d1465e8b5e5ef6679cae6a1"
   integrity sha512-GYj0c6FO9mx7DaO8Xyz2zs0IcQ6CGCtM3O6/feIoCaG4N8B0+l4eqL7stlMcLpqO4d8NG2PoMO/AbUOD+MO7mg==
@@ -10170,6 +10215,15 @@ react-dom@^16.13.1, react-dom@^16.4.1:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.19.1"
+
+react-dropdown-input@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/react-dropdown-input/-/react-dropdown-input-0.1.11.tgz#2162e86bc3fa0626d476178dc38ccd80199b7c3f"
+  integrity sha1-IWLoa8P6BibUdheNw4zNgBmbfD8=
+  dependencies:
+    classnames ">=1.1.4"
+    react ">=0.12"
+    react-bootstrap ">=0.18.0"
 
 react-error-overlay@^6.0.7:
   version "6.0.7"
@@ -10419,7 +10473,7 @@ react-virtualized-auto-sizer@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.2.tgz#a61dd4f756458bbf63bd895a92379f9b70f803bd"
   integrity sha512-MYXhTY1BZpdJFjUovvYHVBmkq79szK/k7V3MO+36gJkWGkrXKtyr4vCPtpphaTLRAdDNoYEYFZWE8LjN+PIHNg==
 
-react@^16.0.0, react@^16.13.1, react@^16.4.1, react@^16.4.2:
+react@>=0.12, react@^16.0.0, react@^16.13.1, react@^16.4.1, react@^16.4.2:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==

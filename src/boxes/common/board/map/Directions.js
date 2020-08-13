@@ -13,11 +13,11 @@ const INSERT = 'todos/INSERT'
 const TOGGLE = 'todos/TOGGLE'
 const REMOVE = 'todos/REMOVE'
 
-export const changeInput = createAction(CHANGE_INPUT, input => input)
+export const changeInput = createAction(CHANGE_INPUT, input => input);
 let id = 3
-export const insert = createAction(INSERT, text => ({id: id++, text, done: false}))
-export const toggle = createAction(TOGGLE, id => id)
-export const remove = createAction(REMOVE, id => id)
+export const insert = createAction(INSERT, text => ({id: id++, text, done: false}));
+export const toggle = createAction(TOGGLE, id => id);
+export const remove = createAction(REMOVE, id => id);
 
 function useActions(actions, deps) {
     const dispatch = useDispatch()
@@ -77,8 +77,8 @@ const Todos= ({input, todos, onChangeInput, onInsert,  onToggle, onRemove}) => {
         onChangeInput('')
     }
     const onChange = e => {
-        e.preventDefault()
-        onChangeInput(e.target.value)
+        e.preventDefault();
+        onChangeInput(e.target.value);
     }
     return <>
         <div>
@@ -109,25 +109,25 @@ const Todos= ({input, todos, onChangeInput, onInsert,  onToggle, onRemove}) => {
 }
 const Directions= () => {
 
-    // const {input, todos} =
-    //     useSelector(({todosReducer})=>{
-            //
-            // if (typeof(todosReducer.input) == 'undefined') {
-            //     alert(`todos.input 은 undefinded 입니다`)
-            // }else{
-            //
-            //     return {input: todosReducer.input, todos: todosReducer.todos}
-            // }
+    const {input, todos} =
+        useSelector(({todosReducer})=>{
+
+            if (typeof(todosReducer.input) == 'undefined') {
+                alert(`todos.input 은 undefinded 입니다`)
+            }else{
+
+                return {input: todosReducer.input, todos: todosReducer.todos}
+            }
 
 
-        // })
+        })
     const [onChangeInput, onInsert, onToggle, onRemove] = useActions(
         [changeInput, insert, toggle, remove],
         []
     )
-    return (<></>
-        // <Todos input={input} todos={todos} onChangeInput={onChangeInput}
-        //        onInsert={onInsert} onToggle={onToggle} onRemove={onRemove}/>
+    return (
+        <Todos input={input} todos={todos} onChangeInput={onChangeInput}
+               onInsert={onInsert} onToggle={onToggle} onRemove={onRemove}/>
     )
 }
 export default React.memo(Directions)

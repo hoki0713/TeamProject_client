@@ -1,28 +1,29 @@
-import React, {useCallback, useRef, useState} from 'react';
-import Directions from "./Directions";
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
     GoogleMap,
     Marker,
-    InfoWindow, LoadScript,Polyline
+    InfoWindow, LoadScript, Polyline
 } from "@react-google-maps/api";
 import Geocode from 'react-geocode'
-import {Provider, useStore} from 'react-redux'
-import {homeIcon} from "./mapIcons/imgIndex";
+import {homeIcon2,homeIcon,arrowMarker} from "./mapIcons/imgIndex";
 import {libraries} from "./FindByMap";
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 
 function FindBestRoute() {
-  const pathCoordinates = [
-    {lat: 37.746997, lng: 127.044861},
-    {lat: 37.746897, lng: 127.040861}
-  ];
-  const store=useStore()
-  const [lineShow,setLineShow]=useState(false)
-  const [infoShow, setInfoShow]=useState(false);
+
+    const [lineShow, setLineShow] = useState(true);
+    const [center, setCenter] = useState({lat: 0, lng: 0})
     const [map, setMap] = useState(null);
+    const [inputValue,setInputValue] =useState("")
+    let markers = [];
+    let markDetail = {};
     const mapRef = useRef();
+    const pathCoordinates = [
+        center,
+        {lat: 37.746897, lng: 127.040861}
+    ];
     const onMapLoad = useCallback(map => {
         mapRef.current = map;
     }, []);
@@ -30,82 +31,93 @@ function FindBestRoute() {
         setMap(null)
     }, [])
     const containerStyle = {
-        width: '600px',
+        width: '100%',
         height: '600px'
     };
+    var searchNames = ['Sydney', 'Melbourne', 'Brisbane',
+        'Adelaide', 'Perth', 'Hobart'];
+    const getLatLng = (location) => {
+        Geocode.fromAddress(location).then(
+            response => {
+                const resLatLng = response.results[0].geometry.location;
+                setCenter({lat: resLatLng.lat, lng: resLatLng.lng})
+                console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
+            },
+            error => {
+                console.error(error);
+            }
+        );
+    }
+    useEffect(() => {
+        getLatLng(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+    }, [])
 
 
-  return( <>
-    <h3>최적 경로 찾아보기</h3>
-    <table className="findmap">
-      <tr>
+    const Map=()=>{
+        return(<></>)
+    }
 
-        <td></td>
-      </tr>
-      <tr><td colSpan={2} className="td-left">
-          <LoadScript
-              googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
-              libraries={libraries}>
-          <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={{lat: 37.746897, lng: 127.040861}}
-              onUnmount={onUnmount}
-              zoom={16}
-              onLoad={onMapLoad}>
-              <Marker
-                  position={{lat: 37.746897, lng: 127.040861}}
-                  icon={{url: homeIcon,
-                      scaledSize: {width:40, height:40},
-                  }}
-                  title={'집'}
-                  animation={2}
-              />
-              <Marker
-                  defaultAnimation={3}
-                  defaultCursor={"pointer"}
-                  defaultDraggable={true}
-                  defaultLabel={"2"}
-                  defaultClickable={true}
-                  defaultTitle={"인포창"}
-                  defaultPosition={{lat: 37.746897, lng: 127.040861}}
-                  onClick={()=>setInfoShow(true)}
-              >
-                  {infoShow&&
-                  <InfoWindow onCloseClick={()=>setInfoShow(false)}>
-                      <h5>인포창</h5>
-                  </InfoWindow>}
-              </Marker>
-              <Polyline
-                  path= {pathCoordinates}
-                  visible={lineShow}
-                  options={{
-                      strokeColor: "#d502b9",
-                      strokeOpacity: 0.75,
-                      strokeWeight: 2,
-                      icons: [
-                          {
-                              icon: '',
-                              offset: "0",
-                              repeat: "20px"
-                          }
-                      ]
-                  }}
-              />
-          </GoogleMap>
-          </LoadScript>
-      </td>
-        <td className="td-right">
-          <table className="mapSide">
-            <tr><td>
-              <h3>경로검색</h3>
-                  <Directions/>
-              <button onClick={()=>setLineShow(true)}>검색</button>
-            </td></tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </>)
+
+    return (<>
+        <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3><br/>
+        <table>
+            <tr>
+                <td className="first_td">
+                    <LoadScript
+                        googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
+                        libraries={libraries}>
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={center}
+                            onUnmount={onUnmount}
+                            zoom={15}
+                            onLoad={onMapLoad}>
+                            <Marker
+                                position={center}
+                                icon={{
+                                    url: homeIcon,
+                                    scaledSize: {width: 40, height: 40},
+                                }}
+                                title={'집'}
+                                animation={2}
+                            />
+                            <Marker position={{lat: 37.746897, lng: 127.040861}}
+                                    icon={{
+                                        url: arrowMarker,
+                                        scaledSize: {width: 40, height: 40},
+                                    }}
+                            />
+                            <Polyline
+                                path={pathCoordinates}
+                                visible={lineShow}
+                                options={{
+                                    strokeColor: "#d502b9",
+                                    strokeOpacity: 0.75,
+                                    strokeWeight: 2,
+                                    icons: [
+                                        {
+                                            icon: '',
+                                            offset: "0",
+                                            repeat: "20px"
+                                        }
+                                    ]
+                                }}
+                            />
+                        </GoogleMap>
+                    </LoadScript>
+                </td>
+                <td className="second_td">
+                    <table>
+                        <tr><td>{
+                        }</td></tr>
+                        <tr><td>
+                            
+                        </td></tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </>)
 }
 
 export default FindBestRoute;

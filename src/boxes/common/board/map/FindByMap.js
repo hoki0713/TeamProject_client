@@ -9,7 +9,7 @@ import {
 import Geocode from 'react-geocode'
 
 import './map.css'
-import {  Star} from "./Modals";
+import {Star} from "./Modals";
 import {
     homeIcon,
     red,
@@ -32,15 +32,15 @@ Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 
 export const libraries = ['drawing']
-
+export const containerStyle = {
+    width: '100%',
+    height: '600px'
+};
 const FindByMap=()=> {
-        const containerStyle = {
-            width: '600px',
-            height: '600px'
-        };
+
 
         const [map, setMap] = useState(null);
-        const [userAddr, setUserAddr] = useState("");
+        const [recoList, setRecoList]=useState([])
         const onUnmount = useCallback(function callback(map) {
         setMap(null)
         }, [])
@@ -94,13 +94,13 @@ const FindByMap=()=> {
                         setStoreList(temList);
                     })
                     .catch(err=>{throw(err)});
-           }
-        },[storeList],);
+           };
+            if(!recoList[0]){
 
-        useEffect(()=>{
-            console.log("useEffect setUserAddr")
-            setUserAddr(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
-        },[userAddr]);
+            }
+        },[storeList,recoList],);
+
+
         useEffect(()=>{
             console.log("useEffect getUserLatLng")
             getLatLng(myLoca);

@@ -4,6 +4,7 @@ import cafe from './cafe.png'
 import drug from './drug.png'
 import home from './home.png'
 import homeIcon from './homeIcon.png'
+import homeIcon2 from './homeIcon2.png'
 import hospIcon from './hospIcon.png'
 import normal from './normal.png'
 import phoneB from './phoneB.png'
@@ -18,5 +19,6 @@ import chinaIcon from './chinaFoodIcon.png'
 import conviStore from './conviStore.png'
 import bab from './babIcon.png'
 import soju from './sojuIcon.png'
-export {bab,soju, conviStore,chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
+import arrowMarker from './arrowMarker.png'
+export {arrowMarker,homeIcon2,bab,soju, conviStore,chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
     hospIcon,normal,phoneB,recom,review,selected,storeIcon}
