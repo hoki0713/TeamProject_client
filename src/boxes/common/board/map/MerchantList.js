@@ -3,28 +3,7 @@ import {Table, Pagination} from 'react-bootstrap';
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useDispatch} from "react-redux";
-import {StoreReport} from "./Modals";
 import './search.jpg'
-import {storeThunk,storeList} from "./mapThunks";
-
-
-const GET_STORE_REQUEST = 'GET_STORE_REQUEST';
-
-
-export const storeListAction=data=>({type: GET_STORE_REQUEST, payload:data});
-export const storeListReducer = (state=[], action)=>{
-    switch (action.type) {
-        case GET_STORE_REQUEST :return action.payload;
-        default: return state;
-
-    }
-}
-export const storeListThunk = searchWord => dispatch => {
-    console.log("storeListThunk")
-    axios.get(`http://localhost:8080/stores/${searchWord}`)
-        .then(res=>{dispatch(storeListAction(res.data))})
-        .catch(err=>{throw(err)})
-}
 
 
 const MerchantList=()=> {
@@ -33,6 +12,7 @@ const MerchantList=()=> {
     const [state,setState]=useState('');
     const [dong,setDong]=useState('');
     const [cate,setCate]=useState('');
+    const [storeList, setStoreList]=useState([])
     const stateCheck=e=>{setState(e.target.value);};
     const dongCheck=e=>{setDong(e.target.value); };
     const cateCheck=e=>{setCate(e.target.value); };
@@ -40,8 +20,15 @@ const MerchantList=()=> {
 
 
     useEffect(()=>{
-        dispatch(storeThunk(""))
-    },[storeList])
+        console.log("in useEffect")
+        if(!storeList[0]) {
+            axios.get(`http://localhost:8080/stores/mapClick/의정부`)
+                .then(({data})=>{
+                    setStoreList(data.list);
+                })
+                .catch(err=>{throw(err)});
+        }})
+
 
 
     const Img = ()=>{
@@ -51,7 +38,6 @@ const MerchantList=()=> {
         </Link>)}
   return (
     <div className="container">
-        <StoreReport show={modalShow} onHide={() => setModalShow(false)}/>
         <Table striped bordered hover className="list_table">
             <thead>
             <tr>

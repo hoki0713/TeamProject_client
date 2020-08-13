@@ -1,33 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Table, Container, Row, Col } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Button, Table, Container, Row, Col } from "react-bootstrap";
 import { PaginationItem, SearchBar } from "../../../items";
 import { Link } from "react-router-dom";
+
 import axios from 'axios';
 import './AdminBoard.css';
 
-const POST_LIST = "POST_LIST"
-export const postListAction = data => ({
-    type: POST_LIST,
-    payload: data
-})
+const POST_LIST = "POST_LIST";
+export const postListAction = (data) => ({
+  type: POST_LIST,
+  payload: data,
+});
 
 export const postListReducer = (state = [], action) => {
-    switch (action.type) {
-        case POST_LIST:
-            return action.payload
-        default:
-            return state
-    }
-}
+  switch (action.type) {
+    case POST_LIST:
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
-
-export const postListThunk = searchWord => dispatch => {
-    console.log('api 도착')
-    axios.get(`http://localhost/posts/notice/list/${searchWord}`)
-        .then(res => { dispatch(postListAction(res.data)) })
-        .catch(err => { throw (err) })
-}
+export const postListThunk = (searchWord) => (dispatch) => {
+  console.log("api 도착");
+  axios
+    .get(`http://localhost/posts/notice/list/${searchWord}`)
+    .then((res) => {
+      dispatch(postListAction(res.data));
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 const Notice = () => {
+
     const [postList, setPostList] = useState([])
  
     const getNotice = postId =>{
@@ -129,3 +135,4 @@ const Notice = () => {
 }
 
 export default Notice;
+
