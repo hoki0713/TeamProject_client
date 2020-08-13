@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import CommonPage from './CommonPage';
@@ -6,7 +6,7 @@ import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
 import AccountDetailPage from './AccountDetailPage';
 
-function Page() {
+const Page = () => {
   return (
     <Switch>
       <Route path="/" exact>

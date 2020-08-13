@@ -81,14 +81,14 @@ const MyFavorites = () => {
           ))}
         </tbody>
       </table>
-      <ReviewModal 
-        show={show} 
+      {show && (
+        <ReviewModal 
         handleClose={handleClose} 
         accountDetail={accountDetail} 
         storeName={storeName} 
         storeId={storeId} 
       />
-      
+      )}
     </div>
   );
 };
