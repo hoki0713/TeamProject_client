@@ -76,7 +76,7 @@
 }
 
 .currencyTotal-Bar{
-  width: 50%;
+  width: 60%;
   margin-left: 570px;
   margin-top:10px
 }
@@ -96,5 +96,10 @@
 }
 
 .currencyTotal-div{
+  margin-top: 20px;
+}
+
+.useDate-input{
+  margin-left: 575px;
   margin-top: 20px;
 }

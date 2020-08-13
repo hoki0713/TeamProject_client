@@ -1,6 +1,4 @@
 import React,{useState,useEffect} from 'react';
-import {SearchBar} from "../../../items";
-import {Link} from 'react-router-dom'
 import {Table,Button} from 'react-bootstrap'
 import './AdminBoard.css'
 import axios from 'axios';
@@ -12,13 +10,27 @@ const NoticeDetail = () => {
    )
 
    useEffect(()=>{
-      
-       console.log(JSON.parse(sessionStorage.getItem("notice")))
        setPostId(notice.postId)
    },[notice])
 
    const modifyNotice = () =>{
        window.location.href="/admin/notice-modify"
+   }
+
+   const noticeList = () =>{
+       window.location.href="/admin/notice"
+   }
+
+   const deleteNotice = e =>{
+        e.preventDefault()
+        axios
+        .delete(`http://localhost:8080/posts/delete/${postId}`)
+        .then((res)=>{
+            window.location.href="/admin/notice"
+        })
+        .catch((err)=>{
+            throw err;
+        })
    }
 
     return (
@@ -49,8 +61,8 @@ const NoticeDetail = () => {
             </Table>
             <div id="button-right">
             <Button variant="outline-dark" onClick={modifyNotice}>수정</Button>{' '}
-            <Button variant="outline-dark">삭제</Button>{' '}
-            <Button variant="outline-dark"><Link to="/admin/notice">목록</Link></Button>
+            <Button variant="outline-dark" onClick={deleteNotice}>삭제</Button>{' '}
+            <Button variant="outline-dark " onClick={noticeList}>목록</Button>
             </div>
             </>
     );

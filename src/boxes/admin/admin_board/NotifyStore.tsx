@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './NotifyStore.css'
 import { Table } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
@@ -26,11 +26,7 @@ const initialState={
 
 const NotifyStore = () => {
 
-    const nameClick= (name) =>{
-      alert(name)
-      //<td onClick={e=> {alert(`${stores.name}`)}}>{stores.name}</td>
-      //<td onClick={nameClick({stores.name})}>{stores.name}</td>
-    }
+
 
   
 

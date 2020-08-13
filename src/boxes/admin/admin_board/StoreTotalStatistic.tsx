@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./StoreTotalStatistic.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { Doughnut, Line } from "react-chartjs-2";
+import {  Line } from "react-chartjs-2";
 
 
 const LOCAL_USERS = "LOCAL_USERS";
