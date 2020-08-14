@@ -15,7 +15,6 @@ function FindByTag() {
     const [ageIndustry, setAgeIndustry] = useState([])
     const [totalIndustry, setTotalIndustry] = useState([])
     const [searchIndustry, setSearchIndustry] = useState([])
-    const [checked, setChecked] = useState(false)
 
 
     const calAgeGroup = () => {
@@ -67,14 +66,12 @@ function FindByTag() {
 
     const handleGender=(e)=>{
         setGender(e.target.value);
-        setChecked(e.currentTarget.checked)
-        console.log("gender시작"+gender)
+        console.log("gender시작"+gender+"age시작"+ageGroup)
         handleIndustry()
     }
     const handleAge=(e)=>{
         setAgeGroup(e.target.value);
-        setChecked(e.currentTarget.checked)
-        console.log("age시작"+ageGroup)
+        console.log("age시작"+ageGroup+"gender"+gender)
         handleIndustry()
     }
 
@@ -105,7 +102,7 @@ function FindByTag() {
 
 
                     <Card>
-                        <Card.Header>{userBirthYear}의 관심업종 TOP 5</Card.Header>
+                        <Card.Header>{userGender}의 관심업종 TOP 5</Card.Header>
                         {genderIndustry.map((industry, i) => (
                                 <ListGroup variant="flush">
                                     <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
@@ -113,7 +110,7 @@ function FindByTag() {
                         )}
                     </Card>
                     <Card>
-                        <Card.Header>{userGender}의 관심업종 TOP 5</Card.Header>
+                        <Card.Header>{userBirthYear}의 관심업종 TOP 5</Card.Header>
                         {ageIndustry.map((industry, i) => (
                                 <ListGroup variant="flush">
                                     <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
@@ -133,7 +130,7 @@ function FindByTag() {
                     <Col sm={10}>
                         <Button variant="outline-dark" type="button" onClick={handleGender} value="M" >남성</Button>{' '}
                         <Button variant="outline-dark" type="button" onClick={handleGender} value={"F"}>여성</Button>{' '}
-                        <Button variant="outline-dark" type="button" onClick={handleGender} value={"None"}>성별무관</Button>
+                        <Button variant="outline-dark" type="button" onClick={handleGender} value={"null"}>성별무관</Button>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -147,7 +144,7 @@ function FindByTag() {
                         <Button variant="outline-dark" type="button" value={40} onClick={handleAge}>40대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={50} onClick={handleAge}>50대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={60} onClick={handleAge}>60대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={100} onClick={handleAge}>연령무관</Button>
+                        <Button variant="outline-dark" type="button" value={0} onClick={handleAge}>연령무관</Button>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
