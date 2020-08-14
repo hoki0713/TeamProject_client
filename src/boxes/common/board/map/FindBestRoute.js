@@ -18,8 +18,8 @@ Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 const FindBestRoute=()=> {
 
     const [lineShow, setLineShow] = useState(true);// 폴리라인 조건부랜더링
-    const [center, setCenter] = useState({lat: 0, lng: 0}); //지도 센터 좌표
-    const myLoca = JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr; // 유저 집주소
+    const [center, setCenter] = useState({lat: 37.73633262, lng: 127.0447991}); //지도 센터 좌표
+    const [myLoca,setMyLoca] = useState("")
     const [map, setMap] = useState(null);
     const [inputValue,setInputValue] =useState(""); //검색어
     const [stores, setStores] =useState([]);
@@ -61,6 +61,7 @@ const FindBestRoute=()=> {
         );
     }
     useEffect(() => {
+
         getLatLng(myLoca);
     }, [myLoca]); // 주소로 유저 좌표 가져오기
 
@@ -80,6 +81,52 @@ const FindBestRoute=()=> {
         };
 
     },[stores]);
+    useEffect(()=>{
+        console.log(`ussEffect get direction`)
+        axios.get(`https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving`,
+                {
+                    params:{
+                        start: [127.12345,37.12345],
+                        goal: [127.12345,37.13345]
+                    },
+                headers: { // 요청 헤더
+                    "X-NCP-APIGW-API-KEY-ID": 'lyiy7i7pk0',
+                    "X-NCP-APIGW-API-KEY": 'EU8qYkk0tslwz6V3mzMvvIJBkvdzZn5XTRFqIVlH',
+                },
+                timeout: 1000 // 1초 이내에 응답이 오지 않으면 에러로 간주
+            }).then(response => {
+                console.log(`네이버 요청완료 ${JSON.parse(response.data)}`)
+            })
+                .catch(err=>{console.log(err); throw err; })
+    },[])
+
+
+
+    // useEffect(()=>{
+    //     console.log(`ussEffect get direction`)
+    //     axios.get(`https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving`,
+    //         {
+    //             params:{
+    //                 start: [127.12345,37.12345],
+    //                 goal: [127.12345,37.13345]
+    //             },
+    //         headers: { // 요청 헤더
+    //             "Access-Control-Allow-Origin":"*",
+    //             "Access-Control-Allow-Methods": "GET",
+    //             authorization: 'JWT fefege..',
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json',
+    //             "X-NCP-APIGW-API-KEY-ID": 'lyiy7i7pk0',
+    //             "X-NCP-APIGW-API-KEY": 'EU8qYkk0tslwz6V3mzMvvIJBkvdzZn5XTRFqIVlH',
+    //             "Access-Control-Allow-Headers":"Origin,Accept,X-Requested-With,Content-Type,Access-Control-Requested-Method," +
+    //                 "Access-Control-Requested-Headers,Authorization",
+    //         },
+    //         timeout: 3000 // 3초 이내에 응답이 오지 않으면 에러로 간주
+    //     }).then(response => {
+    //         console.log(`네이버 요청완료 ${JSON.parse(response.data)}`)
+    //     })
+    //         .catch(err=>{console.log(err); throw err; })
+    // },[])
 
 
 

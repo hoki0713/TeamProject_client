@@ -44,11 +44,11 @@ const FindByMap=()=> {
         const onUnmount = useCallback(function callback(map) {
         setMap(null)
         }, [])
-        const [center,setCenter]=useState({lat: 0, lng: 0});
+        const [center,setCenter]=useState({lat: 37.73633262, lng: 127.0447991});
         const [modalShow, setModalShow] = useState(false);
         let [homePosit,setHomePosit]=useState({});
         const [storeInfo,setStoreInfo]=useState({});
-        const myLoca = JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr;
+        const [myLoca,setMyLoca] = useState("");
         const [storeList, setStoreList] =useState([]);
         const mapRef = useRef();
         const onMapLoad = useCallback(map => {
@@ -103,7 +103,6 @@ const FindByMap=()=> {
 
         useEffect(()=>{
             console.log("useEffect getUserLatLng")
-            getLatLng(myLoca);
         },[myLoca]);
 
 
