@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const LoginLink = ({ loginedAccount }) => {
+const LoginLink = ({ loginedAccount, clickLogout }) => {
   const handleLogout = () => {
+    alert("로그아웃 되었습니다. 다시 로그인 하세요.")
     sessionStorage.clear();
-    window.location.reload();
+    clickLogout();
   }
 
   return (
