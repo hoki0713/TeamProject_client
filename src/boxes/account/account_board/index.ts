@@ -8,6 +8,7 @@ import PurchaseHistory from './PurchaseHistory.js'
 import MyReview from './MyReview.js';
 import MyFavorites from './MyFavorites';
 import MyQuestion from './MyQeustion.js';
+import Writer from './Writer';
 
 export {
   Login,
@@ -19,5 +20,6 @@ export {
   PurchaseHistory,
   MyReview,
   MyFavorites,
-  MyQuestion
+  MyQuestion,
+  Writer
 }
