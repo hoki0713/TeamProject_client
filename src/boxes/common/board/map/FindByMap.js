@@ -46,7 +46,7 @@ const FindByMap=()=> {
         }, [])
         const [center,setCenter]=useState({lat: 37.73633262, lng: 127.0447991});
         const [modalShow, setModalShow] = useState(false);
-        let [homePosit,setHomePosit]=useState({});
+        const [homePosit,setHomePosit]=useState({});
         const [storeInfo,setStoreInfo]=useState({});
         const [myLoca,setMyLoca] = useState("");
         const [storeList, setStoreList] =useState([]);

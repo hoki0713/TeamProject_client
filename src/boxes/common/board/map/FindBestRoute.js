@@ -23,9 +23,9 @@ const FindBestRoute=()=> {
     const [map, setMap] = useState(null);
     const [inputValue,setInputValue] =useState(""); //검색어
     const [stores, setStores] =useState([]);
+    const [homePosit,setHomePosit]=useState({lat: 37.73633262, lng: 127.0447991});
     let markers = []; //경로 마커 좌표들 추가 제거 가능한 컬렉션
     let markDetail = {}; // 마커 디테일
-
     const mapRef = useRef();
     const pathCoordinates = [
         center,
@@ -52,7 +52,9 @@ const FindBestRoute=()=> {
         Geocode.fromAddress(location).then(
             response => {
                 const resLatLng = response.results[0].geometry.location;
-                setCenter({lat: resLatLng.lat, lng: resLatLng.lng})
+                alert(`받아온 좌표${JSON.stringify(resLatLng)}`)
+                setHomePosit({lat: resLatLng.lat, lng: resLatLng.lng});
+                setCenter(homePosit);
                 console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
             },
             error => {
@@ -60,10 +62,41 @@ const FindBestRoute=()=> {
             }
         );
     }
-    useEffect(() => {
+    function getBestSeq (){
+        let homeLoca = homePosit;
+        let locations =[{lat:stores[0].latitude, lng: stores[0].longitude},
+            {lat:stores[1].latitude, lng: stores[1].longitude},
+            {lat:stores[2].latitude, lng: stores[2].longitude}]
 
+
+
+        let results = [];
+        let index =0;
+        for(let i = 0;i<locations.length;i++){
+            for(let j = 0;j<locations.length;j++){
+                for(let k = 0;k<locations.length;k++){
+                    if(i!=j&&j!=k&&k!=i){
+                        let ways = `Home > 1. ${i} > 2. ${j} > 3. ${k}`
+                    results[index]={way: ways, distance:(
+                        Math.sqrt(Math.pow((homePosit.lat-locations[i].lat),2)+Math.pow((homePosit.lng - locations[i].lng),2))+
+                    Math.sqrt(Math.pow((locations[i].lat-locations[j].lat),2)+Math.pow((locations[i].lng - locations[j].lng),2))+
+                    Math.sqrt(Math.pow((locations[j].lat-locations[k].lat),2)+Math.pow((locations[j].lng - locations[k].lng),2))+
+                    Math.sqrt(Math.pow((homePosit.lat-locations[k].lat),2)+Math.pow((homePosit.lng - locations[k].lng),2))
+                    )};
+                        index++
+                }
+
+            }}
+        }
+        console.log(results)
+
+
+
+    }
+    useEffect(() => {
+        setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr)
         getLatLng(myLoca);
-    }, [myLoca]); // 주소로 유저 좌표 가져오기
+    }, [homePosit]); // 주소로 유저 좌표 가져오기
 
     useEffect(()=>{
         console.log("useEffect getStoreList")
@@ -71,9 +104,8 @@ const FindBestRoute=()=> {
             axios.get(`http://localhost:8080/stores/mapClick/의정부`)
                 .then(({data})=>{
                     let temList =[]
-                    let index = 0;
                     data.list.map(elem=>{
-                        temList.push({id:index++, value:elem.storeName});
+                        temList.push(elem)
                     });
                     setStores(temList);
                 })
@@ -81,55 +113,6 @@ const FindBestRoute=()=> {
         };
 
     },[stores]);
-    useEffect(()=>{
-        console.log(`ussEffect get direction`)
-        axios.get(`https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving`,
-                {
-                    params:{
-                        start: [127.12345,37.12345],
-                        goal: [127.12345,37.13345]
-                    },
-                headers: { // 요청 헤더
-                    "X-NCP-APIGW-API-KEY-ID": 'lyiy7i7pk0',
-                    "X-NCP-APIGW-API-KEY": 'EU8qYkk0tslwz6V3mzMvvIJBkvdzZn5XTRFqIVlH',
-                },
-                timeout: 1000 // 1초 이내에 응답이 오지 않으면 에러로 간주
-            }).then(response => {
-                console.log(`네이버 요청완료 ${JSON.parse(response.data)}`)
-            })
-                .catch(err=>{console.log(err); throw err; })
-    },[])
-
-
-
-    // useEffect(()=>{
-    //     console.log(`ussEffect get direction`)
-    //     axios.get(`https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving`,
-    //         {
-    //             params:{
-    //                 start: [127.12345,37.12345],
-    //                 goal: [127.12345,37.13345]
-    //             },
-    //         headers: { // 요청 헤더
-    //             "Access-Control-Allow-Origin":"*",
-    //             "Access-Control-Allow-Methods": "GET",
-    //             authorization: 'JWT fefege..',
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //             "X-NCP-APIGW-API-KEY-ID": 'lyiy7i7pk0',
-    //             "X-NCP-APIGW-API-KEY": 'EU8qYkk0tslwz6V3mzMvvIJBkvdzZn5XTRFqIVlH',
-    //             "Access-Control-Allow-Headers":"Origin,Accept,X-Requested-With,Content-Type,Access-Control-Requested-Method," +
-    //                 "Access-Control-Requested-Headers,Authorization",
-    //         },
-    //         timeout: 3000 // 3초 이내에 응답이 오지 않으면 에러로 간주
-    //     }).then(response => {
-    //         console.log(`네이버 요청완료 ${JSON.parse(response.data)}`)
-    //     })
-    //         .catch(err=>{console.log(err); throw err; })
-    // },[])
-
-
-
     return (<>
         <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3><br/>
         <table>
@@ -181,6 +164,7 @@ const FindBestRoute=()=> {
                 <td className="second_td">
                     <table className={"route_input"}>
                         <tr><td><h5>우리집:&nbsp;{myLoca}</h5></td></tr>
+                        <button onClick={()=>getBestSeq()}>거리계산</button>
                         {
                             <tr><td>
                             <p>경로</p>
