@@ -103,7 +103,7 @@ const CommonMenuBar = ({isLogined}) => {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={fourthToggleOpen} >
               지역화폐
             </p>
-            {isLogined &&
+            {(isLogined)?
               <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
                 <Link to="/buy-local-currency">
                   <p className="dropdown-item">
@@ -111,9 +111,7 @@ const CommonMenuBar = ({isLogined}) => {
                 </p>
                 </Link>
               </div>
-            }
-
-            {!isLogined &&
+            :
               <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
                 <Link to="/account/login">
                   <p className="dropdown-item">
