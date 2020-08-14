@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { PaginationItem } from "../../../items";
 import "./AdminBoard.css";
 import axios from "axios";
+import { Writer } from "../../account/account_board";
+import { Modal } from "react-bootstrap";
 
 const Enquiry = () => {
   const [selectedOption, setSelectedOption] = useState("all");
@@ -9,13 +11,60 @@ const Enquiry = () => {
   const [userQuestionArr, setUserQuestionArr] = useState([]);
   const [searchWord, setSearchWord] = useState("");
 
+  const [questionId, setQuestionId] = useState("");
+  const [selectedQuestionTitle, setSelectedQuestionTitle] = useState("");
+  const [selectedQuestionContents, setSelectedQuestionContents] = useState("");
+  const [selectedQuestionComment, setSelectedQuestionComment] = useState("");
+
+  const [isWritingAnswer, setIsWritingAnswer] = useState(false);
+  const [show, setShow] = useState("");
+
+  const handleClose = () => {
+    setQuestionId("");
+    setSelectedQuestionContents("");
+    setSelectedQuestionTitle("");
+    setSelectedQuestionComment("");
+    setIsWritingAnswer(false);
+    setShow(false);
+  };
+
   const handleSearch = () => {
     refreshList(selectedOption, searchWord);
     setSearchWord("");
   };
 
-  const handleQuestionDetail = () => {};
-  const handleReply = () => {};
+  const handleQuestionDetail = (qId, info) => {
+    setQuestionId(qId);
+    setSelectedQuestionTitle(info.postTitle);
+    setSelectedQuestionContents(info.contents);
+    setSelectedQuestionComment(info.comment);
+    setShow(true);
+  };
+
+  const handleReply = (qId, info) => {
+    setQuestionId(qId);
+    setSelectedQuestionTitle(info.postTitle);
+    setSelectedQuestionContents(info.contents);
+    setSelectedQuestionComment(info.comment);
+    setIsWritingAnswer(true);
+    setShow(true);
+  };
+
+  const handleSaveAnswer = (qId) => {
+    const data = {
+      comment: selectedQuestionComment,
+    };
+    axios
+      .patch(`http://localhost:8080/posts/questions/${qId}`, data)
+      .then(() => {
+        alert("답변완료");
+        refreshList(selectedOption);
+        handleClose();
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
 
   const refreshList = (selectedOption, searchWord) => {
     axios
@@ -46,11 +95,11 @@ const Enquiry = () => {
       <div className="content-title">
         <h2 className="menu-h2"> - 1:1 문의</h2>
         <div id="select-search-bar">
-          <select 
-            className="form-control" 
-            id="select" 
+          <select
+            className="form-control"
+            id="select"
             value={selectedOption}
-            onChange={e => setSelectedOption(e.target.value)}
+            onChange={(e) => setSelectedOption(e.target.value)}
           >
             <option value="all">전체</option>
             <option value="unsolved">미해결</option>
@@ -105,25 +154,103 @@ const Enquiry = () => {
                 {info.postTitle}
               </td>
               <td>{info.regDate}</td>
-              <td>
-                {!info.comment && "처리중"}
-                {info.comment && "답변완료"}
-              </td>
-              <td>
-                <button
-                  className="btn btn-outline-primary btn-sm"
-                  onClick={() => {
-                    handleReply(questionIdArr[i], info);
-                  }}
-                >
-                  답변입력
-                </button>
-              </td>
+
+              {!info.comment && (
+                <>
+                  <td>처리중</td>
+                  <td>
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => {
+                        handleReply(questionIdArr[i], info);
+                      }}
+                    >
+                      답변입력
+                    </button>
+                  </td>
+                </>
+              )}
+              {info.comment && (
+                <>
+                  <td>답변완료</td>
+                  <td>
+                    <button className="btn btn-outline-primary btn-sm" disabled>
+                      답변완료
+                    </button>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
       <PaginationItem />
+
+      {show && (
+        <Modal show={true} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>문의하기</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>※사이트 이용과 관련된 문의를 남겨주세요.</p>
+            {questionId && (
+              <>
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text pr-3">제목</span>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    readOnly
+                    value={selectedQuestionTitle}
+                  />
+                </div>
+                <div className="question" style={{ height: "400px" }}>
+                  <Writer contents={selectedQuestionContents} isNew={false} />
+                  <div className="input-group">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">답변</span>
+                    </div>
+                    {isWritingAnswer && (
+                      <>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={selectedQuestionComment}
+                          onChange={(e) =>
+                            setSelectedQuestionComment(e.target.value)
+                          }
+                          style={{ height: "120px" }}
+                        />
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              handleSaveAnswer(questionId);
+                            }}
+                          >
+                            답변저장
+                          </button>
+                        </div>
+                      </>
+                    )}
+                    {!isWritingAnswer && (
+                      <input
+                        type="text"
+                        className="form-control"
+                        readOnly
+                        value={selectedQuestionComment}
+                        style={{ height: "120px" }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </Modal.Body>
+        </Modal>
+      )}
     </>
   );
 };
