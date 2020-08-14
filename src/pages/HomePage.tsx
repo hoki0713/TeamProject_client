@@ -3,20 +3,27 @@ import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
 
 const HomePage = () => {
   const [isLogined, setIsLogined] = useState(false);
-  const [accountDetail] = useState(sessionStorage.getItem("accountDetail"));
+  const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'));
 
-  useEffect(() => {
-    if (accountDetail) {
+  const refreshUser = (id) => {
+    if (id) {
       setIsLogined(true);
     } else {
       setIsLogined(false);
     }
-  }, [accountDetail]);
+  }
+
+  useEffect(() => {
+    refreshUser(accountDetail.id);
+  },[accountDetail]);
 
   return (
     <div className="container">
       <div className="row">
-        <MainNav loginedAccount={isLogined} />
+        <MainNav 
+          clickLogout={refreshUser}
+          loginedAccount={isLogined} 
+        />
       </div>
       <div className="row">
         <MainLogo />
