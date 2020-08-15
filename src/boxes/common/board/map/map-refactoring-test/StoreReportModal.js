@@ -3,16 +3,13 @@ import { Modal } from "react-bootstrap";
 import "./map.css";
 import axios from "axios";
 
-const StoreReportModal = ({ handleClose, storeId, storeInfo, accountDetail }) => {
+const StoreReportModal = ({ handleClose, storeId, storeInfo }) => {
+
   const handleReport = () => {
-    const data = {
-      user: accountDetail.id,
-      store: storeId,
-    };
     axios
-      .post(`http://localhost:8080/reports`, data)
+      .post(`http://localhost:8080/reports/${storeId}`)
       .then(() => {
-        alert("신고가 완료되었습니다.");
+        alert(`${storeInfo.storeName}에 대한 신고가 완료되었습니다.`);
         handleClose();
       })
       .catch((error) => {

@@ -7,12 +7,18 @@ import "./map.css";
 import { red, review, addr, phoneB, favStar } from "../mapIcons/imgIndex";
 import axios from "axios";
 
-const StoreDetailModal = ({ handleClose, storeId, storeInfo, accountDetail }) => {
+const StoreDetailModal = ({
+  handleClose,
+  storeId,
+  storeInfo,
+  accountDetail,
+}) => {
   const [reportModalShow, setReportModalShow] = useState(false);
   const [reviewModalShow, setReviewModalShow] = useState(false);
   const history = useHistory();
 
   const handleReportModalClose = () => {
+    handleClose();
     setReportModalShow(false);
   };
 
@@ -52,6 +58,9 @@ const StoreDetailModal = ({ handleClose, storeId, storeInfo, accountDetail }) =>
               height={40}
             />
             <span>{storeInfo.storeName}</span>
+            {storeInfo.reportedCount > 0 && (
+              <span style={{color:"red", "font-size": "10px"}}>( 누적 신고 횟수 : {storeInfo.reportedCount} )</span>
+            )}
           </Modal.Title>
         </Modal.Header>
 
