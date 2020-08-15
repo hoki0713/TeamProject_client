@@ -44,15 +44,46 @@ const PaginationItem = ({postPerPage,totalPosts,currentPage}) => {
 
     return (
         <>
-          <ul className="pagination">
-            {pageNumber.map((pageNum)=>(
-                <li
-                key={pageNum}
-                onClick={()=>currentPage(pageNum)}
+          <ul className="pagination justify-content-center">
+           <li className="page-item">
+            <span
+                onClick={()=>{
+                    prevPage();
+                    window.scrollTo(0,0);
+                }}
+                className="page-link"
                 >
-                    {pageNum}
-                </li>
-            ))}
+                Previous
+            </span>
+           </li>
+
+           {pageNumber.map((number)=>(
+               <li key={number} className="page-item">
+                   <span
+                    onClick={()=>{
+                        paginate(number);
+                        window.scrollTo(0,0);
+                    }}
+                    className="page-link page-btn"
+                    >
+                        {number}
+                   </span>
+               </li>
+           ))}
+
+            <li className="page-item">
+                <span
+                    onClick={()=>{
+                        nextPage();
+                        window.scrollTo(0,0);
+                    }}
+                    className="page-link"
+                    >
+                    Next
+
+                </span>
+            </li>
+
           </ul>
         </>
     );
