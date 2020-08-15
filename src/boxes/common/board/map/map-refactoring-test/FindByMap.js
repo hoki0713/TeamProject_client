@@ -209,7 +209,6 @@ const FindByMap = () => {
                     onClick={() => {
                       setStoreDetailModalShow(true);
                       setStoreInfo(store);
-                      console.log(storeIdArr[i]);
                       setStoreId(storeIdArr[i]);
                       setCenter({ lat: store.latitude, lng: store.longitude });
                     }}

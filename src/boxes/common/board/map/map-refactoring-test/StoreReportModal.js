@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import "./map.css";
 import axios from "axios";
 
-const StoreReportModal = ({ handleClose, storeId, storeInfo, accountDetail }) => {
+const StoreReportModal = ({ handleClose, storeId, storeInfo }) => {
 
   const handleReport = () => {
     axios

@@ -1,56 +1,68 @@
-.LocalTotal-h5{
-  margin-right: 20px;
-  float: left;
-  
+.parent {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border: 1px solid #b0afac;
 }
 
-#userLocal-select{
- float: left;
+.LocalTotal-h5 {
+  margin-right: 20px;
 }
-.userLocal-Total{
+
+.option-name {
+  width: 350px;
+}
+
+#userLocal-select {
+  margin-right: 2rem;
+  width: 100px;
+}
+.userLocal-Total {
   width: 90%;
   margin-bottom: 20px;
 }
 
-.LocalTotal-h6{
+.LocalTotal-h6 {
   text-align: center;
 }
-.LocalTotalJoin-h6{
+.LocalTotalJoin-h6 {
   margin-top: 20px;
   text-align: center;
 }
 
-.localTotal-genderDoughnut{
-  width: 50%;
-  float: left;
-  flex:1;
-
+#graph-container {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
-.localTotal-ageBar{
-  width: 50%;
-  float: left;
-  flex:1;
+.localTotal-genderDoughnut {
+  display: inline-block;
+  width: 35%;
 }
 
-.parent{
+.localTotal-ageBar {
+  display: inline-block;
+  width: 65%;
+}
+
+.userTotal-div {
   display: flex;
 }
 
-.userTotal-div{
-  margin-top: 40px;
+.userTotal-data {
+  width: 150px;
 }
 
-.userTotal-data{
-  float: left;
-}
-
-.userTotal-button{
+.userTotal-button {
   margin-left: 10px;
   height: 35px;
 }
 
-.userJoin-chart{
+.userJoin-chart {
   width: 50%;
-  
 }
