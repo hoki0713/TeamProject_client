@@ -4,7 +4,7 @@ import { Logo, SearchBar, LoginedAccountChecker } from '../../items';
 import './CommonPage.css'
 
 
-const CommonHeader = ({loginedAccount, isAdmin}) => {
+const CommonHeader = ({loginedAccount, clickLogout, isAdmin}) => {
 
   const history = useHistory();
   const handleSearch = (searchWord) => {
@@ -27,7 +27,8 @@ const CommonHeader = ({loginedAccount, isAdmin}) => {
         </div>
 
         <div className="col-lg-2">
-          <LoginedAccountChecker 
+          <LoginedAccountChecker
+            clickLogout={clickLogout}
             loginedAccount={loginedAccount}
             isAdmin={isAdmin}
           />

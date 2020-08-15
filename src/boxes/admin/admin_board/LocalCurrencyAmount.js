@@ -35,7 +35,11 @@ const LocalCurrencyAmount = () => {
   const [salesTotalKeys,setSalesTotalKeys] = useState([]);
   const [salesTotalValues,setSalesTotalValues] = useState([]);
   const [salesTotalChart,setSalesTotalChart] = useState({});
-  const [useSelectCheck,setUseSelectCheck] = useState("");
+  const [useChart,setUseChart]=useState({});
+  const [localSelect,setLocalSelect]=useState("");
+  const [useTotalLocalKeys,setUseTotalLocalKeys] = useState([]);
+  const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
+  
   
 
 
@@ -55,6 +59,7 @@ const LocalCurrencyAmount = () => {
     .catch((err)=>{
       throw err;
     })
+
     if(currencyName ===""){
     axios
     .get(`http://localhost:8080/admins/voucher/sales-total`)
@@ -70,19 +75,38 @@ const LocalCurrencyAmount = () => {
       })
       setSalesTotalKeys(datakeys);
       setSalesTotalValues(datavalues);
-      
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  }
+
+  if(localSelect ===""){
+    axios
+    .get(`http://localhost:8080/admins/useChart/total`)
+    .then((res)=>{
+      console.log(`resdata-${res.data}`)
+      const dataKeys = [];
+      const dataValues = [];
+
+      Object.entries(res.data).forEach(([key,value])=>{
+          dataKeys.push(key)
+          dataValues.push(value)
+          console.log(`key${key}`)
+      })
+      setUseTotalLocalKeys(dataKeys)
+      setUseTotalLocalValues(dataValues)
       
     })
     .catch((err)=>{
       throw err;
     })
   }
-  },[currencyName])
+  },[currencyName,localSelect])
 
   useEffect(()=>{
-
       setChartData({
-        labels: totalKeys,
+        labels: totalKeys.sort(),
         datasets:[
           {
             data:totalValues,
@@ -92,7 +116,7 @@ const LocalCurrencyAmount = () => {
         ]
       })
       setSalesTotalChart({
-        labels: salesTotalKeys,
+        labels: salesTotalKeys.sort(),
         datasets:[
           {
             data:salesTotalValues,
@@ -100,7 +124,15 @@ const LocalCurrencyAmount = () => {
           }
         ]
       })
-  },[totalKeys,totalValues,salesTotalValues,salesTotalKeys])
+      setUseChart({
+        labels : useTotalLocalKeys,
+        datasets:[
+          {
+            data:useTotalLocalValues
+          }
+        ]
+      })
+  },[totalKeys,totalValues,salesTotalValues,salesTotalKeys,useTotalLocalKeys,useTotalLocalValues])
 
 
 
@@ -111,19 +143,33 @@ const LocalCurrencyAmount = () => {
       alert("시작날짜보다 빠를수 없습니다.");
       setEndDate("");
     }
+
     if(currencyName === "") 
     {alert(`화폐명을 선택해주세요`)} 
     else if(startDate ==="" ||endDate ===""  ){
       alert(`기간을 선택해주세요`)
-    }else{
+    }else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
+     else{
       axios
       .get(`http://localhost:8080/admins/voucher/name-list/${currencyName}/${startDate}/${endDate}`)
       .then((res)=>{
+        const monthLocalTotalKeys=[];
+        const monthLocalTotalValues=[];
         console.log(res.data)
+
+        Object.entries(res.data).forEach(([key,value])=>{
+            monthLocalTotalKeys.push(key)
+            monthLocalTotalValues.push(value.unitPrice)
+        })
+
+        setSalesTotalKeys(monthLocalTotalKeys);
+      setSalesTotalValues(monthLocalTotalValues);
       })
       .catch((err)=>{
         throw err;
       })
+
+    
     }
   };
 
@@ -133,6 +179,7 @@ const LocalCurrencyAmount = () => {
     setCurrencyName(e.target.value)
   }
 
+
   const use_start_end_date = e =>{
     e.preventDefault();
 
@@ -141,9 +188,28 @@ const LocalCurrencyAmount = () => {
       setUseEndDate("");
     }else if(useStartDate ==="" ||useEndDate ===""  ){
       alert(`기간을 선택해주세요`)
-    }else{
-  
-  }
+    }else if(localSelect===""){alert(`지역을 선택해주세요`)}
+     else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
+    else{
+        axios 
+        .get(`http://localhost:8080/admins/useChart/test/${localSelect}/${useStartDate}/${useEndDate}`)
+        .then((res)=>{
+            console.log(res.data)
+            const useLocalKeys = [];
+            const useLocalValues = [];
+
+            Object.entries(res.data).forEach(([key,value])=>{
+                useLocalKeys.push(key)
+                useLocalValues.push(value)
+            })
+            setUseTotalLocalKeys(useLocalKeys)
+            setUseTotalLocalValues(useLocalValues)
+
+        })
+        .catch((err)=>{
+            throw err;
+        })
+    }
   }
 
 
@@ -250,14 +316,14 @@ const LocalCurrencyAmount = () => {
           <input
             className="currencyTotal-data"
             min="2020-01-01"
-            type="month"
+            type="date"
             value={useStartDate}
             onChange={e=>setUseStartDate(e.target.value)}
           ></input>
           <h4 className="currencyTotal-data"> &nbsp; ~ &nbsp; </h4>
           <input
             min=""
-            type="month"
+            type="date"
             value={useEndDate}
             onChange={e=>setUseEndDate(e.target.value)}
           ></input>
@@ -277,19 +343,52 @@ const LocalCurrencyAmount = () => {
             </h6>
           </div>
           
+        
+          <div className="useLocal-chart">
           <select
-            id="currencyTotal-useSelect-currency"
-            value={useSelectCheck}
-            onChange={e=>setUseSelectCheck(e.tartget.value)}
+            id="userLocal-select"
+            value={localSelect}
+            onChange={e=>setLocalSelect(e.target.value)}
           >
-            <option selected>사용여부</option>
-            <option value="useOne">사용</option>
-            <option value="unUsedOne">미사용</option>
+            <option value="" selected>지역선택</option>
+            <option value="고양">고양시</option>
+            <option value="의정부">의정부시</option>
+            <option value="연천">연천군</option>
+            <option value="포천">포천시</option>
+            <option value="파주">파주시</option>
+            <option value="동두천">동두천시</option>
+            <option value="양주">양주시</option>
+            <option value="가평">가평군</option>
+            <option value="김포">김포시</option>
+            <option value="남양주">남양주시</option>
+            <option value="구리">구리시</option>
+            <option value="하남">하남시</option>
+            <option value="양평">양평군</option>
+            <option value="광주">광주시</option>
+            <option value="여주">여주시</option>
+            <option value="이천">이천시</option>
+            <option value="용인">용인시</option>
+            <option value="안성">안성시</option>
+            <option value="평택">평택시</option>
+            <option value="화성">화성시</option>
+            <option value="수원">수원시</option>
+            <option value="오산">오산시</option>
+            <option value="안산">안산시</option>
+            <option value="군포">군포시</option>
+            <option value="의왕">의왕시</option>
+            <option value="안양">안양시</option>
+            <option value="과천">과천시</option>
+            <option value="부천">부천시</option>
+            <option value="광명">광명시</option>
+            <option value="성남">성남시</option>
+            <option value="시흥">시흥시</option>
+
           </select>
+        </div>
           
 
           <div className="currencyTotal-Bar">
-            <Bar data={chartData} />
+            <Bar data={useChart} />
           </div>
 
           <div className="curreny-div">

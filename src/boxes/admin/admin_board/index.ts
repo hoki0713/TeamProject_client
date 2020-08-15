@@ -22,7 +22,7 @@ export {
   NoticeDetail,
   UsersList,
   NotifyStore,
-  Enquiry,
+   Enquiry,
   EnquiryDetail,
   StoreDetail,
   UserDetail,

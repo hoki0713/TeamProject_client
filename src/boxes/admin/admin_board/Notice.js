@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Container, Row, Col } from "react-bootstrap";
+import { Button, Table, Container, Row, Col, Pagination } from "react-bootstrap";
 import { PaginationItem, SearchBar } from "../../../items";
 import { Link } from "react-router-dom";
 
@@ -34,7 +34,16 @@ export const postListThunk = (searchWord) => (dispatch) => {
 };
 const Notice = () => {
 
-    const [postList, setPostList] = useState([])
+    const [postList, setPostList] = useState([]);
+    const [currentPage,setCurrentPage] = useState(1);
+    const [postPerPage] = useState(10);
+    const [loading,setLoading] = useState(false);
+
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+   
+ 
+
  
     const getNotice = postId =>{
         console.log(postId)
@@ -56,7 +65,7 @@ const Notice = () => {
         axios
         .get('http://localhost:8080/posts/postlist')
         .then((res)=>{
-             setPostList(res.data)
+             setPostList(res.data.content)
         
         })
         .catch((err)=>{
@@ -110,7 +119,7 @@ const Notice = () => {
                                 <td> {info.category}</td>
                                <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
                              {info.category==="사이트" && <td>관리자</td>} 
-                            |{ info.category==="지역화폐" && <td>경기지역화폐</td> }
+                            { info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>
                             </tr>))}
                     </tbody>
@@ -119,14 +128,16 @@ const Notice = () => {
 
                 <Container fluid>
                     <Row noGutters>
-                        <Col sm={11}> <PaginationItem /></Col>
+                    
                         <Col> <Link to="/admin/notice-write">
                             <Button variant="primary" id="button-right">글쓰기</Button>
                         </Link></Col>
-                    </Row>
-
+                    </Row>    
                 </Container>
 
+               <div>
+               <PaginationItem postPerPage={5} totalPosts={postList} currentPage={1}/>
+               </div>
             </div>
 
 
