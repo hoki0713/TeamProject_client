@@ -81,19 +81,22 @@ const LocalCurrencyAmount = () => {
     })
   }
 
-  if(localSelect ==="null"){
+  if(localSelect ===""){
     axios
-    .get(`http://localhost:8080/admins/useChart/test/${localSelect}`)
+    .get(`http://localhost:8080/admins/useChart/total`)
     .then((res)=>{
+      console.log(`resdata-${res.data}`)
       const dataKeys = [];
       const dataValues = [];
 
       Object.entries(res.data).forEach(([key,value])=>{
           dataKeys.push(key)
           dataValues.push(value)
+          console.log(`key${key}`)
       })
       setUseTotalLocalKeys(dataKeys)
       setUseTotalLocalValues(dataValues)
+      
     })
     .catch((err)=>{
       throw err;
@@ -122,7 +125,7 @@ const LocalCurrencyAmount = () => {
         ]
       })
       setUseChart({
-        labels : useTotalLocalKeys.sort(),
+        labels : useTotalLocalKeys,
         datasets:[
           {
             data:useTotalLocalValues
@@ -189,9 +192,19 @@ const LocalCurrencyAmount = () => {
      else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
     else{
         axios 
-        .get(`http://localhost:8080/admins/useChart/test/${localSelect}`)
+        .get(`http://localhost:8080/admins/useChart/test/${localSelect}/${useStartDate}/${useEndDate}`)
         .then((res)=>{
             console.log(res.data)
+            const useLocalKeys = [];
+            const useLocalValues = [];
+
+            Object.entries(res.data).forEach(([key,value])=>{
+                useLocalKeys.push(key)
+                useLocalValues.push(value)
+            })
+            setUseTotalLocalKeys(useLocalKeys)
+            setUseTotalLocalValues(useLocalValues)
+
         })
         .catch((err)=>{
             throw err;
@@ -337,7 +350,7 @@ const LocalCurrencyAmount = () => {
             value={localSelect}
             onChange={e=>setLocalSelect(e.target.value)}
           >
-            <option value="null" selected>지역선택</option>
+            <option value="" selected>지역선택</option>
             <option value="고양">고양시</option>
             <option value="의정부">의정부시</option>
             <option value="연천">연천군</option>
