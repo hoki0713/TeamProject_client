@@ -44,7 +44,7 @@ const NoticeWrite = () => {
       axios
         .post(`http://localhost:8080/posts/notice/create`, notice)
         .then((res) => {
-          console.log(res.data);
+         
           window.location.href = "/admin/notice";
         })
         .catch((err) => {

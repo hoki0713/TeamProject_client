@@ -142,7 +142,7 @@ const UserTotalStatistic = () => {
       ],
     });
     setAgeChartData({
-      labels: ageKeys,
+      labels: ageKeys.sort(),
       datasets: [
         { label:"Age",
           data: ageValues,
