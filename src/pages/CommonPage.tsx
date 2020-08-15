@@ -7,18 +7,23 @@ const CommonPage = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'));
 
-    useEffect(() => {
-        if (accountDetail) {
+    const refreshUser = (id) => {
+        if (id) {
             setIsLogined(true);
             if(accountDetail.adminKey) setIsAdmin(true);
         } else {
             setIsLogined(false);
         }
+    }
+
+    useEffect(() => {
+        refreshUser(accountDetail.id)
     }, [accountDetail]);
 
     return (
         <div className="container">
             <CommonHeader 
+                clickLogout={refreshUser}
                 loginedAccount={isLogined} 
                 isAdmin={isAdmin}
             />

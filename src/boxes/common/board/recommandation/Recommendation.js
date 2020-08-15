@@ -49,6 +49,7 @@ function Recommendation() {
 
     useEffect(() => {
         if (id) {
+
             axios.get(`http://localhost:8080/recommends/individual/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
@@ -58,10 +59,7 @@ function Recommendation() {
                     setUserBased(res.data.userBased)
                     setItemBased(res.data.itemBased)
 
-                    // data.list.forEach(elem => {
-                    //     recommendList.push(elem)
-                    // });
-                    // console.log(recommendList.toString())
+
 
                 }).catch(
                 error => {

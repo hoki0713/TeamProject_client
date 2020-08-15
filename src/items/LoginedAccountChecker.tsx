@@ -1,14 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
-const LoginedAccountChecker = ({ loginedAccount, isAdmin }) => {
+const LoginedAccountChecker = ({ loginedAccount, clickLogout, isAdmin }) => {
+  const history = useHistory();
+
   const handleLogout = () => {
     alert("로그아웃 되었습니다. 다시 로그인하세요.");
+    clickLogout();
     sessionStorage.clear();
+    history.push("/")
   }
 
   return (
-    <div>
+    <>
       {!loginedAccount &&
         <div id="common-header-links">
           <Link to="/account/login">
@@ -21,12 +25,10 @@ const LoginedAccountChecker = ({ loginedAccount, isAdmin }) => {
       }
 
       {loginedAccount &&
-        <div id="common-header-links">
-          <Link to="/account/login">
-            <span className="btn-link btn-sm" onClick={handleLogout}>
-              로그아웃
-                </span>
-          </Link>
+        <span id="common-header-links">
+          <span className="btn-link btn-sm" onClick={handleLogout}>
+            로그아웃
+            </span>
           <Link to="/mypage">
             <span className="btn-link btn-sm">내 정보</span>
           </Link>
@@ -35,9 +37,9 @@ const LoginedAccountChecker = ({ loginedAccount, isAdmin }) => {
               <span className="btn-link btn-sm">DashBoard</span>
             </Link>
           }
-        </div>
+        </span>
       }
-    </div>
+    </>
   );
 };
 
