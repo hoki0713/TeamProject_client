@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
     GoogleMap,
     Marker,
-    InfoWindow, LoadScript, Polyline
+    InfoWindow, LoadScript, Polyline,
 } from "@react-google-maps/api";
 import Geocode from 'react-geocode'
 import {
@@ -13,6 +13,7 @@ import {libraries} from "./FindByMap";
 import axios from "axios";
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
+
 
 
 const FindBestRoute=()=> {
@@ -26,10 +27,12 @@ const FindBestRoute=()=> {
     const [inputValue,setInputValue] =useState(""); //검색어
     const [stores, setStores] =useState([]);
     const [homePosit,setHomePosit]=useState({lat: 37.73633262, lng: 127.0447991});
+    const [dropShow,setDropShow]=useState(false);
+    const [shortSearched, setShortSearched] = useState([])
     let markers = []; //경로 마커 좌표들 추가 제거 가능한 컬렉션
     let markDetail = {}; // 마커 디테일
-    const mapRef = useRef();
 
+    const mapRef = useRef();
     const onMapLoad = useCallback(map => {
         mapRef.current = map;
     }, []);
@@ -43,14 +46,23 @@ const FindBestRoute=()=> {
     const realTimeSearch=e=>{
         e.preventDefault();
         setInputValue(e.target.value);
-        //실시간 검색 드롭다운 함수
-    }
+        axios.get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
+            .then(({data})=>{
+                // let temList =[];
+                // data.list.map(elem=>{
+                //     temList.push(elem);
+                // });
+                    setShortSearched(data.list);
+                    console.log(data.msg);
+            })
+            .catch(err=>{console.log(err);throw err; })
+    } //실시간 검색 드롭다운 함수
+
     let temRoutes =[
         {lat: 37.746897, lng: 127.040861},
         {lat: 37.745897, lng: 127.040831},
         {lat: 37.746197, lng: 127.030861},
     ]
-
     const getLatLng = (location) => {
         Geocode.fromAddress(location).then(
             response => {
@@ -65,6 +77,8 @@ const FindBestRoute=()=> {
             }
         );
     }
+
+
     const getBestSeq=(homePosition, stopOverList)=>{
         const homePosit = homePosition;// start, end position
         const stopOver = stopOverList; // middle positions, must be like [{lat: 0, lng: 0}, ...]
@@ -83,10 +97,8 @@ const FindBestRoute=()=> {
                             )};
                         index++
                     }
-
                 }}
         }
-
         const forSortList = [];
         results.map(elem=>{
             forSortList.push(elem.distance)
@@ -96,9 +108,13 @@ const FindBestRoute=()=> {
                 setBestWay(results[i].way)
             };
         };
+    }//최단거리 구하기
 
-
-    }
+    const lineSymbol = {
+        path: "M 0,-1 0,1",
+        strokeOpacity: 1,
+        scale: 4
+    };
     let pathCoordinates = [
         center,
         temRoutes[bestWay[0]],
@@ -110,10 +126,7 @@ const FindBestRoute=()=> {
         setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr)
         getLatLng(myLoca);
     }, [homePosit]); // 주소로 유저 좌표 가져오기
-    useEffect(()=>{
 
-        console.log(pathCoordinates)
-    },[pathCoordinates])
 
     useEffect(()=>{
         console.log("useEffect getStoreList")
@@ -133,8 +146,8 @@ const FindBestRoute=()=> {
     return (<>
         <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3><br/>
         <table>
-            <tr>
-                <td className="first_td">
+            <tr><td>
+                <div className="first_td">
                     <LoadScript
                         googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
                         libraries={libraries}>
@@ -156,12 +169,14 @@ const FindBestRoute=()=> {
                                     }}
                                     animation={4}
                                     title={`${i+1}`}
-                                />
-                                {infoShow&&<InfoWindow
+                                >
+                                    {infoShow&&<InfoWindow
                                         key={i}
                                         position={temRoutes[bestWay[i]]}
-                                    ><div><h1>{i+1}</h1></div></InfoWindow>}
-                                    </>
+                                    ><div><h6>{i+1}</h6></div></InfoWindow>}
+                                </Marker>
+
+                                </>
 
                             ))}
                             <Marker
@@ -185,12 +200,16 @@ const FindBestRoute=()=> {
                                 path={pathCoordinates}
                                 visible={lineShow}
                                 options={{
-                                    strokeColor: "#d502b9",
-                                    strokeOpacity: 0.75,
-                                    strokeWeight: 2,
+                                    strokeColor: "#053c55",
+                                    strokeOpacity: 0,
+                                    strokeWeight: 3,
+
                                     icons: [
                                         {
-                                            icon: '',
+                                            icon:
+                                            lineSymbol,
+                                            // {path:window.google.maps.SymbolPath.FORWARD_OPEN_ARROW},//화살표
+                                            //strokeOpacity 값 필요, repeat 픽셀 늘려야 함
                                             offset: "0",
                                             repeat: "20px"
                                         }
@@ -199,33 +218,30 @@ const FindBestRoute=()=> {
                             />}
                         </GoogleMap>
                     </LoadScript>
-                </td>
-                <td className="second_td">
-                    <table className={"route_input"}>
-                        <tr><td><h5>우리집:&nbsp;{myLoca}</h5></td></tr>
-                        <button onClick={()=>getBestSeq(homePosit,temRoutes)}>거리계산</button>
-                        <button onClick={e=>{
-                            e.preventDefault();
-                            for (let i=0; i< temRoutes.length;i++){
-
-                                console.log(`tems${JSON.stringify(temRoutes[bestWay[i]])}`)
-                                pathCoordinates.push(temRoutes[bestWay[i]]);
-                            }
-                            setInfoShow(true);
-                        }}>getway</button>
-                        {
-                            <tr><td>
-                            <p>경로</p>
-
-                        </td></tr>}
-                        <tr><td><input onChange={e=> {
-                            realTimeSearch(e)
-                        }
-                        }/></td></tr>
-                        <tr><td><p className="dropdown-item">검색드롭다운</p></td></tr>
-                    </table>
-                </td>
-            </tr>
+                </div>
+            </td>
+                <td>
+                    <div className="second_td">
+                        <div className={"route_input"}>
+                            <h5>우리집:&nbsp;{myLoca}</h5>
+                            <button onClick={()=>getBestSeq(homePosit,temRoutes)}>거리계산</button>
+                            <button onClick={e=>{
+                                e.preventDefault();
+                                for (let i=0; i< temRoutes.length;i++){
+                                    pathCoordinates.push(temRoutes[bestWay[i]]);
+                                }
+                                setInfoShow(true);
+                            }}>getway</button>
+                            {<p>경로</p>}
+                            <input onChange={e=> {realTimeSearch(e);}}/>
+                            {dropShow && inputValue &&
+                                <><p>{shortSearched[0].storeName}</p>
+                                <p>{shortSearched[1].storeName}</p>
+                                <p>{shortSearched[1].storeName}</p></>}
+                                <button>searchResult</button>
+                        </div>
+                    </div>
+                </td></tr>
         </table>
     </>)
 }
