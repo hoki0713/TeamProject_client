@@ -1,15 +1,18 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import {
-    LocalCurrencyAmount,
-    StoreTotalStatistic,
-    UserTotalStatistic,
-    Notice,
-    UsersList,
-    NotifyStore,
-    // Enquiry,
-    NoticeWrite, NoticeDetail, EnquiryDetail,StoreDetail,UserDetail,NoticeModifyWrite
+  LocalCurrencyAmount,
+  StoreTotalStatistic,
+  UserTotalStatistic,
+  Notice,
+  UsersList,
+  NotifyStore,
+  // Enquiry,
+  NoticeWrite, NoticeDetail, EnquiryDetail, StoreDetail, NoticeModifyWrite
 } from './admin_board';
+import UserList from './admin_board/adminTest/UserList.js'
+import UserDetail from './admin_board/adminTest/UserDetail';
+import { UserDetailProvider } from './admin_board/adminTest/context/UserDetailContext';
 
 const AdminContainer = () => {
   return (
@@ -18,10 +21,10 @@ const AdminContainer = () => {
         <LocalCurrencyAmount />
       </Route>
       <Route path="/admin/store-statistic">
-      <StoreTotalStatistic />
+        <StoreTotalStatistic />
       </Route>
       <Route path="/admin/user-statistic">
-      <UserTotalStatistic/>
+        <UserTotalStatistic />
       </Route>
       <Route path="/admin/notice">
         <Notice />
@@ -30,14 +33,12 @@ const AdminContainer = () => {
         <NoticeWrite />
       </Route>
       <Route path="/admin/notice-detail">
-         <NoticeDetail />
+        <NoticeDetail />
       </Route>
       <Route path="/admin/notice-modify">
         <NoticeModifyWrite />
       </Route>
-      <Route path="/admin/users-list">
-        <UsersList />
-      </Route>
+
       <Route path="/admin/notify-sotre">
         <NotifyStore />
       </Route>
@@ -50,9 +51,14 @@ const AdminContainer = () => {
       <Route path="/admin/store-detail">
         <StoreDetail />
       </Route>
-      <Route path="/admin/user-detail">
-        <UserDetail />
-      </Route>
+      <UserDetailProvider>
+        <Route path="/admin/users-list">
+          <UserList />
+        </Route>
+        <Route path="/admin/user-detail">
+          <UserDetail />
+        </Route>
+      </UserDetailProvider>
     </div>
   );
 };

@@ -21,7 +21,6 @@ export const userListReducer = (state = [], action) => {
 };
 
 export const userListThunk = (searchWord) => (dispatch) => {
-  console.log("api 도착");
   axios
     .get(`http://localhost:8080/admins/list/${searchWord}`)
     .then((res) => {
