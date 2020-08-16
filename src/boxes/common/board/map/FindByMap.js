@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import ReviewModal from '../../../../items/ReviewModal'
-import 'react-google-maps'
 import {
     GoogleMap,
     Marker,
@@ -21,7 +20,7 @@ import {
     chinaIcon,
     conviStore,
     drug,
-    cafe, hotelIcon, soju, bab, normal, home
+    cafe, hotelIcon, soju, bab, normal
 } from './mapIcons/imgIndex'
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";

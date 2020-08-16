@@ -28,7 +28,7 @@ const FindBestRoute=()=> {
     const [stores, setStores] =useState([]);
     const [homePosit,setHomePosit]=useState({lat: 37.73633262, lng: 127.0447991});
     const [dropShow,setDropShow]=useState(false);
-    const [shortSearched, setShortSearched] = useState([])
+    const [shortSearched, setShortSearched] = useState([]);
     let markers = []; //경로 마커 좌표들 추가 제거 가능한 컬렉션
     let markDetail = {}; // 마커 디테일
 
@@ -43,20 +43,39 @@ const FindBestRoute=()=> {
         width: '100%',
         height: '600px'
     };// 지도 스타일
+     function getshorList(){
+         setShortSearched([{storeName:''},{storeName:''},{storeName:''}])
+        if(inputValue){
+           axios.get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
+                .then(({data})=>{
+                    if(data.list!=0){
+                        setShortSearched(data.list);
+                        (shortSearched.length!=0)?setDropShow(true):setDropShow(false)
+                    }
+                    else{console.log(data.msg);
+                        setShortSearched([{storeName:''},{storeName:''},{storeName:''}])
+                        setDropShow(false)}
+
+                })
+                .catch(err=>{console.log(err);throw err; })
+
+        }
+    }
+
+    useEffect(()=>{
+        console.log("useEffect getsearched")
+        setDropShow(false);
+        getshorList();
+
+    },[inputValue])
+
+
     const realTimeSearch=e=>{
         e.preventDefault();
-        setInputValue(e.target.value);
-        axios.get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
-            .then(({data})=>{
-                // let temList =[];
-                // data.list.map(elem=>{
-                //     temList.push(elem);
-                // });
-                    setShortSearched(data.list);
-                    console.log(data.msg);
-            })
-            .catch(err=>{console.log(err);throw err; })
+        let value = e.target.value;
+        if(value.charAt[0]!='') setInputValue(e.target.value);
     } //실시간 검색 드롭다운 함수
+
 
     let temRoutes =[
         {lat: 37.746897, lng: 127.040861},
@@ -133,11 +152,7 @@ const FindBestRoute=()=> {
         if(!stores[0]) {
             axios.get(`http://localhost:8080/stores/mapClick/의정부`)
                 .then(({data})=>{
-                    let temList =[]
-                    data.list.map(elem=>{
-                        temList.push(elem)
-                    });
-                    setStores(temList);
+                    setStores(data.list);
                 })
                 .catch(err=>{throw(err)});
         };
@@ -232,13 +247,15 @@ const FindBestRoute=()=> {
                                 }
                                 setInfoShow(true);
                             }}>getway</button>
-                            {<p>경로</p>}
+                            <p>경로</p>
                             <input onChange={e=> {realTimeSearch(e);}}/>
-                            {dropShow && inputValue &&
-                                <><p>{shortSearched[0].storeName}</p>
-                                <p>{shortSearched[1].storeName}</p>
-                                <p>{shortSearched[1].storeName}</p></>}
-                                <button>searchResult</button>
+                            <button onClick={()=>{setDropShow(true)}}></button>
+                            {inputValue &&dropShow &&
+                               <> <p>{shortSearched[0] &&shortSearched[0].storeName}</p>
+                              <p>{shortSearched[1] && shortSearched[1].storeName}</p>
+                               <p>{shortSearched[2] && shortSearched[2].storeName}</p></>
+
+                            }
                         </div>
                     </div>
                 </td></tr>
