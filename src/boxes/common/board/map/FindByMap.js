@@ -36,7 +36,7 @@ const FindByMap=({isLogined})=> {
     const [map, setMap] = useState(null);
     const [recoList, setRecoList]=useState([])
     const onUnmount = useCallback(function callback(map) {
-        setMap(null)
+        setMap(null);
     }, [])
     const [center,setCenter]=useState({lat: 37.73633262, lng: 127.0447991});
     const [modalShow, setModalShow] = useState(false);
@@ -46,28 +46,20 @@ const FindByMap=({isLogined})=> {
     const [storeList, setStoreList] =useState([]);
     const mapRef = useRef();
     const onMapLoad = useCallback(map => {
-        setMap(mapRef.current)
+        setMap(mapRef.current);
     }, []);
 
     const showHome=()=>{
         setCenter(homePosit);
-        if(center==homePosit)window.location.reload();
+        if(center===homePosit) window.location.reload();
     }
-    const checkLogined=()=>{
-        if(isLogined){
-            // setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
-            // getLatLng(myLoca);
-        }
-    }
-    useEffect(()=>{
-    },[isLogined])
     const getLatLng = (location) => {
         Geocode.fromAddress(location).then(
             response => {
                 const resLatLng = response.results[0].geometry.location;
                 alert(`받아온 좌표${JSON.stringify(resLatLng)}`)
                 setHomePosit({lat: Number(resLatLng.lat), lng: Number(resLatLng.lng)});
-                setCenter(homePosit);
+                setCenter({lat:Number(resLatLng.lat), lng:Number(resLatLng.lng)})
                 console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
             },
             error => {
@@ -75,6 +67,18 @@ const FindByMap=({isLogined})=> {
             }
         );
     }//get user latitude and longitude from user address
+
+    useEffect(()=>{
+        console.log(isLogined);//check 하고 없애기
+        if(isLogined===true){
+            setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+        }
+    },[isLogined])
+    useEffect(()=>{
+        getLatLng(myLoca);
+    },[myLoca])
+
+
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!storeList[0]) {
@@ -94,8 +98,7 @@ const FindByMap=({isLogined})=> {
                             default:elem.icon = normal; temList.push(elem); return;
                         }
                     });
-                    setStoreList(temList);
-                })
+                    setStoreList(temList);})
                 .catch(err=>{throw(err)});
         };
         if(!recoList[0]){
@@ -104,20 +107,8 @@ const FindByMap=({isLogined})=> {
     },[storeList,recoList],);
 
 
-    useEffect(()=>{
-        console.log("useEffect getUserLatLng")
-    },[myLoca]);
-
-
     const StoreReport=(props)=> {
-        const [checkShow,setCheckShow]=useState(false);
 
-        const Check =(props)=>{
-            return<>
-                <Modal
-                    scaleSize={"sm"}/>
-            </>
-        }
         return (
             <div>
 
@@ -126,7 +117,7 @@ const FindByMap=({isLogined})=> {
                         <Modal.Title>가맹점 신고하기</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={{"text-align":"center"}}>
-                        <img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={40} height={40}
+                        <img alt={"storeIcon"} src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={40} height={40}
                         /><br/>
                         &nbsp; <h4>{storeInfo.storeName}</h4>&nbsp;에서 지역화폐를 받지 않습니까?
                     </Modal.Body>
@@ -135,7 +126,6 @@ const FindByMap=({isLogined})=> {
                         <Button variant="danger" onClick={props.onHide} >신고하기</Button>
                     </Modal.Footer>
                 </Modal>
-                <Check show={checkShow}/>
             </div>
 
         );
@@ -166,7 +156,7 @@ const FindByMap=({isLogined})=> {
                                     &nbsp;{storeInfo.address}<br/>
                                     <img src={phoneB}
                                          alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                    &nbsp;{(storeInfo.storePhone!=0)?<>{storeInfo.storePhone}</>:
+                                    &nbsp;{(storeInfo.storePhone!==0)?<>{storeInfo.storePhone}</>:
                                     <>000-000-0000</>}
                                 </Col>
                                 <Col xs={6} md={4}>
@@ -180,7 +170,7 @@ const FindByMap=({isLogined})=> {
                                     {storeInfo.storeType}
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    별점 &nbsp;<img src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
+                                    별점 &nbsp;<img alt={"star"} src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
                                                   width={50} height={30}/>
 
                                 </Col>
@@ -188,23 +178,26 @@ const FindByMap=({isLogined})=> {
                                     {sessionStorage.getItem("accountDetail")
                                         ?
                                         <table>
-                                            <tr><td> <img src={red} width={iconsize} height={iconsize}
+                                            <tr><td> <img alt={"report"}
+                                                          src={red} width={iconsize} height={iconsize}
                                                           onClick={()=>{setReportShow(true)}}
                                             />&nbsp;신고하기</td></tr>
-                                            <tr><td><img src={favStar} width={iconsize} height={iconsize}
+                                            <tr><td><img alt={"favIcon"}
+                                                         src={favStar} width={iconsize} height={iconsize}
                                                          onClick={()=>{setStarShow(true)}}
                                             />&nbsp;즐겨찾기</td></tr>
-                                            <tr><td><img src={review} width={iconsize} height={iconsize}
+                                            <tr><td><img alt={"reviewIcon"}
+                                                        src={review} width={iconsize} height={iconsize}
                                                          onClick={()=>{setReviewShow(true)}}
                                             />&nbsp;리뷰</td></tr>
                                         </table>:
                                         <Link to={'/account/login'}>
                                             <table>
-                                                <tr><td> <img src={red} width={iconsize} height={iconsize}
+                                                <tr><td> <img alt={"report"} src={red} width={iconsize} height={iconsize}
                                                 />&nbsp;신고하기</td></tr>
-                                                <tr><td><img src={favStar} width={iconsize} height={iconsize}
+                                                <tr><td><img alt={"favIcon"} src={favStar} width={iconsize} height={iconsize}
                                                 />&nbsp;즐겨찾기</td></tr>
-                                                <tr><td><img src={review} width={iconsize} height={iconsize}
+                                                <tr><td><img alt={"reviewIcon"} src={review} width={iconsize} height={iconsize}
                                                 />&nbsp;리뷰</td></tr>
                                             </table>
                                         </Link>
@@ -225,7 +218,6 @@ const FindByMap=({isLogined})=> {
                              storeId={storeInfo.id}
                              reviewId={null}/>
                 }
-
                 <Star storeInfo show={starShow} onHide={()=>setStarShow(false)}/>
             </>
         );
@@ -239,12 +231,13 @@ const FindByMap=({isLogined})=> {
                     {sessionStorage.getItem("accountDetail")&&<>
                         <img src={homeIcon} alt={"집"} onClick={e => {
                             e.preventDefault();
-                            showHome()}}
+                            showHome();}}
                              style={{width:50, height:50, cursor:'pointer'}}/>
                         <h6>내 위치</h6></>}
                 </td>
                     <td><h6>{myLoca}</h6></td>
                     <td></td>
+
                 </tr>
                 <tr><td colSpan={2} className="td-left">
                     <LoadScript
@@ -275,7 +268,7 @@ const FindByMap=({isLogined})=> {
                                     }}
                                 />
                             ))}
-                            {sessionStorage.getItem("accountDetail")&&
+                            {isLogined&&
                             <Marker
                                 position={homePosit}
                                 icon={{url: homeIcon,
@@ -290,7 +283,6 @@ const FindByMap=({isLogined})=> {
                             </Marker>}
                         </GoogleMap>
                     </LoadScript>
-
                 </td>
                     <td className="td-right">
                         <table className="mapSide">

@@ -220,14 +220,12 @@ const FindBestRoute=()=> {
                                     strokeOpacity: 0,
                                     strokeWeight: 3,
                                     icons: [
-                                        {
-                                            icon:
-                                                dottedLine,
+                                        {icon: dottedLine,
                                             // {path:window.google.maps.SymbolPath.FORWARD_OPEN_ARROW},//화살표
                                             //strokeOpacity 값 필요, repeat 픽셀 늘려야 함
                                             offset: "0",
                                             repeat: "20px"
-                                        }
+                                        },
                                     ]
                                 }}
                             />}
