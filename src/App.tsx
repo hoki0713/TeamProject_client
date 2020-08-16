@@ -9,7 +9,6 @@ import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import { userListReducer } from './boxes/admin/admin_board/UsersList';
-import { recommendListReducer} from "./boxes/common/board/recommandation/Recommendation";
 
 const rootReducer = combineReducers({
   userListReducer,

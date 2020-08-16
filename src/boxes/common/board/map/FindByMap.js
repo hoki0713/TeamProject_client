@@ -85,6 +85,7 @@ const FindByMap = () => {
         const resLatLng = response.results[0].geometry.location;
         setUserLatLng({ lat: resLatLng.lat, lng: resLatLng.lng });
         console.log(resLatLng);
+        console.log(userLatLng)
       },
       (error) => {
         console.error(error);

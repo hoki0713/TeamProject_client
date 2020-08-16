@@ -1,65 +1,43 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {CardDeck, Card, Container, Row, Col} from 'react-bootstrap'
+import { Card,Spinner} from 'react-bootstrap'
 import './Recommendation.css'
-import {useDispatch, useSelector} from "react-redux";
-
-
-const RECOMMEND_LIST = "RECOMMEND_LIST";
-
-export const recommendListAction = (data) => ({type: RECOMMEND_LIST, payload: data});
-
-export const recommendListReducer = (state = [], action) => {
-    switch (action.type) {
-        case RECOMMEND_LIST :
-            return action.payload;
-        default:
-            return state;
-    }
-};
-// export const recommendListThunk = (id) => (dispatch) => {
-//     console.log("api 도착");
-//
-// };
 
 function Recommendation() {
-    const recommendList = []
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'))
+    const [latLng] = useState(JSON.parse(sessionStorage.getItem("LatLng") || '{}'))
+    const [lat, setLat] = useState("")
+    const [lng, setLng] = useState("")
     const [id, setId] = useState("");
-    const [store, setStore] = useState({});
-    const [storeList, setStoreList] = useState([])
-    const [storeName, setStoreName] = useState("")
-    const [storeType, setStoreType] = useState("")
     const [userBased, setUserBased] = useState([])
     const [itemBased, setItemBased] = useState([])
     const [bestStore, setBestStore] = useState([])
-    const resultList = useSelector((state) => state.recommendListReducer);
-    const dispatch = useDispatch()
-    const setStores = (payload) => {
-        setStore({
-            name: payload.name,
-            type: payload.type,
-            ranking: payload.type
-        })
-    }
+    const [userWarningMsg, setUserWarningMsg] = useState("")
+    const [itemWarningMsg, setItemWarningMsg] = useState("")
+
 
     useEffect(() => {
         setId(accountDetail.id);
-    }, [accountDetail]);
+        setLat(latLng.latitude)
+        setLng(latLng.longitude)
+    }, [accountDetail], [latLng]);
 
     useEffect(() => {
         if (id) {
-
             axios.get(`http://localhost:8080/recommends/individual/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
-                    console.log(res.data.bestStore)
-                    console.log(res.data.userBased)
-                    setBestStore(res.data.bestStore)
-                    setUserBased(res.data.userBased)
-                    setItemBased(res.data.itemBased)
-
-
+                    console.log(res.data)
+                    if (res.data.userBased) {
+                        setBestStore(res.data.userBased)
+                    } else if (res.data.noUserBased) {
+                        setUserWarningMsg(res.data.noUserBased)
+                    }
+                    if (res.data.itemBased) {
+                        setItemBased(res.data.itemBased)
+                    } else if (res.data.noItemBased) {
+                        setItemWarningMsg(res.data.noItemBased)
+                    }
 
                 }).catch(
                 error => {
@@ -67,42 +45,68 @@ function Recommendation() {
                 }
             )
 
-        }},[id])
+        }
+    }, [id])
+
+    useEffect(() => {
+        if (id) {
+            console.log("가나다라마" + lat + lng)
+            axios.get(`http://localhost:8080/recommends/best/${lat}/${lng}`)
+                .then((res) => {
+                    console.log('소통 성공')
+                    setBestStore(res.data.bestStore)
+                    console.log(res.data.bestStore)
+
+                }).catch(
+                error => {
+                    throw(error)
+                }
+            )
+        }
+    }, [id])
 
 
-        return (<>
-            <h2>simin님을 위한 우리 동네 추천 가맹점</h2><br/>
-            <h4>회원님과 유사한 회원들이 좋아하는 가맹점</h4>
-            <div className="scrollContainer">
-                {userBased.map((store, i) => (
-                        <Card className="cardItem" key={i}>
-                            <Card.Img id="card-image" variant="top"
-                                      src={store.imgUrl}/>
+    return (<>
+        <h2>simin님을 위한 우리 동네 추천 가맹점</h2><br/>
 
-                            <Card.Body>
-                                <Card.Title id="card-title">{store.storeName}</Card.Title>
-                                <Card.Text>
-                                    {store.address}
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                            </Card.Footer>
-                        </Card>
-                    )
-                )}
+        <h4>내 주변 인기 가맹점</h4>
+        <div className="scrollContainer">
+            {bestStore.map((store, i) => (
+                <Card className="cardItem" key={i}>
+                    <Card.Img style={{height: "50%"}} variant="top"
+                              src={store.imgUrl}/>
+                    <Card.Body>
+                        <Card.Title>{store.storeName}</Card.Title>
+                        <Card.Text>
+                            {store.address}
+                        </Card.Text>
+                    </Card.Body>
+                    <Card.Footer>
+                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                    </Card.Footer>
+                </Card>))}
+        </div>
+        <br/><br/>
 
-            </div>
-            <br/><br/><br/><br/>
-            <h4>즐겨찾기한 #순남시래기와 유사한 추천 가맹점</h4>
-            <div className="scrollContainer">
-                {itemBased.map((store, i) => (
+
+        <h4>회원님과 유사한 회원들이 좋아하는 가맹점</h4>
+        {(!userWarningMsg || !userBased) &&
+        <div> 굴러간다 굴렁쇠
+        <Spinner animation="border" variant="primary" />
+            <Spinner animation="border" variant="secondary" />
+            <Spinner animation="border" variant="success" />
+            <Spinner animation="border" variant="danger" />
+            <Spinner animation="border" variant="warning" />
+            <Spinner animation="border" variant="info" /></div>}
+
+        {!userWarningMsg &&
+        <div className="scrollContainer">
+            {userBased.map((store, i) => (
                     <Card className="cardItem" key={i}>
-                        <Card.Img style={{height:"50%"}} variant="top"
+                        <Card.Img id="card-image" variant="top"
                                   src={store.imgUrl}/>
-
                         <Card.Body>
-                            <Card.Title>{store.storeName}</Card.Title>
+                            <Card.Title id="card-title">{store.storeName}</Card.Title>
                             <Card.Text>
                                 {store.address}
                             </Card.Text>
@@ -110,28 +114,49 @@ function Recommendation() {
                         <Card.Footer>
                             <small className="text-muted">{store.mainCode}/{store.storeType}</small>
                         </Card.Footer>
-                    </Card>))}
-            </div>
-            <br/><br/><br/><br/>
-            <h4>우리 동네 #노고산동에서 인기 있는 가맹점</h4>
-            <div className="scrollContainer">
-                {bestStore.map((store, i) => (
-                        <Card className="cardItem" key={i}>
-                            <Card.Img style={{height:"50%"}} variant="top"
-                                      src={store.imgUrl}/>
+                    </Card>
+                )
+            )}
+        </div>}
+        {userWarningMsg &&  <div className="scrollContainer">
+            <h4>{userWarningMsg}</h4></div>}
+        <br/><br/><br/><br/>
 
-                            <Card.Body>
-                                <Card.Title>{store.storeName}</Card.Title>
-                                <Card.Text>
-                                    {store.address}
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                            </Card.Footer>
-                        </Card>))}
-            </div>
-            <br/><br/>
-            </>)
-    }
+
+        <h4>즐겨찾기한 #순남시래기와 유사한 추천 가맹점</h4>
+        {(!itemWarningMsg || !itemBased) &&
+        <div> 빅 데 이 터 가 동 중 삐 용 삐 용
+            <Spinner animation="border" variant="primary" />
+            <Spinner animation="border" variant="secondary" />
+            <Spinner animation="border" variant="success" />
+            <Spinner animation="border" variant="danger" />
+            <Spinner animation="border" variant="warning" />
+            <Spinner animation="border" variant="info" /></div>}
+
+        {!itemWarningMsg &&
+        <div className="scrollContainer">
+            {itemBased.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img id="card-image" variant="top"
+                                  src={store.imgUrl}/>
+                        <Card.Body>
+                            <Card.Title id="card-title">{store.storeName}</Card.Title>
+                            <Card.Text>
+                                {store.address}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                        </Card.Footer>
+                    </Card>
+                )
+            )}
+        </div>}
+        {itemWarningMsg &&  <div className="scrollContainer">
+            <h4>{itemWarningMsg}</h4></div>}
+        <br/><br/><br/><br/>
+
+    </>)
+}
+
 export default Recommendation;
