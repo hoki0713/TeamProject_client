@@ -1,29 +1,47 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import {Pagination} from 'react-bootstrap'
-
-const PaginationItem = ({postPerPage,totalPosts,currentPage}) => {
-
-    const paginationStyle={
-        justifyContent: 'center',
+import { Notice } from '../boxes/admin/admin_board/index';
 
 
-    }
+const PaginationItem = ({postPerPage,TotalPostList,paginate,nextPage,prevPage}) => {
 
+    
+    // const [totalPost,setTotalPost] = useState([]);
+    const [currentPage,setCurrentPage] = useState(1);
+    // const [postPerPage] = useState(5);
+    
+    
+  
+    //1.받아옴
+    // useEffect(()=>{
+    //     const fetchData = () =>{
+    //         setTotalPost(postList);
+    //     }
+    //     fetchData();
+    // },[])
+
+
+    
     const pageNumber =[];
 
-    for(let i =1;i<Math.ceil(totalPosts/postPerPage);i++){
+    for(let i =1;i<=Math.ceil(TotalPostList/postPerPage);i++){
+        
         pageNumber.push(i);
     }
 
-    const indexOfLastPage = currentPage * postPerPage;
-    const indexOfFirstPost = indexOfLastPage-postPerPage;
-    const currentPosts = totalPosts.slice(indexOfFirstPost,indexOfLastPage)
+    
 
-    // const totalBlock = Math.ceil(pageNumber.length /)
+    // const indexOfLastPage = currentPage * postPerPage;
+    // const indexOfFirstPost = indexOfLastPage-postPerPage;
+    // const currentPosts = postList.slice(indexOfFirstPost,indexOfLastPage)
 
-    const paginate = (pageNumber) => currentPage =pageNumber;
-    const nextPage = () => currentPage+1;
-    const prevPage = () => currentPage-1;
+    // // const totalBlock = Math.ceil(pageNumber.length /)
+
+    // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
+    // const nextPage = () => setCurrentPage(currentPage+1);
+    // const prevPage = () => setCurrentPage(currentPage-1);
 
     
     
@@ -62,7 +80,7 @@ const PaginationItem = ({postPerPage,totalPosts,currentPage}) => {
                    <span
                     onClick={()=>{
                         paginate(number);
-                        window.scrollTo(0,0);
+                        
                     }}
                     className="page-link page-btn"
                     >
@@ -83,7 +101,6 @@ const PaginationItem = ({postPerPage,totalPosts,currentPage}) => {
 
                 </span>
             </li>
-
           </ul>
         </>
     );

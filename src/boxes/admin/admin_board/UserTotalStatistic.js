@@ -153,19 +153,6 @@ const UserTotalStatistic = () => {
     });
   }, [genderKeys, genderValues, keys, values, ageKeys, ageValues, localSelect]);
 
-  const joinDateThunk = ({ startDate, endDate }) => (dispatch) => {
-    axios
-      .get(
-        `http://localhost:8080/admins/joinDate-chart/${startDate}/${endDate}`
-      )
-      .then((res) => {
-        dispatch(userTotalAction(res.data));
-        console.log(res.data);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
 
   const start_end_date = (e) => {
     e.preventDefault();
@@ -173,7 +160,7 @@ const UserTotalStatistic = () => {
       alert("시작날짜보다 빠를수 없습니다.");
       setEndDate("");
     }
-    dispatch(joinDateThunk({ startDate, endDate }));
+   
 
     let day = startDate.split("-");
     console.log(day[1]);
@@ -228,30 +215,7 @@ const UserTotalStatistic = () => {
           <option value="성남">성남시</option>
           <option value="시흥">시흥시</option>
         </select>
-        <div className="userTotal-div">
-          <h5 className="font-weight-bold mr-2 option-name">기간 설정 :</h5>
-          <input
-            className="userTotal-data form-control"
-            min="2020-01-01"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-          <h5 className="font-weight-bold mr-2 ml-2"> ~ </h5>
-          <input
-            min=""
-            type="date"
-            className="userTotal-data form-control"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-          <input
-            className="userTotal-button btn btn-outline-primary"
-            type="submit"
-            onClick={start_end_date}
-            value="조회"
-          />
-        </div>
+       
       </div>
       <div id="graph-container">
         <div className="localTotal-genderDoughnut">
@@ -274,15 +238,7 @@ const UserTotalStatistic = () => {
         </div>
       </div>
 
-      <div className="userJoin-chart">
-        <h6 className="LocalTotalJoin-h6 font-weight-bold">가입일</h6>
-        <Line
-          data={genderChartData}
-          options={{
-            responsive: true,
-          }}
-        />
-      </div>
+     
     </div>
   );
 };

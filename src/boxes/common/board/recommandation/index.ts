@@ -1,4 +1,4 @@
-import FindByTag from './FindByTag';
+import FindByTag from './FindByTag.js';
 import Recommendation from './Recommendation';
 
 export {

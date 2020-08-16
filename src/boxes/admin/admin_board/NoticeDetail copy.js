@@ -5,8 +5,7 @@ import './AdminBoard.css'
 import axios from 'axios';
 const NoticeDetail = () => {
     const [post,setPost] = useState({})
-    const result = useSelector(state=>state.postListReducer.postId);
-    //const resultList = useSelector((state: any) => state.userListReducer);
+    const result = useSelector(state => state.postListReducer);
  
     
 
@@ -51,7 +50,7 @@ const NoticeDetail = () => {
     return (
         <>
             <div className="content-title">
-    <h2 className="menu-h2"> - 공지사항</h2>
+    <h2 className="menu-h2"> - 공지사항{result}</h2>
             </div>
             {/* <Table responsive bordered>
                 <thead style={{textAlign:'center'}}>
