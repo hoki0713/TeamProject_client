@@ -30,7 +30,7 @@ import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 
-const FindByMap=()=> {
+const FindByMap=({isLogined})=> {
 
 
     const [map, setMap] = useState(null);
@@ -53,7 +53,28 @@ const FindByMap=()=> {
         setCenter(homePosit);
         if(center==homePosit)window.location.reload();
     }
-
+    const checkLogined=()=>{
+        if(isLogined){
+            // setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+            // getLatLng(myLoca);
+        }
+    }
+    useEffect(()=>{
+    },[isLogined])
+    const getLatLng = (location) => {
+        Geocode.fromAddress(location).then(
+            response => {
+                const resLatLng = response.results[0].geometry.location;
+                alert(`받아온 좌표${JSON.stringify(resLatLng)}`)
+                setHomePosit({lat: Number(resLatLng.lat), lng: Number(resLatLng.lng)});
+                setCenter(homePosit);
+                console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
+            },
+            error => {
+                console.error(error);
+            }
+        );
+    }//get user latitude and longitude from user address
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!storeList[0]) {

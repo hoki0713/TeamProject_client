@@ -4,7 +4,7 @@ import {MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalC
 import MerchanDetail from "./board/map/MerchanDetail";
 
 
-const CommonContainer = () => {
+const CommonContainer = ({isLogined}) => {
 
   return (
     <div className='container'>
@@ -12,7 +12,7 @@ const CommonContainer = () => {
         <MerchantList />
       </Route>
         <Route path="/find-by-map">
-            <FindByMap/>
+            <FindByMap isLogined/>
         </Route>
         <Route path="/find-best-route">
         <FindBestRoute />

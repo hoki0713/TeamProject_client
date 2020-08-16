@@ -20,7 +20,6 @@ Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 const FindBestRoute=()=> {
 
-    const [lineShow, setLineShow] = useState(true);// 폴리라인 조건부랜더링
     const [center, setCenter] = useState({lat: 37.73633262, lng: 127.0447991}); //지도 센터 좌표
     const [myLoca,setMyLoca] = useState(""); // 사용자 주소 담는 state
     const [infoShow, setInfoShow] =useState(false); // 인포창 show
@@ -33,8 +32,6 @@ const FindBestRoute=()=> {
     const [shortSearched, setShortSearched] = useState([]); // 드롭다운 검색 목록
     const [markerShow, setMarkerShow] = useState(false); // 마커 show
     const [paths, setPaths] = useState([]); //polyline pathCoordinate
-    const [initShow, setInitShow]=useState(false);//되돌리기 버튼 show
-    const [postShow, setPostShow]=useState(false);//결과목록 show
     const mapRef = useRef();
     const onMapLoad = useCallback(map => {
         mapRef.current = map;
@@ -47,11 +44,6 @@ const FindBestRoute=()=> {
     ])
 
     function getshorList(){
-        setShortSearched([
-            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
-            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
-            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
-            ]);
         if(inputValue){
             axios.get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
                 .then(({data})=>{
@@ -59,14 +51,7 @@ const FindBestRoute=()=> {
                         setShortSearched(data.list);
                         (shortSearched.length!=0)?setDropShow(true):setDropShow(false);
                     }
-                    else{
-                        // console.log(data.msg);
-                        setShortSearched([
-                            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
-                            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
-                            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
-                        ]);
-                        setDropShow(false);}
+                    else{setDropShow(false);}
                 })
                 .catch(err=>{console.log(err);throw err; })
         }
@@ -82,28 +67,13 @@ const FindBestRoute=()=> {
         let value = e.target.value;
         if(value.charAt[0]!='') setInputValue(e.target.value);
     } //검색창 온체인지 함수
-
-
-    // let temRoutes =[
-    //     {"id":113,"storeName":"의정부관광호텔","mainCode":"숙박업","storeType":"여관/기타숙박업","storeTypeCode":1020,"localName":"의정부시","address":"경기도 의정부시 호국로 1342 (의정부동)","storePhone":"0","latitude":37.74444673,"longitude":127.053239,"searchResultCount":64603},
-    //     {"id":114,"storeName":"의정부라트리호텔(Uijeongbu La Tree Hotel","mainCode":"숙박업","storeType":"여관/기타숙박업","storeTypeCode":1020,"localName":"의정부시","address":"경기도 의정부시 청사로6번길 19-13 (신곡동)","storePhone":"031-843-5100","latitude":37.74979449,"longitude":127.0719852,"searchResultCount":142239}
-    //     // {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"3. 주소",storePhone:"",latitude:37.746197,longitude:127.030861}
-    //     ]
-
-
     function selectRoute (routeInfo){
-        console.log("routeInfo");
-        console.log(routeInfo);
-        console.log("temRoutes");
-        console.log(temRoutes);
         if(temRoutes.length<3){
             routeInfo.latitude=Number(routeInfo.latitude);
             routeInfo.longitude=Number(routeInfo.longitude);
             temRoutes.push(routeInfo);
-
         }
-    }
-
+    } // 선택한 가게 루트에 추가하기
     const getLatLng = (location) => {
         Geocode.fromAddress(location).then(
             response => {
@@ -118,12 +88,6 @@ const FindBestRoute=()=> {
             }
         );
     }//get user latitude and longitude from user address
-
-    const markerfnc =()=>{
-        if(temRoutes.length!=0){
-            setMarkerShow(true);
-        };
-    }
     const getBestSeq=(homePosition, stopOverList)=>{
         let homePosi = homePosition;// start, end position
         let stopOver = stopOverList; // middle positions, must be like [{lat: 0, lng: 0}, ...]
@@ -195,34 +159,18 @@ const FindBestRoute=()=> {
     const dropDownClick=(selectedStore)=>{
         selectRoute(selectedStore);
         setInputValue('');
-        getBestSeq(homePosit,temRoutes);markerfnc();
-
+        getBestSeq(homePosit,temRoutes);
+        setMarkerShow(true);
     }//드롭다운 클릭, 경로추가
     const goNaver=(dir1Name,dir1Lat,dir1Lng, dir2Name,dir2Lat,dir2Lng)=>{
             document.location.href=`
             http://map.naver.com/index.nhn?slng=${dir1Lng}&slat=${dir1Lat}&stext=${dir1Name}
             &elng=${dir2Lng}&elat=${dir2Lat}&etext=${dir1Name}&menu=route&pathType=1`
-    }
+    }//네이버 네비 링크
     useEffect(() => {
-        setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr)
+        setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
         getLatLng(myLoca);
     }, [homePosit]); // 주소로 유저 좌표 가져오기
-
-    useEffect(()=>{
-        markerfnc();
-    },[temRoutes])
-    useEffect(()=>{},[])
-    useEffect(()=>{
-        console.log("useEffect getStoreList")
-        if(!stores[0]) {
-            axios.get(`http://localhost:8080/stores/mapClick/의정부`)
-                .then(({data})=>{
-                    setStores(data.list);
-                })
-                .catch(err=>{throw(err)});
-        };
-
-    },[stores]);
     return (<>
         <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3><br/>
         <table>
@@ -266,7 +214,7 @@ const FindBestRoute=()=> {
                             {infoShow &&
                             <Polyline
                                 path={paths}
-                                visible={lineShow}
+                                visible={true}
                                 options={{
                                     strokeColor: "#053c55",
                                     strokeOpacity: 0,
@@ -291,7 +239,7 @@ const FindBestRoute=()=> {
                     <div className="second_td">
                         <div className={"route_input"}>
                             <p>가장빠른 장보기 경로 찾기</p>
-                            {(!postShow)?
+                            {(!infoShow)?
                                 <div className={"preRoute"}>
                             <ListGroup>
                                 <ListGroup.Item><h6>출발:&nbsp;{myLoca}</h6></ListGroup.Item>
@@ -345,23 +293,28 @@ const FindBestRoute=()=> {
                                         <h6>출발:&nbsp;{myLoca}</h6>
                                         <h6>{temRoutes[bestWay[0]].storeName}&#09;{temRoutes[bestWay[0]].address}</h6>
                                         <button className={"find_routeB"} onClick={e=>{e.preventDefault();
-                                        goNaver(myLoca,homePosit.lat,homePosit.lng,temRoutes[bestWay[0]].storeName,temRoutes[bestWay[0]].latitude,temRoutes[bestWay[0]].longitude)}}
+                                        goNaver(myLoca,homePosit.lat,homePosit.lng,
+                                            temRoutes[bestWay[0]].storeName,temRoutes[bestWay[0]].latitude,temRoutes[bestWay[0]].longitude)}}
                                         >네이버 네비로 보기</button>
                                     </ListGroup.Item>}
                                     {temRoutes[bestWay[1]] &&
                                     <ListGroup.Item>
                                         <strong>경로 2!</strong>
+                                        <h6>{temRoutes[bestWay[0]].storeName}</h6>
                                         <h6>{temRoutes[bestWay[1]].storeName}</h6>
                                         <button className={"find_routeB"} onClick={e=>{e.preventDefault();
-                                            goNaver(temRoutes[bestWay[0]].storeName,temRoutes[bestWay[0]].latitude,temRoutes[bestWay[0]].longitude,temRoutes[bestWay[1]].storeName,temRoutes[bestWay[1]].latitude,temRoutes[bestWay[1]].longitude)}}
+                                            goNaver(temRoutes[bestWay[0]].storeName,temRoutes[bestWay[0]].latitude,temRoutes[bestWay[0]].longitude,
+                                                temRoutes[bestWay[1]].storeName,temRoutes[bestWay[1]].latitude,temRoutes[bestWay[1]].longitude)}}
                                         >네이버 네비로 보기</button>
                                     </ListGroup.Item>}
                                     {temRoutes[bestWay[2]] &&
                                     <ListGroup.Item>
                                         <strong>경로 3!</strong>
+                                        <h6>{temRoutes[bestWay[1]].storeName}</h6>
                                         <h6>{temRoutes[bestWay[2]].storeName}</h6>
                                         <button className={"find_routeB"} onClick={e=>{e.preventDefault();
-                                            goNaver(temRoutes[bestWay[1]].storeName,temRoutes[bestWay[1]].latitude,temRoutes[bestWay[1]].longitude,temRoutes[bestWay[2]].storeName,temRoutes[bestWay[2]].latitude,temRoutes[bestWay[2]].longitude)}}
+                                            goNaver(temRoutes[bestWay[1]].storeName,temRoutes[bestWay[1]].latitude,temRoutes[bestWay[1]].longitude,
+                                                temRoutes[bestWay[2]].storeName,temRoutes[bestWay[2]].latitude,temRoutes[bestWay[2]].longitude)}}
                                         >네이버 네비로 보기</button>
                                     </ListGroup.Item>}
                                     <ListGroup.Item><h6>도착:&nbsp;{myLoca}</h6></ListGroup.Item>
@@ -371,13 +324,11 @@ const FindBestRoute=()=> {
                             </div>
 
                             }
-                            {(!initShow)?
+                            {(!infoShow)?
                                 <button className="best_wayB" onClick={e=>{
                                     e.preventDefault();
                                     makePath(temRoutes);
                                     setInfoShow(true);
-                                    setInitShow(true);
-                                    setPostShow(true);
                                 }}>장보러 가는 가장 빠른 길!!</button>:
                                 <Button variant="primary" onClick={e=>{
                                     e.preventDefault();
