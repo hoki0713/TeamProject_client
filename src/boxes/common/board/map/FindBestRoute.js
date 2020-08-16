@@ -11,6 +11,7 @@ import {
 } from "./mapIcons/imgIndex";
 import {libraries} from "./FindByMap";
 import axios from "axios";
+import {Button,ListGroup} from "react-bootstrap";
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
@@ -43,8 +44,10 @@ const FindBestRoute=()=> {
         width: '100%',
         height: '600px'
     };// 지도 스타일
+
+
      function getshorList(){
-         setShortSearched([{storeName:''},{storeName:''},{storeName:''}])
+         setShortSearched([{storeName:''},{storeName:''},{storeName:''}]);
         if(inputValue){
            axios.get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
                 .then(({data})=>{
@@ -54,27 +57,21 @@ const FindBestRoute=()=> {
                     }
                     else{console.log(data.msg);
                         setShortSearched([{storeName:''},{storeName:''},{storeName:''}])
-                        setDropShow(false)}
-
+                        setDropShow(false);}
                 })
                 .catch(err=>{console.log(err);throw err; })
-
         }
-    }
-
+    }//실시간 검색 드롭다운 함수
     useEffect(()=>{
-        console.log("useEffect getsearched")
+        console.log("useEffect getsearched");
         setDropShow(false);
         getshorList();
-
-    },[inputValue])
-
-
+    },[inputValue]) //검색 드롭다운 유즈이펙트
     const realTimeSearch=e=>{
         e.preventDefault();
         let value = e.target.value;
         if(value.charAt[0]!='') setInputValue(e.target.value);
-    } //실시간 검색 드롭다운 함수
+    } //검색창 온체인지 함수
 
 
     let temRoutes =[
@@ -95,7 +92,7 @@ const FindBestRoute=()=> {
                 console.error(error);
             }
         );
-    }
+    }//get user latitude and longitude from user address
 
 
     const getBestSeq=(homePosition, stopOverList)=>{
@@ -238,7 +235,7 @@ const FindBestRoute=()=> {
                 <td>
                     <div className="second_td">
                         <div className={"route_input"}>
-                            <h5>우리집:&nbsp;{myLoca}</h5>
+
                             <button onClick={()=>getBestSeq(homePosit,temRoutes)}>거리계산</button>
                             <button onClick={e=>{
                                 e.preventDefault();
@@ -247,14 +244,32 @@ const FindBestRoute=()=> {
                                 }
                                 setInfoShow(true);
                             }}>getway</button>
-                            <p>경로</p>
-                            <input onChange={e=> {realTimeSearch(e);}}/>
-                            <button onClick={()=>{setDropShow(true)}}></button>
-                            {inputValue &&dropShow &&
-                               <> <p>{shortSearched[0] &&shortSearched[0].storeName}</p>
-                              <p>{shortSearched[1] && shortSearched[1].storeName}</p>
-                               <p>{shortSearched[2] && shortSearched[2].storeName}</p></>
+                            <p>가장빠른 장보기 경로 찾기</p>
+                            <ListGroup>
+                                <ListGroup.Item><h6>출발  우리집:&nbsp;{myLoca}</h6></ListGroup.Item>
+                                {temRoutes[bestWay[0]] && <ListGroup.Item><h6>&#62;&#62;1번 경유지&#09;{temRoutes[bestWay[0]].storeName}</h6></ListGroup.Item>}
+                                {temRoutes[bestWay[1]] && <ListGroup.Item><h6>&#62;&#62;2번 경유지&#09;{temRoutes[bestWay[1]].storeName}</h6></ListGroup.Item>}
+                                {temRoutes[bestWay[2]] && <ListGroup.Item><h6>&#62;&#62;3번 경유지&#09;{temRoutes[bestWay[2]].storeName}</h6></ListGroup.Item>}
+                                <ListGroup.Item><h6>도착  우리집:&nbsp;{myLoca}</h6></ListGroup.Item>
+                            </ListGroup>
+                            <div className={'route_box'}>
+                                {temRoutes.length<3 &&
+                                <table className={'route_table'}>
+                                <tr><td><button className={'addB'}>+</button></td>
+                                    <td><text className={'storeNameBox'}>경로추가하기</text></td></tr>
+                            </table>}
+                            </div>
+                            <div>
+                            <input className={"searchB"} onChange={e=> {realTimeSearch(e);}}/>
+                            <Button variant="success">Success</Button>
+                            </div>
 
+                            {inputValue && dropShow &&
+                            <table className={'searchDown'}>
+                                <tr><td>{shortSearched[0] && shortSearched[0].storeName}</td></tr>
+                                <tr><td>{shortSearched[1] && shortSearched[1].storeName}</td></tr>
+                                <tr><td>{shortSearched[2] && shortSearched[2].storeName}</td></tr>
+                            </table>
                             }
                         </div>
                     </div>
