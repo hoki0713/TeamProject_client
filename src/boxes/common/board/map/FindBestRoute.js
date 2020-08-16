@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import {Button,ListGroup} from "react-bootstrap";
 import {libraries,containerStyle,dottedLine} from "./mapUtils/mapatt";
+import './map.css'
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
@@ -21,17 +22,19 @@ const FindBestRoute=()=> {
 
     const [lineShow, setLineShow] = useState(true);// 폴리라인 조건부랜더링
     const [center, setCenter] = useState({lat: 37.73633262, lng: 127.0447991}); //지도 센터 좌표
-    const [myLoca,setMyLoca] = useState("");
-    const [infoShow, setInfoShow] =useState(false);
-    const [bestWay,setBestWay] = useState([])
+    const [myLoca,setMyLoca] = useState(""); // 사용자 주소 담는 state
+    const [infoShow, setInfoShow] =useState(false); // 인포창 show
+    const [bestWay,setBestWay] = useState([]); // 최단 경로 순서
     const [map, setMap] = useState(null);
     const [inputValue,setInputValue] =useState(""); //검색어
     const [stores, setStores] =useState([]);
     const [homePosit,setHomePosit]=useState({lat: 37.73633262, lng: 127.0447991});
-    const [dropShow,setDropShow]=useState(false);
-    const [shortSearched, setShortSearched] = useState([]);
-    const [markerShow, setMarkerShow] = useState(false);
+    const [dropShow,setDropShow]=useState(false); // 검색 드롭다운 show
+    const [shortSearched, setShortSearched] = useState([]); // 드롭다운 검색 목록
+    const [markerShow, setMarkerShow] = useState(false); // 마커 show
     const [paths, setPaths] = useState([]); //polyline pathCoordinate
+    const [initShow, setInitShow]=useState(false);//되돌리기 버튼 show
+    const [postShow, setPostShow]=useState(false);//결과목록 show
     const mapRef = useRef();
     const onMapLoad = useCallback(map => {
         mapRef.current = map;
@@ -39,12 +42,15 @@ const FindBestRoute=()=> {
     const onUnmount = useCallback(function callback(map) {
         setMap(null);
     }, []);
+    const [temRoutes,setTemRoutes]=useState([
+        // {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"3. 주소",storePhone:"",latitude:37.746197,longitude:127.030861}
+    ])
 
     function getshorList(){
         setShortSearched([
-            {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"",storePhone:"",latitude:0,longitude:0},
-            {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"",storePhone:"",latitude:0,longitude:0},
-            {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"",storePhone:"",latitude:0,longitude:0}
+            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
+            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
+            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
             ]);
         if(inputValue){
             axios.get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
@@ -56,9 +62,9 @@ const FindBestRoute=()=> {
                     else{
                         // console.log(data.msg);
                         setShortSearched([
-                            {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"",storePhone:"",latitude:0,longitude:0},
-                            {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"",storePhone:"",latitude:0,longitude:0},
-                            {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"",storePhone:"",latitude:0,longitude:0}
+                            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
+                            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
+                            {"id":0,"storeName":"","mainCode":"","storeType":"","storeTypeCode":0,"localName":"","address":"","storePhone":"","latitude":0,"longitude":0,"searchResultCount":0},
                         ]);
                         setDropShow(false);}
                 })
@@ -78,16 +84,23 @@ const FindBestRoute=()=> {
     } //검색창 온체인지 함수
 
 
-    let temRoutes =[
-        {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"1번주소",storePhone:"",latitude:37.746897,longitude:127.030861},
-        {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"2. 주소",storePhone:"",latitude:37.745897,longitude:127.040831},
-        // {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"3. 주소",storePhone:"",latitude:37.746197,longitude:127.030861}
-        ]
+    // let temRoutes =[
+    //     {"id":113,"storeName":"의정부관광호텔","mainCode":"숙박업","storeType":"여관/기타숙박업","storeTypeCode":1020,"localName":"의정부시","address":"경기도 의정부시 호국로 1342 (의정부동)","storePhone":"0","latitude":37.74444673,"longitude":127.053239,"searchResultCount":64603},
+    //     {"id":114,"storeName":"의정부라트리호텔(Uijeongbu La Tree Hotel","mainCode":"숙박업","storeType":"여관/기타숙박업","storeTypeCode":1020,"localName":"의정부시","address":"경기도 의정부시 청사로6번길 19-13 (신곡동)","storePhone":"031-843-5100","latitude":37.74979449,"longitude":127.0719852,"searchResultCount":142239}
+    //     // {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"3. 주소",storePhone:"",latitude:37.746197,longitude:127.030861}
+    //     ]
 
 
     function selectRoute (routeInfo){
+        console.log("routeInfo");
+        console.log(routeInfo);
+        console.log("temRoutes");
+        console.log(temRoutes);
         if(temRoutes.length<3){
-            temRoutes[temRoutes.length]=routeInfo;
+            routeInfo.latitude=Number(routeInfo.latitude);
+            routeInfo.longitude=Number(routeInfo.longitude);
+            temRoutes.push(routeInfo);
+
         }
     }
 
@@ -112,44 +125,49 @@ const FindBestRoute=()=> {
         };
     }
     const getBestSeq=(homePosition, stopOverList)=>{
-        const homePosit = homePosition;// start, end position
-        const stopOver = stopOverList; // middle positions, must be like [{lat: 0, lng: 0}, ...]
+        let homePosi = homePosition;// start, end position
+        let stopOver = stopOverList; // middle positions, must be like [{lat: 0, lng: 0}, ...]
         let results = [];
         let index =0;
         switch(stopOverList.length){
-            case 1:break ;
-            case 2:for(let i = 0;i<stopOver.length;i++){
-                     for(let j = 0;j<stopOver.length;j++){
-                        if(i!=j){
-                            let ways = [i,j]
-                            results[index]={way: ways, distance:(
-                                    Math.sqrt(Math.pow((Number(homePosit.lat)-stopOver[i].latitude),2)+Math.pow((Number(homePosit.lng) - stopOver[i].longitude),2))+
-                                    Math.sqrt(Math.pow((stopOver[i].latitude-stopOver[j].latitude),2)+Math.pow((stopOver[i].longitude - stopOver[j].longitude),2))+
-                                    Math.sqrt(Math.pow((Number(homePosit.lat)-stopOver[j].latitude),2)+Math.pow((Number(homePosit.lng) - stopOver[j].longitude),2))
-                                )};
-                            index++
-                        }
-                    }}break ;
-            case 3:for(let i = 0;i<stopOver.length;i++){
-                    for(let j = 0;j<stopOver.length;j++){
-                        for(let k = 0;k<stopOver.length;k++){
-                            if(i!=j&&j!=k&&k!=i){
-                                let ways = [i,j,k]
+            case 1:console.log("switch 1");
+                    let tmpPaths = [{lat:homePosi.lat, lng:homePosi.lng},
+                        {lat:temRoutes[0].latitude, lng:temRoutes[0].longitude},
+                        {lat:homePosi.lat, lng:homePosi.lng}]
+                    setPaths(tmpPaths);
+                break ;
+            case 2:console.log("switch 2");
+                    for(let i = 0;i<stopOver.length;i++){
+                         for(let j = 0;j<stopOver.length;j++){
+                            if(i!=j){
+                                let ways = [i,j]
                                 results[index]={way: ways, distance:(
-                                        Math.sqrt(Math.pow((homePosit.lat-stopOver[i].latitude),2)+Math.pow((homePosit.lng - stopOver[i].longitude),2))+
+                                        Math.sqrt(Math.pow((Number(homePosi.lat)-stopOver[i].latitude),2)+Math.pow((Number(homePosi.lng) - stopOver[i].longitude),2))+
                                         Math.sqrt(Math.pow((stopOver[i].latitude-stopOver[j].latitude),2)+Math.pow((stopOver[i].longitude - stopOver[j].longitude),2))+
-                                        Math.sqrt(Math.pow((stopOver[j].latitude-stopOver[k].latitude),2)+Math.pow((stopOver[j].longitude - stopOver[k].longitude),2))+
-                                        Math.sqrt(Math.pow((homePosit.lat-stopOver[k].latitude),2)+Math.pow((homePosit.lng - stopOver[k].longitude),2))
+                                        Math.sqrt(Math.pow((Number(homePosi.lat)-stopOver[j].latitude),2)+Math.pow((Number(homePosi.lng) - stopOver[j].longitude),2))
                                     )};
                                 index++
                             }
-                        }}
-                    }break ;
+                        }}break ;
+            case 3: console.log("switch 3")
+                    for(let i = 0;i<stopOver.length;i++){
+                        for(let j = 0;j<stopOver.length;j++){
+                            for(let k = 0;k<stopOver.length;k++){
+                                if(i!=j&&j!=k&&k!=i){
+                                    let ways = [i,j,k]
+                                    results[index]={way: ways, distance:(
+                                            Math.sqrt(Math.pow((homePosit.lat-stopOver[i].latitude),2)+Math.pow((homePosit.lng - stopOver[i].longitude),2))+
+                                            Math.sqrt(Math.pow((stopOver[i].latitude-stopOver[j].latitude),2)+Math.pow((stopOver[i].longitude - stopOver[j].longitude),2))+
+                                            Math.sqrt(Math.pow((stopOver[j].latitude-stopOver[k].latitude),2)+Math.pow((stopOver[j].longitude - stopOver[k].longitude),2))+
+                                            Math.sqrt(Math.pow((homePosit.lat-stopOver[k].latitude),2)+Math.pow((homePosit.lng - stopOver[k].longitude),2))
+                                        )};
+                                    index++
+                                }
+                            }}
+                        }break ;
             default: return "경유지를 입력해주세요"
         }
-
-
-        if(results.lenght!==0){
+        if(results.length!==0){
             const forSortList = [];
             results.map(elem=>{
                 forSortList.push(elem.distance)
@@ -160,30 +178,31 @@ const FindBestRoute=()=> {
                 };
              };
             }
-
     }//최단거리 구하기
-
-
-
-
-
-
-    function makePath (){
+    function makePath (tmpRouteList){
         let tmpPath=[];
-        if(temRoutes.length>1){
+        if(tmpRouteList.length>1||bestWay.length>1){
             tmpPath[0]=homePosit;
-            for(let i=0; i<temRoutes.length;i++){
-                tmpPath[i+1]={lat:temRoutes[bestWay[i]].latitude, lng:temRoutes[bestWay[i]].longitude};
+            for(let i=0; i<tmpRouteList.length;i++){
+                tmpPath[i+1]={lat:tmpRouteList[bestWay[i]].latitude, lng:tmpRouteList[bestWay[i]].longitude};
             }
-            tmpPath[temRoutes.length+1]=homePosit;
+            tmpPath[tmpRouteList.length+1]=homePosit;
             console.log("tmpPath"+tmpPath)
             setPaths(tmpPath);
             console.log(tmpPath);
         }
+    }//폴리라인 좌표 넣기
+    const dropDownClick=(selectedStore)=>{
+        selectRoute(selectedStore);
+        setInputValue('');
+        getBestSeq(homePosit,temRoutes);markerfnc();
+
+    }//드롭다운 클릭, 경로추가
+    const goNaver=(dir1Name,dir1Lat,dir1Lng, dir2Name,dir2Lat,dir2Lng)=>{
+            document.location.href=`
+            http://map.naver.com/index.nhn?slng=${dir1Lng}&slat=${dir1Lat}&stext=${dir1Name}
+            &elng=${dir2Lng}&elat=${dir2Lat}&etext=${dir1Name}&menu=route&pathType=1`
     }
-
-
-
     useEffect(() => {
         setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr)
         getLatLng(myLoca);
@@ -192,6 +211,7 @@ const FindBestRoute=()=> {
     useEffect(()=>{
         markerfnc();
     },[temRoutes])
+    useEffect(()=>{},[])
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!stores[0]) {
@@ -270,19 +290,9 @@ const FindBestRoute=()=> {
                 <td>
                     <div className="second_td">
                         <div className={"route_input"}>
-
-                            <button onClick={e=>{
-                                e.preventDefault();
-                                getBestSeq(homePosit,temRoutes);}}>거리계산</button>
-                            <button onClick={e=>{
-                                e.preventDefault();
-                                    makePath();
-                            }}>getway</button>
-                            <button onClick={e=>{
-                                e.preventDefault();
-                                setInfoShow(true);
-                            }}>showPath</button>
                             <p>가장빠른 장보기 경로 찾기</p>
+                            {(!postShow)?
+                                <div className={"preRoute"}>
                             <ListGroup>
                                 <ListGroup.Item><h6>출발:&nbsp;{myLoca}</h6></ListGroup.Item>
                                 {temRoutes[0] &&
@@ -301,22 +311,78 @@ const FindBestRoute=()=> {
                             </ListGroup>
                             <div className={'route_box'}>
                                 {temRoutes.length<3 &&
-                                <table className={'route_table'}>
-                                    <tr><td><button className={'addB'}>+</button></td>
-                                        <td><text className={'storeNameBox'}>경로추가하기</text></td></tr>
-                                </table>}
+                                <div>
+                                    <button className={'addB'}>+</button>
+                                    <input id={"searchInput"} className={"searchB"} onChange={e=> {realTimeSearch(e);}}/>
+                                    <Button variant="success">검색</Button>
+                                </div>}
                             </div>
-                            <div>
-                                <input className={"searchB"} onChange={e=> {realTimeSearch(e);}}/>
-                                <Button variant="success">검색</Button>
+                            {inputValue && dropShow &&
+                                <div className={"searchDown"}>
+                            <table>
+                                {shortSearched[0] &&
+                                <tr><td>
+                                    <button className={'addB'}onClick={e=>{e.preventDefault();dropDownClick(shortSearched[0]);}}>+</button>
+                                    {shortSearched[0].storeName} </td></tr>}
+                                {shortSearched[1] &&
+                                <tr><td>
+                                    <button className={'addB'}onClick={e=>{e.preventDefault();dropDownClick(shortSearched[1]);}}>+</button>
+                                    {shortSearched[1].storeName} </td></tr>}
+                                {shortSearched[2] &&
+                                <tr><td>
+                                    <button className={'addB'}onClick={e=>{e.preventDefault();dropDownClick(shortSearched[2]);}}>+</button>
+                                    {shortSearched[2].storeName} </td></tr>}
+                            </table>
+                                </div>
+                            }
+                            </div>:
+                            <div className={"postRoute"}>
+                                <strong>장보기 가장 빠른 경로</strong>
+                                <ListGroup>
+                                    {temRoutes[bestWay[0]] &&
+                                    <ListGroup.Item>
+                                        <strong>경로 1!</strong>
+                                        <h6>출발:&nbsp;{myLoca}</h6>
+                                        <h6>{temRoutes[bestWay[0]].storeName}&#09;{temRoutes[bestWay[0]].address}</h6>
+                                        <button className={"find_routeB"} onClick={e=>{e.preventDefault();
+                                        goNaver(myLoca,homePosit.lat,homePosit.lng,temRoutes[bestWay[0]].storeName,temRoutes[bestWay[0]].latitude,temRoutes[bestWay[0]].longitude)}}
+                                        >네이버 네비로 보기</button>
+                                    </ListGroup.Item>}
+                                    {temRoutes[bestWay[1]] &&
+                                    <ListGroup.Item>
+                                        <strong>경로 2!</strong>
+                                        <h6>{temRoutes[bestWay[1]].storeName}</h6>
+                                        <button className={"find_routeB"} onClick={e=>{e.preventDefault();
+                                            goNaver(temRoutes[bestWay[0]].storeName,temRoutes[bestWay[0]].latitude,temRoutes[bestWay[0]].longitude,temRoutes[bestWay[1]].storeName,temRoutes[bestWay[1]].latitude,temRoutes[bestWay[1]].longitude)}}
+                                        >네이버 네비로 보기</button>
+                                    </ListGroup.Item>}
+                                    {temRoutes[bestWay[2]] &&
+                                    <ListGroup.Item>
+                                        <strong>경로 3!</strong>
+                                        <h6>{temRoutes[bestWay[2]].storeName}</h6>
+                                        <button className={"find_routeB"} onClick={e=>{e.preventDefault();
+                                            goNaver(temRoutes[bestWay[1]].storeName,temRoutes[bestWay[1]].latitude,temRoutes[bestWay[1]].longitude,temRoutes[bestWay[2]].storeName,temRoutes[bestWay[2]].latitude,temRoutes[bestWay[2]].longitude)}}
+                                        >네이버 네비로 보기</button>
+                                    </ListGroup.Item>}
+                                    <ListGroup.Item><h6>도착:&nbsp;{myLoca}</h6></ListGroup.Item>
+                                </ListGroup>
+
+
                             </div>
 
-                            {inputValue && dropShow &&
-                            <ListGroup className={"searchB"}>
-                                {shortSearched[0] &&<ListGroup.Item onClick={e=>{selectRoute(shortSearched[0])}}> {shortSearched[0].storeName} </ListGroup.Item>}
-                                {shortSearched[1] && <ListGroup.Item onClick={e=>{selectRoute(shortSearched[1])}}> {shortSearched[1].storeName} </ListGroup.Item>}
-                                {shortSearched[2] && <ListGroup.Item onClick={e=>{selectRoute(shortSearched[2])}}> {shortSearched[2].storeName} </ListGroup.Item>}
-                            </ListGroup>
+                            }
+                            {(!initShow)?
+                                <button className="best_wayB" onClick={e=>{
+                                    e.preventDefault();
+                                    makePath(temRoutes);
+                                    setInfoShow(true);
+                                    setInitShow(true);
+                                    setPostShow(true);
+                                }}>장보러 가는 가장 빠른 길!!</button>:
+                                <Button variant="primary" onClick={e=>{
+                                    e.preventDefault();
+                                    window.location.reload();
+                                    }}>되돌리기</Button>
                             }
                         </div>
                     </div>

@@ -28,6 +28,8 @@ import Geocode from "react-geocode";
 
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
+
+
 const FindByMap=()=> {
 
 
