@@ -34,7 +34,6 @@ const CommonContainer = () => {
         <MerchanDetail/>
       </Route>
 
-
     </div>
   );
 }

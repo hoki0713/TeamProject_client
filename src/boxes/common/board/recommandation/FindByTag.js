@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap'
 import axios from 'axios'
+import {useSelector} from "react-redux";
 
 function FindByTag() {
 
@@ -19,7 +20,7 @@ function FindByTag() {
     const [searchIndustry, setSearchIndustry] = useState([])
     const [industryName, setIndustryName] = useState([])
     const [resultStores, setResultStores] = useState([])
-
+    const latLng = useSelector(state => state.userLatLng)
 
     const calAgeGroup = () => {
         const thisYear = new Date().getFullYear()
@@ -33,6 +34,7 @@ function FindByTag() {
         setId(accountDetail.id)
         setUserGender(accountDetail.gender);
         setUserBirthYear(accountDetail.birthDate.split("-")[0])
+        console.log("이게 뭐지"+latLng)
     }, [accountDetail]);
 
 
@@ -56,6 +58,19 @@ function FindByTag() {
         }
     }, [id])
 
+    const BASE_COLOR = "red";
+    const OTHER_COLOR = "blue";
+
+    const [ isActive, setActive ] = useState(false);
+
+    const handleColor=(e)=>{
+        setActive(!isActive)
+        if(!isActive){
+
+            document.getElementById("button").style.backgroundColor='gray'
+        } else {document.getElementById("button").style.backgroundColor='white';}
+    }
+
     const handleIndustry = () => {
         if (gender !== "null" || ageGroup !== 0) {
             axios.get(`http://localhost:8080/recommends/search/${gender}/${ageGroup}`)
@@ -74,11 +89,13 @@ function FindByTag() {
         setGender(e.target.value);
         console.log("gender시작" + gender + "age시작" + ageGroup)
         handleIndustry()
+        handleColor()
     }
     const handleAge = (e) => {
         setAgeGroup(e.target.value);
         console.log("age시작" + ageGroup + "gender" + gender)
         handleIndustry()
+        handleColor()
     }
 
     const submitSearch = (e) => {
@@ -93,11 +110,8 @@ function FindByTag() {
                     keys.push(key)
                     values.push(value)
                 })
-                console.log(keys.length)
-                console.log(values.length)
                 setIndustryName(keys)
                 setResultStores(values)
-
             })
             .catch(error => {
                 throw(error)
@@ -155,9 +169,9 @@ function FindByTag() {
                         성별
                     </Form.Label>
                     <Col sm={10}>
-                        <Button variant="outline-dark" type="button" onClick={handleGender} value="M">남성</Button>{' '}
-                        <Button variant="outline-dark" type="button" onClick={handleGender} value={"F"}>여성</Button>{' '}
-                        <Button variant="outline-dark" type="button" onClick={handleGender} value={"null"}>성별무관</Button>
+                        <Button id="button" variant="outline-dark" type="button" onClick={handleGender} value="M">남성</Button>{' '}
+                        <Button id="button" variant="outline-dark" type="button" onClick={handleGender} value={"F"}>여성</Button>{' '}
+                        <Button id="button" variant="outline-dark" type="button" onClick={handleGender} value={"null"}>성별무관</Button>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
