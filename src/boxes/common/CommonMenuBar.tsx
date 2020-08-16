@@ -60,11 +60,16 @@ const CommonMenuBar = ({isLogined}) => {
                   리스트로 찾아보기
                 </p>
               </Link>
-              <Link to="/find-best-route">
+              {(isLogined)?<Link to="/find-best-route">
                 <p className="dropdown-item">
                   최적경로 찾아보기
                 </p>
-              </Link>
+              </Link>:
+                  <Link to="/account/login">
+                    <p className="dropdown-item">
+                      최적경로 찾아보기
+                    </p>
+                  </Link>}
             </div>
           </li>
 

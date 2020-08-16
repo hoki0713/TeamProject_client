@@ -5,8 +5,6 @@ import {
     Marker,
     InfoWindow, LoadScript,
 } from "@react-google-maps/api";
-import Geocode from 'react-geocode'
-
 import './map.css'
 import {Star} from "./Modals";
 import {
@@ -25,16 +23,11 @@ import {
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import {libraries,containerStyle} from "./mapUtils/mapatt";
+import Geocode from "react-geocode";
+
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
-
-
-
-export const libraries = ['drawing']
-export const containerStyle = {
-    width: '100%',
-    height: '600px'
-};
 const FindByMap=()=> {
 
 
@@ -58,19 +51,7 @@ const FindByMap=()=> {
         setCenter(homePosit);
         if(center==homePosit)window.location.reload();
     }
-    const getLatLng = (location) =>{
-        Geocode.fromAddress(location).then(
-            response => {
-                const resLatLng = response.results[0].geometry.location;
-                setHomePosit({lat:resLatLng.lat, lng:resLatLng.lng});
-                setCenter({lat:resLatLng.lat, lng:resLatLng.lng})
-                console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
-            },
-            error => {
-                console.error(error);
-            }
-        );
-    }
+
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!storeList[0]) {

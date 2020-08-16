@@ -14,7 +14,7 @@ const CommonContainer = () => {
         <Route path="/find-by-map">
             <FindByMap/>
         </Route>
-      <Route path="/find-best-route">
+        <Route path="/find-best-route">
         <FindBestRoute />
       </Route>
       <Route path="/recommendation">
