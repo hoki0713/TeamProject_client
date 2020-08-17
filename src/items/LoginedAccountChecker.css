@@ -1,0 +1,8 @@
+.common-header-links {
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+#logout-btn {
+  cursor: pointer;
+}

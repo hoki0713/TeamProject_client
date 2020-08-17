@@ -71,19 +71,24 @@ input:checked + .slider:before {
     height: 600px;
 }
 .mapSide{
-    height: 500px;
-    width: 20%;
+    height: 100%;
+    width: 100%;
     margin: 2%;
 
 }
 .mapSide tr td {
+    height: 100%;
+    width: 100%;
     border: 1px solid #444444;
 }
 .td-left{
-    width: 80%;
+    width: 70%;
+    padding-top: 2%;
 }
-.td-right{
-    width: 20%;
+.route-right{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #444444;
 }
 .list_table{
     margin: 2%;
@@ -105,4 +110,83 @@ input:checked + .slider:before {
 }
 .search_box{
     float: right;
+}
+.first_td {
+    width: 70%;
+    min-width: 700px;
+    padding: 2%;
+    border: 1px solid seagreen;
+}
+.second_td {
+    width: 30%;
+    min-width: 300px;
+    height: 100%;
+    padding: 2%;
+    border: 1px solid seagreen;
+}
+.route_input{
+    width: 100%;
+    min-height: 600px;
+    text-align: center;
+}
+.searchB{
+    height: 35px;
+}
+.searchDown{
+    min-width: 175px;
+    margin-left: 12px;
+    text-align: left;
+}
+.searchDown tr td{
+    border: 1px solid #303633;
+}
+.addB{
+    background-color: #69d0f8;
+    border: none;
+    color: white;
+    font-size: 20px;
+    margin: 2px 2px;
+    border-radius: 40%;
+}
+.route_box{
+    border: 1px solid #49555a;
+    text-align: left;
+    margin: 12px;
+    min-width: 260px;
+}
+.storeNameBox{
+    margin: 2px 2px;
+    width: 100px;
+    height: 100%;
+}
+.route_table{
+}
+
+.find_routeB {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50; /* Green */
+}
+.best_wayB {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #78d97c;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+.best_wayB:hover {background-color: #09f112
+}
+
+.best_wayB:active {
+    background-color: #e0be6c;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }

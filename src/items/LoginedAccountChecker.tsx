@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import './LoginedAccountChecker.css';
 
 const LoginedAccountChecker = ({ loginedAccount, clickLogout, isAdmin }) => {
   const history = useHistory();
@@ -14,19 +15,19 @@ const LoginedAccountChecker = ({ loginedAccount, clickLogout, isAdmin }) => {
   return (
     <>
       {!loginedAccount &&
-        <div id="common-header-links">
+        <>
           <Link to="/account/login">
             <span className="btn-link btn-sm">로그인</span>
           </Link>
           <Link to="/account/term-n-condition">
             <span className="btn-link btn-sm">회원가입</span>
           </Link>
-        </div>
+        </>
       }
 
       {loginedAccount &&
-        <span id="common-header-links">
-          <span className="btn-link btn-sm" onClick={handleLogout}>
+        <>
+          <span className="btn-link btn-sm" id="logout-btn" onClick={handleLogout}>
             로그아웃
             </span>
           <Link to="/mypage">
@@ -37,7 +38,7 @@ const LoginedAccountChecker = ({ loginedAccount, clickLogout, isAdmin }) => {
               <span className="btn-link btn-sm">DashBoard</span>
             </Link>
           }
-        </span>
+        </>
       }
     </>
   );

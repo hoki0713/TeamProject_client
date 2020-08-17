@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap'
 import PaymentIamPort from "./PaymentIamPort";
-
+import Iamport from "react-iamport";
 
 const Payment = (props) => {
 
@@ -11,14 +11,13 @@ const Payment = (props) => {
 
         <Modal {...props}>
             <Modal.Header closeButton></Modal.Header>
-            <Modal.Title>결제하기</Modal.Title>
+            <Modal.Title>지역화폐 결제하기</Modal.Title>
             <Modal.Body>
-
-               <PaymentIamPort/>
+                {props.localName}의 지역화폐 {props.unitPrice}원을 구매하시겠습니까?
             </Modal.Body>
             <Modal.Footer>
+                <PaymentIamPort unitPrice={props.unitPrice} localName={props.localName}/>
                 <Button variant="secondary" onClick={props.onHide}>취소</Button>
-                <Button variant="outline-primary" onClick={props.onHide}>결제하기</Button>
             </Modal.Footer>
         </Modal>
     );
