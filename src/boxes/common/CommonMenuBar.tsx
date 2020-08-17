@@ -60,11 +60,16 @@ const CommonMenuBar = ({isLogined}) => {
                   리스트로 찾아보기
                 </p>
               </Link>
-              <Link to="/find-best-route">
+              {(isLogined)?<Link to="/find-best-route">
                 <p className="dropdown-item">
                   최적경로 찾아보기
                 </p>
-              </Link>
+              </Link>:
+                  <Link to="/account/login">
+                    <p className="dropdown-item">
+                      최적경로 찾아보기
+                    </p>
+                  </Link>}
             </div>
           </li>
 
@@ -103,7 +108,7 @@ const CommonMenuBar = ({isLogined}) => {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={fourthToggleOpen} >
               지역화폐
             </p>
-            {isLogined &&
+            {(isLogined)?
               <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
                 <Link to="/buy-local-currency">
                   <p className="dropdown-item">
@@ -111,9 +116,7 @@ const CommonMenuBar = ({isLogined}) => {
                 </p>
                 </Link>
               </div>
-            }
-
-            {!isLogined &&
+            :
               <div className={fourthMenuOpen} onClick={() => setIsFouthOpen(false)}>
                 <Link to="/account/login">
                   <p className="dropdown-item">
