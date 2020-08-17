@@ -12,18 +12,32 @@ import {
     chinaIcon,
     conviStore,
     drug,
-    cafe, hotelIcon, soju, bab, normal,recom
+    cafe, hotelIcon, soju, bab, normal,recom,starIcon
 } from './mapIcons/imgIndex'
-import {MapModal, Star} from "./Modals";
+import {MapModal} from "./Modals";
 import axios from "axios";
 import {libraries,containerStyle} from "./mapUtils/mapatt";
 import Geocode from "react-geocode";
-import StarAvg from "./StarAvg";
 
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
+export const Stars=({storeInfo})=>{
+    const [starArr, setStarArr]=useState([]);
 
+    useEffect(()=>{
+        let tmpList = [];
+        for(let i=0;i<parseInt(storeInfo.starRanking);i++){
+            tmpList[i]=i+1;
+        }
+        setStarArr(tmpList);
+    }, [storeInfo])
+
+    return(<>
+        {starArr.map(()=>(<img alt={"starIcon"} src ={starIcon} width={20} height={20}/>)
+        )}
+    </>)
+}
 const FindByMap=({isLogined})=> {
 
 
@@ -214,7 +228,11 @@ const FindByMap=({isLogined})=> {
 
                             {recoList.map((store, i)=>(
                                 <>
-                                <tr style={{cursor:"pointer"}} onClick={e=>{e.preventDefault();}}><td className={"side_td_1"}>
+                                <tr style={{cursor:"pointer"}}
+                                    onClick={e=>{e.preventDefault();
+                                                setStoreInfo(store);
+                                                setModalShow(true);
+                                    }}><td className={"side_td_1"}>
                                     <h7> &nbsp;추천!!</h7>
                                     <img alt={"storeIcon"} src={store.icon} style={{width:25, height:25}}/></td>
                                     <td className={"side_td_2"}> <img alt={"storeImg"} src={store.imgUrl} style={{width:60, height:60}}/></td>
@@ -222,9 +240,7 @@ const FindByMap=({isLogined})=> {
                                     &nbsp;<text className={"store_addr"}>{store.address}</text></td>
                                 </tr>
                                     <tr><td colSpan={2}/><td className={"side_tr_2"}>별점
-                                        <StarAvg/>
-                                        &nbsp;<img alt={"star"} src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
-                                                   width={50} height={30}/></td></tr>
+                                        &nbsp;<Stars storeInfo={store}/></td></tr>
                                 </>
                             ))}
                         </table>

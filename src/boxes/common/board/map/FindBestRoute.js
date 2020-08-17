@@ -15,7 +15,7 @@ import "./map.css";
 
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
-const FindBestRoute = () => {
+const FindBestRoute = ({isLogined}) => {
   const [center, setCenter] = useState({ lat: 37.73633262, lng: 127.0447991 }); //지도 센터 좌표
   const [myLoca, setMyLoca] = useState(""); // 사용자 주소 담는 state
   const [infoShow, setInfoShow] = useState(false); // 인포창 show
@@ -23,10 +23,7 @@ const FindBestRoute = () => {
   const [map, setMap] = useState(null);
   const [inputValue, setInputValue] = useState(""); //검색어
   const [stores, setStores] = useState([]);
-  const [homePosit, setHomePosit] = useState({
-    lat: 37.73633262,
-    lng: 127.0447991,
-  });
+  const [homePosit, setHomePosit] = useState({});
   const [dropShow, setDropShow] = useState(false); // 검색 드롭다운 show
   const [shortSearched, setShortSearched] = useState([]); // 드롭다운 검색 목록
   const [markerShow, setMarkerShow] = useState(false); // 마커 show
@@ -83,21 +80,30 @@ const FindBestRoute = () => {
 
   const getLatLng = (location) => {
     Geocode.fromAddress(location).then(
-      (response) => {
-        const resLatLng = response.results[0].geometry.location;
-        alert(`받아온 좌표${JSON.stringify(resLatLng)}`);
-        setHomePosit({
-          lat: Number(resLatLng.lat),
-          lng: Number(resLatLng.lng),
-        });
-        setCenter(homePosit);
-        console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
-      },
-      (error) => {
-        console.error(error);
-      }
+        response => {
+          const resLatLng = response.results[0].geometry.location;
+          setHomePosit({lat: Number(resLatLng.lat), lng: Number(resLatLng.lng)});
+          setCenter({lat:Number(resLatLng.lat), lng:Number(resLatLng.lng)})
+        },
+        error => {
+          console.error(error);
+        }
     );
-  }; //get user latitude and longitude from user address
+  }//get user latitude and longitude from user address
+
+  useEffect(()=>{
+    console.log(isLogined);//check 하고 없애기
+    if(isLogined){
+      setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+    }
+  },[isLogined]);
+
+  useEffect(()=>{
+    if(isLogined){
+      getLatLng(myLoca);
+    }
+  },[myLoca]);
+
 
   const getBestSeq = (homePosition, stopOverList) => {
     let homePosi = homePosition; // start, end position

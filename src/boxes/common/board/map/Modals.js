@@ -1,10 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
-import {addr, favStar, phoneB, red, review} from "./mapIcons/imgIndex";
+import {addr, favStar, phoneB, red, review, starIcon} from "./mapIcons/imgIndex";
 import {Link} from "react-router-dom";
 import ReviewModal from "../../../../items/ReviewModal";
 import axios from "axios";
-
 
 
 export const MapModal=({storeInfo,modalClose,isLogined})=> {
@@ -13,11 +12,28 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
     const [starShow, setStarShow]=useState(false);
     const iconsize=25;
 
+
     const reportClose=()=>{
         setReportShow(false);
     }
     const starClose=()=>{
         setStarShow(false);
+    }
+    const Stars=({storeInfo})=>{
+        const [starArr, setStarArr]=useState([]);
+
+        useEffect(()=>{
+            let tmpList = [];
+            for(let i=0;i<parseInt(storeInfo.starRanking);i++){
+                tmpList[i]=i+1;
+            }
+            setStarArr(tmpList);
+        }, [storeInfo])
+
+        return(<>
+            {starArr.map(()=>(<img alt={"starIcon"} src ={starIcon} width={20} height={20}/>)
+            )}
+        </>);
     }
     return (
         <>
@@ -55,8 +71,8 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                                 {storeInfo.storeType}
                             </Col>
                             <Col xs={6} md={4}>
-                                별점 &nbsp;<img alt={"star"} src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
-                                              width={50} height={30}/>
+                                별점 &nbsp;
+                                <Stars storeInfo={storeInfo}/>
 
                             </Col>
                             <Col xs={6} md={4}>
@@ -161,11 +177,24 @@ export const StoreReport=({storeInfo, reportClose,modalClose})=> {
 export const Star =({storeInfo, starClose, modalClose})=> {
 
     const addStore=()=>{
-        modalClose();
+        const data = {
+            userId: JSON.parse(sessionStorage.getItem("accountDetail")).id,
+            storeId: storeInfo.id,
+        };
+        axios
+            .post(`http://localhost:8080/favorites`, data)
+            .then(() => {
+                alert("즐겨찾기에 추가되었습니다.");
+                modalClose();
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
     const handleClose=()=>{
         starClose();
     }
+
 
     return (
         <div className={"star_modal"}>

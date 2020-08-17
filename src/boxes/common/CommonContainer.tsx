@@ -15,7 +15,7 @@ const CommonContainer = ({isLogined}) => {
             <FindByMap isLogined={isLogined}/>
         </Route>
         <Route path="/find-best-route">
-            <FindBestRoute />
+            <FindBestRoute isLogined={isLogined}/>
         </Route>
 
       <Route path="/recommendation">
