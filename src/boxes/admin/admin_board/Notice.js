@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, Container, Row, Col } from "react-bootstrap";
 import { PaginationItem, SearchBar } from "../../../items";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
 import './AdminBoard.css';
@@ -14,7 +14,7 @@ export const postListAction = (data) => ({
   payload: data,
 });
 
-export const postListReducer = (state = {}, action) => {
+export const postListReducer = (state = [], action) => {
   switch (action.type) {
     case POST_LIST:
       return action.payload;
@@ -23,18 +23,20 @@ export const postListReducer = (state = {}, action) => {
   }
 };
 
-// export const postListThunk = () => (dispatch) => {
+
+export const postListThunk = () => (dispatch) => {
   
-//   axios
-//     .get(`http://localhost:8080/posts/postlist`)
-//     .then((res) => {
+  axios
+    .get(`http://localhost:8080/posts/postlist`)
+    .then((res) => {
        
-//       dispatch(postListAction(res.data));
-//     })
-//     .catch((err) => {
-//       throw err;
-//     });
-// };
+      dispatch(postListAction(res.data));
+    
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 
 export const postOneThunk = (postId) => (dispatch) => {
   
@@ -42,10 +44,12 @@ export const postOneThunk = (postId) => (dispatch) => {
             .get(`http://localhost:8080/posts/post/${postId}`)
             .then((res)=>{
                dispatch(postListAction(res.data))
+              
             
                console.log(res.data)
+
             
-                //  window.location.replace(`/admin/notice-detail`)
+                 
             })
             .catch((err)=>{
                 throw err;
@@ -53,14 +57,15 @@ export const postOneThunk = (postId) => (dispatch) => {
   };
 
 
-const Notice = () => {
+const Notice = ({setPostId}) => {
 
     const [postList, setPostList] = useState([]);
     const [currentPage,setCurrentPage] = useState(1);
     const [postPerPage] = useState(5);
-    const [postId,setPostId] = useState("");
+   
     const dispatch = useDispatch();
     const result = useSelector((state) => state.postListReducer);
+
     
    
 
@@ -89,37 +94,26 @@ const Notice = () => {
 
  
 
-       useEffect(()=>{
-           
-                
-            // dispatch(postListThunk());
-           
-           
-           
-            
-       },[])
+    //    useEffect(()=>{
+    //          dispatch(postListThunk());
+    //    },[])
 
     const getNotice = postId =>{
-
-        
-
-        //    dispatch(postOneThunk(postId));
-
-        //    console.log(result)
-          
-          window.location.href=`/admin/notice-detail`
-       
+        dispatch(postOneThunk(postId))
+        console.log(result)
         axios
-            .get(`http://localhost:8080/posts/post/${postId}`)
-            .then((res)=>{
-                    // sessionStorage.setItem("notice",JSON.stringify(res.data.postId))
+        .get(`http://localhost:8080/posts/post/${postId}`)
+        .then((res)=>{
+           dispatch(postListAction(res.data))
+  
+           console.log(res.data)
+           
 
-                    window.location.href=`/admin/notice-detail/${postId}`
-                    console.log(res.data)
-            })
-            .catch((err)=>{
-                throw err;
-            })
+        })
+        .catch((err)=>{
+            throw err;
+        })
+        
     }
 
    
@@ -136,16 +130,9 @@ const Notice = () => {
         })
     }, [])
 
-
-    //dispatch(postListThunk())
-    //  dispatch(userListAction(res.data));
-
     const handleSearch = (searchWord) => {
         alert(searchWord);
     }
-
-
-
 
 
     return (
@@ -189,7 +176,9 @@ const Notice = () => {
                             <tr key={i}>
                                 <td >{i+(indexOfFirstPost+1)}</td>
                                 <td> {info.category}</td>
-                               <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
+                               <td> <Link to="/admin/notice-detail" onClick={()=>{
+                                   getNotice(info.postId)
+                                   setPostId(info.postId);}}>{info.postTitle}</Link></td>
                              {info.category==="사이트" && <td>관리자</td>} 
                             { info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>

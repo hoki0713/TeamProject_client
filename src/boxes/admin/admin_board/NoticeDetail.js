@@ -3,25 +3,23 @@ import {Table,Button} from 'react-bootstrap'
 import {useSelector} from 'react-redux'
 import './AdminBoard.css'
 import axios from 'axios';
-const NoticeDetail = () => {
-    const [post,setPost] = useState({})
-    const result = useSelector(state=>state.postListReducer.postId);
-    //const resultList = useSelector((state: any) => state.userListReducer);
- 
+import { useHistory } from 'react-router-dom';
+
+
+
+const NoticeDetail = ({postId}) => {
     
-
-
-
+    const result = useSelector(state=>state.postListReducer.postId);
+    const [post,setPost] = useState({});
+   
    useEffect(()=>{
-       
        console.log(result)
     axios
-        .get(`http://localhost:8080/posts/post/${result}`)
+        .get(`http://localhost:8080/posts/post/${postId}`)
         .then((res)=>{
                 console.log(`axios`)
                 console.log(res.data)
-                setPost(res.data)
-
+                 setPost(res.data)
         })
         .catch((err)=>{
             throw err;
@@ -38,8 +36,9 @@ const NoticeDetail = () => {
 
    const deleteNotice = e =>{
         e.preventDefault()
+        console.log(`postId${postId}`)
         axios
-        .delete(`http://localhost:8080/posts/delete/${result}`)
+        .delete(`http://localhost:8080/posts/delete/${postId}`)
         .then((res)=>{
             window.location.href="/admin/notice"
         })
@@ -53,10 +52,10 @@ const NoticeDetail = () => {
             <div className="content-title">
     <h2 className="menu-h2"> - 공지사항</h2>
             </div>
-            {/* <Table responsive bordered>
+            <Table responsive bordered>
                 <thead style={{textAlign:'center'}}>
                 <tr>
-                    <th>카테고리 - {result.postTitle}</th>
+                    <th>카테고리 - {post.postTitle}</th>
                     <th>제목 - {post.postTitle}</th>
                     <th>작성일 - {post.regDate}</th>
                     
@@ -70,7 +69,7 @@ const NoticeDetail = () => {
             
 
                 </tbody>
-            </Table> */}
+            </Table>
             <div id="button-right">
             <Button variant="outline-dark" onClick={modifyNotice}>수정</Button>{' '}
             <Button variant="outline-dark" onClick={deleteNotice}>삭제</Button>{' '}
