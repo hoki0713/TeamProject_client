@@ -43,7 +43,7 @@ function MainMap() {
     sessionStorage.setItem("location","")
   })
   return (
-    <div className="container">
+    <div className="container map">
       <MapImage />
       <map name="mainMap" id="mainMap">
         {Object.entries(pointArray).map(([key, value])=>

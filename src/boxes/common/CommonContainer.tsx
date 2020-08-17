@@ -10,12 +10,13 @@ const CommonContainer = ({ isLogined }) => {
       <Route path="/merchant-list">
         <MerchantList />
       </Route>
-      <Route path="/find-by-map">
-        <FindByMap isLogined />
-      </Route>
-      <Route path="/find-best-route">
-        <FindBestRoute />
-      </Route>
+
+        <Route path="/find-by-map">
+            <FindByMap isLogined={isLogined}/>
+        </Route>
+        <Route path="/find-best-route">
+            <FindBestRoute />
+        </Route>
 
       <Route path="/recommendation">
         <Recommendation setStoreInfo={setStoreInfo}/>
