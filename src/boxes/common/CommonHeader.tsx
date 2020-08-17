@@ -22,11 +22,11 @@ const CommonHeader = ({loginedAccount, clickLogout, isAdmin}) => {
           </div>
         </div>
 
-        <div className="col-lg-8" id="common-header-search-bar">
+        <div className="col-lg-8 align-middle" id="common-header-search-bar">
           < SearchBar onSearch={handleSearch} />
         </div>
 
-        <div className="col-lg-2">
+        <div className="col-lg-2 align-middle common-header-links">
           <LoginedAccountChecker
             clickLogout={clickLogout}
             loginedAccount={loginedAccount}

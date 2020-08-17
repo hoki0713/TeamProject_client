@@ -25,5 +25,5 @@ export {
     LoginedAccountChecker,
     FindIdPasswordLink,
     StarRating,
-    ReviewModal
+    ReviewModal,
 }
