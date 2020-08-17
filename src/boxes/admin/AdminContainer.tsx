@@ -30,7 +30,6 @@ const AdminContainer = ({match}) => {
       <Route path={`/admin/notice-detail/:postId`}
       render={(props) => <NoticeDetail {...props}/>}
       >
-       
       </Route>
       <Route path="/admin/notice-write">
         <NoticeWrite />
@@ -38,8 +37,9 @@ const AdminContainer = ({match}) => {
       <Route path={`/admin/notice`}>
       <Notice />
       </Route>
-      <Route path="/admin/notice-modify">
-        <NoticeModifyWrite />
+      <Route path={`/admin/notice-modify/:postId`}
+       render={(props) => <NoticeModifyWrite {...props}/>}
+     >
       </Route>
 
       <Route path="/admin/notify-sotre">
