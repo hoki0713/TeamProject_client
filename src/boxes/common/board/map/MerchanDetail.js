@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
 import {Table} from 'react-bootstrap'
-const MerchanDetail = () => {
+const MerchanDetail = ({storeInfo}) => {
     const [location, setLocation]=useState({lat: 37.551191, lng: 126.940970})
     const ncpId = 'lyiy7i7pk0';
     const title ='서강대학교';
@@ -65,7 +65,7 @@ const MerchanDetail = () => {
                 </tr>
                 </tbody>
             </Table>
-
+                <h1>{storeInfo.storeName}</h1>
         </div>
     );
 };

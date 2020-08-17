@@ -4,6 +4,7 @@ import axios from 'axios'
 import {useSelector} from "react-redux";
 import Geocode from "react-geocode";
 import './Recommendation.css'
+
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 function FindByTag() {
@@ -24,10 +25,12 @@ function FindByTag() {
     const [industryName, setIndustryName] = useState([])
     const [resultStores, setResultStores] = useState([])
     const [genderKor, setGenderKor] = useState("성별무관")
+    const [show, setShow] = useState(false)
     const latLng = useSelector(state => state.userLatLng)
     const myLoca = JSON.parse(sessionStorage.getItem("accountDetail"))
         .defaultAddr;
     const [userLatLng, setUserLatLng] = useState({latitude: 0, longitude: 0});
+    const [option, setOption] = useState(0)
 
 
     const getLatLng = () => {
@@ -108,11 +111,16 @@ function FindByTag() {
 
     const handleGender = (e) => {
         setGender(e.target.value);
-        if(gender==="F"){setGenderKor("여성")}
-        else if(gender==="M"){setGenderKor("남성")}
-        else if(gender==="null"){setGenderKor("성별무관")}
+        if (gender === "F") {
+            setGenderKor("여성")
+        } else if (gender === "M") {
+            setGenderKor("남성")
+        } else if (gender === "null") {
+            setGenderKor("성별무관")
+        }
         console.log("gender시작" + gender + "age시작" + ageGroup)
         handleIndustry()
+        setShow(true)
         handleColor()
     }
     const handleAge = (e) => {
@@ -120,6 +128,12 @@ function FindByTag() {
         console.log("age시작" + ageGroup + "gender" + gender)
         handleIndustry()
         handleColor()
+        setShow(true)
+    }
+
+    const handleOption=e=>{
+        e.preventDefault()
+
     }
 
     const submitSearch = (e) => {
@@ -150,7 +164,7 @@ function FindByTag() {
         sessionStorage.setItem("LatLng", JSON.stringify(userLatLng));
         setGender(userGender);
         setAgeGroup(userAgeGroup);
-        console.log(gender+ageGroup)
+        console.log(gender + ageGroup)
         axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, userLatLng)
             .then((res) => {
                 console.log('가게 리스트 가져오기 성공')
@@ -171,10 +185,11 @@ function FindByTag() {
 
     const submitTotalSearch = (e) => {
         e.preventDefault()
+        setOption(e.target.value)
         console.log(userLatLng);
         sessionStorage.setItem("LatLng", JSON.stringify(userLatLng));
 
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, userLatLng)
+        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}/${option}`, userLatLng)
             .then((res) => {
                 console.log('가게 리스트 가져오기 성공')
                 console.log(res.data);
@@ -193,14 +208,13 @@ function FindByTag() {
     }
 
 
-
     return (
         <>
             <div style={{textAlign: 'center'}}><br/>
                 <h1>태그로 찾기</h1><br/>
                 <CardDeck>
                     <Card style={{width: '18rem'}}>
-                        <Card.Header onClick={submitSearch} >전체 업종 TOP 5</Card.Header>
+                        <Card.Header onClick={submitSearch}>전체 업종 TOP 5</Card.Header>
                         {totalIndustry.map((industry, i) => (
                                 <ListGroup variant="flush">
                                     <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
@@ -209,20 +223,24 @@ function FindByTag() {
                         )}
                     </Card>
                     <Card>
-                        <Card.Header onClick={submitUserSearch} >나({userAgeGroup}대 X {userGenderKor})의 관심업종 TOP 5</Card.Header>
+                        <Card.Header onClick={submitUserSearch}>나({userAgeGroup}대 X {userGenderKor})의 관심업종 TOP
+                            5</Card.Header>
                         {userIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
-                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
+                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}{totalIndustry[i].industryName===userIndustry[i].industryName ? " == " : " /= "}</ListGroup.Item>
                             </ListGroup>)
                         )}
                     </Card>
-                    {(handleGender || handleAge) && <Card>
+                    {/*{(totalIndustry[i].industryName===userIndustry[i].industryName*/}
+                    {/*    && totalIndustry.indexOf(totalIndustry[i]) === userIndustry.indexOf(totalIndustry[i])) ? "같음" : "다름"}*/}
+
+                    {(show) && <Card>
                         <Card.Header onClick={submitSearch}>
 
                             {ageGroup}대 X {genderKor}의 관심업종 TOP 5</Card.Header>
                         {searchIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
-                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
+                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}{totalIndustry[i].industryName===searchIndustry[i].industryName ? " == " : " /= "}</ListGroup.Item>
                             </ListGroup>)
                         )}
                     </Card>}
@@ -265,47 +283,45 @@ function FindByTag() {
                         추천 태그
                     </Form.Label>
                     <Col sm={10}>
-                        <Button variant="outline-dark" type="button">#가성비</Button>{' '}
-                        <Button variant="outline-dark" type="button">#소확행</Button>{' '}
-                        <Button variant="outline-dark" type="button">#새로_생긴</Button>{' '}
-                        <Button variant="outline-dark" type="button">#건강</Button>{' '}
-                        <Button variant="outline-dark">#즐겨찾기_많은</Button>
+                        <Button variant="outline-dark" type="button" value={0}>#인기 많은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={1}>#즐겨찾기 많은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={2}>#별점 높은</Button>{' '}
                     </Col>
                     <br/> <br/>
                 </Form.Group>
                 <div style={{textAlign: "center"}}>
                     <Button variant="primary" type="submit" onClick={submitSearch}>맞춤 가맹점 검색</Button>{' '}</div>
-                </Form>
+            </Form>
 
 
+            <br/><br/><br/><br/>
+            {resultStores.map((list, i) => (
+                <div className="scrollContainer" key={i}>
 
-                    <br/><br/><br/><br/>
-                    {resultStores.map((list, i) => (
-                        <div className="scrollContainer" key={i}>
+                    <h2>{`${i + 1}. ${industryName[i]}인 업종`}</h2><br/><br/>
 
-                            <h2>{`${i+1}. ${industryName[i]}인 업종`}</h2><br/><br/>
+                    {list.map((store, j) => (
 
-                            {list.map((store, j) => (
-
-                                <Card className="cardItem" key={j}>
-                                    <Card.Img id="card-image" variant="top"
-                                              src={store.imgUrl}/>
-                                    <Card.Body>
-                                        <Card.Title>{store.storeName}</Card.Title>
-                                        <Card.Text>
-                                            {store.address}
-                                        </Card.Text>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                                    </Card.Footer>
-                                </Card>
-                            ))}
-
-                        </div>
+                        <Card className="cardItem" key={j}>
+                            <Card.Img id="card-image" variant="top"
+                                      src={store.imgUrl}/>
+                            <Card.Body>
+                                <Card.Title>{store.storeName}</Card.Title>
+                                <Card.Text>
+                                    {store.address}
+                                </Card.Text>
+                            </Card.Body>
+                            <Card.Footer>
+                                <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                            </Card.Footer>
+                        </Card>
                     ))}
-                </>
 
-                )}
+                </div>
+            ))}
+        </>
 
-                export default FindByTag;
+    )
+}
+
+export default FindByTag;
