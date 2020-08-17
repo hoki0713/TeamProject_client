@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
-import { relative } from 'path';
 
 const HomePage = () => {
   const [isLogined, setIsLogined] = useState(false);

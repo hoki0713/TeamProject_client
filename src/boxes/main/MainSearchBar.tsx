@@ -1,18 +1,20 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import './MainPage.css';
-import { SearchBar } from '../../items';
+import { StoreSearchBar } from '../../items';
 
 const MainSeachBar = () => {
-  const history = useHistory();
+  // const { setStore } = useContext(StoreSearchContext);
+  // const history = useHistory();
 
-  const searchMerchant = (searchWord) => {
-    history.push('/merchant-list');
-  }
+  // const searchMerchant = (store) => {
+  //   setStore(store);
+  //   history.push('/storeDetail');
+  // }
 
   return (
     <div className="container" id="main-search-bar" >
-      < SearchBar onSearch={searchMerchant}/>
+      < StoreSearchBar />
     </div>
   );
 }
