@@ -1,37 +1,49 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { SearchBar } from "../../../../items";
-import { UserDetailContext } from './context/UserDetailContext';
+import { UserDetailContext } from "./context/UserDetailContext";
+import Pagination from "./Pagination";
 import "./UserList.css";
 import axios from "axios";
 
 const UserList = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [userList, setUserList] = useState([]);
-  const { setUser } = useContext(UserDetailContext); 
+  const [totalPages, setTotalPages] = useState(0);
+  const { setUser } = useContext(UserDetailContext);
   const history = useHistory();
 
-  const handleSearch = () => {};
+  const [startPage, setStartPage] = useState(0);
+  const [numOfPages, setNumOfPages] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
+
+
+  const paginate = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleSearch = () => {};
 
   const handleUserDetail = (userId) => {
     axios
       .get(`http://localhost:8080/users/${userId}`)
-      .then(response => {
+      .then((response) => {
         console.log(response.data.salesList);
         setUser(response.data);
-        history.push("/admin/user-detail")
+        history.push("/admin/user-detail");
       })
-      .catch(error => {
+      .catch((error) => {
         throw error;
-      })
-  }
+      });
+  };
 
-  const getUserList = (pageNumber) => {
+  const getUserList = () => {
     axios
-      .get(`http://localhost:8080/admins/userList/${pageNumber}`)
+      .get(`http://localhost:8080/admins/userList/${currentPage}`)
       .then((response) => {
-        setUserList(response.data);
+        setUserList(response.data.users);
+        setTotalPages(response.data.totalPages)
       })
       .catch((error) => {
         throw error;
@@ -39,10 +51,8 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    if(!userList.length) {
-      getUserList(0);
-    }
-  }, [userList]);
+    getUserList();
+  }, [currentPage]);
 
   return (
     <div>
@@ -83,7 +93,7 @@ const UserList = () => {
         <tbody>
           {userList.map((user, i) => (
             <tr key={i}>
-              <td>{i + 1}</td>
+              <td>{(i + 1)+(20*currentPage)}</td>
               <td
                 onClick={() => {
                   handleUserDetail(user.id);
@@ -101,6 +111,11 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        paginate={paginate}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
     </div>
   );
 };
