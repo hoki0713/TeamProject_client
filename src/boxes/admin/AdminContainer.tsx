@@ -7,14 +7,14 @@ import {
   Notice,
   UsersList,
   NotifyStore,
-  // Enquiry,
+   Enquiry,
   NoticeWrite, NoticeDetail, EnquiryDetail, StoreDetail, NoticeModifyWrite
 } from './admin_board';
 import UserList from './admin_board/adminTest/UserList.js'
 import UserDetail from './admin_board/adminTest/UserDetail';
 import { UserDetailProvider } from './admin_board/adminTest/context/UserDetailContext';
 
-const AdminContainer = () => {
+const AdminContainer = ({match}) => {
   const [postId, setPostId] = useState("")
   return (
     <div className="container">
@@ -27,14 +27,16 @@ const AdminContainer = () => {
       <Route path="/admin/user-statistic">
         <UserTotalStatistic />
       </Route>
-      <Route path="/admin/notice">
-        <Notice setPostId={setPostId} />
+      <Route path={`/admin/notice-detail/:postId`}
+      render={(props) => <NoticeDetail {...props}/>}
+      >
+       
       </Route>
       <Route path="/admin/notice-write">
         <NoticeWrite />
       </Route>
-      <Route path="/admin/notice-detail">
-         <NoticeDetail postId ={postId} />
+      <Route path={`/admin/notice`}>
+      <Notice />
       </Route>
       <Route path="/admin/notice-modify">
         <NoticeModifyWrite />
@@ -43,9 +45,9 @@ const AdminContainer = () => {
       <Route path="/admin/notify-sotre">
         <NotifyStore />
       </Route>
-      {/* <Route path="/admin/enquiry">
+      <Route path="/admin/enquiry">
         <Enquiry />
-      </Route> */}
+      </Route>
       <Route path="/admin/enquiry-detail">
         <EnquiryDetail />
       </Route>

@@ -3,23 +3,24 @@ import {Table,Button} from 'react-bootstrap'
 import {useSelector} from 'react-redux'
 import './AdminBoard.css'
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 
 
-const NoticeDetail = ({postId}) => {
+
+const NoticeDetail = ({match}) => {
     
-    const result = useSelector(state=>state.postListReducer.payload,[]);
+    const result = useSelector(state=>state.postListReducer,{});
     const [post,setPost] = useState({});
    
    useEffect(()=>{
-       console.log(result)
+       console.log(`${match.params.postId}`)
     axios
-        .get(`http://localhost:8080/posts/post/${postId}`)
+        .get(`http://localhost:8080/posts/post/${match.params.postId}`)
         .then((res)=>{
                 console.log(`axios`)
                 console.log(res.data)
                  setPost(res.data)
+                 console.log(result)
         })
         .catch((err)=>{
             throw err;
@@ -36,9 +37,9 @@ const NoticeDetail = ({postId}) => {
 
    const deleteNotice = e =>{
         e.preventDefault()
-        console.log(`postId${postId}`)
+       
         axios
-        .delete(`http://localhost:8080/posts/delete/${postId}`)
+        .delete(`http://localhost:8080/posts/delete/`)
         .then((res)=>{
             window.location.href="/admin/notice"
         })

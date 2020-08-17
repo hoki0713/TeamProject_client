@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap'
-import PaymentIamPort from "./PaymentIamPort";
+import PaymentIamPort from "./PaymentIamPort.js";
 import Iamport from "react-iamport";
 
 const Payment = (props) => {

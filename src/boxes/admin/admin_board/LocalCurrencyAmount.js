@@ -42,6 +42,9 @@ const LocalCurrencyAmount = () => {
   
   
 
+  useEffect(()=>{
+
+  },[])
 
   useEffect(()=>{
     axios
