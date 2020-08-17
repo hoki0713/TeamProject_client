@@ -1,6 +1,6 @@
 
 import UserTotalStatistic from './UserTotalStatistic.js'
-import StoreTotalStatistic from './StoreTotalStatistic'
+import StoreTotalStatistic from './StoreTotalStatistic.js'
 import LocalCurrencyAmount from './LocalCurrencyAmount.js';
 import Notice from './Notice.js';
 import NoticeWrite from './NoticeWrite.js';

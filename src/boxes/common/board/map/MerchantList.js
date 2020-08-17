@@ -3,7 +3,6 @@ import {Table, Pagination} from 'react-bootstrap';
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useDispatch} from "react-redux";
-import './search.jpg'
 
 
 const MerchantList=()=> {

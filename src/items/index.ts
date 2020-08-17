@@ -6,7 +6,7 @@ import MenuIcon from './MenuIcon';
 import SearchBar from './SearchBar';
 import SignUpLink from './SignUpLink';
 import PostcodeButton from './PostcodeButton';
-import PaginationItem from "./Pagination";
+import PaginationItem from "./Pagination.js";
 import LoginedAccountChecker from './LoginedAccountChecker';
 import FindIdPasswordLink from './FindIdPasswordLink';
 import StarRating from './StarRating.js';

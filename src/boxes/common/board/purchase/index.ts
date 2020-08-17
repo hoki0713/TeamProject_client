@@ -1,5 +1,5 @@
 import BuyLocalCurrency from './BuyLocalCurrency';
 
 export {
-  BuyLocalCurrency
+  BuyLocalCurrency,
 }

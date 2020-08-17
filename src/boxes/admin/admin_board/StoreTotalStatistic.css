@@ -18,12 +18,16 @@ height: 40px;
   
 }
 
-#graph-store-count-by-local {
+/* #graph-store-count-by-local {
   display: inline-block;
   width: 45%;
-}
+} */
 
-#graph-store-count-by-type {
+/* #graph-store-count-by-type {
   display: inline-block;
   width: 45%;
+} */
+
+.store-chartData{
+  width: 90%;
 }

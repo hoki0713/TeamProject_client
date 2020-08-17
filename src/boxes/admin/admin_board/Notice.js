@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Container, Row, Col, Pagination } from "react-bootstrap";
+import { Button, Table, Container, Row, Col } from "react-bootstrap";
 import { PaginationItem, SearchBar } from "../../../items";
-import { Link } from "react-router-dom";
-
+import { Link, useRouteMatch } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
 import './AdminBoard.css';
 
+
 const POST_LIST = "POST_LIST";
+
 export const postListAction = (data) => ({
   type: POST_LIST,
   payload: data,
@@ -21,42 +23,97 @@ export const postListReducer = (state = [], action) => {
   }
 };
 
-export const postListThunk = (searchWord) => (dispatch) => {
-  console.log("api 도착");
+
+export const postListThunk = () => (dispatch) => {
+  
   axios
-    .get(`http://localhost/posts/notice/list/${searchWord}`)
+    .get(`http://localhost:8080/posts/postlist`)
     .then((res) => {
+       
       dispatch(postListAction(res.data));
+    
     })
     .catch((err) => {
       throw err;
     });
 };
-const Notice = () => {
 
-    const [postList, setPostList] = useState([]);
-    const [currentPage,setCurrentPage] = useState(1);
-    const [postPerPage] = useState(10);
-    const [loading,setLoading] = useState(false);
-
-    const indexOfLastPost = currentPage * postPerPage;
-    const indexOfFirstPost = indexOfLastPost - postPerPage;
-   
- 
-
- 
-    const getNotice = postId =>{
-        console.log(postId)
-        axios
+export const postOneThunk = (postId) => (dispatch) => {
+  
+            axios
             .get(`http://localhost:8080/posts/post/${postId}`)
             .then((res)=>{
-                    sessionStorage.setItem("notice",JSON.stringify(res.data))
-                    console.log(res.data)
-                    window.location.href="/admin/notice-detail"
+               dispatch(postListAction(res.data))
+              
+            
+               console.log(res.data)
+
+            
+                 
             })
             .catch((err)=>{
                 throw err;
             })
+  };
+
+
+const Notice = ({setPostId}) => {
+
+    const [postList, setPostList] = useState([]);
+    const [currentPage,setCurrentPage] = useState(1);
+    const [postPerPage] = useState(5);
+   
+    const dispatch = useDispatch();
+    const result = useSelector((state) => state.postListReducer);
+
+    
+   
+
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPosts = postList.slice(indexOfFirstPost,indexOfLastPost);
+ 
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const nextPage = () =>{ 
+        if(currentPage<currentPosts.length){
+            setCurrentPage(currentPage+1)} 
+            else if(postPerPage<currentPosts.length){
+                setCurrentPage(currentPage+1)
+            } else{
+                setCurrentPage(currentPage)
+            }
+        }
+           
+    const prevPage = () => { 
+        if(currentPage>1){
+            setCurrentPage(currentPage-1)
+        }
+       };
+
+ 
+
+    //    useEffect(()=>{
+    //          dispatch(postListThunk());
+    //    },[])
+
+    const getNotice = postId =>{
+        dispatch(postOneThunk(postId))
+        console.log(result)
+        axios
+        .get(`http://localhost:8080/posts/post/${postId}`)
+        .then((res)=>{
+           dispatch(postListAction(res.data))
+  
+           console.log(res.data)
+           
+
+        })
+        .catch((err)=>{
+            throw err;
+        })
+        
     }
 
    
@@ -65,7 +122,7 @@ const Notice = () => {
         axios
         .get('http://localhost:8080/posts/postlist')
         .then((res)=>{
-             setPostList(res.data.content)
+             setPostList(res.data)
         
         })
         .catch((err)=>{
@@ -73,10 +130,10 @@ const Notice = () => {
         })
     }, [])
 
-
     const handleSearch = (searchWord) => {
         alert(searchWord);
     }
+
 
     return (
         <>
@@ -99,6 +156,8 @@ const Notice = () => {
                     </span>
                 </div>
             </div>
+         
+      
 
 
             <div>
@@ -113,11 +172,13 @@ const Notice = () => {
                         </tr>
                     </thead>
                     <tbody >
-                        {postList.map((info, i) => (
+                        {currentPosts.map((info, i) => (
                             <tr key={i}>
-                                <td >{i+1}</td>
+                                <td >{i+(indexOfFirstPost+1)}</td>
                                 <td> {info.category}</td>
-                               <td> <Link onClick={()=>getNotice(info.postId)}>{info.postTitle}</Link></td>
+                               <td> <Link to="/admin/notice-detail" onClick={()=>{
+                                   getNotice(info.postId)
+                                   setPostId(info.postId);}}>{info.postTitle}</Link></td>
                              {info.category==="사이트" && <td>관리자</td>} 
                             { info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>
@@ -134,10 +195,10 @@ const Notice = () => {
                         </Link></Col>
                     </Row>    
                 </Container>
-
-               <div>
-               <PaginationItem postPerPage={5} totalPosts={postList} currentPage={1}/>
-               </div>
+                <div>
+               <PaginationItem postPerPage={postPerPage} TotalPostList={postList.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} />
+               
+  </div>
             </div>
 
 
@@ -146,4 +207,3 @@ const Notice = () => {
 }
 
 export default Notice;
-
