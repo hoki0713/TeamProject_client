@@ -2,7 +2,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { StoreSearchContext } from '../../../../items/context/StoreSearchContext';
 import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
 import {Table} from 'react-bootstrap'
-const MerchanDetail = ({storeInfo}) => {
+const MerchanDetail = () => {
+    const { store } = useContext(StoreSearchContext);
+    const [newStore, setNewStore] = useState({});
     const [location, setLocation]=useState({lat: 37.551191, lng: 126.940970})
     const ncpId = 'lyiy7i7pk0';
     const title ='서강대학교';
@@ -72,7 +74,9 @@ const MerchanDetail = ({storeInfo}) => {
                 </tr>
                 </tbody>
             </Table>
+
                 <h1>{storeInfo.storeName}</h1>
+
         </div>
     );
 };

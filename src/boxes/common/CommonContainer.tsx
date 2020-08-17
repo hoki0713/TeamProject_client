@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { Route } from 'react-router-dom';
-import { MerchantList, FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency, FindByMap } from './board';
-import MerchanDetail from "./board/map/MerchanDetail";
 
-const CommonContainer = ({ isLogined }) => {
-    const [storeInfo,setStoreInfo]=useState({})
+import {MerchanDetail,FindByMap,MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
+const CommonContainer = ({isLogined}) => {
+  const [storeInfo,setStoreInfo]=useState({})
+
   return (
     <div className='container'>
       <Route path="/merchant-list">
