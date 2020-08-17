@@ -17,7 +17,7 @@ export const postListAction = (data) => ({
 export const postListReducer = (state = [], action) => {
   switch (action.type) {
     case POST_LIST:
-      return action.payload;
+      return {...state,POST_LIST:action.payload};
     default:
       return state;
   }
@@ -44,11 +44,8 @@ export const postOneThunk = (postId) => (dispatch) => {
             .get(`http://localhost:8080/posts/post/${postId}`)
             .then((res)=>{
                dispatch(postListAction(res.data))
-              
             
                console.log(res.data)
-
-            
                  
             })
             .catch((err)=>{
@@ -93,11 +90,6 @@ const Notice = ({setPostId}) => {
        };
 
  
-
-    //    useEffect(()=>{
-    //          dispatch(postListThunk());
-    //    },[])
-
     const getNotice = postId =>{
         dispatch(postOneThunk(postId))
         console.log(result)
@@ -105,9 +97,6 @@ const Notice = ({setPostId}) => {
         .get(`http://localhost:8080/posts/post/${postId}`)
         .then((res)=>{
            dispatch(postListAction(res.data))
-  
-           console.log(res.data)
-           
 
         })
         .catch((err)=>{
@@ -117,6 +106,9 @@ const Notice = ({setPostId}) => {
     }
 
    
+    useEffect(()=>{
+        dispatch(postListThunk())
+    },[])
   
     useEffect(() => {
         axios

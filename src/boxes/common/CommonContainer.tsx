@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import {MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
-import FindByMap from './board/map/map-refactoring-test/FindByMap';
+import {MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency,FindByMap} from './board';
 import MerchanDetail from "./board/map/MerchanDetail";
 
 

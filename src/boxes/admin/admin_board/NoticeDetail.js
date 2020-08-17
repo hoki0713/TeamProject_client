@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 
 const NoticeDetail = ({postId}) => {
     
-    const result = useSelector(state=>state.postListReducer.postId);
+    const result = useSelector(state=>state.postListReducer.payload,[]);
     const [post,setPost] = useState({});
    
    useEffect(()=>{
