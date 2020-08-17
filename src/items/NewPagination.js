@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Pagination = ({ paginate, totalPages, currentPage }) => {
+const NewPagination = ({ paginate, totalPages, currentPage }) => {
   const [currentBlock, setCurrentBlock] = useState(0);
 
 
@@ -70,4 +70,4 @@ const Pagination = ({ paginate, totalPages, currentPage }) => {
   );
 };
 
-export default Pagination;
+export default NewPagination;

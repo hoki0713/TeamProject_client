@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { SearchBar } from "../../../../items";
+import { SearchBar, NewPagination } from "../../../../items";
 import { UserDetailContext } from "./context/UserDetailContext";
-import Pagination from "./Pagination";
 import "./UserList.css";
 import axios from "axios";
 
@@ -13,12 +12,8 @@ const UserList = () => {
   const { setUser } = useContext(UserDetailContext);
   const history = useHistory();
 
-  const [startPage, setStartPage] = useState(0);
-  const [numOfPages, setNumOfPages] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
-
-
-
+  
   const paginate = (page) => {
     setCurrentPage(page);
   };
@@ -111,7 +106,7 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
-      <Pagination
+      <NewPagination
         paginate={paginate}
         totalPages={totalPages}
         currentPage={currentPage}
