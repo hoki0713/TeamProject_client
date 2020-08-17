@@ -68,35 +68,20 @@ const FindByMap=({isLogined})=> {
 
     useEffect(()=>{
         console.log(isLogined);//check 하고 없애기
-        if(isLogined===true){
+        if(isLogined){
             setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
         }
-    },[isLogined])
+    },[isLogined]);
+
     useEffect(()=>{
-        if(isLogined===true){
+        if(isLogined){
             getLatLng(myLoca);
         }
-    },[myLoca])
-
-
-  const getLatLng = () => {
-    Geocode.fromAddress(myLoca).then(
-      (response) => {
-        const resLatLng = response.results[0].geometry.location;
-        setUserLatLng({ lat: resLatLng.lat, lng: resLatLng.lng });
-        console.log(resLatLng);
-        console.log(userLatLng)
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  };
+    },[myLoca]);
   
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!storeList[0]) {
-
             if(!isLogined){
                 axios.get(`http://localhost:8080/stores/mapClick/${sessionStorage.getItem("")}`)
                     .then(({data})=>{
