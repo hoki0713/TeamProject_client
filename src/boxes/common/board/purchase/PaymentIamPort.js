@@ -18,7 +18,7 @@ const PaymentIamPort = (props) => {
 
         /* 2. 결제 데이터 정의하기 */
         const data = {
-            pg: 'kakao',                           // PG사
+            pg: 'html5_inicis',                           // PG사
             pay_method: 'card',                           // 결제수단
             merchant_uid: `mid_${new Date().getTime()}`,   // 주문번호
             amount: props.unitPrice,                            // 결제금액

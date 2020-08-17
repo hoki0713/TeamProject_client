@@ -3,7 +3,7 @@ import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap
 import axios from 'axios'
 import {useSelector} from "react-redux";
 import Geocode from "react-geocode";
-
+import './Recommendation.css'
 Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 function FindByTag() {
@@ -277,30 +277,18 @@ function FindByTag() {
                     <Button variant="primary" type="submit" onClick={submitSearch}>맞춤 가맹점 검색</Button>{' '}</div>
                 </Form>
 
-                    {resultStores.forEach((ele) => (
-                        ele.map((store, i) => (
-                            <Card className="cardItem" key={i}>
-                                <Card.Img style={{height: "50%"}} variant="top"
-                                          src={store.imgUrl}/>
-                                <Card.Body>
-                                    <Card.Title>{store.storeName}</Card.Title>
-                                    <Card.Text>
-                                        {store.address}
-                                    </Card.Text>
-                                </Card.Body>
-                                <Card.Footer>
-                                    <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                                </Card.Footer>
-                            </Card>
-                        )))
-                    )}
+
+
                     <br/><br/><br/><br/>
                     {resultStores.map((list, i) => (
                         <div className="scrollContainer" key={i}>
+
                             <h2>{`${i+1}. ${industryName[i]}인 업종`}</h2><br/><br/>
+
                             {list.map((store, j) => (
+
                                 <Card className="cardItem" key={j}>
-                                    <Card.Img style={{height: "50%"}} variant="top"
+                                    <Card.Img id="card-image" variant="top"
                                               src={store.imgUrl}/>
                                     <Card.Body>
                                         <Card.Title>{store.storeName}</Card.Title>
@@ -313,6 +301,7 @@ function FindByTag() {
                                     </Card.Footer>
                                 </Card>
                             ))}
+
                         </div>
                     ))}
                 </>
