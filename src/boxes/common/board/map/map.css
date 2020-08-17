@@ -82,7 +82,7 @@ input:checked + .slider:before {
     border: 1px solid #444444;
 }
 .td-left{
-    width: 100%;
+    width: 70%;
     padding-top: 2%;
 }
 .route-right{

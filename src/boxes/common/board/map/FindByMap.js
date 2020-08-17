@@ -324,15 +324,16 @@ const FindByMap=({isLogined})=> {
                         <table className="mapSide">
 
                             {recoList.map((store, i)=>(
-                                <tr><td>
-                                    <div className="card">
+                                <>
+                                <tr><td style={{width:60, height:60}}>
+                                    <img src={store.icon} alt={"storeicon"} width={25} height={25}/>
                                         <img src={store.imgUrl} alt={"storeImg"} style={{width:50,height:50}}/>
-                                            <div className="container">
-                                                <h4><b>{store.storeName}</b></h4>
-                                                <p>{store.address}</p>
-                                            </div>
-                                    </div>
-                                    </td></tr>
+
+                                    </td><td style={{width:"70%"}}><h4><b>{store.storeName}</b></h4>
+                                    <p>{store.address}</p></td></tr>
+                                    <tr><td>
+                                    </td><td></td></tr>
+                                </>
                             ))}
                         </table>
                     </td>
