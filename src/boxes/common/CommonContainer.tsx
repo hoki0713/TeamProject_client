@@ -33,7 +33,6 @@ const CommonContainer = ({isLogined}) => {
         <MerchanDetail/>
       </Route>
 
-
     </div>
   );
 }

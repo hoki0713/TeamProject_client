@@ -77,7 +77,7 @@ const CommonMenuBar = ({isLogined}) => {
             <p className="nav-link dropdown-toggle" data-toggle="dropdown" onClick={secondToggleOpen} >
               맞춤추천
             </p>
-            <div className={secondMenuOpen} onClick={() => setIsSecondOpen(false)}>
+            {isLogined && <div className={secondMenuOpen} onClick={() => setIsSecondOpen(false)}>
               <Link to="/recommendation">
                 <p className="dropdown-item">
                   추천가맹점 보기
@@ -88,7 +88,20 @@ const CommonMenuBar = ({isLogined}) => {
                   태그로 검색하기
                 </p>
               </Link>
-            </div>
+            </div>}
+            {!isLogined && <div className={secondMenuOpen} onClick={() => setIsSecondOpen(false)}>
+              <Link to="/account/login">
+                <p className="dropdown-item">
+                  추천가맹점 보기
+                </p>
+              </Link>
+              <Link to="/account/login">
+                <p className="dropdown-item">
+                  태그로 검색하기
+                </p>
+              </Link>
+            </div>}
+
           </li>
 
           <li className="nav-item dropdown common-menu-bar-item">

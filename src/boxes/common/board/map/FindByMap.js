@@ -79,6 +79,20 @@ const FindByMap=({isLogined})=> {
     },[myLoca])
 
 
+  const getLatLng = () => {
+    Geocode.fromAddress(myLoca).then(
+      (response) => {
+        const resLatLng = response.results[0].geometry.location;
+        setUserLatLng({ lat: resLatLng.lat, lng: resLatLng.lng });
+        console.log(resLatLng);
+        console.log(userLatLng)
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  };
+  
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!storeList[0]) {
@@ -105,6 +119,7 @@ const FindByMap=({isLogined})=> {
             }
         }
     },[storeList,recoList],);
+  
     useEffect(()=>{
         if(homePosit.lat){
             console.log(homePosit);
