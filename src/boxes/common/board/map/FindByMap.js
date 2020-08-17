@@ -18,7 +18,7 @@ import {
     chinaIcon,
     conviStore,
     drug,
-    cafe, hotelIcon, soju, bab, normal
+    cafe, hotelIcon, soju, bab, normal,recom
 } from './mapIcons/imgIndex'
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
@@ -34,7 +34,7 @@ const FindByMap=({isLogined})=> {
 
 
     const [map, setMap] = useState(null);
-    const [recoList, setRecoList]=useState([])
+    const [recoList, setRecoList]=useState([]);
     const onUnmount = useCallback(function callback(map) {
         setMap(null);
     }, [])
@@ -50,17 +50,15 @@ const FindByMap=({isLogined})=> {
     }, []);
 
     const showHome=()=>{
-        setCenter(homePosit);
+        setCenter({lat:homePosit.lat, lng: homePosit.lng});
         if(center===homePosit) window.location.reload();
     }
     const getLatLng = (location) => {
         Geocode.fromAddress(location).then(
             response => {
                 const resLatLng = response.results[0].geometry.location;
-                alert(`받아온 좌표${JSON.stringify(resLatLng)}`)
                 setHomePosit({lat: Number(resLatLng.lat), lng: Number(resLatLng.lng)});
                 setCenter({lat:Number(resLatLng.lat), lng:Number(resLatLng.lng)})
-                console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
             },
             error => {
                 console.error(error);
@@ -75,18 +73,47 @@ const FindByMap=({isLogined})=> {
         }
     },[isLogined])
     useEffect(()=>{
-        getLatLng(myLoca);
+        if(isLogined===true){
+            getLatLng(myLoca);
+        }
     },[myLoca])
 
 
     useEffect(()=>{
         console.log("useEffect getStoreList")
         if(!storeList[0]) {
-            axios.get(`http://localhost:8080/stores/mapClick/의정부`)
+
+            if(!isLogined){
+                axios.get(`http://localhost:8080/stores/mapClick/${sessionStorage.getItem("")}`)
+                    .then(({data})=>{
+                        let temList =[]
+                        data.list.forEach(elem=>{
+                            switch (elem.storeType) {
+                                case "의원": elem.icon = hospIcon; temList.push(elem); return;
+                                case "중국식": elem.icon =chinaIcon; temList.push(elem); return;
+                                case "편의점": elem.icon = conviStore; temList.push(elem);return;
+                                case "약국": elem.icon = drug; temList.push(elem); return;
+                                case "기타음료식품": elem.icon=cafe; temList.push(elem); return;
+                                case "숙박업": elem.icon = hotelIcon; temList.push(elem); return;
+                                case "주점": elem.icon = soju; temList.push(elem); return;
+                                case "일반한식": elem.icon = bab; temList.push(elem); return;
+                                default:elem.icon = normal; temList.push(elem); return;
+                            }
+                        });
+                        setStoreList(temList);})
+                    .catch(err=>{throw(err)});
+            }
+        }
+    },[storeList,recoList],);
+    useEffect(()=>{
+        if(homePosit.lat){
+            console.log(homePosit);
+            axios.get(`http://localhost:8080/stores/fromAddr/${homePosit.lat}/${homePosit.lng}`)
                 .then(({data})=>{
-                    let temList =[]
+                    let temList =[];
+                    let bestList =[];
                     data.list.forEach(elem=>{
-                        switch (elem.storeType) {
+                        switch (elem.storeType.toString()) {
                             case "의원": elem.icon = hospIcon; temList.push(elem); return;
                             case "중국식": elem.icon =chinaIcon; temList.push(elem); return;
                             case "편의점": elem.icon = conviStore; temList.push(elem);return;
@@ -96,16 +123,24 @@ const FindByMap=({isLogined})=> {
                             case "주점": elem.icon = soju; temList.push(elem); return;
                             case "일반한식": elem.icon = bab; temList.push(elem); return;
                             default:elem.icon = normal; temList.push(elem); return;
-                        }
+                        };
                     });
+                    let searchResultCount = "searchResultCount"
+                    temList.sort(function(a, b) {
+                        return b[searchResultCount] - a[searchResultCount];
+                    });
+                    for(let i=0;i<20;i++){
+                        temList[i].icon=recom;
+                    }
+                    for(let i=0; i<5;i++){
+                        bestList[i]=temList[i];
+                    }
+                    setRecoList(bestList);
                     setStoreList(temList);})
-                .catch(err=>{throw(err)});
+                .catch(err=>{console.log(err);throw err;})
+
         };
-        if(!recoList[0]){
-
-        }
-    },[storeList,recoList],);
-
+    },[homePosit])
 
     const StoreReport=(props)=> {
 
@@ -253,20 +288,21 @@ const FindByMap=({isLogined})=> {
                         >
                             {storeList.map((store, i) => (
                                 <Marker
-                                    key={i}
-                                    position={{lat:store.latitude, lng: store.longitude}}
-                                    onClick={()=>{
-                                        setModalShow(true);
-                                        setStoreInfo(store);
-                                        setCenter({lat:store.latitude, lng: store.longitude})
-                                    }}
-                                    title={store.storeName}
-                                    store={store}
-                                    animation={4}
-                                    icon={{url: store.icon ,
-                                        scaledSize: {width:30, height:30}
-                                    }}
+                                key={i}
+                                position={{lat:store.latitude, lng: store.longitude}}
+                                onClick={()=>{
+                                setModalShow(true);
+                                setStoreInfo(store);
+                                setCenter({lat:store.latitude, lng: store.longitude})
+                            }}
+                                title={store.storeName}
+                                store={store}
+                                animation={4}
+                                icon={{url: store.icon ,
+                                scaledSize: {width:30, height:30}
+                            }}
                                 />
+
                             ))}
                             {isLogined&&
                             <Marker
@@ -286,7 +322,18 @@ const FindByMap=({isLogined})=> {
                 </td>
                     <td className="td-right">
                         <table className="mapSide">
-                            <tr></tr>
+
+                            {recoList.map((store, i)=>(
+                                <tr><td>
+                                    <div className="card">
+                                        <img src={store.imgUrl} alt={"storeImg"} style={{width:50,height:50}}/>
+                                            <div className="container">
+                                                <h4><b>{store.storeName}</b></h4>
+                                                <p>{store.address}</p>
+                                            </div>
+                                    </div>
+                                    </td></tr>
+                            ))}
                         </table>
                     </td>
                 </tr>
