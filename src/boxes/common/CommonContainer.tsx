@@ -1,18 +1,14 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import {MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency,FindByMap} from './board';
-import MerchanDetail from "./board/map/MerchanDetail";
-
-
+import {MerchanDetail,FindByMap,MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
 const CommonContainer = ({isLogined}) => {
-
   return (
     <div className='container'>
       <Route path="/merchant-list">
         <MerchantList />
       </Route>
         <Route path="/find-by-map">
-            <FindByMap isLogined/>
+            <FindByMap isLogined={isLogined}/>
         </Route>
         <Route path="/find-best-route">
         <FindBestRoute />
