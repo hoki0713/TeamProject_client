@@ -1,16 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Logo, SearchBar, LoginedAccountChecker } from '../../items';
+import { Logo, StoreSearchBar, LoginedAccountChecker } from '../../items';
 import './CommonPage.css'
 
 
 const CommonHeader = ({loginedAccount, clickLogout, isAdmin}) => {
-
-  const history = useHistory();
-  const handleSearch = (searchWord) => {
-    alert(searchWord);
-    history.push('/merchant-list');
-  }
 
   return (
     <div className="container">
@@ -23,7 +16,7 @@ const CommonHeader = ({loginedAccount, clickLogout, isAdmin}) => {
         </div>
 
         <div className="col-lg-8 align-middle" id="common-header-search-bar">
-          < SearchBar onSearch={handleSearch} />
+          < StoreSearchBar />
         </div>
 
         <div className="col-lg-2 align-middle common-header-links">
