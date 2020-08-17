@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, Container, Row, Col } from "react-bootstrap";
 import { PaginationItem, SearchBar } from "../../../items";
-import { Link, useRouteMatch } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import './AdminBoard.css';
 
@@ -14,10 +13,10 @@ export const postListAction = (data) => ({
   payload: data,
 });
 
-export const postListReducer = (state = [], action) => {
+export const postListReducer = (state = {}, action) => {
   switch (action.type) {
     case POST_LIST:
-      return action.payload;
+      return {...state,payload:action.payload};
     default:
       return state;
   }
@@ -44,11 +43,8 @@ export const postOneThunk = (postId) => (dispatch) => {
             .get(`http://localhost:8080/posts/post/${postId}`)
             .then((res)=>{
                dispatch(postListAction(res.data))
-              
             
                console.log(res.data)
-
-            
                  
             })
             .catch((err)=>{
@@ -57,14 +53,12 @@ export const postOneThunk = (postId) => (dispatch) => {
   };
 
 
-const Notice = ({setPostId}) => {
+const Notice = () => {
 
     const [postList, setPostList] = useState([]);
     const [currentPage,setCurrentPage] = useState(1);
     const [postPerPage] = useState(5);
-   
-    const dispatch = useDispatch();
-    const result = useSelector((state) => state.postListReducer);
+
 
     
    
@@ -92,31 +86,6 @@ const Notice = ({setPostId}) => {
         }
        };
 
- 
-
-    //    useEffect(()=>{
-    //          dispatch(postListThunk());
-    //    },[])
-
-    const getNotice = postId =>{
-        dispatch(postOneThunk(postId))
-        console.log(result)
-        axios
-        .get(`http://localhost:8080/posts/post/${postId}`)
-        .then((res)=>{
-           dispatch(postListAction(res.data))
-  
-           console.log(res.data)
-           
-
-        })
-        .catch((err)=>{
-            throw err;
-        })
-        
-    }
-
-   
   
     useEffect(() => {
         axios
@@ -176,9 +145,7 @@ const Notice = ({setPostId}) => {
                             <tr key={i}>
                                 <td >{i+(indexOfFirstPost+1)}</td>
                                 <td> {info.category}</td>
-                               <td> <Link to="/admin/notice-detail" onClick={()=>{
-                                   getNotice(info.postId)
-                                   setPostId(info.postId);}}>{info.postTitle}</Link></td>
+                               <td> <Link to={`/admin/notice-detail/${info.postId}`}>{info.postTitle}</Link></td>
                              {info.category==="사이트" && <td>관리자</td>} 
                             { info.category==="지역화폐" && <td>경기지역화폐</td> }
                                 <td>{info.regDate}</td>

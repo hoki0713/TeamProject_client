@@ -26,7 +26,7 @@ const AdminPage = () => {
         isAdmin={isAdmin}
       />
       <AdminMenuBar />
-      <AdminContainer />
+      <AdminContainer match />
     </div>
   );
 };

@@ -5,29 +5,28 @@ import ReactQuill from "react-quill";
 import './AdminBoard.css'
 import axios from 'axios'
 
-const NoticeModifyWrite = () => {
+const NoticeModifyWrite = ({match}) => {
     const [contents, setContents] = useState("");
     const [postTitle,setPostTitle] = useState("");
     const [category,setCategory] = useState("");
     const [postId,setPostId] = useState("");
-    const [accountDetail] = useState(
-      JSON.parse(sessionStorage.getItem("accountDetail"))
-    );
-    const [notice] = useState(
-        JSON.parse(sessionStorage.getItem("notice"))
-    )
-
-    const [id,setId] = useState("");
 
     useEffect(()=>{
-        setId(accountDetail.id);
-        setContents(notice.contents);
-        setPostTitle(notice.postTitle);
-        setCategory(notice.category)
-        setPostId(notice.postId)
-    },[accountDetail,notice])
+        setPostId(match.params.postId)
+        axios
+        .get(`http://localhost:8080/posts/post/${match.params.postId}`)
+        .then((res)=>{
+            setPostTitle(res.data.postTitle)
+            setCategory(res.data.category)
+            setContents(res.data.contents)
+        })
+        .catch((err)=>{
+            throw err;
+        })
+    },[])
 
 
+  
 
     const handleQuill = value =>{
         setContents(value)
@@ -37,7 +36,6 @@ const newNotice = e =>{
     e.preventDefault()
     const notice = {
         postId:postId,
-        userId:accountDetail.id,
         category:category,
         postTitle:postTitle,
         contents:contents

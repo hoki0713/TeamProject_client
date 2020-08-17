@@ -1,4 +1,4 @@
-import { MerchantList, FindByMap, FindBestRoute } from "./map";
+import { MerchantList, FindByMap, FindBestRoute,MerchanDetail } from "./map";
 import { Recommendation, FindByTag } from "./recommandation";
 import { Notice } from "./notice";
 import { BuyLocalCurrency } from "./purchase";
@@ -11,4 +11,5 @@ export {
   FindByTag,
   Notice,
   BuyLocalCurrency,
+    MerchanDetail
 };
