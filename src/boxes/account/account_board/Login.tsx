@@ -28,8 +28,6 @@ const Login = () => {
         .then(response => {
           sessionStorage.setItem("accountDetail", JSON.stringify(response.data));
           getLatLng(response.data.defaultAddr);
-          console.log(response.data.defaultAddr);
-          sessionStorage.setItem("location", JSON.stringify(getLatLng(response.data.defaultAddr)));
           if (response.status === 200) history.push("/");
         })
         .catch( () => {

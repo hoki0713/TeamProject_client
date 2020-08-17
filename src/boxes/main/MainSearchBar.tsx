@@ -11,7 +11,7 @@ const MainSeachBar = () => {
   }
 
   return (
-    <div className="container" id="main-search-bar">
+    <div className="container" id="main-search-bar" >
       < SearchBar onSearch={searchMerchant}/>
     </div>
   );

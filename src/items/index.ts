@@ -3,7 +3,7 @@ import LoginLink from './LoginLink';
 import Logo from './Logo';
 import MapImage from './MapImage';
 import MenuIcon from './MenuIcon';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar.js';
 import SignUpLink from './SignUpLink';
 import PostcodeButton from './PostcodeButton';
 import PaginationItem from "./Pagination.js";
