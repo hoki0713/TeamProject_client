@@ -28,7 +28,7 @@ const CommonPage = () => {
                 isAdmin={isAdmin}
             />
             <CommonMenuBar isLogined={isLogined} />
-            <CommonContainer />
+            <CommonContainer isLogined/>
             <CommonFooter/>
         </div>
     );
