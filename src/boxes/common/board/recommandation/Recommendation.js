@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import { Card,Spinner} from 'react-bootstrap'
-import './Recommendation.css'
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { Card, Spinner } from "react-bootstrap";
+import "./Recommendation.css";
 
 function Recommendation() {
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'))
@@ -100,22 +100,23 @@ function Recommendation() {
     return (<>
         <h2>simin님을 위한 우리 동네 추천 가맹점</h2><br/>
 
-        <h4>내 주변 인기 가맹점</h4>
+
+      {!userWarningMsg && (
         <div className="scrollContainer">
-            {bestStore.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top"
-                              src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title>{store.storeName}</Card.Title>
-                        <Card.Text>
-                            {store.address}
-                        </Card.Text>
-                    </Card.Body>
-                    <Card.Footer>
-                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                    </Card.Footer>
-                </Card>))}
+          {userBased.map((store, i) => (
+            <Card className="cardItem" key={i}>
+              <Card.Img id="card-image" variant="top" src={store.imgUrl} />
+              <Card.Body>
+                <Card.Title id="card-title">{store.storeName}</Card.Title>
+                <Card.Text>{store.address}</Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <small className="text-muted">
+                  {store.mainCode}/{store.storeType}
+                </small>
+              </Card.Footer>
+            </Card>
+          ))}
         </div>
         <br/><br/>
 
@@ -161,28 +162,29 @@ function Recommendation() {
         </div>
         <br/><br/>
 
-        {!noFavMsg &&
-        <div>
-            <h4>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h4>
-        <div className="scrollContainer">
-            {userFavBased.map((store, i) => (
-                    <Card className="cardItem" key={i}>
-                        <Card.Img id="card-image" variant="top"
-                                  src={store.imgUrl}/>
-                        <Card.Body>
-                            <Card.Title id="card-title">{store.storeName}</Card.Title>
-                            <Card.Text>
-                                {store.address}
-                            </Card.Text>
-                        </Card.Body>
-                        <Card.Footer>
-                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                        </Card.Footer>
-                    </Card>
-                )
-            )}
-        </div></div>}
 
+        {!noFavMsg &&
+          <div>
+              <h4>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h4>
+          <div className="scrollContainer">
+              {userFavBased.map((store, i) => (
+                      <Card className="cardItem" key={i}>
+                          <Card.Img id="card-image" variant="top"
+                                    src={store.imgUrl}/>
+                          <Card.Body>
+                              <Card.Title id="card-title">{store.storeName}</Card.Title>
+                              <Card.Text>
+                                  {store.address}
+                              </Card.Text>
+                          </Card.Body>
+                          <Card.Footer>
+                              <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                          </Card.Footer>
+                      </Card>
+                  )
+              )}
+          </div>
+          </div>}
 
         <br/><br/>
         {noFavMsg &&  <div className="scrollContainer">
@@ -261,6 +263,8 @@ function Recommendation() {
         <br/><br/><br/><br/>
 
     </>)
+
+
 }
 
 export default Recommendation;

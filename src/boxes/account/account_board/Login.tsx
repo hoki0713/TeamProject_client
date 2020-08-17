@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import Geocode from "react-geocode";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  
+  const getLatLng = async (location) =>  {
+    await Geocode.fromAddress(location)
+    .then(response => {
+      const resLatLng = response.results[0].geometry.location;
+      sessionStorage.setItem("userLocation", JSON.stringify(resLatLng));
+    },
+      (error) => {
+        console.error(error);
+      }
+    );
+  };
+
 
   const handleLoginButton = e => {
     e.preventDefault();
@@ -13,6 +27,9 @@ const Login = () => {
       axios.post(`http://localhost:8080/users/login`, { userId: userId, password: password })
         .then(response => {
           sessionStorage.setItem("accountDetail", JSON.stringify(response.data));
+          getLatLng(response.data.defaultAddr);
+          console.log(response.data.defaultAddr);
+          sessionStorage.setItem("location", JSON.stringify(getLatLng(response.data.defaultAddr)));
           if (response.status === 200) history.push("/");
         })
         .catch( () => {
