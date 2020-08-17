@@ -11,7 +11,6 @@ const Page = () => {
   return (
     <StoreSearchProvider>
       <Switch>
-
         <Route path="/" exact>
           <HomePage />
         </Route>
@@ -27,7 +26,6 @@ const Page = () => {
         <Route>
           <CommonPage />
         </Route>
-
       </Switch>
     </StoreSearchProvider>
   );
