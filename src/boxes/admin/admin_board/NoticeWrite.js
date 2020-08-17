@@ -26,7 +26,10 @@ const NoticeWrite = () => {
 
   const newNotice = (e) => {
     e.preventDefault();
-    alert(`확인`);
+
+    console.log(contents)
+    console.log(category)
+    console.log(postTitle);
     const notice = {
       userId: accountDetail.id,
       category: category,

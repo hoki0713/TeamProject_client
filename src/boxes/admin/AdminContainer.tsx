@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Route } from 'react-router-dom';
 import {
     LocalCurrencyAmount,
@@ -12,6 +12,7 @@ import {
 } from './admin_board';
 
 const AdminContainer = () => {
+  const [postId, setPostId] = useState("")
   return (
     <div className="container">
       <Route path="/admin/currency-amount">
@@ -24,13 +25,13 @@ const AdminContainer = () => {
       <UserTotalStatistic/>
       </Route>
       <Route path="/admin/notice">
-        <Notice />
+        <Notice setPostId={setPostId} />
       </Route>
       <Route path="/admin/notice-write">
         <NoticeWrite />
       </Route>
       <Route path="/admin/notice-detail">
-         <NoticeDetail />
+         <NoticeDetail postId ={postId} />
       </Route>
       <Route path="/admin/notice-modify">
         <NoticeModifyWrite />
