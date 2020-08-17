@@ -75,6 +75,8 @@ const MerchanDetail = () => {
                 </tbody>
             </Table>
 
+                <h1>{storeInfo.storeName}</h1>
+
         </div>
     );
 };

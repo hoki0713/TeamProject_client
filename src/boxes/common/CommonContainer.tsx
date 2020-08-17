@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Route } from 'react-router-dom';
 
 import {MerchanDetail,FindByMap,MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
 const CommonContainer = ({isLogined}) => {
+  const [storeInfo,setStoreInfo]=useState({})
+
   return (
     <div className='container'>
       <Route path="/merchant-list">
@@ -17,7 +19,7 @@ const CommonContainer = ({isLogined}) => {
         </Route>
 
       <Route path="/recommendation">
-        <Recommendation />
+        <Recommendation setStoreInfo={setStoreInfo}/>
       </Route>
       <Route path="/find-by-tag">
         <FindByTag />
@@ -30,7 +32,7 @@ const CommonContainer = ({isLogined}) => {
         <BuyLocalCurrency />
       </Route>
       <Route path="/storeDetail">
-        <MerchanDetail />
+        <MerchanDetail storeInfo={storeInfo}/>
       </Route>
 
     </div>
