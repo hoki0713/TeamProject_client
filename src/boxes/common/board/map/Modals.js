@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {addr, favStar, phoneB, red, review, starIcon} from "./mapIcons/imgIndex";
 import {Link} from "react-router-dom";
 import ReviewModal from "../../../../items/ReviewModal";
 import axios from "axios";
 import {Stars} from "./FindByMap";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
-export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
+export const MapModal=({modalClose,isLogined})=> {
+    const {store} =useContext(StoreSearchContext)
     const [reportShow, setReportShow]=useState(false);
     const [reviewShow, setReviewShow]=useState(false);
     const [starShow, setStarShow]=useState(false);
@@ -28,9 +30,9 @@ export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        <img src ={storeInfo.icon}
+                        <img src ={store.icon}
                              alt={"commonStoreImg"} width={40} height={40}/>
-                        &nbsp;<Link to={'storeDetail'}><span>{storeInfo.storeName}</span></Link> <br/>
+                        &nbsp;<Link to={'storeDetail'}><span>{store.storeName}</span></Link> <br/>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="show-grid">
@@ -39,25 +41,25 @@ export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
                             <Col xs={12} md={8}>
                                 <img src={addr}
                                      alt={"addrImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{storeInfo.address}<br/>
+                                &nbsp;{store.address}<br/>
                                 <img src={phoneB}
                                      alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{(storeInfo.storePhone!=0)?<>{storeInfo.storePhone}</>:
+                                &nbsp;{(store.storePhone!=0)?<>{store.storePhone}</>:
                                 <>000-000-0000</>}
                             </Col>
-                             <Col xs={6} md={4}>
-                                <img src={storeInfo.imgUrl}
-                                     alt={storeInfo.storeName} width={80} height={80}/>
+                            <Col xs={6} md={4}>
+                                <img src={store.imgUrl}
+                                     alt={store.storeName} width={80} height={80}/>
                             </Col>
                         </Row>
 
                         <Row>
                             <Col xs={5} md={3}>
-                                {storeInfo.storeType}
+                                {store.storeType}
                             </Col>
                             <Col xs={7} md={5}>
                                 별점 &nbsp;
-                                <Stars storeInfo={storeInfo}/>
+                                <Stars storeInfo={store}/>
 
                             </Col>
                             <Col xs={6} md={4}>
@@ -97,24 +99,24 @@ export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
                 </Modal.Footer>
             </Modal>
             {starShow &&
-                <Star
-                storeInfo={storeInfo}
+            <Star
+                storeInfo={store}
                 starClose={starClose}
                 modalClose={modalClose}
-                />
+            />
 
             }
             {reportShow &&
             <StoreReport
                 modalClose={modalClose}
-                storeInfo={storeInfo}
+                storeInfo={store}
                 reportClose={reportClose}/>
             }
             { reviewShow &&
             <ReviewModal handleClose={()=>setReviewShow(false)}
-                         storeName={storeInfo.storeName}
+                         storeName={store.storeName}
                          accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
-                         storeId={storeInfo.id}
+                         storeId={store.id}
                          reviewId={null}// findbymap에서는 필요없다
                          onSubmit={()=>{}}// findbymap에서는 필요없다
             />
@@ -126,15 +128,15 @@ export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
 export const StoreReport=({storeInfo, reportClose,modalClose})=> {
 
     const handleReport = () => {
-            axios
-                .post(`http://localhost:8080/reports/${storeInfo.id}`)
-                .then(() => {
-                    alert(`${storeInfo.storeName}에 대한 신고가 완료되었습니다.`);
-                    modalClose();
-                })
-                .catch((error) => {
-                    throw error;
-                });
+        axios
+            .post(`http://localhost:8080/reports/${storeInfo.id}`)
+            .then(() => {
+                alert(`${storeInfo.storeName}에 대한 신고가 완료되었습니다.`);
+                modalClose();
+            })
+            .catch((error) => {
+                throw error;
+            });
     };
 
     return (
