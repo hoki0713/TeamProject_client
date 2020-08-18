@@ -13,7 +13,6 @@ const CommonContainer = ({ isLogined }) => {
             <Route path="/merchant-list">
                 <MerchantList />
             </Route>
-
             <Route path="/find-by-map">
                 <FindByMap isLogined={isLogined} setStoreInfo={setStoreInfo} storeInfo={storeInfo}/>
             </Route>
