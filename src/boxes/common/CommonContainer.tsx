@@ -35,7 +35,7 @@ const CommonContainer = ({ isLogined }) => {
         <BuyLocalCurrency />
       </Route>
       <Route path="/storeDetail">
-        <MerchanDetail storeInfo={storeInfo} isLogined={isLogined}/>
+        <MerchanDetail isLogined={isLogined}/>
       </Route>
 
     </div>
