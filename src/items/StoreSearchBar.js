@@ -29,7 +29,6 @@ const StoreSearchBar = () => {
       axios
         .get(`http://localhost:8080/stores/searchStore/${inputValue}`)
         .then((response) => {
-          console.log(response.data);
           if (response.data.length) {
             setShortSearched(response.data);
           }
@@ -63,7 +62,9 @@ const StoreSearchBar = () => {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => handleStoreSearch(searchedStore)}
+            onClick={() => { 
+              handleStoreSearch(searchedStore)
+            }}
           >
             검색
           </button>
