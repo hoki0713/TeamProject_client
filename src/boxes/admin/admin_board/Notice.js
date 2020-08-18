@@ -121,7 +121,7 @@ const Notice = () => {
                         <option>사이트</option>
                     </select>
                     <span id="search-bar">
-                        <SearchBar onSearch={handleSearch} />
+                        <SearchBar placeholder={"김포"} onSearch={handleSearch} />
                     </span>
                 </div>
             </div>

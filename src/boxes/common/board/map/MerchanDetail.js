@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { StoreSearchContext } from '../../../../items/context/StoreSearchContext';
 import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
 import {Table} from 'react-bootstrap'
-const MerchanDetail = ({storeInfo}) => {
+const MerchanDetail = () => {
     const { store } = useContext(StoreSearchContext);
     const [newStore, setNewStore] = useState({});
     const [location, setLocation]=useState({lat: 37.551191, lng: 126.940970})

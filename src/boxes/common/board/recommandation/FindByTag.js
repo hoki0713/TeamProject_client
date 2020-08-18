@@ -24,7 +24,8 @@ function FindByTag() {
     const [searchIndustry, setSearchIndustry] = useState([])
     const [industryName, setIndustryName] = useState([])
     const [resultStores, setResultStores] = useState([])
-    const [genderKor, setGenderKor] = useState("성별무관")
+    const [genderKor, setGenderKor] = useState("성별")
+    const [ageKor, setAgeKor] = useState("연령")
     const [show, setShow] = useState(false)
     const [option, setOption] = useState(0)
 
@@ -94,7 +95,7 @@ function FindByTag() {
             setGenderKor("여성")
         } else if (gender === "M") {
             setGenderKor("남성")
-        } else if (gender === "null") {
+        } else if (gender === "none") {
             setGenderKor("성별무관")
         }
         console.log("gender시작" + gender + "age시작" + ageGroup)
@@ -104,6 +105,11 @@ function FindByTag() {
     }
     const handleAge = (e) => {
         setAgeGroup(e.target.value);
+        if(ageGroup===100){
+            setAgeKor("연령무관")
+        } else if(ageGroup === 10 || 20 || 30 || 40|| 50)
+           {setAgeKor(ageGroup+"대")}
+        else {setAgeKor("60대 이상")}
         console.log("age시작" + ageGroup + "gender" + gender)
         handleIndustry()
         handleColor()
@@ -118,24 +124,32 @@ function FindByTag() {
 
     const submitSearch = (e) => {
         e.preventDefault()
-        console.log(latLng)
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}/${option}`, latLng)
-            .then((res) => {
-                console.log('가게 리스트 가져오기 성공')
-                console.log(res.data);
-                const values = [];
-                const keys = [];
-                Object.entries(res.data).forEach(([key, value]) => {
-                    keys.push(key)
-                    values.push(value)
+        if (
+            ageGroup === 0 ||
+            gender === "none" ||
+            option === 0
+        ) {
+            alert("모든 사항을 선택 선택해주세요");
+        } else {
+            console.log(ageGroup+gender+option)
+            axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}/${option}`, latLng)
+                .then((res) => {
+                    console.log('가게 리스트 가져오기 성공')
+                    console.log(res.data);
+                    const values = [];
+                    const keys = [];
+                    Object.entries(res.data).forEach(([key, value]) => {
+                        keys.push(key)
+                        values.push(value)
+                    })
+                    setIndustryName(keys)
+                    setResultStores(values)
                 })
-                setIndustryName(keys)
-                setResultStores(values)
-            })
-            .catch(error => {
-                throw(error)
-            })
-    }
+                .catch(error => {
+                    throw(error)
+                })
+        }}
+
 
     const submitUserSearch = (e) => {
         e.preventDefault()
@@ -200,7 +214,9 @@ function FindByTag() {
                             5</Card.Header>
                         {userIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
-                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}{totalIndustry[i].industryName===userIndustry[i].industryName ? " == " : " /= "}</ListGroup.Item>
+                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}
+                                {totalIndustry[i].industryName===userIndustry[i].industryName ? "" : " √"}
+                                </ListGroup.Item>
                             </ListGroup>)
                         )}
                     </Card>
@@ -210,10 +226,10 @@ function FindByTag() {
                     {(show) && <Card>
                         <Card.Header>
 
-                            {ageGroup}대 X {genderKor}의 관심업종 TOP 5</Card.Header>
+                            {ageKor} X {genderKor}의 관심업종 TOP 5</Card.Header>
                         {searchIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
-                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}{totalIndustry[i].industryName===searchIndustry[i].industryName ? " == " : " /= "}</ListGroup.Item>
+                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}{totalIndustry[i].industryName===searchIndustry[i].industryName ? "" : " √"}</ListGroup.Item>
                             </ListGroup>)
                         )}
                     </Card>}
@@ -234,7 +250,7 @@ function FindByTag() {
                         <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
                                 value={"F"}>여성</Button>{' '}
                         <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
-                                value={"null"}>성별무관</Button>
+                                value={"none"}>성별무관</Button>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -247,8 +263,8 @@ function FindByTag() {
                         <Button variant="outline-dark" type="button" value={30} onClick={handleAge}>30대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={40} onClick={handleAge}>40대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={50} onClick={handleAge}>50대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={60} onClick={handleAge}>60대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={0} onClick={handleAge}>연령무관</Button>
+                        <Button variant="outline-dark" type="button" value={60} onClick={handleAge}>60대 이상</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={100} onClick={handleAge}>연령무관</Button>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
@@ -256,9 +272,9 @@ function FindByTag() {
                         추천 태그
                     </Form.Label>
                     <Col sm={10}>
-                        <Button variant="outline-dark" type="button" value={0} onClick={handleOption}>#인기 많은</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={1} onClick={handleOption}>#즐겨찾기 많은</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={2} onClick={handleOption}>#별점 높은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={1} onClick={handleOption}>#인기 많은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={2} onClick={handleOption}>#즐겨찾기 많은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={3} onClick={handleOption}>#별점 높은</Button>{' '}
                     </Col>
                     <br/> <br/>
                 </Form.Group>
@@ -281,7 +297,8 @@ function FindByTag() {
                             <Card.Body>
                                 <Card.Title>{store.storeName}</Card.Title>
                                 <Card.Text>
-                                    {store.address}
+                                    {store.address}<br/>
+                                    별점 : {store.starRanking}
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
@@ -289,7 +306,6 @@ function FindByTag() {
                             </Card.Footer>
                         </Card>
                     ))}
-
                 </div>
             ))}
         </>
