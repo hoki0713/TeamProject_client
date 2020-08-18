@@ -39,5 +39,5 @@ const CommonContainer = ({ isLogined }) => {
         </div>
     );
 }
-
+}
 export default CommonContainer;

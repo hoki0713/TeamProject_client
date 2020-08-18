@@ -14,7 +14,7 @@ import {
     drug,
     cafe, hotelIcon, soju, bab, normal,recom,starIcon,recoInfo
 } from './mapIcons/imgIndex'
-import {MapModal} from "./Modals";
+import {MapModal} from "./Modals.js";
 import axios from "axios";
 import {libraries,containerStyle,appKey} from "./mapUtils/mapatt";
 import Geocode from "react-geocode";
