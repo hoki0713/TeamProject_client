@@ -5,11 +5,11 @@ import {useSelector} from "react-redux";
 import Geocode from "react-geocode";
 import './Recommendation.css'
 
-Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
 
 function FindByTag() {
 
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || `{}`));
+    const [latLng] = useState(JSON.parse(sessionStorage.getItem("userLocation") || '{}'))
     const [id, setId] = useState("");
     const [userGender, setUserGender] = useState("")
     const [userBirthYear, setUserBirthYear] = useState(0);
@@ -26,34 +26,16 @@ function FindByTag() {
     const [resultStores, setResultStores] = useState([])
     const [genderKor, setGenderKor] = useState("성별무관")
     const [show, setShow] = useState(false)
-    const latLng = useSelector(state => state.userLatLng)
-    const myLoca = JSON.parse(sessionStorage.getItem("accountDetail"))
-        .defaultAddr;
-    const [userLatLng, setUserLatLng] = useState({latitude: 0, longitude: 0});
     const [option, setOption] = useState(0)
 
 
-    const getLatLng = () => {
-        Geocode.fromAddress(myLoca).then(
-            (response) => {
-                const resLatLng = response.results[0].geometry.location;
-                setUserLatLng({latitude: resLatLng.lat, longitude: resLatLng.lng});
-                console.log(resLatLng);
-                console.log(userLatLng);
 
-            },
-            (error) => {
-                console.error(error);
-            }
-        );
-
-    };
 
     useEffect(() => {
         setId(accountDetail.id)
         setUserGender(accountDetail.gender);
         setUserBirthYear(accountDetail.birthDate.split("-")[0])
-    }, [accountDetail]);
+    }, [accountDetail], [latLng]);
 
 
     useEffect(() => {
@@ -76,9 +58,6 @@ function FindByTag() {
         }
     }, [id])
 
-    useEffect(() => {
-        getLatLng();
-    }, []);
 
     const BASE_COLOR = "red";
     const OTHER_COLOR = "blue";
@@ -133,14 +112,14 @@ function FindByTag() {
 
     const handleOption=e=>{
         e.preventDefault()
+        setOption(e.target.value)
 
     }
 
     const submitSearch = (e) => {
         e.preventDefault()
-        console.log(userLatLng);
-        sessionStorage.setItem("LatLng", JSON.stringify(userLatLng));
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, userLatLng)
+        console.log(latLng)
+        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}/${option}`, latLng)
             .then((res) => {
                 console.log('가게 리스트 가져오기 성공')
                 console.log(res.data);
@@ -160,12 +139,10 @@ function FindByTag() {
 
     const submitUserSearch = (e) => {
         e.preventDefault()
-        console.log(userLatLng);
-        sessionStorage.setItem("LatLng", JSON.stringify(userLatLng));
         setGender(userGender);
         setAgeGroup(userAgeGroup);
         console.log(gender + ageGroup)
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, userLatLng)
+        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, latLng)
             .then((res) => {
                 console.log('가게 리스트 가져오기 성공')
                 console.log(res.data);
@@ -185,11 +162,7 @@ function FindByTag() {
 
     const submitTotalSearch = (e) => {
         e.preventDefault()
-        setOption(e.target.value)
-        console.log(userLatLng);
-        sessionStorage.setItem("LatLng", JSON.stringify(userLatLng));
-
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}/${option}`, userLatLng)
+        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, latLng)
             .then((res) => {
                 console.log('가게 리스트 가져오기 성공')
                 console.log(res.data);
@@ -214,7 +187,7 @@ function FindByTag() {
                 <h1>태그로 찾기</h1><br/>
                 <CardDeck>
                     <Card style={{width: '18rem'}}>
-                        <Card.Header onClick={submitSearch}>전체 업종 TOP 5</Card.Header>
+                        <Card.Header>전체 업종 TOP 5</Card.Header>
                         {totalIndustry.map((industry, i) => (
                                 <ListGroup variant="flush">
                                     <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
@@ -235,7 +208,7 @@ function FindByTag() {
                     {/*    && totalIndustry.indexOf(totalIndustry[i]) === userIndustry.indexOf(totalIndustry[i])) ? "같음" : "다름"}*/}
 
                     {(show) && <Card>
-                        <Card.Header onClick={submitSearch}>
+                        <Card.Header>
 
                             {ageGroup}대 X {genderKor}의 관심업종 TOP 5</Card.Header>
                         {searchIndustry.map((industry, i) => (
@@ -283,9 +256,9 @@ function FindByTag() {
                         추천 태그
                     </Form.Label>
                     <Col sm={10}>
-                        <Button variant="outline-dark" type="button" value={0}>#인기 많은</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={1}>#즐겨찾기 많은</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={2}>#별점 높은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={0} onClick={handleOption}>#인기 많은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={1} onClick={handleOption}>#즐겨찾기 많은</Button>{' '}
+                        <Button variant="outline-dark" type="button" value={2} onClick={handleOption}>#별점 높은</Button>{' '}
                     </Col>
                     <br/> <br/>
                 </Form.Group>

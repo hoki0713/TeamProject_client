@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 
 import {MerchanDetail,FindByMap,MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
 const CommonContainer = ({isLogined}) => {
-  const [storeInfo,setStoreInfo]=useState({})
+
 
   return (
     <div className='container'>
@@ -19,7 +19,7 @@ const CommonContainer = ({isLogined}) => {
         </Route>
 
       <Route path="/recommendation">
-        <Recommendation setStoreInfo={setStoreInfo}/>
+        <Recommendation />
       </Route>
       <Route path="/find-by-tag">
         <FindByTag />
@@ -32,7 +32,7 @@ const CommonContainer = ({isLogined}) => {
         <BuyLocalCurrency />
       </Route>
       <Route path="/storeDetail">
-        <MerchanDetail storeInfo={storeInfo}/>
+        <MerchanDetail />
       </Route>
 
     </div>
