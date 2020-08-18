@@ -13,7 +13,25 @@ const MerchantList=()=> {
     const [storeList, setStoreList]=useState([]);
     const [drop1Show, setDrop1Show] = useState(false);
     const [drop2Show, setDrop2Show] = useState(false);
-    const [pageNow,setPageNow]=useState(1);
+    const [pageNow,setPageNow]=useState(0);
+    const [totalCount,setTotalCount]=useState(0);
+    const [pageSize]=useState(10);
+    const [blockSize]=useState(10);
+    const [blockNow,setBlockNow]=useState(0);
+    const [blockCount,setBlockCount]=useState(0)
+    const [pageEnd,setPageEnd]=useState(0);
+    const [pageStart,setPageStart]=useState(0);
+    const [rowStart,setRowStart]=useState(0);
+    const [pageCount,setPageCount]=useState(0);
+    const [rowEnd,setRowEnd]=useState(0);
+    const [existPrev, setExistPrev]=useState(0);
+    const [existNext,setExistNext]=useState(0);
+    const [prevBlock,setPrevBlock]=useState(0);
+    const [nextBlock,setNextBlock]=useState(0);
+    const [pageList, setPageList]=useState([]);
+    const [pageNumArr,setPageNumArr]=useState([]);
+    const [trigger,setTrigger]=useState(false);
+
     const [stateList]=useState(
         ['연천군', '포천시', '파주시', '동두천시', '양주시', '의정부시', '가평군', '고양시',
             '김포시', '남양주시', '구리시', '하남시', '양평군', '광주시', '여주시', '이천시', '용인시', '안성시',
@@ -28,30 +46,75 @@ const MerchantList=()=> {
 
     const stateCheck=(stateName)=>{
         setState(stateName);
-        getSpecificS();
+        // getSpecificS();
     };
-
     const cateCheck=(category)=>{
         setCate(category);
-        getSpecificS();
+        // getSpecificS();
     };
-
-    function getSpecificS(){
-
-        axios.get(`http://localhost:8080/stores/getSome/""/""/1`)
-            .then(({data})=>{
-                setStoreList(data.list)
-            })
-            .catch(err=>{console.log(err);throw err;})
+    function pageNation(){
+        setBlockNow(parseInt(pageNow/blockSize));
+        setBlockCount(parseInt((pageCount % blockSize != 0) ? pageCount / blockSize +1:pageCount / blockSize));
+        setPageEnd(parseInt((blockNow != (blockCount -1)) ? (blockNow+1)*blockSize -1: pageCount - 1));
+        setPageStart(parseInt(blockNow *  blockSize));
+        setRowStart(parseInt(pageNow*pageSize));
+        setPageCount(parseInt((totalCount % pageSize != 0) ? (totalCount / pageSize +1) :(totalCount / pageSize )));
+        setRowEnd(parseInt((pageNow != (pageCount -1)) ? (pageNow+1)*pageSize-1:totalCount-1));
+        setExistPrev(parseInt(blockNow!=0));
+        setExistNext( parseInt(blockNow !=(blockCount-1)));
+        setNextBlock(pageStart + blockSize);
+        setPrevBlock(pageStart - blockSize);
     }
 
+    function setPageNums() {
+        let pageNumArr=[];
+        let startNum=0;
+        for(let i=pageStart;i<nextBlock;i++){
+            pageNumArr[startNum]=i;
+            startNum++;
+        }
+        setPageNumArr(pageNumArr);
+
+    }
+
+
     useEffect(()=>{
-        getSpecificS()
-        console.log(storeList)
-    },[pageNow])
+        axios.get(`http://localhost:8080/stores/getSome/""/""/${pageNow}/${blockSize*pageSize}`)
+            .then(({data})=>{
+                setStoreList(data.list);
+                setTotalCount(data.count);
+                let startNum =0;
+                let tmpArr =[];
+                for(let i=rowStart;i<rowStart+pageSize;i++){
+                    tmpArr[startNum]=data.list[i];
+                    startNum++;
+                }
+                setPageList(tmpArr);
+            })
+            .catch(err=>{console.log(err);throw err;})
+    },[blockNow]);
+    useEffect(()=>{
+       pageNation();
+    },[pageNow,totalCount]);
+    useEffect(()=>{
+        if(totalCount!=0){
+        let startNum =0;
+        let tmpArr =[];
+        for(let i=rowStart;i<rowStart+pageSize;i++){
+            tmpArr[startNum]=storeList[i];
+            startNum++;
+        }
+        setPageList(tmpArr);}
+    },[rowStart]);
+
+    useEffect(()=>{
+        setPageNums();
+    },[pageList]);
+
+
 
     return (
-        <div className="container">
+        <div className="container" id={"merchan_list"}>
             <Table striped bordered hover className="list_table">
                 {/*<thead>*/}
                 {/*<tr>*/}
@@ -128,35 +191,29 @@ const MerchantList=()=> {
                 </tr>
 
 
-                {storeList.map((store,i)=>(
-                    <tr>
-                    <td></td>
-                {/* 페이지네이션 번호 가져와야 함 */}
-                    <td>{store.id}</td>
-                    <td><Link to={'/storeDetail'} onClick={()=>setStore(store)}>{store.storeName}</Link> </td>
-                    <td>{store.address}</td>
-                    <td>{store.storeType}</td>
-                    </tr>
-                )
+                {pageList.map((store,i)=>(
+                        <tr>
+                            <td></td>
+                            <td>{store.id}</td>
+                            <td><Link to={'/storeDetail'} onClick={()=>setStore(store)}>{store.storeName}</Link> </td>
+                            <td>{store.address}</td>
+                            <td>{store.storeType}</td>
+                        </tr>
+                    )
                 )}
 
 
                 </tbody>
             </Table>
-            <table>
+            <table className={"paging"}>
                 <tr>
-                    <td>{"<"}</td>
-                    <td>&nbsp;1</td>
-                    <td>&nbsp;2</td>
-                    <td>&nbsp;3</td>
-                    <td>&nbsp;4</td>
-                    <td>&nbsp;5</td>
-                    <td>&nbsp;6</td>
-                    <td>&nbsp;7</td>
-                    <td>&nbsp;8</td>
-                    <td>&nbsp;9</td>
-                    <td>&nbsp;10</td>
-                    <td>&nbsp;{">"}</td>
+                    <td onClick={()=>{if(pageNow!==1){setPageNow(pageNow-1)}}}>{"<"}</td>
+
+
+                            {pageNumArr.map((num)=>(<td onClick={()=>setPageNow(num)}>&nbsp;{num+1}</td>))}
+
+
+                    <td onClick={()=>{if(pageNow!==pageEnd){setPageNow(pageNow+1)}}}>&nbsp;{">"}</td>
                 </tr>
             </table>
 

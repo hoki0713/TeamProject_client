@@ -1,11 +1,12 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap'
+import {CardDeck, Card, Button, Form, Row, Col, ListGroup, ButtonGroup, ToggleButton, ToggleButtonGroup} from 'react-bootstrap'
 import axios from 'axios'
 import './Recommendation.css'
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 function FindByTag() {
+
 
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || `{}`));
     const [latLng] = useState(JSON.parse(sessionStorage.getItem("userLocation") || '{}'))
@@ -30,6 +31,28 @@ function FindByTag() {
     const {setStore} = useContext(StoreSearchContext);
     const [clickedStore, setClickedStore] = useState({})
     const history= useHistory();
+
+    const radiosGender = [
+        { name: '남성', value: 'M' },
+        { name: '여성', value: 'F' },
+        { name: '성별무관', value: 'none' },
+    ];
+
+    const radiosAgeGroup = [
+        { name: '10대', value: 10 },
+        { name: '20대', value: 20 },
+        { name: '30대', value: 30 },
+        { name: '40대', value: 40 },
+        { name: '50대', value: 50 },
+        { name: '60대 이상', value: 60 },
+        { name: '연령무관', value: 100 },
+    ];
+
+    const radiosOption = [
+        { name: '#인기많은', value: 1 },
+        { name: '#즐겨찾기 많은', value: 2 },
+        { name: '#별점 높은', value: 3 },
+    ];
 
 
 
@@ -61,20 +84,6 @@ function FindByTag() {
     }, [id])
 
 
-    const BASE_COLOR = "red";
-    const OTHER_COLOR = "blue";
-
-    const [isActive, setActive] = useState(false);
-
-    const handleColor = (e) => {
-        setActive(!isActive)
-        if (!isActive) {
-
-            document.getElementById("button").style.backgroundColor = 'gray'
-        } else {
-            document.getElementById("button").style.backgroundColor = 'white';
-        }
-    }
 
     const handleIndustry = () => {
         if (gender !== "null" || ageGroup !== 0) {
@@ -102,25 +111,23 @@ function FindByTag() {
         console.log("gender시작" + gender + "age시작" + ageGroup)
         handleIndustry()
         setShow(true)
-        handleColor()
     }
-    const handleAge = (e) => {
+    const handleAge = e => {
         setAgeGroup(e.target.value);
         if(ageGroup===100){
-            setAgeKor("연령무관")
+            setAgeKor("연령무관");
         } else if(ageGroup === 10 || 20 || 30 || 40|| 50)
            {setAgeKor(ageGroup+"대")}
         else {setAgeKor("60대 이상")}
         console.log("age시작" + ageGroup + "gender" + gender)
         handleIndustry()
-        handleColor()
         setShow(true)
     }
 
-    const handleOption=e=>{
+    const handleOption=(e)=>{
+        console.log('몇번이 클릭됐는지'+e.target.value)
         e.preventDefault()
         setOption(e.target.value)
-
     }
 
     const submitSearch = (e) => {
@@ -251,12 +258,31 @@ function FindByTag() {
                         성별
                     </Form.Label>
                     <Col sm={10}>
+
                         <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
                                 value="M">남성</Button>{' '}
                         <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
                                 value={"F"}>여성</Button>{' '}
                         <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
                                 value={"none"}>성별무관</Button>
+
+
+                        {/*<ButtonGroup toggle>*/}
+                        {/*    {radiosGender.map((radio, idx) => (*/}
+                        {/*        <ToggleButton*/}
+                        {/*            key={idx}*/}
+                        {/*            type="radio"*/}
+                        {/*            variant="outline-dark"*/}
+                        {/*            name="genderGroup"*/}
+                        {/*            value={radio.value}*/}
+                        {/*            onClick={handleGender}*/}
+                        {/*            checked={gender === radio.value}*/}
+
+                        {/*        >*/}
+                        {/*            {radio.name}*/}
+                        {/*        </ToggleButton>*/}
+                        {/*    ))}*/}
+                        {/*</ButtonGroup>*/}
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -271,6 +297,23 @@ function FindByTag() {
                         <Button variant="outline-dark" type="button" value={50} onClick={handleAge}>50대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={60} onClick={handleAge}>60대 이상</Button>{' '}
                         <Button variant="outline-dark" type="button" value={100} onClick={handleAge}>연령무관</Button>
+
+
+                        {/*<ButtonGroup toggle>*/}
+                        {/*    {radiosAgeGroup.map((radios, idx) => (*/}
+                        {/*        <ToggleButton*/}
+                        {/*            key={idx}*/}
+                        {/*            type="radio"*/}
+                        {/*            variant="outline-dark"*/}
+                        {/*            name="ageGroups"*/}
+                        {/*            value={radios.value}*/}
+                        {/*            onChanged={handleAge}*/}
+                        {/*            checked={ageGroup === radios.value}*/}
+                        {/*        >*/}
+                        {/*            {radios.name}*/}
+                        {/*        </ToggleButton>*/}
+                        {/*    ))}*/}
+                        {/*</ButtonGroup>*/}
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
@@ -278,6 +321,22 @@ function FindByTag() {
                         추천 태그
                     </Form.Label>
                     <Col sm={10}>
+                        {/*<ButtonGroup toggle>*/}
+                        {/*    {radiosOption.map((opt, idx) => (*/}
+                        {/*        <ToggleButton*/}
+                        {/*            key={idx}*/}
+                        {/*            type="radio"*/}
+                        {/*            variant="outline-dark"*/}
+                        {/*            name="optionGroup"*/}
+                        {/*            value={opt.value}*/}
+                        {/*            checked={option === opt.value}*/}
+                        {/*            onChange={handleOption}*/}
+                        {/*        >*/}
+                        {/*            {opt.name}*/}
+                        {/*        </ToggleButton>*/}
+                        {/*    ))}*/}
+                        {/*</ButtonGroup>*/}
+
                         <Button variant="outline-dark" type="button" value={1} onClick={handleOption}>#인기 많은</Button>{' '}
                         <Button variant="outline-dark" type="button" value={2} onClick={handleOption}>#즐겨찾기 많은</Button>{' '}
                         <Button variant="outline-dark" type="button" value={3} onClick={handleOption}>#별점 높은</Button>{' '}
@@ -292,7 +351,7 @@ function FindByTag() {
             <br/><br/><br/><br/>
             {resultStores.map((list, i) => (
                 <div>
-                    <h2 key={i}>{`${i + 1}. ${industryName[i]}인 업종`}</h2>
+                    <h2 key={i}>{`${i + 1}. ${industryName[i]}업`}</h2>
                     <div className="scrollContainer" >
                         {list.map((store, j) => (
                             <Card className="cardItem" key={j}>
@@ -304,7 +363,7 @@ function FindByTag() {
                                         {store.address}<br/>
                                     </Card.Text>
                                 </Card.Body>
-                                <Card.Footer>
+                                <Card.Footer id="card-footer">
                                     <small className="text-muted">{store.mainCode}/{store.storeType}</small>
                                 </Card.Footer>
                             </Card>

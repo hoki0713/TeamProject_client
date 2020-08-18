@@ -47,9 +47,8 @@ const MainMap = () => {
       <map name="mainMap" id="mainMap">
         {Object.entries(pointArray).map(([key, value]) =>
 
-          <area shape="rect" coords={value} alt={key}
+          <area style={{cursor:"pointer"}} shape="rect" coords={value} alt={key}
             onClick={() => {
-              alert(`${key} 클릭!`);
               sessionStorage.setItem("location", key);
               history.push("/find-by-map")
             }} />
