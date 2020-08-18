@@ -3,6 +3,7 @@ import "./StoreTotalStatistic.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {  Bar } from "react-chartjs-2";
+import { SSL_OP_TLS_ROLLBACK_BUG } from "constants";
 
 
 const LOCAL_USERS = "LOCAL_USERS";
@@ -76,7 +77,16 @@ useEffect(()=>{
 
 },[localSelect])
 
+const color = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
+ 
 
   useEffect(() => {
     
@@ -86,31 +96,17 @@ useEffect(()=>{
         {type:'line',
           data: storeLocalIndustryValue,
 				  borderWidth: 2,
-				  fill: false,
+          fill: false,
+           backgroundColor: 'rgb(255,255,000,3)'
         },
         {type:'bar',
-        data:storeLocalIndustryValue
+        data:storeLocalIndustryValue,
+        backgroundColor: "rgba(000,000,102,3)",
 
         }
       ],
     });
   }, [storeLocalIndustryKey,storeLocalIndustryValue]);
-
-  // const test = () =>{
-  //   alert(`test start: ${startDate} endDate:${endDate}`)
-  //   let a = startDate.split('-')
-  //   let b = endDate.split('-')
-  //   console.log(`b2 ${b[2]}`)
-
-  //    if(a[1]>b[1]){
-  //       alert('시작날짜보다 빠를수 없습니다.')
-  //       setEndDate(Date())
-  //     }else if(a[2]>b[2]){
-  //      alert('시작날짜보다 빠를수 없습니다.')
-  //      setEndDate(Date())
-  //     }
-
-  // }
 
   return (
     <div>
@@ -135,7 +131,28 @@ useEffect(()=>{
       
 
           <div className="store-chartData">
-            <Bar data={chartData} />
+            <Bar data={chartData} 
+            options = {{
+              responsive: true,
+              title: {
+                display: true,
+                text: '지역/업종별로 가맹점 등록 수'
+              },
+              legend: { display: false },
+              scales:{
+                yAxes:[{
+                  ticks:{
+                    callback: function(value) {
+                      if(parseInt(value) >= 1000){
+                        return Intl.NumberFormat().format(value);
+                      } else {
+                        return value;
+                      }
+                    }
+                  }
+                }]
+              }
+            }}/>
           </div>
         </div>
 
