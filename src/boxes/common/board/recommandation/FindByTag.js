@@ -127,7 +127,7 @@ function FindByTag() {
         e.preventDefault()
         if (
             ageGroup === 0 ||
-            gender === "none" ||
+            gender === "null" ||
             option === 0
         ) {
             alert("모든 사항을 선택 선택해주세요");
@@ -291,30 +291,30 @@ function FindByTag() {
 
             <br/><br/><br/><br/>
             {resultStores.map((list, i) => (
+                <div>
+                    <h2 key={i}>{`${i + 1}. ${industryName[i]}인 업종`}</h2>
+                    <div className="scrollContainer" >
+                        {list.map((store, j) => (
+                            <Card className="cardItem" key={j}>
+                                <Card.Img id="card-image" variant="top"
+                                          src={store.imgUrl}/>
+                                <Card.Body>
+                                    <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                                    <Card.Text>
+                                        {store.address}<br/>
+                                    </Card.Text>
+                                </Card.Body>
+                                <Card.Footer>
+                                    <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                                </Card.Footer>
+                            </Card>
+                        ))}
 
-
-                    <h2>{`${i + 1}. ${industryName[i]}인 업종`}</h2><br/>
-                <div className="scrollContainer" key={i}>
-                    {list.map((store, j) => (
-
-                        <Card className="cardItem" key={j}>
-                            <Card.Img id="card-image" variant="top"
-                                      src={store.imgUrl}/>
-                            <Card.Body>
-                                <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                                <Card.Text>
-                                    {store.address}<br/>
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                            </Card.Footer>
-                        </Card>
-                    ))}
+                    </div><br/><br/><br/><br/>
                 </div>
-            ))}
-        </>
+                ))}
 
+</>
     )
 }
 
