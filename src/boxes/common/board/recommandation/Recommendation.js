@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
-import {Card, Spinner} from "react-bootstrap";
+import {Card, Spinner, Button} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 import "./Recommendation.css";
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
@@ -22,6 +22,10 @@ function Recommendation() {
     const [noFavMsg, setNoFavMsg] = useState("")
     const [userWarningMsg, setUserWarningMsg] = useState("")
     const [itemWarningMsg, setItemWarningMsg] = useState("")
+    const [hospital, setHospital] = useState([])
+    const [restaurant, setRestaurant] = useState([])
+    const [drinks, setDrinks] = useState([])
+
     const {setStore} = useContext(StoreSearchContext);
     const [clickedStore, setClickedStore] = useState({})
     const history= useHistory();
@@ -85,6 +89,10 @@ function Recommendation() {
                     setUserFavStore(res.data.userFavStore)
                     setUserFavBased(res.data.userFavBased)
                     setNoFavMsg(res.data.noFavorite)
+
+                    setHospital(res.data.hospital)
+                    setRestaurant(res.data.restaurant)
+                    setDrinks(res.data.drinks)
                 }).catch(
                 error => {
                     throw(error)
@@ -178,6 +186,66 @@ function Recommendation() {
         </div>
         <br/><br/>
 
+
+        <h3>인기 의원 가맹점</h3>
+        <div className="scrollContainer">
+            {hospital.map((store, i) => (
+                <Card className="cardItem" key={i}>
+                    <Card.Img id="card-image" variant="top"
+                              src={store.imgUrl}/>
+                    <Card.Body>
+                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                        <Card.Text>
+                            {store.address}
+                        </Card.Text>
+                    </Card.Body>
+                    <Card.Footer  id="card-footer">
+                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                    </Card.Footer>
+                </Card>))}
+        </div>
+        <br/><br/>
+
+        <h3>인기 많은 음식점 가맹점</h3>
+        <div className="scrollContainer">
+            {restaurant.map((store, i) => (
+                <Card className="cardItem" key={i}>
+                    <Card.Img id="card-image" variant="top"
+                              src={store.imgUrl}/>
+                    <Card.Body>
+                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                        <Card.Text>
+                            {store.address}
+                        </Card.Text>
+                    </Card.Body>
+                    <Card.Footer  id="card-footer">
+                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                    </Card.Footer>
+                </Card>))}
+        </div>
+        <br/><br/>
+
+
+        <h3>인기 많은 디저트 가맹점</h3>
+        <div className="scrollContainer">
+            {drinks.map((store, i) => (
+                <Card className="cardItem" key={i}>
+                    <Card.Img id="card-image" variant="top"
+                              src={store.imgUrl}/>
+                    <Card.Body>
+                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                        <Card.Text>
+                            {store.address}
+                        </Card.Text>
+                    </Card.Body>
+                    <Card.Footer  id="card-footer">
+                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                    </Card.Footer>
+                </Card>))}
+        </div>
+        <br/><br/>
+
+
         {userFavBased &&
         <div>
             <h3>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h3>
@@ -204,14 +272,15 @@ function Recommendation() {
         <br/><br/>
         {noFavMsg && <div>
             <h4>즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h4>
-            <div className="scrollContainer">
-                <h6 style={{textAlign:"center"}}>{noFavMsg}</h6></div>
-        </div>}
+            <div  id="msg">
+                <h6 style={{textAlign:"center"}}>{noFavMsg}<br/>
+                <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h6></div>
+        </div>}<br/><br/>
 
 
         <h4>회원님과 유사한 회원들이 좋아하는 가맹점</h4>
-        {(!userWarningMsg && !userBased) &&
-        <div> 찾 는 중
+        {(!userWarningMsg || !userBased) &&
+        <div id="msg"> 찾 는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
             <Spinner animation="border" variant="success"/>
@@ -238,30 +307,32 @@ function Recommendation() {
                 )
             )}
         </div>}
-        {userWarningMsg && <div className="scrollContainer">
-            <h4>{userWarningMsg}</h4></div>}
+        {userWarningMsg && <div id="msg">
+            <h4>{userWarningMsg}<br/>
+            <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>별점 추가하기</Button></h4></div>}
         <br/><br/><br/><br/>
 
 
-        {(!itemWarningMsg || !itemBased) && <div>
-            <h4>즐겨찾기한 가맹점과와 유사한 추천 가맹점</h4>
-            빅 데 이 터 가 동 중 삐 용 삐 용
+
+        <h4>즐겨찾기한 가맹점과 유사한 추천 가맹점</h4>
+        {(!itemWarningMsg || !itemBased) && <div id="msg">
+            찾는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
             <Spinner animation="border" variant="success"/>
             <Spinner animation="border" variant="danger"/>
             <Spinner animation="border" variant="warning"/>
-            <Spinner animation="border" variant="info"/></div>}
+            <Spinner animation="border" variant="info"/><br/><br/></div>}
 
         {itemBased &&
-        <div><h4>즐겨찾기한 가맹점과 유사한 추천 가맹점</h4>
+        <div>
             <div className="scrollContainer">
                 {itemBased.map((store, i) => (
                         <Card className="cardItem" key={i}>
                             <Card.Img id="card-image" variant="top"
                                       src={store.imgUrl}/>
                             <Card.Body>
-                                <Card.Title id="card-title"><Link to="/storeDetail">{store.storeName}</Link></Card.Title>
+                                <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
                                 <Card.Text>
                                     {store.address}
                                 </Card.Text>
@@ -274,8 +345,9 @@ function Recommendation() {
                 )}
             </div>
         </div>}
-        {itemWarningMsg && <div className="scrollContainer">
-            <h6 style={{textAlign:"center"}}>{itemWarningMsg}</h6></div>}
+        {itemWarningMsg && <div id="msg">
+            <h6>{itemWarningMsg}
+            <br/><Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h6></div>}
         <br/><br/><br/><br/>
 
     </>)

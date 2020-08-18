@@ -1,11 +1,12 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap'
+import {CardDeck, Card, Button, Form, Row, Col, ListGroup, ButtonGroup, ToggleButton} from 'react-bootstrap'
 import axios from 'axios'
 import './Recommendation.css'
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 function FindByTag() {
+
 
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || `{}`));
     const [latLng] = useState(JSON.parse(sessionStorage.getItem("userLocation") || '{}'))
@@ -30,6 +31,12 @@ function FindByTag() {
     const {setStore} = useContext(StoreSearchContext);
     const [clickedStore, setClickedStore] = useState({})
     const history= useHistory();
+
+    const radiosGender = [
+        { name: '남성', value: 'M' },
+        { name: '여성', value: 'F' },
+        { name: '성별무관', value: 'none' },
+    ];
 
 
 
@@ -264,6 +271,26 @@ function FindByTag() {
                         연령
                     </Form.Label>
                     <Col sm={10}>
+
+                        <ButtonGroup toggle>
+                            {radiosGender.map((radio, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    type="radio"
+                                    variant="outline-dark"
+                                    name="genderGroup"
+                                    value={radio.value}
+                                    checked={gender === radio.value}
+                                    onChange={(e) => setGender(e.currentTarget.value)}
+                                >
+                                    {radio.name}
+                                </ToggleButton>
+                            ))}
+                        </ButtonGroup>
+
+
+
+
                         <Button variant="outline-dark" type="button" value={10} onClick={handleAge}>10대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={20} onClick={handleAge}>20대</Button>{' '}
                         <Button variant="outline-dark" type="button" value={30} onClick={handleAge}>30대</Button>{' '}
@@ -292,7 +319,7 @@ function FindByTag() {
             <br/><br/><br/><br/>
             {resultStores.map((list, i) => (
                 <div>
-                    <h2 key={i}>{`${i + 1}. ${industryName[i]}인 업종`}</h2>
+                    <h2 key={i}>{`${i + 1}. ${industryName[i]}업`}</h2>
                     <div className="scrollContainer" >
                         {list.map((store, j) => (
                             <Card className="cardItem" key={j}>
@@ -304,7 +331,7 @@ function FindByTag() {
                                         {store.address}<br/>
                                     </Card.Text>
                                 </Card.Body>
-                                <Card.Footer>
+                                <Card.Footer id="card-footer">
                                     <small className="text-muted">{store.mainCode}/{store.storeType}</small>
                                 </Card.Footer>
                             </Card>
