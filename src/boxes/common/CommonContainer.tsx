@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 
 import {MerchanDetail,FindByMap,MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
-const CommonContainer = ({isLogined}) => {
 
 
 const CommonContainer = ({ isLogined }) => {

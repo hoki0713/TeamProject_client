@@ -1,8 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap'
 import axios from 'axios'
-import {useSelector} from "react-redux";
-import Geocode from "react-geocode";
 import './Recommendation.css'
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
@@ -154,28 +152,28 @@ function FindByTag() {
         }}
 
 
-    const submitUserSearch = (e) => {
-        e.preventDefault()
-        setGender(userGender);
-        setAgeGroup(userAgeGroup);
-        console.log(gender + ageGroup)
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, latLng)
-            .then((res) => {
-                console.log('가게 리스트 가져오기 성공')
-                console.log(res.data);
-                const values = [];
-                const keys = [];
-                Object.entries(res.data).forEach(([key, value]) => {
-                    keys.push(key)
-                    values.push(value)
-                })
-                setIndustryName(keys)
-                setResultStores(values)
-            })
-            .catch(error => {
-                throw(error)
-            })
-    }
+    // const submitUserSearch = (e) => {
+    //     e.preventDefault()
+    //     setGender(userGender);
+    //     setAgeGroup(userAgeGroup);
+    //     console.log(gender + ageGroup)
+    //     axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, latLng)
+    //         .then((res) => {
+    //             console.log('가게 리스트 가져오기 성공')
+    //             console.log(res.data);
+    //             const values = [];
+    //             const keys = [];
+    //             Object.entries(res.data).forEach(([key, value]) => {
+    //                 keys.push(key)
+    //                 values.push(value)
+    //             })
+    //             setIndustryName(keys)
+    //             setResultStores(values)
+    //         })
+    //         .catch(error => {
+    //             throw(error)
+    //         })
+    // }
 
     const submitTotalSearch = (e) => {
         e.preventDefault()
@@ -218,7 +216,7 @@ function FindByTag() {
                         )}
                     </Card>
                     <Card>
-                        <Card.Header onClick={submitUserSearch}>나({userAgeGroup}대 X {userGenderKor})의 관심업종 TOP
+                        <Card.Header>나({userAgeGroup}대 X {userGenderKor})의 관심업종 TOP
                             5</Card.Header>
                         {userIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
@@ -293,20 +291,19 @@ function FindByTag() {
 
             <br/><br/><br/><br/>
             {resultStores.map((list, i) => (
+
+
+                    <h2>{`${i + 1}. ${industryName[i]}인 업종`}</h2><br/>
                 <div className="scrollContainer" key={i}>
-
-                    <h2>{`${i + 1}. ${industryName[i]}인 업종`}</h2><br/><br/>
-
                     {list.map((store, j) => (
 
                         <Card className="cardItem" key={j}>
                             <Card.Img id="card-image" variant="top"
                                       src={store.imgUrl}/>
                             <Card.Body>
-                                <Card.Title onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                                <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
                                 <Card.Text>
                                     {store.address}<br/>
-                                    별점 : {store.starRanking}
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
