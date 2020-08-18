@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { StoreSearchContext } from '../../../../items/context/StoreSearchContext';
-import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
-import {Table} from 'react-bootstrap'
 import {appKey, containerStyle, libraries} from "./mapUtils/mapatt";
 import {GoogleMap, InfoWindow, LoadScript,Marker} from "@react-google-maps/api";
 import {addr, favStar, normal, phoneB, red, review} from "./mapIcons/imgIndex";
@@ -26,7 +24,7 @@ const MerchanDetail = ({isLogined}) => {
     }
     function findRoute(){
         if(isLogined) {
-            let userLoca=JSON.parse(sessionStorage.getItem("userLocation"))
+            let userLoca=JSON.parse(sessionStorage.getItem("userLocation"));
             window.open(`
             http://map.naver.com/index.nhn?slng=${userLoca.lng}&slat=${userLoca.lat}&stext=${JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr}
             &elng=${store.longitude}&elat=${store.latitude}&etext=${store.storeName}&menu=route&pathType=1`,'');
@@ -40,13 +38,9 @@ const MerchanDetail = ({isLogined}) => {
 
     }
 
-    useEffect(() => {
-        setNewStore(store);
-        console.log(newStore)
-    },[store])
 
 
-    if(store.starRanking>0){
+    if(store.storeName){
         return (
             <div>
                 <LoadScript
@@ -85,9 +79,11 @@ const MerchanDetail = ({isLogined}) => {
                                             </td></tr>
                                         <tr><td></td>
                                             <td>
+
                                                 {store.storeType}
-                                                &nbsp;&nbsp;별점 &nbsp;
-                                                <Stars store={store}/> {store.starRanking.toFixed(1)}/5
+                                                {store.starRanking &&
+                                                    <>&nbsp;&nbsp;별점 &nbsp;
+                                                <Stars store={store}/> {store.starRanking.toFixed(1)}/5</>}
 
                                             </td></tr>
                                         <tr><td></td><td>
