@@ -38,8 +38,6 @@ const MerchanDetail = ({isLogined}) => {
 
     }
 
-
-
     if(store.storeName){
         return (
             <div>
