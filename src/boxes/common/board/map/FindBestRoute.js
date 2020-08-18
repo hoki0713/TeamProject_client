@@ -10,27 +10,24 @@ import Geocode from "react-geocode";
 import { homeIcon, arrowMarker } from "./mapIcons/imgIndex";
 import axios from "axios";
 import { Button, ListGroup } from "react-bootstrap";
-import { libraries, containerStyle, dottedLine } from "./mapUtils/mapatt";
+import {libraries, containerStyle, dottedLine, appKey} from "./mapUtils/mapatt";
 import "./map.css";
 
-Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
+Geocode.setApiKey(appKey);
 
-const FindBestRoute = () => {
+const FindBestRoute = ({setStoreInfo,storeInfo}) => {
   const [center, setCenter] = useState({ lat: 37.73633262, lng: 127.0447991 }); //지도 센터 좌표
   const [myLoca, setMyLoca] = useState(""); // 사용자 주소 담는 state
   const [infoShow, setInfoShow] = useState(false); // 인포창 show
   const [bestWay, setBestWay] = useState([]); // 최단 경로 순서
   const [map, setMap] = useState(null);
   const [inputValue, setInputValue] = useState(""); //검색어
-  const [stores, setStores] = useState([]);
-  const [homePosit, setHomePosit] = useState({
-    lat: 37.73633262,
-    lng: 127.0447991,
-  });
+  const [homePosit, setHomePosit] = useState({});
   const [dropShow, setDropShow] = useState(false); // 검색 드롭다운 show
   const [shortSearched, setShortSearched] = useState([]); // 드롭다운 검색 목록
   const [markerShow, setMarkerShow] = useState(false); // 마커 show
   const [paths, setPaths] = useState([]); //polyline pathCoordinate
+  const [temRoutes, setTemRoutes] = useState([]);
   const mapRef = useRef();
   const onMapLoad = useCallback((map) => {
     mapRef.current = map;
@@ -38,26 +35,24 @@ const FindBestRoute = () => {
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
-  const [temRoutes, setTemRoutes] = useState([
-    // {storeName:"",mainCode:"",storeType:"",storeTypeCode:0, address:"3. 주소",storePhone:"",latitude:37.746197,longitude:127.030861}
-  ]);
+
 
   function getshorList() {
     if (inputValue) {
       axios
-        .get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
-        .then(({ data }) => {
-          if (data.list != 0) {
-            setShortSearched(data.list);
-            shortSearched.length != 0 ? setDropShow(true) : setDropShow(false);
-          } else {
-            setDropShow(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          throw err;
-        });
+          .get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
+          .then(({ data }) => {
+            if (data.list != 0) {
+              setShortSearched(data.list);
+              shortSearched.length != 0 ? setDropShow(true) : setDropShow(false);
+            } else {
+              setDropShow(false);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
     }
   } //실시간 검색 드롭다운 함수
 
@@ -83,21 +78,25 @@ const FindBestRoute = () => {
 
   const getLatLng = (location) => {
     Geocode.fromAddress(location).then(
-      (response) => {
-        const resLatLng = response.results[0].geometry.location;
-        alert(`받아온 좌표${JSON.stringify(resLatLng)}`);
-        setHomePosit({
-          lat: Number(resLatLng.lat),
-          lng: Number(resLatLng.lng),
-        });
-        setCenter(homePosit);
-        console.log(`getLatLng ${resLatLng.lat} ${resLatLng.lng}`);
-      },
-      (error) => {
-        console.error(error);
-      }
+        response => {
+          const resLatLng = response.results[0].geometry.location;
+          setHomePosit({lat: Number(resLatLng.lat), lng: Number(resLatLng.lng)});
+          setCenter({lat:Number(resLatLng.lat), lng:Number(resLatLng.lng)})
+        },
+        error => {
+          console.error(error);
+        }
     );
-  }; //get user latitude and longitude from user address
+  }//get user latitude and longitude from user address
+
+  useEffect(()=>{
+      setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+  },[]);
+
+  useEffect(()=>{
+      getLatLng(myLoca);
+  },[myLoca]);
+
 
   const getBestSeq = (homePosition, stopOverList) => {
     let homePosi = homePosition; // start, end position
@@ -123,18 +122,18 @@ const FindBestRoute = () => {
               results[index] = {
                 way: ways,
                 distance:
-                  Math.sqrt(
-                    Math.pow(Number(homePosi.lat) - stopOver[i].latitude, 2) +
-                      Math.pow(Number(homePosi.lng) - stopOver[i].longitude, 2)
-                  ) +
-                  Math.sqrt(
-                    Math.pow(stopOver[i].latitude - stopOver[j].latitude, 2) +
-                      Math.pow(stopOver[i].longitude - stopOver[j].longitude, 2)
-                  ) +
-                  Math.sqrt(
-                    Math.pow(Number(homePosi.lat) - stopOver[j].latitude, 2) +
-                      Math.pow(Number(homePosi.lng) - stopOver[j].longitude, 2)
-                  ),
+                    Math.sqrt(
+                        Math.pow(Number(homePosi.lat) - stopOver[i].latitude, 2) +
+                        Math.pow(Number(homePosi.lng) - stopOver[i].longitude, 2)
+                    ) +
+                    Math.sqrt(
+                        Math.pow(stopOver[i].latitude - stopOver[j].latitude, 2) +
+                        Math.pow(stopOver[i].longitude - stopOver[j].longitude, 2)
+                    ) +
+                    Math.sqrt(
+                        Math.pow(Number(homePosi.lat) - stopOver[j].latitude, 2) +
+                        Math.pow(Number(homePosi.lng) - stopOver[j].longitude, 2)
+                    ),
               };
               index++;
             }
@@ -151,28 +150,28 @@ const FindBestRoute = () => {
                 results[index] = {
                   way: ways,
                   distance:
-                    Math.sqrt(
-                      Math.pow(homePosit.lat - stopOver[i].latitude, 2) +
-                        Math.pow(homePosit.lng - stopOver[i].longitude, 2)
-                    ) +
-                    Math.sqrt(
-                      Math.pow(stopOver[i].latitude - stopOver[j].latitude, 2) +
-                        Math.pow(
-                          stopOver[i].longitude - stopOver[j].longitude,
-                          2
-                        )
-                    ) +
-                    Math.sqrt(
-                      Math.pow(stopOver[j].latitude - stopOver[k].latitude, 2) +
-                        Math.pow(
-                          stopOver[j].longitude - stopOver[k].longitude,
-                          2
-                        )
-                    ) +
-                    Math.sqrt(
-                      Math.pow(homePosit.lat - stopOver[k].latitude, 2) +
-                        Math.pow(homePosit.lng - stopOver[k].longitude, 2)
-                    ),
+                      Math.sqrt(
+                          Math.pow(homePosit.lat - stopOver[i].latitude, 2) +
+                          Math.pow(homePosit.lng - stopOver[i].longitude, 2)
+                      ) +
+                      Math.sqrt(
+                          Math.pow(stopOver[i].latitude - stopOver[j].latitude, 2) +
+                          Math.pow(
+                              stopOver[i].longitude - stopOver[j].longitude,
+                              2
+                          )
+                      ) +
+                      Math.sqrt(
+                          Math.pow(stopOver[j].latitude - stopOver[k].latitude, 2) +
+                          Math.pow(
+                              stopOver[j].longitude - stopOver[k].longitude,
+                              2
+                          )
+                      ) +
+                      Math.sqrt(
+                          Math.pow(homePosit.lat - stopOver[k].latitude, 2) +
+                          Math.pow(homePosit.lng - stopOver[k].longitude, 2)
+                      ),
                 };
                 index++;
               }
@@ -195,7 +194,7 @@ const FindBestRoute = () => {
       }
     }
   }; //최단거리 구하기
-  
+
   function makePath(tmpRouteList) {
     let tmpPath = [];
     if (tmpRouteList.length > 1 || bestWay.length > 1) {
@@ -228,302 +227,302 @@ const FindBestRoute = () => {
     getLatLng(myLoca);
   }, [homePosit]); // 주소로 유저 좌표 가져오기
   return (
-    <>
-      <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3>
-      <br />
-      <table>
-        <tr>
-          <td>
-            <div className="first_td">
-              <LoadScript
-                googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
-                libraries={libraries}
-              >
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={center}
-                  onUnmount={onUnmount}
-                  zoom={15}
-                  onLoad={onMapLoad}
+      <>
+        <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3>
+        <br />
+        <table>
+          <tr>
+            <td>
+              <div className="first_td">
+                <LoadScript
+                    googleMapsApiKey={appKey}
+                    libraries={libraries}
                 >
-                  {markerShow &&
+                  <GoogleMap
+                      mapContainerStyle={containerStyle}
+                      center={center}
+                      onUnmount={onUnmount}
+                      zoom={15}
+                      onLoad={onMapLoad}
+                  >
+                    {markerShow &&
                     temRoutes.map((route, i) => (
-                      <>
-                        <Marker
-                          key={i}
-                          position={{
-                            lat: temRoutes[i].latitude,
-                            lng: temRoutes[i].longitude,
-                          }}
-                          icon={{
-                            url: arrowMarker,
-                            scaledSize: { width: 40, height: 40 },
-                          }}
-                          animation={4}
-                          title={`${i + 1}`}
-                        >
-                          {infoShow && (
-                            <InfoWindow
+                        <>
+                          <Marker
                               key={i}
-                              position={temRoutes[bestWay[i]]}
-                            >
-                              <div>
-                                <h6>{i + 1}</h6>
-                              </div>
-                            </InfoWindow>
-                          )}
-                        </Marker>
-                      </>
+                              position={{
+                                lat: temRoutes[i].latitude,
+                                lng: temRoutes[i].longitude,
+                              }}
+                              icon={{
+                                url: arrowMarker,
+                                scaledSize: { width: 40, height: 40 },
+                              }}
+                              animation={4}
+                              title={`${i + 1}`}
+                          >
+                            {infoShow && (
+                                <InfoWindow
+                                    key={i}
+                                    position={temRoutes[bestWay[i]]}
+                                >
+                                  <div>
+                                    <h6>{i + 1}</h6>
+                                  </div>
+                                </InfoWindow>
+                            )}
+                          </Marker>
+                        </>
                     ))}
-                  <Marker
-                    position={center}
-                    icon={{
-                      url: homeIcon,
-                      scaledSize: { width: 40, height: 40 },
-                    }}
-                    title={"집"}
-                    animation={2}
-                  />
-                  {infoShow && (
-                    <Polyline
-                      path={paths}
-                      visible={true}
-                      options={{
-                        strokeColor: "#053c55",
-                        strokeOpacity: 0,
-                        strokeWeight: 3,
-                        icons: [
-                          {
-                            icon: dottedLine,
-                            // {path:window.google.maps.SymbolPath.FORWARD_OPEN_ARROW},//화살표
-                            //strokeOpacity 값 필요, repeat 픽셀 늘려야 함
-                            offset: "0",
-                            repeat: "20px",
-                          },
-                        ],
-                      }}
+                    <Marker
+                        position={center}
+                        icon={{
+                          url: homeIcon,
+                          scaledSize: { width: 40, height: 40 },
+                        }}
+                        title={"집"}
+                        animation={2}
                     />
-                  )}
-                </GoogleMap>
-              </LoadScript>
-            </div>
-          </td>
-          <td>
-            <div className="second_td">
-              <div className={"route_input"}>
-                <p>가장빠른 장보기 경로 찾기</p>
-                {!infoShow ? (
-                  <div className={"preRoute"}>
-                    <ListGroup>
-                      <ListGroup.Item>
-                        <h6>출발:&nbsp;{myLoca}</h6>
-                      </ListGroup.Item>
-                      {temRoutes[0] && (
-                        <ListGroup.Item>
-                          <h6>
-                            &#62;&#62;1번 경유지&#09;{temRoutes[0].storeName}
-                            &#09;{temRoutes[0].address}
-                          </h6>
-                        </ListGroup.Item>
-                      )}
-                      {temRoutes[1] && (
-                        <ListGroup.Item>
-                          <h6>
-                            &#62;&#62;2번 경유지&#09;{temRoutes[1].storeName}
-                          </h6>
-                        </ListGroup.Item>
-                      )}
-                      {temRoutes[2] && (
-                        <ListGroup.Item>
-                          <h6>
-                            &#62;&#62;3번 경유지&#09;{temRoutes[2].storeName}
-                          </h6>
-                        </ListGroup.Item>
-                      )}
-                      <ListGroup.Item>
-                        <h6>도착:&nbsp;{myLoca}</h6>
-                      </ListGroup.Item>
-                    </ListGroup>
-                    <div className={"route_box"}>
-                      {temRoutes.length < 3 && (
-                        <div>
-                          <button className={"addB"}>+</button>
-                          <input
-                            id={"searchInput"}
-                            className={"searchB"}
-                            onChange={(e) => {
-                              realTimeSearch(e);
+                    {infoShow && (
+                        <Polyline
+                            path={paths}
+                            visible={true}
+                            options={{
+                              strokeColor: "#053c55",
+                              strokeOpacity: 0,
+                              strokeWeight: 3,
+                              icons: [
+                                {
+                                  icon: dottedLine,
+                                  // {path:window.google.maps.SymbolPath.FORWARD_OPEN_ARROW},//화살표
+                                  //strokeOpacity 값 필요, repeat 픽셀 늘려야 함
+                                  offset: "0",
+                                  repeat: "20px",
+                                },
+                              ],
                             }}
-                          />
-                          <Button variant="success">검색</Button>
-                        </div>
-                      )}
-                    </div>
-                    {inputValue && dropShow && (
-                      <div className={"searchDown"}>
-                        <table>
-                          {shortSearched[0] && (
-                            <tr>
-                              <td>
-                                <button
-                                  className={"addB"}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    dropDownClick(shortSearched[0]);
-                                  }}
-                                >
-                                  +
-                                </button>
-                                {shortSearched[0].storeName}{" "}
-                              </td>
-                            </tr>
-                          )}
-                          {shortSearched[1] && (
-                            <tr>
-                              <td>
-                                <button
-                                  className={"addB"}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    dropDownClick(shortSearched[1]);
-                                  }}
-                                >
-                                  +
-                                </button>
-                                {shortSearched[1].storeName}{" "}
-                              </td>
-                            </tr>
-                          )}
-                          {shortSearched[2] && (
-                            <tr>
-                              <td>
-                                <button
-                                  className={"addB"}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    dropDownClick(shortSearched[2]);
-                                  }}
-                                >
-                                  +
-                                </button>
-                                {shortSearched[2].storeName}{" "}
-                              </td>
-                            </tr>
-                          )}
-                        </table>
-                      </div>
+                        />
                     )}
-                  </div>
-                ) : (
-                  <div className={"postRoute"}>
-                    <strong>장보기 가장 빠른 경로</strong>
-                    <ListGroup>
-                      {temRoutes[bestWay[0]] && (
-                        <ListGroup.Item>
-                          <strong>경로 1!</strong>
-                          <h6>출발:&nbsp;{myLoca}</h6>
-                          <h6>
-                            {temRoutes[bestWay[0]].storeName}&#09;
-                            {temRoutes[bestWay[0]].address}
-                          </h6>
-                          <button
-                            className={"find_routeB"}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              goNaver(
-                                myLoca,
-                                homePosit.lat,
-                                homePosit.lng,
-                                temRoutes[bestWay[0]].storeName,
-                                temRoutes[bestWay[0]].latitude,
-                                temRoutes[bestWay[0]].longitude
-                              );
-                            }}
-                          >
-                            네이버 네비로 보기
-                          </button>
-                        </ListGroup.Item>
-                      )}
-                      {temRoutes[bestWay[1]] && (
-                        <ListGroup.Item>
-                          <strong>경로 2!</strong>
-                          <h6>{temRoutes[bestWay[0]].storeName}</h6>
-                          <h6>{temRoutes[bestWay[1]].storeName}</h6>
-                          <button
-                            className={"find_routeB"}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              goNaver(
-                                temRoutes[bestWay[0]].storeName,
-                                temRoutes[bestWay[0]].latitude,
-                                temRoutes[bestWay[0]].longitude,
-                                temRoutes[bestWay[1]].storeName,
-                                temRoutes[bestWay[1]].latitude,
-                                temRoutes[bestWay[1]].longitude
-                              );
-                            }}
-                          >
-                            네이버 네비로 보기
-                          </button>
-                        </ListGroup.Item>
-                      )}
-                      {temRoutes[bestWay[2]] && (
-                        <ListGroup.Item>
-                          <strong>경로 3!</strong>
-                          <h6>{temRoutes[bestWay[1]].storeName}</h6>
-                          <h6>{temRoutes[bestWay[2]].storeName}</h6>
-                          <button
-                            className={"find_routeB"}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              goNaver(
-                                temRoutes[bestWay[1]].storeName,
-                                temRoutes[bestWay[1]].latitude,
-                                temRoutes[bestWay[1]].longitude,
-                                temRoutes[bestWay[2]].storeName,
-                                temRoutes[bestWay[2]].latitude,
-                                temRoutes[bestWay[2]].longitude
-                              );
-                            }}
-                          >
-                            네이버 네비로 보기
-                          </button>
-                        </ListGroup.Item>
-                      )}
-                      <ListGroup.Item>
-                        <h6>도착:&nbsp;{myLoca}</h6>
-                      </ListGroup.Item>
-                    </ListGroup>
-                  </div>
-                )}
-                {!infoShow ? (
-                  <button
-                    className="best_wayB"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      makePath(temRoutes);
-                      setInfoShow(true);
-                    }}
-                  >
-                    장보러 가는 가장 빠른 길!!
-                  </button>
-                ) : (
-                  <Button
-                    variant="primary"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.reload();
-                    }}
-                  >
-                    되돌리기
-                  </Button>
-                )}
+                  </GoogleMap>
+                </LoadScript>
               </div>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </>
+            </td>
+            <td>
+              <div className="second_td">
+                <div className={"route_input"}>
+                  <p>가장빠른 장보기 경로 찾기</p>
+                  {!infoShow ? (
+                      <div className={"preRoute"}>
+                        <ListGroup>
+                          <ListGroup.Item>
+                            <h6>출발:&nbsp;{myLoca}</h6>
+                          </ListGroup.Item>
+                          {temRoutes[0] && (
+                              <ListGroup.Item>
+                                <h6>
+                                  &#62;&#62;1번 경유지&#09;{temRoutes[0].storeName}
+                                  &#09;{temRoutes[0].address}
+                                </h6>
+                              </ListGroup.Item>
+                          )}
+                          {temRoutes[1] && (
+                              <ListGroup.Item>
+                                <h6>
+                                  &#62;&#62;2번 경유지&#09;{temRoutes[1].storeName}
+                                </h6>
+                              </ListGroup.Item>
+                          )}
+                          {temRoutes[2] && (
+                              <ListGroup.Item>
+                                <h6>
+                                  &#62;&#62;3번 경유지&#09;{temRoutes[2].storeName}
+                                </h6>
+                              </ListGroup.Item>
+                          )}
+                          <ListGroup.Item>
+                            <h6>도착:&nbsp;{myLoca}</h6>
+                          </ListGroup.Item>
+                        </ListGroup>
+                        <div className={"route_box"}>
+                          {temRoutes.length < 3 && (
+                              <div>
+                                <button className={"addB"}>+</button>
+                                <input
+                                    id={"searchInput"}
+                                    className={"searchB"}
+                                    onChange={(e) => {
+                                      realTimeSearch(e);
+                                    }}
+                                />
+                                <Button variant="success">검색</Button>
+                              </div>
+                          )}
+                        </div>
+                        {inputValue && dropShow && (
+                            <div className={"searchDown"}>
+                              <table>
+                                {shortSearched[0] && (
+                                    <tr>
+                                      <td>
+                                        <button
+                                            className={"addB"}
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              dropDownClick(shortSearched[0]);
+                                            }}
+                                        >
+                                          +
+                                        </button>
+                                        {shortSearched[0].storeName}{" "}
+                                      </td>
+                                    </tr>
+                                )}
+                                {shortSearched[1] && (
+                                    <tr>
+                                      <td>
+                                        <button
+                                            className={"addB"}
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              dropDownClick(shortSearched[1]);
+                                            }}
+                                        >
+                                          +
+                                        </button>
+                                        {shortSearched[1].storeName}{" "}
+                                      </td>
+                                    </tr>
+                                )}
+                                {shortSearched[2] && (
+                                    <tr>
+                                      <td>
+                                        <button
+                                            className={"addB"}
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              dropDownClick(shortSearched[2]);
+                                            }}
+                                        >
+                                          +
+                                        </button>
+                                        {shortSearched[2].storeName}{" "}
+                                      </td>
+                                    </tr>
+                                )}
+                              </table>
+                            </div>
+                        )}
+                      </div>
+                  ) : (
+                      <div className={"postRoute"}>
+                        <strong>장보기 가장 빠른 경로</strong>
+                        <ListGroup>
+                          {temRoutes[bestWay[0]] && (
+                              <ListGroup.Item>
+                                <strong>경로 1!</strong>
+                                <h6>출발:&nbsp;{myLoca}</h6>
+                                <h6>
+                                  {temRoutes[bestWay[0]].storeName}&#09;
+                                  {temRoutes[bestWay[0]].address}
+                                </h6>
+                                <button
+                                    className={"find_routeB"}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      goNaver(
+                                          myLoca,
+                                          homePosit.lat,
+                                          homePosit.lng,
+                                          temRoutes[bestWay[0]].storeName,
+                                          temRoutes[bestWay[0]].latitude,
+                                          temRoutes[bestWay[0]].longitude
+                                      );
+                                    }}
+                                >
+                                  네이버 네비로 보기
+                                </button>
+                              </ListGroup.Item>
+                          )}
+                          {temRoutes[bestWay[1]] && (
+                              <ListGroup.Item>
+                                <strong>경로 2!</strong>
+                                <h6>{temRoutes[bestWay[0]].storeName}</h6>
+                                <h6>{temRoutes[bestWay[1]].storeName}</h6>
+                                <button
+                                    className={"find_routeB"}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      goNaver(
+                                          temRoutes[bestWay[0]].storeName,
+                                          temRoutes[bestWay[0]].latitude,
+                                          temRoutes[bestWay[0]].longitude,
+                                          temRoutes[bestWay[1]].storeName,
+                                          temRoutes[bestWay[1]].latitude,
+                                          temRoutes[bestWay[1]].longitude
+                                      );
+                                    }}
+                                >
+                                  네이버 네비로 보기
+                                </button>
+                              </ListGroup.Item>
+                          )}
+                          {temRoutes[bestWay[2]] && (
+                              <ListGroup.Item>
+                                <strong>경로 3!</strong>
+                                <h6>{temRoutes[bestWay[1]].storeName}</h6>
+                                <h6>{temRoutes[bestWay[2]].storeName}</h6>
+                                <button
+                                    className={"find_routeB"}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      goNaver(
+                                          temRoutes[bestWay[1]].storeName,
+                                          temRoutes[bestWay[1]].latitude,
+                                          temRoutes[bestWay[1]].longitude,
+                                          temRoutes[bestWay[2]].storeName,
+                                          temRoutes[bestWay[2]].latitude,
+                                          temRoutes[bestWay[2]].longitude
+                                      );
+                                    }}
+                                >
+                                  네이버 네비로 보기
+                                </button>
+                              </ListGroup.Item>
+                          )}
+                          <ListGroup.Item>
+                            <h6>도착:&nbsp;{myLoca}</h6>
+                          </ListGroup.Item>
+                        </ListGroup>
+                      </div>
+                  )}
+                  {!infoShow ? (
+                      <button
+                          className="best_wayB"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            makePath(temRoutes);
+                            setInfoShow(true);
+                          }}
+                      >
+                        장보러 가는 가장 빠른 길!!
+                      </button>
+                  ) : (
+                      <Button
+                          variant="primary"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.reload();
+                          }}
+                      >
+                        되돌리기
+                      </Button>
+                  )}
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </>
   );
 };
 
