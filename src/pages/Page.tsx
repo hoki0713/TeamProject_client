@@ -5,13 +5,12 @@ import CommonPage from './CommonPage';
 import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
 import AccountDetailPage from './AccountDetailPage';
-import { StoreSearchProvider } from '../items/context/StoreSearchContext';
+import { StoreSearchProvider } from '../items/context/StoreSearchContext.js';
 
 const Page = () => {
   return (
     <StoreSearchProvider>
       <Switch>
-
         <Route path="/" exact>
           <HomePage />
         </Route>
@@ -27,7 +26,6 @@ const Page = () => {
         <Route>
           <CommonPage />
         </Route>
-
       </Switch>
     </StoreSearchProvider>
   );

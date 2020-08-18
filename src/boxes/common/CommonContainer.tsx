@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 
 import {MerchanDetail,FindByMap,MerchantList,FindBestRoute, Recommendation, FindByTag, Notice, BuyLocalCurrency} from './board';
@@ -11,12 +11,12 @@ const CommonContainer = ({isLogined}) => {
         <MerchantList />
       </Route>
 
-        <Route path="/find-by-map">
-            <FindByMap isLogined={isLogined}/>
-        </Route>
-        <Route path="/find-best-route">
-            <FindBestRoute />
-        </Route>
+      <Route path="/find-by-map">
+        <FindByMap isLogined={isLogined} />
+      </Route>
+      <Route path="/find-best-route">
+        <FindBestRoute />
+      </Route>
 
       <Route path="/recommendation">
         <Recommendation />

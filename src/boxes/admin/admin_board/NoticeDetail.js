@@ -1,30 +1,35 @@
 import React,{useState,useEffect} from 'react';
 import {Table,Button} from 'react-bootstrap'
-import {useSelector} from 'react-redux'
+import {Link} from 'react-router-dom'
 import './AdminBoard.css'
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import ReactQuill from "react-quill";
 
 
 
-const NoticeDetail = ({postId}) => {
+
+const NoticeDetail = ({match}) => {
     
-    const result = useSelector(state=>state.postListReducer.postId);
+    
     const [post,setPost] = useState({});
+    const [isOpen, setOpen] = useState(false);
+    const ReactQuill = isOpen && typeof window === 'object' ? require('react-quill') : () => false;
    
    useEffect(()=>{
-       console.log(result)
     axios
-        .get(`http://localhost:8080/posts/post/${postId}`)
+        .get(`http://localhost:8080/posts/post/${match.params.postId}`)
         .then((res)=>{
-                console.log(`axios`)
-                console.log(res.data)
                  setPost(res.data)
+                
         })
         .catch((err)=>{
             throw err;
         })
    },[])
+
+   useEffect(() => {
+    setOpen(true);
+  }, []);
 
    const modifyNotice = () =>{
        window.location.href="/admin/notice-modify"
@@ -36,9 +41,9 @@ const NoticeDetail = ({postId}) => {
 
    const deleteNotice = e =>{
         e.preventDefault()
-        console.log(`postId${postId}`)
+       
         axios
-        .delete(`http://localhost:8080/posts/delete/${postId}`)
+        .delete(`http://localhost:8080/posts/delete/${match.params.postId}`)
         .then((res)=>{
             window.location.href="/admin/notice"
         })
@@ -63,16 +68,32 @@ const NoticeDetail = ({postId}) => {
                 </thead>
                 <tbody>
                 <tr>
-                 <td colSpan={4}> {post.contents}</td>
-
+                <td colSpan={4}>
+                    
+                    
+                {/* <ReactQuill
+                    theme="snow"
+                    value={post.contents}
+                    readOnly
+                 style={{ height: "350px" }}
+                /> */}
+            {!!ReactQuill && isOpen && <ReactQuill
+            value={post.contents || ''}
+            bounds={'.app'}
+            theme="snow"
+            readOnly
+            style={{ height: "350px" }}
+             />}
+      </td>
+                 
                 </tr>
             
 
                 </tbody>
             </Table>
             <div id="button-right">
-            <Button variant="outline-dark" onClick={modifyNotice}>수정</Button>{' '}
-            <Button variant="outline-dark" onClick={deleteNotice}>삭제</Button>{' '}
+            <Link to={`/admin/notice-modify/${post.postId}`}><Button variant="outline-dark">수정</Button></Link>
+            <Button variant="outline-dark" onClick={deleteNotice}>삭제</Button>
             <Button variant="outline-dark " onClick={noticeList}>목록</Button>
             </div>
             </>

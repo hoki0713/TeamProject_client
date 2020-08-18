@@ -1,4 +1,4 @@
-.localcurrency-img{
+.localcurrency-img {
   width: 1000px;
   height: 500px;
 }
@@ -9,102 +9,120 @@
   float: left;
 }
 
-#localcurrency_cityselect{
+#localcurrency_cityselect {
   margin-top: 25px;
   float: left;
 }
 
-.currency_startdate{
+.currency_startdate {
+  margin-top: 25px;
+  margin-left: 20px;
+  float: left;
+}
+
+.currency_date_h4 {
+  margin-top: 25px;
+  margin-left: 20px;
+  float: left;
+}
+.currency_enddate {
   margin-top: 25px;
   margin-left: 20px;
   float: left;
 }
 
-.currency_date_h4{
-  margin-top: 25px;
-  margin-left: 20px;
-  float: left;
-
-}
-.currency_enddate{
-  margin-top: 25px;
-  margin-left: 20px;
-  float: left;
-
-}
-
-#localCurrency_search_bar{
+#localCurrency_search_bar {
   display: inline-block;
   width: 400px;
 }
 
 
-
-
-
-
-
-.currencyTotal-h5{
-  margin-top: 50px;
-  margin-left: 180px;
-}
-
-.currencyTotal-line{
+.currencyTotal-line {
   width: 50%;
   float: left;
 }
 
-.currencyTotal-h5-input{
+.currencyTotal-h5-input {
   float: left;
   margin-right: 20px;
 }
 
-.currencyTotal-data{
-  float: left;
+.currencyTotal-data {
+  width: 100px;
 }
 
-.currencyTotal-button{
+.currencyTotal-button {
   margin-left: 20px;
 }
 
-#currencyTotal-select-currency{
-  margin-top: 20px;
-}
 
-.curreny-div{
+.curreny-div {
   width: 1150px;
 }
 
-.currencyTotal-Bar{
-  width: 60%;
-  margin-left: 570px;
-  margin-top:10px
+
+
+.currencyUse-h5 {
+  margin-top: 20px;
 }
 
-.currencyUse-h5{
-  margin-left: 570px;
-  margin-top:20px;
+
+
+
+.currencyTotal-div {
+  display: inline-block;
+  margin-top: 20px;
+  width: 45%;
 }
 
-.currencyTotalUse-h6{
-  margin-left: 570px;
+.useLocal-chart {
+  margin-top: 20px;
 }
 
-#currencyTotal-useSelect-currency{
+#graph-title {
+  display: inline-block;
+  margin-right: 2rem;
+}
+
+.useDate-input {
+  display: inline-block;
+}
+
+.currencyTotal-Bar {
+  margin : 0 auto;
+  width: 80%;
+
+}
+
+.currencyTotal-h6 {
+  display: inline-block;
+}
+
+
+#currencyTotal-select-currency {
+  margin-left: 2rem;
+}
+
+#currencyTotal-useSelect-currency {
   margin-left: 570px;
   margin-top: 20px;
 }
 
-.currencyTotal-div{
-  margin-top: 20px;
+#userLocal-select {
+  margin-left: 2rem;
 }
 
-.useDate-input{
-  margin-left: 575px;
-  margin-top: 50px;
+.currencyTotal-Bar-byState {
+  width: 100%;
 }
 
-.useLocal-chart{
-  margin-left: 575px;
-  margin-top:20px;
+.currencyTotal-div-byCurrencyName {
+  width: 100%;
+}
+#second-graph-line {
+  height: 380px;
+}
+
+#second-grh{
+  height: 100%;
 }

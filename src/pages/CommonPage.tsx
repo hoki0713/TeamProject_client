@@ -18,6 +18,8 @@ const CommonPage = () => {
 
     useEffect(() => {
         refreshUser(accountDetail.id)
+        console.log(accountDetail);
+        console.log(isLogined);
     }, [accountDetail]);
 
     return (
@@ -28,7 +30,7 @@ const CommonPage = () => {
                 isAdmin={isAdmin}
             />
             <CommonMenuBar isLogined={isLogined} />
-            <CommonContainer isLogined/>
+            <CommonContainer isLogined={isLogined}/>
             <CommonFooter/>
         </div>
     );
