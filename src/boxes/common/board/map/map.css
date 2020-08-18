@@ -88,7 +88,7 @@ input:checked + .slider:before {
 }
 .list_table{
     margin: 2%;
-    width: 95%;
+    width: 100%;
     height: 500px;
 }
 .list_table tr td{
@@ -245,4 +245,12 @@ input:checked + .slider:before {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+}
+.paging{
+    margin-left: 40%;
+    cursor: pointer;
+    color: #2196F3;
+}
+#merchan_list{
+    text-align: center;
 }
