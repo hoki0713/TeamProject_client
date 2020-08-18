@@ -15,7 +15,7 @@ import UserDetail from './admin_board/adminTest/UserDetail';
 import { UserDetailProvider } from './admin_board/adminTest/context/UserDetailContext';
 
 const AdminContainer = ({match}) => {
-  const [postId, setPostId] = useState("")
+  
   return (
     <div className="container">
       <Route path="/admin/currency-amount">
@@ -51,8 +51,8 @@ const AdminContainer = ({match}) => {
       <Route path="/admin/enquiry-detail">
         <EnquiryDetail />
       </Route>
-      <Route path="/admin/store-detail">
-        <StoreDetail />
+      <Route path={`/admin/store-detail/:id`}
+      render={(props) => <StoreDetail {...props}/>}>
       </Route>
       <UserDetailProvider>
         <Route path="/admin/users-list">

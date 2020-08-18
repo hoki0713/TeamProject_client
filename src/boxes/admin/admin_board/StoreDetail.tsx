@@ -1,41 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./StoreDetail.css";
 import { PostcodeButton } from "../../../items";
 import axios from "axios";
 
-const StoreDetail = () => {
+const StoreDetail = ({match}) => {
   const [isAfterChange, setIsAfterChange] = useState(false);
   const [storeName, setStoreName] = useState("");
   const [storeType, setStoreType] = useState("");
   const [storeAddress, setStoreAddress] = useState("");
+  const [storePhone,setStorePhone] =useState("")
   const [isReadOnly, setIsReadOnly] = useState(true);
 
-  const handleSetChange = (e) => {
-    e.preventDefault();
-    setIsAfterChange(!isAfterChange);
-    setIsReadOnly(!isReadOnly);
-  };
-
-  const handleChangeSave = (e) => {
-    e.preventDefault();
-    const data: any = {
-      storeName: storeName,
-      storeType: storeType,
-      storeAddress: storeAddress,
-    };
+ 
+  useEffect(()=>{
     axios
-      .patch(``, data)
-      .then((response) => {
-        alert("저장완료");
+      .get(`http://localhost:8080/admins/store/detail/${match.params.id}`)
+      .then((res)=>{
+        setStoreName(res.data.storeName)
+        setStoreType(res.data.storeType)
+        setStoreAddress(res.data.address)
+        setStorePhone(res.data.storePhone)
+          console.log(res.data)
       })
-      .catch((error) => {
-        throw error;
-      });
-  };
-
-  const a = {
-    no: 1,
-  };
+      .catch((err)=>{
+        throw err;
+      })
+  },[])
 
 
 
@@ -44,7 +34,7 @@ const StoreDetail = () => {
       <h1 className="storedetail-h1">가맹점 상세페이지</h1>
 
       <form>
-        <p className="storedetail-h1"> 가맹점 관리번호: {a.no}</p>
+        <p className="storedetail-h1"> 가맹점 관리번호: {match.params.id}</p>
         {isReadOnly && (
           <>
             <div className="contents-box">
@@ -88,7 +78,7 @@ const StoreDetail = () => {
               <input
                 type="text"
                 className="form-control"
-                value={storeAddress}
+                value={storePhone}
                 readOnly
               />
             </div>
@@ -147,27 +137,7 @@ const StoreDetail = () => {
           </>
         )}
 
-        <p>별점:</p>
-        <div className="contents-box">
-          {isAfterChange && (
-            <button
-              className="btn btn-success btn-block"
-              type="submit"
-              onClick={handleChangeSave}
-            >
-              저장하기
-            </button>
-          )}
-          {!isAfterChange && (
-            <button
-              className="btn btn-warning btn-block"
-              type="submit"
-              onClick={handleSetChange}
-            >
-              수정하기
-            </button>
-          )}
-        </div>
+        {/* <p>별점:</p> */}
       </form>
     </div>
   );
