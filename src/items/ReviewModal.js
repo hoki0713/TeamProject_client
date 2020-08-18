@@ -70,6 +70,7 @@ const ReviewModal = ({
       starRating: ratingValue,
       contents: review,
     };
+
     axios
       .post(`http://localhost:8080/posts/reviews/${selectedStoreId}`, data)
       .then(() => {

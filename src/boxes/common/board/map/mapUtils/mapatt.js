@@ -10,3 +10,4 @@ export const dottedLine = {
     strokeOpacity: 1,
     scale: 4
 };
+export const appKey = "AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY";

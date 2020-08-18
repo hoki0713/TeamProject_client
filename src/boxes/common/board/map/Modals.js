@@ -4,9 +4,9 @@ import {addr, favStar, phoneB, red, review, starIcon} from "./mapIcons/imgIndex"
 import {Link} from "react-router-dom";
 import ReviewModal from "../../../../items/ReviewModal";
 import axios from "axios";
+import {Stars} from "./FindByMap";
 
-
-export const MapModal=({storeInfo,modalClose,isLogined})=> {
+export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
     const [reportShow, setReportShow]=useState(false);
     const [reviewShow, setReviewShow]=useState(false);
     const [starShow, setStarShow]=useState(false);
@@ -19,22 +19,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
     const starClose=()=>{
         setStarShow(false);
     }
-    const Stars=({storeInfo})=>{
-        const [starArr, setStarArr]=useState([]);
 
-        useEffect(()=>{
-            let tmpList = [];
-            for(let i=0;i<parseInt(storeInfo.starRanking);i++){
-                tmpList[i]=i+1;
-            }
-            setStarArr(tmpList);
-        }, [storeInfo])
-
-        return(<>
-            {starArr.map(()=>(<img alt={"starIcon"} src ={starIcon} width={20} height={20}/>)
-            )}
-        </>);
-    }
     return (
         <>
             <Modal show={true}
@@ -45,7 +30,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                     <Modal.Title id="contained-modal-title-vcenter">
                         <img src ={storeInfo.icon}
                              alt={"commonStoreImg"} width={40} height={40}/>
-                        &nbsp;<span>{storeInfo.storeName}</span> <br/>
+                        &nbsp;<Link to={'storeDetail'}><span>{storeInfo.storeName}</span></Link> <br/>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="show-grid">
@@ -57,7 +42,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                                 &nbsp;{storeInfo.address}<br/>
                                 <img src={phoneB}
                                      alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{(storeInfo.storePhone!==0)?<>{storeInfo.storePhone}</>:
+                                &nbsp;{(storeInfo.storePhone!=0)?<>{storeInfo.storePhone}</>:
                                 <>000-000-0000</>}
                             </Col>
                             <Col xs={6} md={4}>
@@ -67,10 +52,10 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                         </Row>
 
                         <Row>
-                            <Col xs={6} md={4}>
+                            <Col xs={5} md={3}>
                                 {storeInfo.storeType}
                             </Col>
-                            <Col xs={6} md={4}>
+                            <Col xs={7} md={5}>
                                 별점 &nbsp;
                                 <Stars storeInfo={storeInfo}/>
 
@@ -112,11 +97,11 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                 </Modal.Footer>
             </Modal>
             {starShow &&
-                <Star
+            <Star
                 storeInfo={storeInfo}
                 starClose={starClose}
                 modalClose={modalClose}
-                />
+            />
 
             }
             {reportShow &&
@@ -128,7 +113,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
             { reviewShow &&
             <ReviewModal handleClose={()=>setReviewShow(false)}
                          storeName={storeInfo.storeName}
-                         accountDetail={JSON.stringify(sessionStorage.getItem("accountDetail"))}
+                         accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
                          storeId={storeInfo.id}
                          reviewId={null}// findbymap에서는 필요없다
                          onSubmit={()=>{}}// findbymap에서는 필요없다
@@ -141,7 +126,6 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
 export const StoreReport=({storeInfo, reportClose,modalClose})=> {
 
     const handleReport = () => {
-        console.log(storeInfo.id)
         axios
             .post(`http://localhost:8080/reports/${storeInfo.id}`)
             .then(() => {

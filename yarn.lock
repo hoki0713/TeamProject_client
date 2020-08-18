@@ -10374,7 +10374,7 @@ react-google-maps@^9.4.5:
     scriptjs "^2.5.8"
     warning "^3.0.0"
 
-react-iamport@^0.0.2:
+react-iamport@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/react-iamport/-/react-iamport-0.0.2.tgz#05ff608017e76484150ddaecc554eff56a933b1e"
   integrity sha512-qjSBtY7vX/Ntx0bS2TChALOeFC5+Y7G2Y77/DzWArzIK3u9DHL8VcHrowjXGozCLDaue73yLLuNgP9eELHmu6A==
