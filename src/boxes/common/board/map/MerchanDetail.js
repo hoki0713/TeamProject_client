@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { StoreSearchContext } from '../../../../items/context/StoreSearchContext';
+import { RenderAfterNavermapsLoaded, NaverMap, Marker, } from 'react-naver-maps';
+import {Table} from 'react-bootstrap'
 import {appKey, containerStyle, libraries} from "./mapUtils/mapatt";
 import {GoogleMap, InfoWindow, LoadScript,Marker} from "@react-google-maps/api";
 import {addr, favStar, normal, phoneB, red, review} from "./mapIcons/imgIndex";
@@ -37,6 +39,12 @@ const MerchanDetail = ({isLogined}) => {
         }
 
     }
+
+    useEffect(() => {
+        setNewStore(store);
+        console.log(newStore)
+    },[store])
+
 
     if(store.starRanking>0){
         return (
