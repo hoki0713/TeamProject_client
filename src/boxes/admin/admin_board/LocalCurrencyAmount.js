@@ -100,7 +100,14 @@ const LocalCurrencyAmount = () => {
     }
   },[]);
 
-
+  const color = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   useEffect(() => {
     
@@ -128,6 +135,7 @@ const LocalCurrencyAmount = () => {
       datasets: [
         {
           data: salesTotalValues,
+          backgroundColor:salesTotalKeys.map((key) => color())
         },
       ],
     })
@@ -137,7 +145,7 @@ const LocalCurrencyAmount = () => {
       datasets: [
         {
           data: useTotalLocalValues,
-          backgroundColor: "rgb(000,000,051,0.5)",
+          backgroundColor: useTotalLocalKeys.map((key) => color())
         },
       ],
     })
@@ -309,14 +317,31 @@ const LocalCurrencyAmount = () => {
             height={50}
             options={{
               responsive: true,
-              title: { text: "THICCNESS SCATIL", display: true },
+              legend: { display: false },
               scales: {
-                yAxes: [{ticks: {autoSkip: true}}],
+                yAxes:[{
+                  ticks:{
+                    beginAtZero: true,
+                    callback: function(value) {
+                      if(parseInt(value) >= 1000){
+                        return Intl.NumberFormat().format(value)
+                      } else {
+                        return value;
+                      }
+                    }
+                  }
+                }]
               },
               tooltips: {
                 displayColors: false,
-                backgroundColor: "#0a6dff"
-              }
+                backgroundColor: "#0a6dff",
+                  callbacks: {
+                      label: function(tooltipItem) {
+                      return Intl.NumberFormat().format(tooltipItem.yLabel)
+                      }//function
+
+            }//callbaks
+          }
             }}
           />
         </div>
@@ -397,7 +422,41 @@ const LocalCurrencyAmount = () => {
            
           </div>
           <div className="currencyTotal-Bar-byState">
-            <Bar data={useChart} />
+            <Bar data={useChart}
+            options={{
+              legend: {
+                display: false,
+              },
+              // title: { text: "(단위:백만)",
+              //  display: true,
+              // position:'bottom',
+              // fontColor:'blue'},
+              scales: {
+                yAxes:[{
+                  ticks:{
+                    beginAtZero: true,
+                    callback: function(value) {
+                      if(parseInt(value) >= 1000){
+                        return Intl.NumberFormat().format(value)
+                      } else {
+                        return value;
+                      }
+                    }
+                  }
+                }]
+              },
+              tooltips: {
+                displayColors: false,
+                backgroundColor: "#0a6dff",
+                  callbacks: {
+                      label: function(tooltipItem) {
+                      return Intl.NumberFormat().format(tooltipItem.yLabel)
+                      }//function
+
+            }//callbaks
+          }
+
+            }} />
           </div>
         </div>
         <div className="currencyTotal-div" id="second-grh">
@@ -411,6 +470,32 @@ const LocalCurrencyAmount = () => {
                 legend: {
                   display: false,
                 },
+             
+                scales: {
+                  yAxes:[{
+                    ticks:{
+                      
+                      callback: function(value) {
+                        if(parseInt(value) >= 1000){
+                          return Intl.NumberFormat().format(value)
+                        } else {
+                          return value;
+                        }
+                      }
+                    }
+                  }]
+                },
+                tooltips: {
+                  displayColors: false,
+                  backgroundColor: "#0a6dff",
+                    callbacks: {
+                        label: function(tooltipItem) {
+                        return Intl.NumberFormat().format(tooltipItem.yLabel)
+                        }//function
+  
+              }//callbaks
+            }
+  
               }}
             />
           </div>
