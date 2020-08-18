@@ -11,10 +11,14 @@ import {Star, StoreReport} from "./Modals";
 
 const MerchanDetail = ({isLogined}) => {
     const { store } = useContext(StoreSearchContext);
-    const [center] = useState({lat:store.latitude, lng:store.longitude});//가게좌표
+    const [center, setCenter] = useState({});//가게좌표
     const [reportShow,setReportShow]=useState(false);//신고모달 show
     const [starShow,setStarShow]=useState(false);
     const [reviewShow,setReviewShow]=useState(false);
+
+    useEffect(() => {
+        setCenter({lat:store.latitude, lng:store.longitude});
+    },[store])
 
     const reportClose=()=>{
         setReportShow(false);
@@ -71,7 +75,7 @@ const MerchanDetail = ({isLogined}) => {
                                                 <img src={addr}
                                                      alt={"addrImg"} width={25} height={25}/>
                                                 &nbsp;{store.address}<br/>
-                                                {store.storePhone!=0 &&<><img src={phoneB}
+                                                {store.storePhone!==0 &&<><img src={phoneB}
                                                                                   alt={"phoneImg"} width={25} height={25}/>
                                                     &nbsp; {store.storePhone}</>}
                                             </td></tr>
