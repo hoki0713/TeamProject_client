@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Table} from 'react-bootstrap';
 import axios from 'axios'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
+
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {Link} from "react-router-dom";
 

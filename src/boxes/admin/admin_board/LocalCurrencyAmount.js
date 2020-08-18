@@ -26,13 +26,14 @@ const LocalCurrencyAmount = () => {
   const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
   const [currencyListStartDate,setCurrencyListStartDate] = useState("");
   const [currencyListEndDate,setCurrencyListEndDate] = useState("");
-  
+  const [salesList,setSalesList] = useState([]);
  
   useEffect(()=>{
     axios
       .get(`http://localhost:8080/admins/sales/list`)
       .then((res)=>{
-        console.log("");
+        setSalesList(res.data.sales)
+      
       })
       .catch((err)=>{
         throw err;
@@ -43,6 +44,7 @@ const LocalCurrencyAmount = () => {
     axios
       .get(`http://localhost:8080/admins/currency/month/total`)
       .then((res) => {
+       
         const dataKey = [];
         const dataValue = [];
         Object.entries(res.data).forEach(([key, value]) => {
@@ -64,9 +66,10 @@ const LocalCurrencyAmount = () => {
         .then((res)=>{
           const datakeys = [];
           const datavalues = [];
+          console.log(res.data)
           Object.entries(res.data).forEach(([key,value])=>{
             datakeys.push(key);
-            datavalues.push(value);
+            datavalues.push(value.unitPrice);
           });
           setSalesTotalKeys(datakeys);
           setSalesTotalValues(datavalues);
@@ -88,8 +91,8 @@ const LocalCurrencyAmount = () => {
           dataKeys.push(key)
           dataValues.push(value)
         });
-        setTotalKeys(dataKeys);
-        setTotalValues(dataValues);
+        setUseTotalLocalKeys(dataKeys);
+        setUseTotalLocalValues(dataValues);
       })
       .catch((err) => {
         throw err;
@@ -97,28 +100,11 @@ const LocalCurrencyAmount = () => {
     }
   },[]);
 
-  useEffect(() => {
-    if (currencyName === "") {
-      axios
-        .get(`http://localhost:8080/admins/voucher/sales-total`)
-        .then((res) => {
-          const datakeys = [];
-          const datavalues = [];
-          Object.entries(res.data).forEach(([key, value]) => {
-            datakeys.push(key);
-            datavalues.push(value);
-          });
-          setSalesTotalKeys(datakeys);
-          setSalesTotalValues(datavalues);
-        })
-        .catch((err) => {
-          throw err;
-        });
-    }
-  },[]);
+
 
   useEffect(() => {
-    const dataForChart = {
+    
+    setChartData({
       labels: totalKeys.sort(),
       datasets: [
         {
@@ -135,32 +121,32 @@ const LocalCurrencyAmount = () => {
           ],
         },
       ],
-    };
-    
-    const dataForUseChart = {
-      labels: useTotalLocalKeys,
-      datasets: [
-        {
-          data: useTotalLocalValues,
-        },
-      ],
-    };
+    })
 
-    const dataForSalesTotalChart = {
+    setSalesTotalChart({
       labels: salesTotalKeys.sort(),
       datasets: [
         {
           data: salesTotalValues,
+        },
+      ],
+    })
+      
+    setUseChart({
+      labels: useTotalLocalKeys,
+      datasets: [
+        {
+          data: useTotalLocalValues,
           backgroundColor: "rgb(000,000,051,0.5)",
         },
       ],
-    };
-
-    setChartData(dataForChart);
-    setSalesTotalChart(dataForSalesTotalChart);
-    setUseChart(dataForUseChart);
-
-  }, []);
+    })
+  }, [totalKeys,
+    totalValues,
+    salesTotalValues,
+    salesTotalKeys,
+    useTotalLocalKeys,
+    useTotalLocalValues]);
 
   const start_end_date = (e) => {
     e.preventDefault();
@@ -210,11 +196,11 @@ const LocalCurrencyAmount = () => {
     if (useStartDate > useEndDate) {
       alert("시작날짜보다 빠를수 없습니다.");
       setUseEndDate("");
-    } else if (currencyListStartDate ==="" ||currencyListStartDate ===""  ) {
+    } else if (useStartDate ==="" ||useEndDate ===""  ) {
       alert(`기간을 선택해주세요`);
     } else if(localSelect==="") {
       alert(`지역을 선택해주세요`);
-    } else if(startDate.split("-")[0]!==endDate.split("-")[0]){ 
+    } else if(useStartDate.split("-")[0] !== useEndDate.split("-")[0]){ 
       alert(` 같은년도 이내로 선택해주세요.`); 
     } else {
         axios 
@@ -292,32 +278,29 @@ const LocalCurrencyAmount = () => {
               <option value="의정부">의정부시 지역화폐</option>
             </select>
           </div>
-          <div className="useDate-input">
-            <h5 className="currencyTotal-h5-input font-weight-bold">
-              필수 입력:
-            </h5>
-            <input
-              className="currencyTotal-data-byCurrencyName"
-              min="2020-01-01"
-              type="date"
-              value={useStartDate}
-              onChange={(e) => setUseStartDate(e.target.value)}
-            />
-            <span> &nbsp; ~ &nbsp; </span>
-            <input
-              className="currencyTotal-data-byCurrencyName"
-              min=""
-              type="date"
-              value={useEndDate}
-              onChange={(e) => setUseEndDate(e.target.value)}
-            />
-            <input
-              className="currencyTotal-button btn btn-outline-primary"
-              type="submit"
-              onClick={use_start_end_date}
-              value="조회"
-            />
-          </div>
+          <div>
+              <input
+                className="currencyTotal-data-byCurrencyName"
+                min="2020-01-01"
+                type="month"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <span> ~  </span>
+              <input
+                className="currencyTotal-data-byCurrencyName"
+                min=""
+                type="month"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+              <input
+                className="currencyTotal-button btn btn-outline-primary"
+                type="submit"
+                onClick={start_end_date}
+                value="조회"
+              />
+            </div>
         </div>
         <div className="currencyTotal-Bar">
           <Bar
@@ -388,29 +371,30 @@ const LocalCurrencyAmount = () => {
             <h6 className="currencyTotal-h5-input font-weight-bold">
               필수 입력:
             </h6>
-            <div>
-              <input
-                className="currencyTotal-data"
-                min="2020-01-01"
-                type="month"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              <span> &nbsp; ~ &nbsp; </span>
-              <input
-                className="currencyTotal-data"
-                min=""
-                type="month"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-              <input
-                className="currencyTotal-button btn btn-outline-primary"
-                type="submit"
-                onClick={start_end_date}
-                value="조회"
-              />
-            </div>
+            <div className="useDate-input">
+            <input
+              className="currencyTotal-data-byCurrencyName"
+              min="2020-01-01"
+              type="date"
+              value={useStartDate}
+              onChange={(e) => setUseStartDate(e.target.value)}
+            />
+            <span>  ~  </span>
+            <input
+              className="currencyTotal-data-byCurrencyName"
+              min=""
+              type="date"
+              value={useEndDate}
+              onChange={(e) => setUseEndDate(e.target.value)}
+            />
+            <input
+              className="currencyTotal-button btn btn-outline-primary"
+              type="submit"
+              onClick={use_start_end_date}
+              value="조회"
+            />
+          </div>
+           
           </div>
           <div className="currencyTotal-Bar-byState">
             <Bar data={useChart} />
@@ -484,9 +468,9 @@ const LocalCurrencyAmount = () => {
               <th>사용일 또는 취소일</th>
             </tr>
             <tbody>
-            {/* {currentPosts.map((info,i) => (
+            {salesList.map((info,i) => (
               <tr key={i}>
-                <td>{i+(indexOfFirstPost+1)}</td>
+                <td>{i+1}</td>
                 <td>{info.currencyState}</td>
                 <td>{info.localCurrencyName}</td>
                 <td>{info.userId}</td>
@@ -499,7 +483,7 @@ const LocalCurrencyAmount = () => {
                 }     
               </tr>
               )
-            )} */}
+            )}
             </tbody>
           </Table>
         </div>

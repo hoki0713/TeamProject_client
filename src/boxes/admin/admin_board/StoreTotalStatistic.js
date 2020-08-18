@@ -76,8 +76,6 @@ useEffect(()=>{
 
 },[localSelect])
 
-
-
   useEffect(() => {
     
     setChartData({
@@ -95,22 +93,6 @@ useEffect(()=>{
       ],
     });
   }, [storeLocalIndustryKey,storeLocalIndustryValue]);
-
-  // const test = () =>{
-  //   alert(`test start: ${startDate} endDate:${endDate}`)
-  //   let a = startDate.split('-')
-  //   let b = endDate.split('-')
-  //   console.log(`b2 ${b[2]}`)
-
-  //    if(a[1]>b[1]){
-  //       alert('시작날짜보다 빠를수 없습니다.')
-  //       setEndDate(Date())
-  //     }else if(a[2]>b[2]){
-  //      alert('시작날짜보다 빠를수 없습니다.')
-  //      setEndDate(Date())
-  //     }
-
-  // }
 
   return (
     <div>
@@ -135,7 +117,10 @@ useEffect(()=>{
       
 
           <div className="store-chartData">
-            <Bar data={chartData} />
+            <Bar data={chartData} 
+            options = {{
+              
+            }}/>
           </div>
         </div>
 
