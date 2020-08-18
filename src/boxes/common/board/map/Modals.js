@@ -7,8 +7,7 @@ import axios from "axios";
 import {Stars} from "./FindByMap";
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
-export const MapModal=({modalClose,isLogined})=> {
-    const {store} =useContext(StoreSearchContext)
+export const MapModal=({modalClose,isLogined,storeInfo})=> {
     const [reportShow, setReportShow]=useState(false);
     const [reviewShow, setReviewShow]=useState(false);
     const [starShow, setStarShow]=useState(false);
@@ -30,9 +29,9 @@ export const MapModal=({modalClose,isLogined})=> {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        <img src ={store.icon}
+                        <img src ={storeInfo.icon}
                              alt={"commonStoreImg"} width={40} height={40}/>
-                        &nbsp;<Link to={'storeDetail'}><span>{store.storeName}</span></Link> <br/>
+                        &nbsp;<Link to={'storeDetail'}><span>{storeInfo.storeName}</span></Link> <br/>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="show-grid">
@@ -41,25 +40,25 @@ export const MapModal=({modalClose,isLogined})=> {
                             <Col xs={12} md={8}>
                                 <img src={addr}
                                      alt={"addrImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{store.address}<br/>
+                                &nbsp;{storeInfo.address}<br/>
                                 <img src={phoneB}
                                      alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{(store.storePhone!=0)?<>{store.storePhone}</>:
+                                &nbsp;{(storeInfo.storePhone!=0)?<>{storeInfo.storePhone}</>:
                                 <>000-000-0000</>}
                             </Col>
                             <Col xs={6} md={4}>
-                                <img src={store.imgUrl}
-                                     alt={store.storeName} width={80} height={80}/>
+                                <img src={storeInfo.imgUrl}
+                                     alt={storeInfo.storeName} width={80} height={80}/>
                             </Col>
                         </Row>
 
                         <Row>
                             <Col xs={5} md={3}>
-                                {store.storeType}
+                                {storeInfo.storeType}
                             </Col>
                             <Col xs={7} md={5}>
                                 별점 &nbsp;
-                                <Stars storeInfo={store}/>
+                                <Stars storeInfo={storeInfo}/>
 
                             </Col>
                             <Col xs={6} md={4}>
@@ -100,7 +99,7 @@ export const MapModal=({modalClose,isLogined})=> {
             </Modal>
             {starShow &&
             <Star
-                storeInfo={store}
+                storeInfo={storeInfo}
                 starClose={starClose}
                 modalClose={modalClose}
             />
@@ -109,14 +108,14 @@ export const MapModal=({modalClose,isLogined})=> {
             {reportShow &&
             <StoreReport
                 modalClose={modalClose}
-                storeInfo={store}
+                storeInfo={storeInfo}
                 reportClose={reportClose}/>
             }
             { reviewShow &&
             <ReviewModal handleClose={()=>setReviewShow(false)}
-                         storeName={store.storeName}
+                         storeName={storeInfo.storeName}
                          accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
-                         storeId={store.id}
+                         storeId={storeInfo.id}
                          reviewId={null}// findbymap에서는 필요없다
                          onSubmit={()=>{}}// findbymap에서는 필요없다
             />

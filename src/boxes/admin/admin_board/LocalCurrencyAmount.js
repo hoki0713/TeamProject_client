@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./LocalCurrencyAmount.css";
 import { Table } from "react-bootstrap";
-import { SearchBar } from "../../../items";
+import { SearchBar, PaginationItem } from "../../../items";
 import { Line, Bar } from "react-chartjs-2";
 import axios from "axios";
 
@@ -30,6 +30,62 @@ const LocalCurrencyAmount = () => {
   const [useStatusSelect, setUseStatusSelect] = useState("");
   const [chartData, setChartData] = useState({});
   const [currencyName, setCurrencyName] = useState("");
+<<<<<<< HEAD
+  const [totalKeys,setTotalKeys] = useState([]);
+  const [totalValues,setTotalValues] = useState([]);
+  const [salesTotalKeys,setSalesTotalKeys] = useState([]);
+  const [salesTotalValues,setSalesTotalValues] = useState([]);
+  const [salesTotalChart,setSalesTotalChart] = useState({});
+  const [useChart,setUseChart]=useState({});
+  const [localSelect,setLocalSelect]=useState("");
+  const [useTotalLocalKeys,setUseTotalLocalKeys] = useState([]);
+  const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
+  const [currencyListStartDate,setCurrencyListStartDate] = useState("");
+  const [currencyListEndDate,setCurrencyListEndDate] = useState("");
+  
+  const [salesList,setSalesList] = useState([]);
+  const [currentPage,setCurrentPage] = useState(1);
+  const [postPerPage] = useState(15);
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPosts = salesList.slice(indexOfFirstPost,indexOfLastPost);
+ 
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const nextPage = () =>{ 
+        if(currentPage<currentPosts.length){
+            setCurrentPage(currentPage+1)} 
+            else if(postPerPage<currentPosts.length){
+                setCurrentPage(currentPage+1)
+            } else{
+                setCurrentPage(currentPage)
+            }
+        }
+           
+    const prevPage = () => { 
+        if(currentPage>1){
+            setCurrentPage(currentPage-1)
+        }
+       };
+
+
+  
+
+  useEffect(()=>{
+      axios
+        .get(`http://localhost:8080/admins/sales/list`)
+        .then((res)=>{
+          
+            setSalesList(res.data.sales)
+        })
+        .catch((err)=>{
+          throw err;
+        })
+  },[])
+
+  useEffect(()=>{
+=======
   const [totalKeys, setTotalKeys] = useState([]);
   const [totalValues, setTotalValues] = useState([]);
   const [salesTotalKeys, setSalesTotalKeys] = useState([]);
@@ -43,6 +99,7 @@ const LocalCurrencyAmount = () => {
   useEffect(() => {}, []);
 
   useEffect(() => {
+>>>>>>> master
     axios
       .get(`http://localhost:8080/admins/currency/month/total`)
       .then((res) => {
@@ -51,9 +108,53 @@ const LocalCurrencyAmount = () => {
         Object.entries(res.data).forEach(([key, value]) => {
           dataKey.push(key);
           dataValue.push(value);
+<<<<<<< HEAD
+      });
+      setTotalKeys(dataKey);
+      setTotalValues(dataValue);
+    })
+    .catch((err)=>{
+      throw err;
+    })
+
+    if(currencyName ===""){
+    axios
+    .get(`http://localhost:8080/admins/voucher/sales-total`)
+    .then((res)=>{
+     
+      const datakeys = [];
+      const datavalues = [];
+
+      Object.entries(res.data).forEach(([key,value])=>{
+   
+        datakeys.push(key)
+        datavalues.push(value)
+      })
+      setSalesTotalKeys(datakeys);
+      setSalesTotalValues(datavalues);
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  }
+
+  if(localSelect ===""){
+    axios
+    .get(`http://localhost:8080/admins/useChart/total`)
+    .then((res)=>{
+     
+      const dataKeys = [];
+      const dataValues = [];
+
+      Object.entries(res.data).forEach(([key,value])=>{
+          dataKeys.push(key)
+          dataValues.push(value)
+         
+=======
         });
         setTotalKeys(dataKey);
         setTotalValues(dataValue);
+>>>>>>> master
       })
       .catch((err) => {
         throw err;
@@ -78,6 +179,11 @@ const LocalCurrencyAmount = () => {
         });
     }
 
+<<<<<<< HEAD
+
+  let today = new Date();
+  const start_end_date = e => {
+=======
     if (localSelect === "") {
       axios
         .get(`http://localhost:8080/admins/useChart/total`)
@@ -146,6 +252,7 @@ const LocalCurrencyAmount = () => {
   ]);
 
   const start_end_date = (e) => {
+>>>>>>> master
     e.preventDefault();
 
     if (startDate > endDate) {
@@ -183,6 +290,9 @@ const LocalCurrencyAmount = () => {
     }
   };
 
+<<<<<<< HEAD
+  const use_start_end_date = e =>{
+=======
   const currencyNameCheck = (e) => {
     e.preventDefault();
 
@@ -190,11 +300,36 @@ const LocalCurrencyAmount = () => {
   };
 
   const use_start_end_date = (e) => {
+>>>>>>> master
     e.preventDefault();
 
     if (useStartDate > useEndDate) {
       alert("시작날짜보다 빠를수 없습니다.");
       setUseEndDate("");
+<<<<<<< HEAD
+    }else if(currencyListStartDate ==="" ||currencyListStartDate ===""  ){
+      alert(`기간을 선택해주세요`)
+    }else if(localSelect===""){alert(`지역을 선택해주세요`)}
+     else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
+    else{
+        axios 
+        .get(`http://localhost:8080/admins/useChart/test/${localSelect}/${useStartDate}/${useEndDate}`)
+        .then((res)=>{
+            console.log(res.data)
+            const useLocalKeys = [];
+            const useLocalValues = [];
+
+            Object.entries(res.data).forEach(([key,value])=>{
+                useLocalKeys.push(key)
+                useLocalValues.push(value)
+            })
+            setUseTotalLocalKeys(useLocalKeys)
+            setUseTotalLocalValues(useLocalValues)
+
+        })
+        .catch((err)=>{
+            throw err;
+=======
     } else if (useStartDate === "" || useEndDate === "") {
       alert(`기간을 선택해주세요`);
     } else if (localSelect === "") {
@@ -217,6 +352,7 @@ const LocalCurrencyAmount = () => {
           });
           setUseTotalLocalKeys(useLocalKeys);
           setUseTotalLocalValues(useLocalValues);
+>>>>>>> master
         })
         .catch((err) => {
           throw err;
@@ -224,13 +360,39 @@ const LocalCurrencyAmount = () => {
     }
   };
 
+
   const handleSearch = (searchWord) => {
+   
     alert(searchWord);
-    if (startDate > endDate) {
+    if (currencyListStartDate > currencyListEndDate) {
       alert(`시작날짜보다 빠를 수 없습니다.`);
       setEndDate("");
-    }
-  };
+    }else if(currencyListStartDate ==="" ||currencyListEndDate ===""  ){
+      alert(`기간을 선택해주세요`)
+    }else if(citySelect===""){alert(`지역을 선택해주세요`)}
+     else if(currencyListStartDate.split("-")[0]!==currencyListEndDate.split("-")[0])
+     { alert(` 같은년도 이내로 선택해주세요.`)  }
+     else if(useStatusSelect ==="") {alert('상태를 선택해 주세요')}
+     else {
+       
+       axios
+        .get(`http://localhost:8080/admins/sales/search`,{
+          params:{
+            currencyListStartDate:currencyListStartDate,
+           currencyListEndDate:currencyListEndDate,
+          useStatusSelect:useStatusSelect,
+            citySelect:citySelect,
+            searchWord:searchWord
+          }
+        })
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=>{
+            throw err;
+        })
+     }
+  }
 
   return (
     <div>
@@ -285,6 +447,21 @@ const LocalCurrencyAmount = () => {
             />
           </div>
         </div>
+<<<<<<< HEAD
+        <select
+          id="currencyTotal-select-currency"
+          value={currencyName}
+          onChange={e=>setCurrencyName(e.target.value)}
+        >
+          <option value="" selected>화폐명</option>
+          <option value="고양">고양시 지역화폐</option>
+          <option value="의정부">의정부시 지역화폐</option>
+        </select>
+
+        <div>
+          <div className="currencyTotal-Bar">
+=======
+>>>>>>> master
 
         <div className="currencyTotal-Bar">
           <Bar
@@ -309,6 +486,31 @@ const LocalCurrencyAmount = () => {
               },
             }}
           />
+<<<<<<< HEAD
+    </div>
+    <div className="useDate-input">
+          <h5 className="currencyTotal-h5-input font-weight-bold">필수 입력:</h5>
+          <input
+            className="currencyTotal-data"
+            min="2020-01-01"
+            type="date"
+            value={useStartDate}
+            onChange={e=>setUseStartDate(e.target.value)}
+          ></input>
+          <h4 className="currencyTotal-data"> &nbsp; ~ &nbsp; </h4>
+          <input
+            type="date"
+            value={useEndDate}
+            onChange={e=>setUseEndDate(e.target.value)}
+          ></input>
+          <input
+            className="currencyTotal-button btn btn-outline-primary"
+            type="submit"
+            onClick={use_start_end_date}
+            value="조회"
+          />
+=======
+>>>>>>> master
         </div>
       </div>
 
@@ -394,6 +596,80 @@ const LocalCurrencyAmount = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
+          <div className="curreny-div">
+        <h2>지역화폐 매출 목록</h2>
+
+        <select
+          id="localcurrency_cityselect"
+          value={citySelect}
+          onChange={e=>setCitySelect(e.target.value)}
+        >
+          <option selected>시도</option>
+          <option value="고양">고양시</option>
+          <option value="의정부">의정부시</option>
+          <option>수원시</option>
+        </select>
+        <select
+          id="localcurrency_statusselect"
+          value={useStatusSelect}
+          onChange={e=>setUseStatusSelect(e.target.value)}
+        >
+          <option selected>상태</option>
+          <option value="use">사용완료</option>
+          <option value="unused">미사용</option>
+        </select>
+        <div>
+          <input
+            className="currency_startdate"
+            type="date"
+            value={currencyListStartDate}
+            onChange={(e) => setCurrencyListStartDate(e.target.value)}
+          ></input>
+          <h4 className="currency_date_h4"> ~ </h4>
+          <input
+            className="currency_enddate"
+            type="date"
+            value={currencyListEndDate}
+            onChange={(e) => setCurrencyListEndDate(e.target.value)}
+          ></input>
+          <div id="localCurrency_search_bar">
+            <SearchBar onSearch={handleSearch} />
+          </div>
+        </div>
+        <br />
+        <Table className="Table">
+          <tr>
+            <th>No</th>
+            <th>상태</th>
+            <th>지역명 및 지역화폐</th>
+            <th>구매자</th>
+            <th>구매일</th>
+            <th>사용일 또는 취소일</th>
+          </tr>
+          <tbody>
+            {currentPosts.map((info,i)=>(
+                 <tr key={i}>
+                 <td>{i+(indexOfFirstPost+1)}</td>
+                 <td>{info.currencyState}</td>
+            <td>{info.localCurrencyName}</td>
+                 <td>{info.userId}</td>
+                 <td>{info.salesDate}</td>
+            {info.useDate !=="" && <td>{info.useDate}</td>
+            || info.cancelDate !=="" && <td>{info.cancelDate}</td> }     
+               </tr>
+            ))}
+           
+          </tbody>
+        </Table>
+      </div>
+        </div>
+
+        <div>
+        <PaginationItem postPerPage={postPerPage} TotalPostList={salesList.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} />
+        </div>
+      
+=======
         <div className="currencyTotal-div" id="second-grh">
           <h5 className="font-weight-bold">지역화폐 총 매출통계</h5>
           <div>
@@ -410,6 +686,7 @@ const LocalCurrencyAmount = () => {
           </div>
         </div>
       </div>
+>>>>>>> master
 
       <div>
         <div className="curreny-div">
