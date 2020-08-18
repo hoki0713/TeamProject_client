@@ -42,6 +42,7 @@ export const Stars=()=>{
 const FindByMap=({isLogined})=> {
 
     const {setStore} = useContext(StoreSearchContext);
+    const [storeInfo, setStoreInfo]=useState({});
     const [map, setMap] = useState(null);
     const [recoList, setRecoList]=useState([]);
     const onUnmount = useCallback(function callback(map) {
@@ -149,6 +150,7 @@ const FindByMap=({isLogined})=> {
                 <MapModal
                     isLogined={isLogined}
                     modalClose={()=>setModalShow(false)}
+                    storeInfo={storeInfo}
                 />
             )}
             <table className="findmap">
@@ -180,7 +182,7 @@ const FindByMap=({isLogined})=> {
                                     key={i}
                                     position={{lat:store.latitude, lng: store.longitude}}
                                     onClick={()=>{
-                                        setStore(store);
+                                        setStoreInfo(store);
                                         setCenter({lat:store.latitude, lng: store.longitude});
                                         setModalShow(true);
                                     }}

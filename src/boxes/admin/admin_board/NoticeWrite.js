@@ -131,9 +131,6 @@ const NoticeWrite = () => {
           formats={formats}
           style={{ height: "400px" }}
         />
-        {/* <Form.Label>첨부 링크</Form.Label>
-                <Form.Control as="input"/>
-                <Form.File label="파일 첨부"/>*/}
       </Form>
       <br />
       <div id="quill-button-center">

@@ -1,20 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Table, Pagination} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 import axios from 'axios'
-import {Stars} from "./FindByMap";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {Link} from "react-router-dom";
 
 
 const MerchantList=()=> {
-
+    const {setStore}=useContext(StoreSearchContext);
     const [state,setState]=useState('시/군');
     const [cate,setCate]=useState('업종');
     const [storeList, setStoreList]=useState([]);
     const [drop1Show, setDrop1Show] = useState(false);
     const [drop2Show, setDrop2Show] = useState(false);
-    const {setStore} = useContext(StoreSearchContext);
     const [pageNow,setPageNow]=useState(1);
     const [stateList]=useState(
         ['연천군', '포천시', '파주시', '동두천시', '양주시', '의정부시', '가평군', '고양시',
@@ -39,80 +37,86 @@ const MerchantList=()=> {
     };
 
     function getSpecificS(){
-        axios.get(`http://localhost:8080/stores/getSome/${state}/${cate}/${pageNow}`)
+
+        axios.get(`http://localhost:8080/stores/getSome/""/""/1`)
             .then(({data})=>{
                 setStoreList(data.list)
             })
             .catch(err=>{console.log(err);throw err;})
     }
 
+    useEffect(()=>{
+        getSpecificS()
+        console.log(storeList)
+    },[pageNow])
+
     return (
         <div className="container">
             <Table striped bordered hover className="list_table">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th/>
-                    <th>
-                        <Dropdown isOpen={drop1Show} toggle={toggle1}>
-                            <DropdownToggle>
-                                {state} <select/>
-                            </DropdownToggle>
-                            <DropdownMenu
-                                modifiers={{
-                                    setMaxHeight: {
-                                        enabled: true,
-                                        order: 890,
-                                        fn: (data) => {
-                                            return {
-                                                ...data,
-                                                styles: {
-                                                    ...data.styles,
-                                                    overflow: 'auto',
-                                                    maxHeight: '100px',
-                                                },
-                                            };
-                                        },
-                                    },
-                                }}
-                            >
-                                {stateList.map((state)=>(
-                                    <DropdownItem onClick={()=>{stateCheck(state)}}>{state}</DropdownItem>))}
+                {/*<thead>*/}
+                {/*<tr>*/}
+                {/*    <th></th>*/}
+                {/*    <th></th>*/}
+                {/*    <th/>*/}
+                {/*    <th>*/}
+                {/*        <Dropdown isOpen={drop1Show} toggle={toggle1}>*/}
+                {/*            <DropdownToggle>*/}
+                {/*                {state} <select/>*/}
+                {/*            </DropdownToggle>*/}
+                {/*            <DropdownMenu*/}
+                {/*                modifiers={{*/}
+                {/*                    setMaxHeight: {*/}
+                {/*                        enabled: true,*/}
+                {/*                        order: 890,*/}
+                {/*                        fn: (data) => {*/}
+                {/*                            return {*/}
+                {/*                                ...data,*/}
+                {/*                                styles: {*/}
+                {/*                                    ...data.styles,*/}
+                {/*                                    overflow: 'auto',*/}
+                {/*                                    maxHeight: '100px',*/}
+                {/*                                },*/}
+                {/*                            };*/}
+                {/*                        },*/}
+                {/*                    },*/}
+                {/*                }}*/}
+                {/*            >*/}
+                {/*                {stateList.map((state)=>(*/}
+                {/*                    <DropdownItem onClick={()=>{stateCheck(state)}}>{state}</DropdownItem>))}*/}
 
-                            </DropdownMenu>
-                        </Dropdown>
-                    </th>
-                    <th>
-                            <Dropdown isOpen={drop2Show} toggle={toggle2}>
-                                <DropdownToggle>
-                                    {cate} <select/>
-                                </DropdownToggle>
-                                <DropdownMenu
-                                    modifiers={{
-                                        setMaxHeight: {
-                                            enabled: true,
-                                            order: 890,
-                                            fn: (data) => {
-                                                return {
-                                                    ...data,
-                                                    styles: {
-                                                        ...data.styles,
-                                                        overflow: 'auto',
-                                                        maxHeight: '100px',
-                                                    },
-                                                };
-                                            },
-                                        },
-                                    }}
-                                >
-                                    {cateList.map((category)=>(<DropdownItem onClick={()=>cateCheck(category)}>{category}</DropdownItem>))}
-                                </DropdownMenu>
-                            </Dropdown>
-                        </th>
-                    <th/>
-                </tr>
-                </thead>
+                {/*            </DropdownMenu>*/}
+                {/*        </Dropdown>*/}
+                {/*    </th>*/}
+                {/*    <th>*/}
+                {/*            <Dropdown isOpen={drop2Show} toggle={toggle2}>*/}
+                {/*                <DropdownToggle>*/}
+                {/*                    {cate} <select/>*/}
+                {/*                </DropdownToggle>*/}
+                {/*                <DropdownMenu*/}
+                {/*                    modifiers={{*/}
+                {/*                        setMaxHeight: {*/}
+                {/*                            enabled: true,*/}
+                {/*                            order: 890,*/}
+                {/*                            fn: (data) => {*/}
+                {/*                                return {*/}
+                {/*                                    ...data,*/}
+                {/*                                    styles: {*/}
+                {/*                                        ...data.styles,*/}
+                {/*                                        overflow: 'auto',*/}
+                {/*                                        maxHeight: '100px',*/}
+                {/*                                    },*/}
+                {/*                                };*/}
+                {/*                            },*/}
+                {/*                        },*/}
+                {/*                    }}*/}
+                {/*                >*/}
+                {/*                    {cateList.map((category)=>(<DropdownItem onClick={()=>cateCheck(category)}>{category}</DropdownItem>))}*/}
+                {/*                </DropdownMenu>*/}
+                {/*            </Dropdown>*/}
+                {/*        </th>*/}
+                {/*    <th/>*/}
+                {/*</tr>*/}
+                {/*</thead>*/}
 
                 <tbody>
                 <tr>
@@ -121,7 +125,6 @@ const MerchantList=()=> {
                     <td>가게명</td>
                     <td>가게주소</td>
                     <td>업종</td>
-                    <td>별점</td>
                 </tr>
 
 
@@ -130,10 +133,9 @@ const MerchantList=()=> {
                     <td></td>
                 {/* 페이지네이션 번호 가져와야 함 */}
                     <td>{store.id}</td>
-                    <td><Link to={'/storeDetail'} onClick={setStore(store)}>{store.storeName}</Link> </td>
+                    <td><Link to={'/storeDetail'} onClick={()=>setStore(store)}>{store.storeName}</Link> </td>
                     <td>{store.address}</td>
                     <td>{store.storeType}</td>
-                    <td><Stars storeInfo={store}/></td>
                     </tr>
                 )
                 )}
@@ -141,23 +143,22 @@ const MerchantList=()=> {
 
                 </tbody>
             </Table>
-            <Pagination>
-                <Pagination.First />
-                <Pagination.Prev />
-                <Pagination.Item>{1}</Pagination.Item>
-                <Pagination.Ellipsis />
-
-                <Pagination.Item>{10}</Pagination.Item>
-                <Pagination.Item>{11}</Pagination.Item>
-                <Pagination.Item active>{12}</Pagination.Item>
-                <Pagination.Item>{13}</Pagination.Item>
-                <Pagination.Item disabled>{14}</Pagination.Item>
-
-                <Pagination.Ellipsis />
-                <Pagination.Item>{20}</Pagination.Item>
-                <Pagination.Next />
-                <Pagination.Last />
-            </Pagination>
+            <table>
+                <tr>
+                    <td>{"<"}</td>
+                    <td>&nbsp;1</td>
+                    <td>&nbsp;2</td>
+                    <td>&nbsp;3</td>
+                    <td>&nbsp;4</td>
+                    <td>&nbsp;5</td>
+                    <td>&nbsp;6</td>
+                    <td>&nbsp;7</td>
+                    <td>&nbsp;8</td>
+                    <td>&nbsp;9</td>
+                    <td>&nbsp;10</td>
+                    <td>&nbsp;{">"}</td>
+                </tr>
+            </table>
 
         </div>
     );

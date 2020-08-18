@@ -17,7 +17,7 @@ import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 Geocode.setApiKey(appKey);
 
 const FindBestRoute = () => {
-    const {store, setStore} = useContext(StoreSearchContext)
+    const {store, setStore} = useContext(StoreSearchContext);//쓸 예정
     const [center, setCenter] = useState({}); //지도 센터 좌표
     const [myLoca, setMyLoca] = useState(""); // 사용자 주소 담는 state
     const [infoShow, setInfoShow] = useState(false); // 인포창 show

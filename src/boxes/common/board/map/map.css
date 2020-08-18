@@ -92,7 +92,7 @@ input:checked + .slider:before {
     height: 500px;
 }
 .list_table tr td{
-    border: 1px solid seagreen;
+    border: 1px solid #9fa09f;
     text-align: center;
 }
 .list_tr1 {
