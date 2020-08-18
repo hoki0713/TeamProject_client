@@ -6,7 +6,7 @@ import { MerchanDetail, FindByMap, MerchantList, FindBestRoute, Recommendation, 
 
 const CommonContainer = ({ isLogined }) => {
   
-  const [storeInfo, setStoreInfo] = useState({})
+  const [storeInfo, setStoreInfo] = useState({});
 
   return (
     <div className='container'>
@@ -15,10 +15,10 @@ const CommonContainer = ({ isLogined }) => {
       </Route>
 
       <Route path="/find-by-map">
-        <FindByMap isLogined={isLogined} />
+        <FindByMap isLogined={isLogined} setStoreInfo={setStoreInfo} storeInfo={storeInfo}/>
       </Route>
       <Route path="/find-best-route">
-        <FindBestRoute />
+        <FindBestRoute setStoreInfo={setStoreInfo} storeInfo={storeInfo}/>
       </Route>
 
       <Route path="/recommendation">
@@ -35,7 +35,7 @@ const CommonContainer = ({ isLogined }) => {
         <BuyLocalCurrency />
       </Route>
       <Route path="/storeDetail">
-        <MerchanDetail storeInfo={storeInfo} />
+        <MerchanDetail storeInfo={storeInfo} isLogined={isLogined}/>
       </Route>
 
     </div>

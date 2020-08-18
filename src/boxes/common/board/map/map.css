@@ -228,3 +228,21 @@ input:checked + .slider:before {
 .store_addr{
     font-size: 13px
 }
+.store_detail th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.store_detail tr:hover {background-color: #ddd;}
+.store_detail tr:nth-child(even){background-color: #f2f2f2;}
+.store_detail td th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.store_detail {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}

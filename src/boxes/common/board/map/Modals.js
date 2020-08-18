@@ -1,17 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
-import {addr, favStar, phoneB, red, review} from "./mapIcons/imgIndex";
+import {addr, favStar, phoneB, red, review, starIcon} from "./mapIcons/imgIndex";
 import {Link} from "react-router-dom";
 import ReviewModal from "../../../../items/ReviewModal";
 import axios from "axios";
+import {Stars} from "./FindByMap";
 
-
-
-export const MapModal=({storeInfo,modalClose,isLogined})=> {
+export const MapModal=({storeInfo,modalClose,isLogined,setStoreInfo})=> {
     const [reportShow, setReportShow]=useState(false);
     const [reviewShow, setReviewShow]=useState(false);
     const [starShow, setStarShow]=useState(false);
     const iconsize=25;
+
 
     const reportClose=()=>{
         setReportShow(false);
@@ -19,6 +19,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
     const starClose=()=>{
         setStarShow(false);
     }
+
     return (
         <>
             <Modal show={true}
@@ -29,7 +30,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                     <Modal.Title id="contained-modal-title-vcenter">
                         <img src ={storeInfo.icon}
                              alt={"commonStoreImg"} width={40} height={40}/>
-                        &nbsp;<span>{storeInfo.storeName}</span> <br/>
+                        &nbsp;<Link to={'storeDetail'}><span>{storeInfo.storeName}</span></Link> <br/>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="show-grid">
@@ -41,22 +42,22 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
                                 &nbsp;{storeInfo.address}<br/>
                                 <img src={phoneB}
                                      alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{(storeInfo.storePhone!==0)?<>{storeInfo.storePhone}</>:
+                                &nbsp;{(storeInfo.storePhone!=0)?<>{storeInfo.storePhone}</>:
                                 <>000-000-0000</>}
                             </Col>
-                            <Col xs={6} md={4}>
+                             <Col xs={6} md={4}>
                                 <img src={storeInfo.imgUrl}
                                      alt={storeInfo.storeName} width={80} height={80}/>
                             </Col>
                         </Row>
 
                         <Row>
-                            <Col xs={6} md={4}>
+                            <Col xs={5} md={3}>
                                 {storeInfo.storeType}
                             </Col>
-                            <Col xs={6} md={4}>
-                                별점 &nbsp;<img alt={"star"} src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
-                                              width={50} height={30}/>
+                            <Col xs={7} md={5}>
+                                별점 &nbsp;
+                                <Stars storeInfo={storeInfo}/>
 
                             </Col>
                             <Col xs={6} md={4}>
@@ -112,7 +113,7 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
             { reviewShow &&
             <ReviewModal handleClose={()=>setReviewShow(false)}
                          storeName={storeInfo.storeName}
-                         accountDetail={JSON.stringify(sessionStorage.getItem("accountDetail"))}
+                         accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
                          storeId={storeInfo.id}
                          reviewId={null}// findbymap에서는 필요없다
                          onSubmit={()=>{}}// findbymap에서는 필요없다
@@ -125,16 +126,15 @@ export const MapModal=({storeInfo,modalClose,isLogined})=> {
 export const StoreReport=({storeInfo, reportClose,modalClose})=> {
 
     const handleReport = () => {
-        console.log(storeInfo.id)
-        axios
-            .post(`http://localhost:8080/reports/${storeInfo.id}`)
-            .then(() => {
-                alert(`${storeInfo.storeName}에 대한 신고가 완료되었습니다.`);
-                modalClose();
-            })
-            .catch((error) => {
-                throw error;
-            });
+            axios
+                .post(`http://localhost:8080/reports/${storeInfo.id}`)
+                .then(() => {
+                    alert(`${storeInfo.storeName}에 대한 신고가 완료되었습니다.`);
+                    modalClose();
+                })
+                .catch((error) => {
+                    throw error;
+                });
     };
 
     return (
@@ -161,11 +161,24 @@ export const StoreReport=({storeInfo, reportClose,modalClose})=> {
 export const Star =({storeInfo, starClose, modalClose})=> {
 
     const addStore=()=>{
-        modalClose();
+        const data = {
+            userId: JSON.parse(sessionStorage.getItem("accountDetail")).id,
+            storeId: storeInfo.id,
+        };
+        axios
+            .post(`http://localhost:8080/favorites`, data)
+            .then(() => {
+                alert("즐겨찾기에 추가되었습니다.");
+                modalClose();
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
     const handleClose=()=>{
         starClose();
     }
+
 
     return (
         <div className={"star_modal"}>
