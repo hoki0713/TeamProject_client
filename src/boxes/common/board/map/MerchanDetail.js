@@ -9,10 +9,9 @@ import ReviewModal from "../../../../items/ReviewModal";
 import {Star, StoreReport} from "./Modals";
 
 
-const MerchanDetail = ({storeInfo,isLogined}) => {
+const MerchanDetail = ({isLogined}) => {
     const { store } = useContext(StoreSearchContext);
-    const [newStore, setNewStore] = useState({});//가져온 storeInfo 담는 state
-    const [center] = useState({lat:storeInfo.latitude, lng:storeInfo.longitude});//가게좌표
+    const [center] = useState({lat:store.latitude, lng:store.longitude});//가게좌표
     const [reportShow,setReportShow]=useState(false);//신고모달 show
     const [starShow,setStarShow]=useState(false);
     const [reviewShow,setReviewShow]=useState(false);
@@ -24,24 +23,22 @@ const MerchanDetail = ({storeInfo,isLogined}) => {
         setStarShow(false);
     }
     function findRoute(){
-        if(!isLogined){
-            window.open(`
-            http://map.naver.com/index.nhn?
-            &elng=${storeInfo.longitude}&elat=${storeInfo.latitude}&etext=${storeInfo.storeName}&menu=route&pathType=1`,'')
-
-        }
-        else {
+        if(isLogined) {
             let userLoca=JSON.parse(sessionStorage.getItem("userLocation"))
             window.open(`
             http://map.naver.com/index.nhn?slng=${userLoca.lng}&slat=${userLoca.lat}&stext=${JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr}
-            &elng=${storeInfo.longitude}&elat=${storeInfo.latitude}&etext=${storeInfo.storeName}&menu=route&pathType=1`,'')
+            &elng=${store.longitude}&elat=${store.latitude}&etext=${store.storeName}&menu=route&pathType=1`,'');
         }
-    }
-    useEffect(() => {
-        setNewStore(store);
-    },[store])
+        else {
+            window.open(`
+            http://map.naver.com/index.nhn?
+            &elng=${store.longitude}&elat=${store.latitude}&etext=${store.storeName}&menu=route&pathType=1`,'');
 
-    if(storeInfo.starRanking>0){
+        }
+
+    }
+
+    if(store.starRanking>0){
         return (
             <div>
                 <LoadScript
@@ -64,25 +61,25 @@ const MerchanDetail = ({storeInfo,isLogined}) => {
                         >
                             <InfoWindow>
                                 <div>
-                                    <h6>{storeInfo.storeName}</h6>
+                                    <h6>{store.storeName}</h6>
                                     <table>
                                         <tr><td>
-                                            <img src={storeInfo.imgUrl}
-                                                 alt={storeInfo.storeName} width={80} height={80}/>
+                                            <img src={store.imgUrl}
+                                                 alt={store.storeName} width={80} height={80}/>
                                         </td>
                                             <td>
                                                 <img src={addr}
                                                      alt={"addrImg"} width={25} height={25}/>
-                                                &nbsp;{storeInfo.address}<br/>
-                                                {storeInfo.storePhone!=0 &&<><img src={phoneB}
+                                                &nbsp;{store.address}<br/>
+                                                {store.storePhone!=0 &&<><img src={phoneB}
                                                                                   alt={"phoneImg"} width={25} height={25}/>
-                                                    &nbsp; {storeInfo.storePhone}</>}
+                                                    &nbsp; {store.storePhone}</>}
                                             </td></tr>
                                         <tr><td></td>
                                             <td>
-                                                {storeInfo.storeType}
+                                                {store.storeType}
                                                 &nbsp;&nbsp;별점 &nbsp;
-                                                <Stars storeInfo={storeInfo}/> {storeInfo.starRanking}/5
+                                                <Stars store={store}/> {store.starRanking.toFixed(1)}/5
 
                                             </td></tr>
                                         <tr><td></td><td>
@@ -114,8 +111,8 @@ const MerchanDetail = ({storeInfo,isLogined}) => {
                                                 </Link>}
                                         </td></tr>
                                         <tr><td colSpan={2}>{'     '}</td></tr>
-                                        <tr><td colSpan={2}>대분류: {storeInfo.mainCode}</td></tr>
-                                        <tr><td colSpan={2}>소분류: {storeInfo.storeType}</td></tr>
+                                        <tr><td colSpan={2}>대분류: {store.mainCode}</td></tr>
+                                        <tr><td colSpan={2}>소분류: {store.storeType}</td></tr>
 
                                         <tr><td></td>
                                             <td>
@@ -132,7 +129,7 @@ const MerchanDetail = ({storeInfo,isLogined}) => {
                 </LoadScript>
                 {starShow &&
                 <Star
-                    storeInfo={storeInfo}
+                    storeInfo={store}
                     starClose={starClose}
                     modalClose={()=>{}}
                 />
@@ -141,14 +138,14 @@ const MerchanDetail = ({storeInfo,isLogined}) => {
                 {reportShow &&
                 <StoreReport
                     modalClose={()=>{}}
-                    storeInfo={storeInfo}
+                    storeInfo={store}
                     reportClose={reportClose}/>
                 }
                 { reviewShow &&
                 <ReviewModal handleClose={()=>setReviewShow(false)}
-                             storeName={storeInfo.storeName}
+                             storeName={store.storeName}
                              accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
-                             storeId={storeInfo.id}
+                             storeId={store.id}
                              reviewId={null}// findbymap에서는 필요없다
                              onSubmit={()=>{}}// findbymap에서는 필요없다
                 />

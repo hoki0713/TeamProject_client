@@ -4,7 +4,7 @@ import { Card, Spinner } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Recommendation.css";
 
-function Recommendation({setStoreInfo}) {
+function Recommendation() {
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'))
     const [latLng] = useState(JSON.parse(sessionStorage.getItem("LatLng") || '{}'))
     const [lat, setLat] = useState("")
@@ -126,7 +126,7 @@ function Recommendation({setStoreInfo}) {
                     <Card.Img id="card-image" variant="top"
                               src={store.imgUrl}/>
                     <Card.Body>
-                        <Card.Title ><Link to="/storeDetail" onClick={()=>setStoreInfo(store)}>{store.storeName}</Link></Card.Title>
+                        <Card.Title ><Link to="/storeDetail" onClick={()=>{}}>{store.storeName}</Link></Card.Title>
                         <Card.Text>
                             {store.starRanking}
                             <br/>
@@ -149,7 +149,7 @@ function Recommendation({setStoreInfo}) {
                     <Card.Img id="card-image" variant="top"
                               src={store.imgUrl}/>
                     <Card.Body>
-                        <Card.Title><Link to onClick={()=>setStoreInfo(store)}>{store.storeName}</Link></Card.Title>
+                        <Card.Title>{store.storeName}</Card.Title>
                         <Card.Text>
                             {store.address}
                         </Card.Text>
@@ -171,7 +171,7 @@ function Recommendation({setStoreInfo}) {
                           <Card.Img id="card-image" variant="top"
                                     src={store.imgUrl}/>
                           <Card.Body>
-                              <Card.Title id="card-title"><Link to="/storeDetail" onClick={()=>setStoreInfo(store)}>{store.storeName}</Link></Card.Title>
+                              <Card.Title id="card-title">{store.storeName}</Card.Title>
                               <Card.Text>
                                   {store.address}
                               </Card.Text>
@@ -208,7 +208,7 @@ function Recommendation({setStoreInfo}) {
                         <Card.Img id="card-image" variant="top"
                                   src={store.imgUrl}/>
                         <Card.Body>
-                            <Card.Title id="card-title"><Link to="/storeDetail" onClick={()=>setStoreInfo(store)}>{store.storeName}</Link></Card.Title>
+                            <Card.Title id="card-title">{store.storeName}</Card.Title>
                             <Card.Text>
                                 {store.address}
                             </Card.Text>
@@ -244,7 +244,7 @@ function Recommendation({setStoreInfo}) {
                         <Card.Img id="card-image" variant="top"
                                   src={store.imgUrl}/>
                         <Card.Body>
-                            <Card.Title id="card-title"><Link to="/storeDetail" onClick={()=>setStoreInfo(store)}>{store.storeName}</Link></Card.Title>
+                            <Card.Title id="card-title">{store.storeName}</Card.Title>
                             <Card.Text>
                                 {store.address}
                             </Card.Text>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {
     GoogleMap,
     Marker,
@@ -12,10 +12,12 @@ import axios from "axios";
 import { Button, ListGroup } from "react-bootstrap";
 import {libraries, containerStyle, dottedLine, appKey} from "./mapUtils/mapatt";
 import "./map.css";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
 Geocode.setApiKey(appKey);
 
-const FindBestRoute = ({setStoreInfo,storeInfo}) => {
+const FindBestRoute = () => {
+    const {store, setStore} = useContext(StoreSearchContext)
     const [center, setCenter] = useState({}); //지도 센터 좌표
     const [myLoca, setMyLoca] = useState(""); // 사용자 주소 담는 state
     const [infoShow, setInfoShow] = useState(false); // 인포창 show

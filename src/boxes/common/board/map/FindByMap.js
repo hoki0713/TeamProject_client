@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import React, {useEffect, useState, useCallback, useRef, useContext} from 'react';
 
 import {
     GoogleMap,
@@ -19,28 +19,29 @@ import axios from "axios";
 import {libraries,containerStyle,appKey} from "./mapUtils/mapatt";
 import Geocode from "react-geocode";
 import {Link} from "react-router-dom";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
 Geocode.setApiKey(appKey);
 
-export const Stars=({storeInfo})=>{
+export const Stars=()=>{
     const [starArr, setStarArr]=useState([]);
-
+    const {store} = useContext(StoreSearchContext);
     useEffect(()=>{
         let tmpList = [];
-        for(let i=0;i<parseInt(storeInfo.starRanking);i++){
+        for(let i=0;i<parseInt(store.starRanking);i++){
             tmpList[i]=i+1;
         }
         setStarArr(tmpList);
-    }, [storeInfo])
+    }, [store])
 
     return(<>
         {starArr.map(()=>(<img alt={"starIcon"} src ={starIcon} width={20} height={20}/>)
         )}
     </>)
 }
-const FindByMap=({isLogined,setStoreInfo,storeInfo})=> {
+const FindByMap=({isLogined})=> {
 
-
+    const {setStore} = useContext(StoreSearchContext);
     const [map, setMap] = useState(null);
     const [recoList, setRecoList]=useState([]);
     const onUnmount = useCallback(function callback(map) {
@@ -84,8 +85,6 @@ const FindByMap=({isLogined,setStoreInfo,storeInfo})=> {
     useEffect(()=>{
         getLatLng(myLoca);
     },[myLoca]);
-
-
 
     useEffect(()=>{
         if(homePosit.lat){
@@ -150,8 +149,6 @@ const FindByMap=({isLogined,setStoreInfo,storeInfo})=> {
                 <MapModal
                     isLogined={isLogined}
                     modalClose={()=>setModalShow(false)}
-                    storeInfo={storeInfo}
-                    setStoreInfo={setStoreInfo}
                 />
             )}
             <table className="findmap">
@@ -183,7 +180,7 @@ const FindByMap=({isLogined,setStoreInfo,storeInfo})=> {
                                     key={i}
                                     position={{lat:store.latitude, lng: store.longitude}}
                                     onClick={()=>{
-                                        setStoreInfo(store);
+                                        setStore(store);
                                         setCenter({lat:store.latitude, lng: store.longitude});
                                         setModalShow(true);
                                     }}
@@ -219,17 +216,17 @@ const FindByMap=({isLogined,setStoreInfo,storeInfo})=> {
                                 <>
                                     <tr style={{cursor:"pointer"}}
                                         onClick={e=>{e.preventDefault();
-                                            setStoreInfo(store);
+                                            setStore(store);
                                             setModalShow(true);
                                         }}><td className={"side_td_1"}>
                                         <h7> &nbsp;추천!!</h7>
                                         <img alt={"storeIcon"} src={recoInfo} style={{width:25, height:25}}/></td>
                                         <td className={"side_td_2"}> <img alt={"storeImg"} src={store.imgUrl} style={{width:60, height:60}}/></td>
-                                        <td className={"side_td_3"}> &nbsp;<Link to={'/storeDetail'} onClick={setStoreInfo(storeInfo)}><strong>{store.storeName}</strong></Link><br/>
+                                        <td className={"side_td_3"}> &nbsp;<Link to={'/storeDetail'} onClick={setStore(store)}><strong>{store.storeName}</strong></Link><br/>
                                             &nbsp;<text className={"store_addr"}>{store.address}</text></td>
                                     </tr>
                                     <tr><td colSpan={2}/><td className={"side_tr_2"}>별점
-                                        &nbsp;<Stars storeInfo={store}/></td></tr>
+                                        &nbsp;<Stars/></td></tr>
                                 </>
                             ))}
                         </table>
