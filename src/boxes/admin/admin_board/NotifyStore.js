@@ -7,6 +7,7 @@ import axios from 'axios';
 
 
 const NotifyStore = () => {
+  const [searchWord,setSearchWord] =useState("");
   const[reportList,setReportList] = useState([]);
   const [currentPage,setCurrentPage] = useState(1);
   const [postPerPage] = useState(10);
@@ -57,15 +58,24 @@ const NotifyStore = () => {
     })
   }
 
+  const sotreSearch = (searchWord) =>{
+      alert(searchWord)
+  }
+
 
 
   return (
     <div>
       
       <div className="input-group">
-        <input type="text" className="form-control" placeholder="가맹점 번호/이름 검색" />
+        <input type="text" className="form-control" 
+        value={searchWord}
+        placeholder="가맹점 번호/이름 검색"
+        onChange={e => setSearchWord(e.target.value)}
+         />
         <div className="input-group-append">
-            <button className="btn btn-primary" type="button">
+            <button className="btn btn-primary" type="button"
+            onClick={()=>sotreSearch(searchWord)}>
               검색
             </button>
         </div>
@@ -92,7 +102,7 @@ const NotifyStore = () => {
             <td><Link to={`/admin/store-detail/${info.id}`}>{info.storeName}</Link></td>
            <td>{info.address}</td>
           <td>{info.mainCode}</td>
-           <th>{info.storePhone}</th>
+           <td>{info.storePhone}</td>
            <td><button onClick={()=>reportinitial(info.id)}>가맹점 표시 해제</button></td>
            
            </tr>

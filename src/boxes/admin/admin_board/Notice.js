@@ -53,6 +53,8 @@ export const postListThunk = () => (dispatch) => {
 
 const Notice = () => {
 
+    const [categorySelect,setCategorySelect] = useState("");
+
     const [postList, setPostList] = useState([]);
     const [currentPage,setCurrentPage] = useState(1);
     const [postPerPage] = useState(5);
@@ -95,6 +97,21 @@ const Notice = () => {
 
     const handleSearch = (searchWord) => {
         alert(searchWord);
+        
+            axios
+            .get(`http://localhost:8080/posts/notice/search`,{
+                params:{
+                    searchWord:searchWord,
+                    categorySelect:categorySelect
+                }
+            })
+            .then((res)=>{
+                setPostList(res.data)
+            })
+            .catch((err)=>{
+                throw err;
+            })
+        
     }
 
 
@@ -103,16 +120,12 @@ const Notice = () => {
             <div className="content-title">
                 <h2 className="menu-h2"> - 공지사항</h2>
                 <div id="select-search-bar">
-                    <select id="select" className="form-control">
-                        <option value="">선택</option>
-                        <option>제목</option>
-                        <option>내용</option>
-                        <option>제목 및 내용</option>
-                    </select>
-                    <select className="form-control" id="select">
+                <select className="form-control" id="select"
+                value={categorySelect}
+                onChange={e=>setCategorySelect(e.target.value)}>
                         <option value="">카테고리</option>
-                        <option>지역</option>
-                        <option>사이트</option>
+                        <option value="지역">지역화폐</option>
+                        <option value="사이트">사이트</option>
                     </select>
                     <span id="search-bar">
                         <SearchBar onSearch={handleSearch} />

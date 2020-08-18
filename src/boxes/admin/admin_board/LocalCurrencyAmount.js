@@ -39,11 +39,12 @@ const LocalCurrencyAmount = () => {
   const [localSelect,setLocalSelect]=useState("");
   const [useTotalLocalKeys,setUseTotalLocalKeys] = useState([]);
   const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
+  const [currencyListStartDate,setCurrencyListStartDate] = useState("");
+  const [currencyListEndDate,setCurrencyListEndDate] = useState("");
+  
   const [salesList,setSalesList] = useState([]);
-
   const [currentPage,setCurrentPage] = useState(1);
-    const [postPerPage] = useState(15);
-
+  const [postPerPage] = useState(15);
     const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
     const currentPosts = salesList.slice(indexOfFirstPost,indexOfLastPost);
@@ -66,6 +67,8 @@ const LocalCurrencyAmount = () => {
             setCurrentPage(currentPage-1)
         }
        };
+
+
   
 
   useEffect(()=>{
@@ -173,6 +176,8 @@ const LocalCurrencyAmount = () => {
 
 
 
+
+  let today = new Date();
   const start_end_date = e => {
     e.preventDefault();
 
@@ -210,20 +215,13 @@ const LocalCurrencyAmount = () => {
     }
   };
 
-  const currencyNameCheck = (e) =>{
-    e.preventDefault()
-
-    setCurrencyName(e.target.value)
-  }
-
-
   const use_start_end_date = e =>{
     e.preventDefault();
 
     if (useStartDate > useEndDate) {
       alert("시작날짜보다 빠를수 없습니다.");
       setUseEndDate("");
-    }else if(useStartDate ==="" ||useEndDate ===""  ){
+    }else if(currencyListStartDate ==="" ||currencyListStartDate ===""  ){
       alert(`기간을 선택해주세요`)
     }else if(localSelect===""){alert(`지역을 선택해주세요`)}
      else if(startDate.split("-")[0]!==endDate.split("-")[0]){ alert(` 같은년도 이내로 선택해주세요.`) }
@@ -250,13 +248,39 @@ const LocalCurrencyAmount = () => {
   }
 
 
+
   const handleSearch = (searchWord) => {
+   
     alert(searchWord);
-    if (startDate > endDate) {
+    if (currencyListStartDate > currencyListEndDate) {
       alert(`시작날짜보다 빠를 수 없습니다.`);
       setEndDate("");
-    }
-  };
+    }else if(currencyListStartDate ==="" ||currencyListEndDate ===""  ){
+      alert(`기간을 선택해주세요`)
+    }else if(citySelect===""){alert(`지역을 선택해주세요`)}
+     else if(currencyListStartDate.split("-")[0]!==currencyListEndDate.split("-")[0])
+     { alert(` 같은년도 이내로 선택해주세요.`)  }
+     else if(useStatusSelect ==="") {alert('상태를 선택해 주세요')}
+     else {
+       
+       axios
+        .get(`http://localhost:8080/admins/sales/search`,{
+          params:{
+            currencyListStartDate:currencyListStartDate,
+           currencyListEndDate:currencyListEndDate,
+          useStatusSelect:useStatusSelect,
+            citySelect:citySelect,
+            searchWord:searchWord
+          }
+        })
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=>{
+            throw err;
+        })
+     }
+  }
 
   return (
     <div>
@@ -317,7 +341,7 @@ const LocalCurrencyAmount = () => {
         <select
           id="currencyTotal-select-currency"
           value={currencyName}
-          onChange={currencyNameCheck}
+          onChange={e=>setCurrencyName(e.target.value)}
         >
           <option value="" selected>화폐명</option>
           <option value="고양">고양시 지역화폐</option>
@@ -359,7 +383,6 @@ const LocalCurrencyAmount = () => {
           ></input>
           <h4 className="currencyTotal-data"> &nbsp; ~ &nbsp; </h4>
           <input
-            min=""
             type="date"
             value={useEndDate}
             onChange={e=>setUseEndDate(e.target.value)}
@@ -437,8 +460,8 @@ const LocalCurrencyAmount = () => {
           onChange={e=>setCitySelect(e.target.value)}
         >
           <option selected>시도</option>
-          <option>의정부시</option>
-          <option>고양시</option>
+          <option value="고양">고양시</option>
+          <option value="의정부">의정부시</option>
           <option>수원시</option>
         </select>
         <select
@@ -454,15 +477,15 @@ const LocalCurrencyAmount = () => {
           <input
             className="currency_startdate"
             type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            value={currencyListStartDate}
+            onChange={(e) => setCurrencyListStartDate(e.target.value)}
           ></input>
           <h4 className="currency_date_h4"> ~ </h4>
           <input
             className="currency_enddate"
             type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+            value={currencyListEndDate}
+            onChange={(e) => setCurrencyListEndDate(e.target.value)}
           ></input>
           <div id="localCurrency_search_bar">
             <SearchBar onSearch={handleSearch} />
