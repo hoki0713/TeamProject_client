@@ -39,7 +39,7 @@ const NotifyStore = () => {
     axios
     .get(`http://localhost:8080/admins/report/list`)
     .then((res)=>{
-      console.log(res.data.report)
+  
       setReportList(res.data.report)
     })
     .catch((err)=>{
@@ -59,7 +59,15 @@ const NotifyStore = () => {
   }
 
   const sotreSearch = (searchWord) =>{
-      alert(searchWord)
+    
+      axios
+        .get(`http://localhost:8080/admins/store/search/${searchWord}`)
+        .then((res)=>{
+          setReportList(res.data)
+        })
+        .catch((err)=>{
+            throw err;
+        })
   }
 
 
