@@ -11,6 +11,7 @@ const MerchanDetail = () => {
 
     useEffect(() => {
         setNewStore(store);
+        console.log(newStore)
     },[store])
 
 

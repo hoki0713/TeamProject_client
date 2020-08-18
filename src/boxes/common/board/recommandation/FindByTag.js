@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {CardDeck, Card, Button, Form, Row, Col, ListGroup} from 'react-bootstrap'
 import axios from 'axios'
 import {useSelector} from "react-redux";
 import Geocode from "react-geocode";
 import './Recommendation.css'
-
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
+import {useHistory} from 'react-router-dom'
 
 function FindByTag() {
 
@@ -28,7 +29,9 @@ function FindByTag() {
     const [ageKor, setAgeKor] = useState("연령")
     const [show, setShow] = useState(false)
     const [option, setOption] = useState(0)
-
+    const {setStore} = useContext(StoreSearchContext);
+    const [clickedStore, setClickedStore] = useState({})
+    const history= useHistory();
 
 
 
@@ -194,6 +197,11 @@ function FindByTag() {
             })
     }
 
+    const clickStore = (store)=>{
+        setStore(store);
+        history.push("/storeDetail");
+    }
+
 
     return (
         <>
@@ -295,7 +303,7 @@ function FindByTag() {
                             <Card.Img id="card-image" variant="top"
                                       src={store.imgUrl}/>
                             <Card.Body>
-                                <Card.Title>{store.storeName}</Card.Title>
+                                <Card.Title onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
                                 <Card.Text>
                                     {store.address}<br/>
                                     별점 : {store.starRanking}
