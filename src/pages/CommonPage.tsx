@@ -18,8 +18,6 @@ const CommonPage = () => {
 
     useEffect(() => {
         refreshUser(accountDetail.id)
-        console.log(accountDetail);
-        console.log(isLogined);
     }, [accountDetail]);
 
     return (
