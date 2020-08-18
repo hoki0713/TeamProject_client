@@ -31,9 +31,9 @@ function App() {
             <Page />
           </Route>
         </Switch>
-
       </Provider>
     </BrowserRouter>
+
   );
 }
 

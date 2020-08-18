@@ -1,47 +1,55 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
-import ReviewModal from '../../../../items/ReviewModal'
+import React, {useEffect, useState, useCallback, useRef, useContext} from 'react';
+
 import {
     GoogleMap,
     Marker,
     InfoWindow, LoadScript,
 } from "@react-google-maps/api";
 import './map.css'
-import {Star} from "./Modals";
 import {
     homeIcon,
-    red,
-    review,
-    addr,
-    phoneB,
-    favStar,
     hospIcon,
     chinaIcon,
     conviStore,
     drug,
-    cafe, hotelIcon, soju, bab, normal,recom
+    cafe, hotelIcon, soju, bab, normal,recom,starIcon,recoInfo
 } from './mapIcons/imgIndex'
-import {Button, Col, Container, Modal, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {MapModal} from "./Modals";
 import axios from "axios";
-import {libraries,containerStyle} from "./mapUtils/mapatt";
+import {libraries,containerStyle,appKey} from "./mapUtils/mapatt";
 import Geocode from "react-geocode";
+import {Link} from "react-router-dom";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
+Geocode.setApiKey(appKey);
 
-Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
+export const Stars=()=>{
+    const [starArr, setStarArr]=useState([]);
+    const {store} = useContext(StoreSearchContext);
+    useEffect(()=>{
+        let tmpList = [];
+        for(let i=0;i<parseInt(store.starRanking);i++){
+            tmpList[i]=i+1;
+        }
+        setStarArr(tmpList);
+    }, [store])
 
-
+    return(<>
+        {starArr.map(()=>(<img alt={"starIcon"} src ={starIcon} width={20} height={20}/>)
+        )}
+    </>)
+}
 const FindByMap=({isLogined})=> {
 
-
+    const {setStore} = useContext(StoreSearchContext);
     const [map, setMap] = useState(null);
     const [recoList, setRecoList]=useState([]);
     const onUnmount = useCallback(function callback(map) {
         setMap(null);
     }, [])
-    const [center,setCenter]=useState({lat: 37.73633262, lng: 127.0447991});
+    const [center,setCenter]=useState({});
     const [modalShow, setModalShow] = useState(false);
     const [homePosit,setHomePosit]=useState({});
-    const [storeInfo,setStoreInfo]=useState({});
     const [myLoca,setMyLoca] = useState("");
     const [storeList, setStoreList] =useState([]);
     const mapRef = useRef();
@@ -67,203 +75,85 @@ const FindByMap=({isLogined})=> {
     }//get user latitude and longitude from user address
 
     useEffect(()=>{
-        console.log(isLogined);//check 하고 없애기
         if(isLogined){
             setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+        }else{
+            setMyLoca("경기도 의정부시");
         }
     },[isLogined]);
 
     useEffect(()=>{
-        if(isLogined){
-            getLatLng(myLoca);
-        }
+        getLatLng(myLoca);
     },[myLoca]);
-  
-    useEffect(()=>{
-        console.log("useEffect getStoreList")
-        if(!storeList[0]) {
-            if(!isLogined){
-                axios.get(`http://localhost:8080/stores/mapClick/${sessionStorage.getItem("")}`)
-                    .then(({data})=>{
-                        let temList =[]
-                        data.list.forEach(elem=>{
-                            switch (elem.storeType) {
-                                case "의원": elem.icon = hospIcon; temList.push(elem); return;
-                                case "중국식": elem.icon =chinaIcon; temList.push(elem); return;
-                                case "편의점": elem.icon = conviStore; temList.push(elem);return;
-                                case "약국": elem.icon = drug; temList.push(elem); return;
-                                case "기타음료식품": elem.icon=cafe; temList.push(elem); return;
-                                case "숙박업": elem.icon = hotelIcon; temList.push(elem); return;
-                                case "주점": elem.icon = soju; temList.push(elem); return;
-                                case "일반한식": elem.icon = bab; temList.push(elem); return;
-                                default:elem.icon = normal; temList.push(elem); return;
-                            }
-                        });
-                        setStoreList(temList);})
-                    .catch(err=>{throw(err)});
-            }
-        }
-    },[storeList,recoList],);
-  
+
     useEffect(()=>{
         if(homePosit.lat){
-            console.log(homePosit);
             axios.get(`http://localhost:8080/stores/fromAddr/${homePosit.lat}/${homePosit.lng}`)
                 .then(({data})=>{
                     let temList =[];
                     let bestList =[];
-                    data.list.forEach(elem=>{
-                        switch (elem.storeType.toString()) {
-                            case "의원": elem.icon = hospIcon; temList.push(elem); return;
-                            case "중국식": elem.icon =chinaIcon; temList.push(elem); return;
-                            case "편의점": elem.icon = conviStore; temList.push(elem);return;
-                            case "약국": elem.icon = drug; temList.push(elem); return;
-                            case "기타음료식품": elem.icon=cafe; temList.push(elem); return;
-                            case "숙박업": elem.icon = hotelIcon; temList.push(elem); return;
-                            case "주점": elem.icon = soju; temList.push(elem); return;
-                            case "일반한식": elem.icon = bab; temList.push(elem); return;
-                            default:elem.icon = normal; temList.push(elem); return;
-                        };
-                    });
-                    let searchResultCount = "searchResultCount"
-                    temList.sort(function(a, b) {
-                        return b[searchResultCount] - a[searchResultCount];
-                    });
-                    for(let i=0;i<20;i++){
-                        temList[i].icon=recom;
+                    if(data.list.length>0){
+                        data.list.forEach(elem=>{
+                            switch (elem.storeType) {
+                                case "의원": elem.icon = hospIcon; temList.push(elem); break;
+                                case "중국식": elem.icon =chinaIcon; temList.push(elem); break;
+                                case "편의점": elem.icon = conviStore; temList.push(elem);break;
+                                case "약국": elem.icon = drug; temList.push(elem); break;
+                                case "주점": elem.icon = soju; temList.push(elem); break;
+                                case "일반한식": if(!elem.storeName.includes("카페")){elem.icon = bab; }
+                                else {elem.icon=cafe;}temList.push(elem); break;
+                                default:switch (elem.mainCode) {
+                                    case "의원": elem.icon = hospIcon; temList.push(elem); break;
+                                    case "중국식": elem.icon =chinaIcon; temList.push(elem); break;
+                                    case "약국": elem.icon = drug; temList.push(elem); break;
+                                    case "숙박업": elem.icon = hotelIcon; temList.push(elem); break;
+                                    case "주점": elem.icon = soju; temList.push(elem); break;
+                                    case "일반한식": if(!elem.storeName.includes("카페")){elem.icon = bab; }
+                                    else {elem.icon=cafe;}temList.push(elem); break;
+                                    default:elem.icon = normal; temList.push(elem); break;
+                                }
+                            }
+                        });
+                        let searchResultCount = "searchResultCount";
+                        let starRanking = "starRanking";
+                        temList.sort(function(a, b) {
+                            return b[searchResultCount] - a[searchResultCount];
+                        });
+                        for(let i=0;i<20;i++){
+                            temList[i].icon=recom;
+                        }
+                        temList.sort(function(a, b) {
+                            return b[starRanking] - a[starRanking];
+                        });
+
+                        for(let i=0; i<5;i++){
+                            bestList[i]=temList[i];
+                        }
+                        setRecoList(bestList);
+                        setStoreList(temList);}
+                    else {
+                        alert("주변에 가맹점이 없습니다.")
                     }
-                    for(let i=0; i<5;i++){
-                        bestList[i]=temList[i];
-                    }
-                    setRecoList(bestList);
-                    setStoreList(temList);})
+                })
                 .catch(err=>{console.log(err);throw err;})
 
         };
     },[homePosit])
 
-    const StoreReport=(props)=> {
 
-        return (
-            <div>
 
-                <Modal {...props}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>가맹점 신고하기</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body style={{"text-align":"center"}}>
-                        <img alt={"storeIcon"} src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={40} height={40}
-                        /><br/>
-                        &nbsp; <h4>{storeInfo.storeName}</h4>&nbsp;에서 지역화폐를 받지 않습니까?
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={props.onHide}>취소</Button>
-                        <Button variant="danger" onClick={props.onHide} >신고하기</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-
-        );
-    };
-
-    const MapModal=(props)=> {
-        const [reportShow, setReportShow]=useState(false);
-        const [reviewShow, setReviewShow]=useState(false);
-        const [starShow, setStarShow]=useState(false);
-        const iconsize=25;
-        return (
-            <>
-                <Modal {...props} aria-labelledby="contained-modal-title-vcenter"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title-vcenter">
-                            <img src ={storeInfo.icon}
-                                 alt={"commonStoreImg"} width={40} height={40}/>
-                            &nbsp;{storeInfo.storeName} <br/>
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className="show-grid">
-                        <Container>
-                            <Row>
-                                <Col xs={12} md={8}>
-                                    <img src={addr}
-                                         alt={"addrImg"} width={iconsize} height={iconsize}/>
-                                    &nbsp;{storeInfo.address}<br/>
-                                    <img src={phoneB}
-                                         alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                    &nbsp;{(storeInfo.storePhone!==0)?<>{storeInfo.storePhone}</>:
-                                    <>000-000-0000</>}
-                                </Col>
-                                <Col xs={6} md={4}>
-                                    <img src={storeInfo.imgUrl}
-                                         alt={storeInfo.storeName} width={80} height={80}/>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col xs={6} md={4}>
-                                    {storeInfo.storeType}
-                                </Col>
-                                <Col xs={6} md={4}>
-                                    별점 &nbsp;<img alt={"star"} src={'https://media.istockphoto.com/vectors/five-stars-rating-vector-id1152705981'}
-                                                  width={50} height={30}/>
-
-                                </Col>
-                                <Col xs={6} md={4}>
-                                    {sessionStorage.getItem("accountDetail")
-                                        ?
-                                        <table>
-                                            <tr><td> <img alt={"report"}
-                                                          src={red} width={iconsize} height={iconsize}
-                                                          onClick={()=>{setReportShow(true)}}
-                                            />&nbsp;신고하기</td></tr>
-                                            <tr><td><img alt={"favIcon"}
-                                                         src={favStar} width={iconsize} height={iconsize}
-                                                         onClick={()=>{setStarShow(true)}}
-                                            />&nbsp;즐겨찾기</td></tr>
-                                            <tr><td><img alt={"reviewIcon"}
-                                                        src={review} width={iconsize} height={iconsize}
-                                                         onClick={()=>{setReviewShow(true)}}
-                                            />&nbsp;리뷰</td></tr>
-                                        </table>:
-                                        <Link to={'/account/login'}>
-                                            <table>
-                                                <tr><td> <img alt={"report"} src={red} width={iconsize} height={iconsize}
-                                                />&nbsp;신고하기</td></tr>
-                                                <tr><td><img alt={"favIcon"} src={favStar} width={iconsize} height={iconsize}
-                                                />&nbsp;즐겨찾기</td></tr>
-                                                <tr><td><img alt={"reviewIcon"} src={review} width={iconsize} height={iconsize}
-                                                />&nbsp;리뷰</td></tr>
-                                            </table>
-                                        </Link>
-                                    }
-                                </Col>
-                            </Row>
-                        </Container>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={props.onHide}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-                <StoreReport setReportShow storeInfo show={reportShow} onHide={()=>setReportShow(false)}/>
-                { reviewShow &&
-                <ReviewModal handleClose={()=>setReviewShow(false)}
-                             storeName={storeInfo.storeName}
-                             accountDetail={JSON.stringify(sessionStorage.getItem("accountDetail"))}
-                             storeId={storeInfo.id}
-                             reviewId={null}/>
-                }
-                <Star storeInfo show={starShow} onHide={()=>setStarShow(false)}/>
-            </>
-        );
-    }
     return (
         <>
             <h3>지도로 찾기</h3>
-            <MapModal show={modalShow} onHide={() => setModalShow(false)}/>
+            {modalShow && (
+                <MapModal
+                    isLogined={isLogined}
+                    modalClose={()=>setModalShow(false)}
+                />
+            )}
             <table className="findmap">
                 <tr><td>
-                    {sessionStorage.getItem("accountDetail")&&<>
+                    {isLogined&&<>
                         <img src={homeIcon} alt={"집"} onClick={e => {
                             e.preventDefault();
                             showHome();}}
@@ -276,7 +166,7 @@ const FindByMap=({isLogined})=> {
                 </tr>
                 <tr><td colSpan={2} className="td-left">
                     <LoadScript
-                        googleMapsApiKey="AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY"
+                        googleMapsApiKey={appKey}
                         libraries={libraries}>
                         <GoogleMap
                             mapContainerStyle={containerStyle}
@@ -284,23 +174,22 @@ const FindByMap=({isLogined})=> {
                             onUnmount={onUnmount}
                             zoom={16}
                             onLoad={onMapLoad}
-
                         >
                             {storeList.map((store, i) => (
                                 <Marker
-                                key={i}
-                                position={{lat:store.latitude, lng: store.longitude}}
-                                onClick={()=>{
-                                setModalShow(true);
-                                setStoreInfo(store);
-                                setCenter({lat:store.latitude, lng: store.longitude})
-                            }}
-                                title={store.storeName}
-                                store={store}
-                                animation={4}
-                                icon={{url: store.icon ,
-                                scaledSize: {width:30, height:30}
-                            }}
+                                    key={i}
+                                    position={{lat:store.latitude, lng: store.longitude}}
+                                    onClick={()=>{
+                                        setStore(store);
+                                        setCenter({lat:store.latitude, lng: store.longitude});
+                                        setModalShow(true);
+                                    }}
+                                    title={store.storeName}
+                                    store={store}
+                                    animation={4}
+                                    icon={{url: store.icon ,
+                                        scaledSize: {width:30, height:30}
+                                    }}
                                 />
 
                             ))}
@@ -325,14 +214,19 @@ const FindByMap=({isLogined})=> {
 
                             {recoList.map((store, i)=>(
                                 <>
-                                <tr><td style={{width:60, height:60}}>
-                                    <img src={store.icon} alt={"storeicon"} width={25} height={25}/>
-                                        <img src={store.imgUrl} alt={"storeImg"} style={{width:50,height:50}}/>
-
-                                    </td><td style={{width:"70%"}}><h4><b>{store.storeName}</b></h4>
-                                    <p>{store.address}</p></td></tr>
-                                    <tr><td>
-                                    </td><td></td></tr>
+                                    <tr style={{cursor:"pointer"}}
+                                        onClick={e=>{e.preventDefault();
+                                            setStore(store);
+                                            setModalShow(true);
+                                        }}><td className={"side_td_1"}>
+                                        <h7> &nbsp;추천!!</h7>
+                                        <img alt={"storeIcon"} src={recoInfo} style={{width:25, height:25}}/></td>
+                                        <td className={"side_td_2"}> <img alt={"storeImg"} src={store.imgUrl} style={{width:60, height:60}}/></td>
+                                        <td className={"side_td_3"}> &nbsp;<Link to={'/storeDetail'} onClick={setStore(store)}><strong>{store.storeName}</strong></Link><br/>
+                                            &nbsp;<text className={"store_addr"}>{store.address}</text></td>
+                                    </tr>
+                                    <tr><td colSpan={2}/><td className={"side_tr_2"}>별점
+                                        &nbsp;<Stars/></td></tr>
                                 </>
                             ))}
                         </table>

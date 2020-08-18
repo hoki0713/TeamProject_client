@@ -76,11 +76,7 @@ input:checked + .slider:before {
     margin: 2%;
 
 }
-.mapSide tr td {
-    height: 100%;
-    width: 100%;
-    border: 1px solid #444444;
-}
+
 .td-left{
     width: 70%;
     padding-top: 2%;
@@ -189,4 +185,64 @@ input:checked + .slider:before {
     background-color: #e0be6c;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
+}
+
+.side_tr_2{
+    min-height: 150px;
+    margin-bottom: 100px;
+}
+.store_name{
+    font-size: 30px;
+}
+.add{
+    text-decoration: underline;
+}
+.addstarB{
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #322323;
+    background-color: #f5ee7b;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 7px #a76a34;
+}
+.cancelB{
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #f1eded;
+    background-color: #b1b1b1;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 7px #262525;
+}
+.store_addr{
+    font-size: 13px
+}
+.store_detail th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.store_detail tr:hover {background-color: #ddd;}
+.store_detail tr:nth-child(even){background-color: #f2f2f2;}
+.store_detail td th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.store_detail {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
 }

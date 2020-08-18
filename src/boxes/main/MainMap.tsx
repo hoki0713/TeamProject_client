@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { MapImage } from '../../items';
-import { Link } from 'react-router-dom';
-import {useEffect} from "react";
+import { useHistory } from 'react-router-dom';
 
 const pointArray: object = {
   "연천군": "226, 57, 327, 169 ",
@@ -14,8 +13,8 @@ const pointArray: object = {
   "고양시": "150, 349 , 214, 401",
   '김포시': "36, 333 , 107, 396",
   '남양주시': "341, 343, 427, 408",
-  '구리시': "303, 405 , 341, 432" ,
-  '하남시': "341, 448 , 381, 470" ,
+  '구리시': "303, 405 , 341, 432",
+  '하남시': "341, 448 , 381, 470",
   '양평군': "472, 432 , 599, 515",
   '광주시': "370, 498 , 450, 562",
   '여주시': "530, 548 , 619, 654",
@@ -34,32 +33,34 @@ const pointArray: object = {
   '부천시': "143, 457 , 177, 483",
   '광명시': "185, 484 , 225, 508",
   '성남시': "298, 514 , 336, 548",
-  '시흥시': "146, 524 , 192, 552" 
+  '시흥시': "146, 524 , 192, 552"
 }
 
 
-function MainMap() {
-  useEffect(()=>{
-    sessionStorage.setItem("location","")
-  })
+const MainMap = () => {
+
+  const history = useHistory();
+
   return (
-    <div className="container">
+    <div className="container map">
       <MapImage />
       <map name="mainMap" id="mainMap">
-        {Object.entries(pointArray).map(([key, value])=>
-            <Link to={'/find-by-map'}>
-              <area shape="rect" coords={value} alt={key}
-                    onClick={ () => {alert(`${key} 클릭!`);
-                    sessionStorage.setItem("location", key)
-            }} /></Link>
+        {Object.entries(pointArray).map(([key, value]) =>
+
+          <area shape="rect" coords={value} alt={key}
+            onClick={() => {
+              alert(`${key} 클릭!`);
+              sessionStorage.setItem("location", key);
+              history.push("/find-by-map")
+            }} />
+
         )}
       </map>
     </div>
   );
 }
 
-export default MainMap;     
-         
-         
-         
-         
+export default MainMap;
+
+
+

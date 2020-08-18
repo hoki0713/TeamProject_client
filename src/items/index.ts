@@ -3,7 +3,7 @@ import LoginLink from './LoginLink';
 import Logo from './Logo';
 import MapImage from './MapImage';
 import MenuIcon from './MenuIcon';
-import SearchBar from './SearchBar';
+import StoreSearchBar from './StoreSearchBar';
 import SignUpLink from './SignUpLink';
 import PostcodeButton from './PostcodeButton';
 import PaginationItem from "./Pagination.js";
@@ -11,6 +11,8 @@ import LoginedAccountChecker from './LoginedAccountChecker';
 import FindIdPasswordLink from './FindIdPasswordLink';
 import StarRating from './StarRating.js';
 import ReviewModal from './ReviewModal';
+import SearchBar from './SearchBar.js';
+import NewPagination from './NewPagination.js';
 
 export {
     ChatbotIcon,
@@ -18,7 +20,7 @@ export {
     Logo,
     MapImage,
     MenuIcon,
-    SearchBar,
+    StoreSearchBar,
     SignUpLink,
     PostcodeButton,
     PaginationItem,
@@ -26,4 +28,6 @@ export {
     FindIdPasswordLink,
     StarRating,
     ReviewModal,
+    SearchBar,
+    NewPagination
 }

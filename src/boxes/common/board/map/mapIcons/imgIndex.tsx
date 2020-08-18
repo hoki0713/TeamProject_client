@@ -17,9 +17,10 @@ import storeIcon from './store.png'
 import hotelIcon from './hotelIcon.png'
 import chinaIcon from './chinaFoodIcon.png'
 import conviStore from './conviStore.png'
-import bab from './babIcon.png'
+import bab from './bobIcon.png'
 import soju from './sojuIcon.png'
 import arrowMarker from './arrowMarker.png'
 import recoInfo from './recoInfo.png'
-export {arrowMarker,homeIcon2,bab,soju, conviStore,chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
+import starIcon from './starIcon.png'
+export {starIcon,arrowMarker,homeIcon2,bab,soju, conviStore,chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
     hospIcon,normal,phoneB,recom,review,selected,storeIcon,recoInfo}

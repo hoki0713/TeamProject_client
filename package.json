@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "react-geocode": "^0.2.1",
-    "react-google-autocomplete": "^1.2.6"
+    "react-google-autocomplete": "^1.2.6",
+    "reactstrap": "^8.5.1"
   }
 }
