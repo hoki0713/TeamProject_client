@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./LocalCurrencyAmount.css";
 import { Table } from "react-bootstrap";
-import { SearchBar } from "../../../items";
+import { SearchBar, PaginationItem } from "../../../items";
 import { Line, Bar } from "react-chartjs-2";
 import axios from "axios";
 
@@ -39,11 +39,45 @@ const LocalCurrencyAmount = () => {
   const [localSelect,setLocalSelect]=useState("");
   const [useTotalLocalKeys,setUseTotalLocalKeys] = useState([]);
   const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
-  
+  const [salesList,setSalesList] = useState([]);
+
+  const [currentPage,setCurrentPage] = useState(1);
+    const [postPerPage] = useState(15);
+
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPosts = salesList.slice(indexOfFirstPost,indexOfLastPost);
+ 
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const nextPage = () =>{ 
+        if(currentPage<currentPosts.length){
+            setCurrentPage(currentPage+1)} 
+            else if(postPerPage<currentPosts.length){
+                setCurrentPage(currentPage+1)
+            } else{
+                setCurrentPage(currentPage)
+            }
+        }
+           
+    const prevPage = () => { 
+        if(currentPage>1){
+            setCurrentPage(currentPage-1)
+        }
+       };
   
 
   useEffect(()=>{
-
+      axios
+        .get(`http://localhost:8080/admins/sales/list`)
+        .then((res)=>{
+          
+            setSalesList(res.data.sales)
+        })
+        .catch((err)=>{
+          throw err;
+        })
   },[])
 
   useEffect(()=>{
@@ -88,14 +122,14 @@ const LocalCurrencyAmount = () => {
     axios
     .get(`http://localhost:8080/admins/useChart/total`)
     .then((res)=>{
-      console.log(`resdata-${res.data}`)
+     
       const dataKeys = [];
       const dataValues = [];
 
       Object.entries(res.data).forEach(([key,value])=>{
           dataKeys.push(key)
           dataValues.push(value)
-          console.log(`key${key}`)
+         
       })
       setUseTotalLocalKeys(dataKeys)
       setUseTotalLocalValues(dataValues)
@@ -438,7 +472,6 @@ const LocalCurrencyAmount = () => {
         <Table className="Table">
           <tr>
             <th>No</th>
-            <th>일련번호</th>
             <th>상태</th>
             <th>지역명 및 지역화폐</th>
             <th>구매자</th>
@@ -446,18 +479,25 @@ const LocalCurrencyAmount = () => {
             <th>사용일 또는 취소일</th>
           </tr>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Table cell</td>
-              <td>ta</td>
-              <td>Table cell12</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
+            {currentPosts.map((info,i)=>(
+                 <tr key={i}>
+                 <td>{i+(indexOfFirstPost+1)}</td>
+                 <td>{info.currencyState}</td>
+            <td>{info.localCurrencyName}</td>
+                 <td>{info.userId}</td>
+                 <td>{info.salesDate}</td>
+            {info.useDate !=="" && <td>{info.useDate}</td>
+            || info.cancelDate !=="" && <td>{info.cancelDate}</td> }     
+               </tr>
+            ))}
+           
           </tbody>
         </Table>
       </div>
+        </div>
+
+        <div>
+        <PaginationItem postPerPage={postPerPage} TotalPostList={salesList.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} />
         </div>
       
 

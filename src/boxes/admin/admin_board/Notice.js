@@ -37,20 +37,18 @@ export const postListThunk = () => (dispatch) => {
     });
 };
 
-export const postOneThunk = (postId) => (dispatch) => {
+// export const postOneThunk = (postId) => (dispatch) => {
   
-            axios
-            .get(`http://localhost:8080/posts/post/${postId}`)
-            .then((res)=>{
-               dispatch(postListAction(res.data))
-            
-               console.log(res.data)
+//             axios
+//             .get(`http://localhost:8080/posts/post/${postId}`)
+//             .then((res)=>{
+//                dispatch(postListAction(res.data))
                  
-            })
-            .catch((err)=>{
-                throw err;
-            })
-  };
+//             })
+//             .catch((err)=>{
+//                 throw err;
+//             })
+//   };
 
 
 const Notice = () => {
@@ -58,10 +56,6 @@ const Notice = () => {
     const [postList, setPostList] = useState([]);
     const [currentPage,setCurrentPage] = useState(1);
     const [postPerPage] = useState(5);
-
-
-    
-   
 
     const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
