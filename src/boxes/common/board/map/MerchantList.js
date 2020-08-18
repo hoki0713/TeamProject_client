@@ -1,123 +1,166 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Table, Pagination} from 'react-bootstrap';
-import {Link} from "react-router-dom"
 import axios from 'axios'
-import { useDispatch} from "react-redux";
+import {Stars} from "./FindByMap";
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
+import {Link} from "react-router-dom";
 
 
 const MerchantList=()=> {
 
-    const [modalShow, setModalShow] = useState(false);
-    const [state,setState]=useState('');
-    const [dong,setDong]=useState('');
-    const [cate,setCate]=useState('');
-    const [storeList, setStoreList]=useState([])
-    const stateCheck=e=>{setState(e.target.value);};
-    const dongCheck=e=>{setDong(e.target.value); };
-    const cateCheck=e=>{setCate(e.target.value); };
-    const dispatch = useDispatch()
+    const [state,setState]=useState('시/군');
+    const [cate,setCate]=useState('업종');
+    const [storeList, setStoreList]=useState([]);
+    const [drop1Show, setDrop1Show] = useState(false);
+    const [drop2Show, setDrop2Show] = useState(false);
+    const {setStore} = useContext(StoreSearchContext);
+    const [pageNow,setPageNow]=useState(1);
+    const [stateList]=useState(
+        ['연천군', '포천시', '파주시', '동두천시', '양주시', '의정부시', '가평군', '고양시',
+            '김포시', '남양주시', '구리시', '하남시', '양평군', '광주시', '여주시', '이천시', '용인시', '안성시',
+            '평택시', '화성시', '수원시', '오산시', '안산시', '군포시', '의왕시', '안양시', '과천시', '부천시',
+            '광명시', '성남시', '시흥시' ]);
+    const [cateList]=useState(
+        ['숙박업', '여행', '레져용품','가구','건강식품','건축자재','광학제품', '기타','기타의료기관', '농업',
+            '레저업소', '문화.취미','병원', '보건위생', '사무통신','서적문구','수리서비스','숙박업','신변잡화','약국','용역 서비스',
+            '유통업 영리','음료식품' ]);
+    const toggle1 = () => setDrop1Show(prevState => !prevState);
+    const toggle2 = () => setDrop2Show(prevState => !prevState);
 
+    const stateCheck=(stateName)=>{
+        setState(stateName);
+        getSpecificS();
+    };
 
-    useEffect(()=>{
-        console.log("in useEffect")
-        if(!storeList[0]) {
-            axios.get(`http://localhost:8080/stores/mapClick/의정부`)
-                .then(({data})=>{
-                    setStoreList(data.list);
-                })
-                .catch(err=>{throw(err)});
-        }})
+    const cateCheck=(category)=>{
+        setCate(category);
+        getSpecificS();
+    };
 
+    function getSpecificS(){
+        axios.get(`http://localhost:8080/stores/getSome/${state}/${cate}/${pageNow}`)
+            .then(({data})=>{
+                setStoreList(data.list)
+            })
+            .catch(err=>{console.log(err);throw err;})
+    }
 
-
-    const Img = ()=>{
-        return(<Link
-            to="/storeDetail">
-            <img src="https://en.pimg.jp/046/639/461/1/46639461.jpg" width={30} height={30}/>
-        </Link>)}
-  return (
-    <div className="container">
-        <Table striped bordered hover className="list_table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th><select value={state} onChange={stateCheck}>
-                    <option selected>시/군</option>
-                    <option value="1">고양시</option>
-                    <option value="2">김포시</option>
-                    <option value="3">무슨시</option>
-                    <option value="4">무슨시</option>
-
-                </select></th>
-                <th><select value={dong} onChange={dongCheck}>
-                    <option selected>동/읍/면</option>
-                    <option value={'1'}>삼남면</option>
-                    <option value={'2'}>교동읍</option>
-                    <option value={'3'}>원당동</option>
-                    <option value={'4'}>무슨면</option>
-
-                </select></th>
-                <th><select value={cate} onChange={cateCheck}>
-                    <option selected>업종</option>
-                    <option value={'1'}>분식</option>
-                    <option value={'2'}>양식</option>
-                    <option value={'3'}>철물점</option>
-                    <option value={'4'}>수퍼</option>
-
-                </select></th>
-                <th></th>
-                <th></th>
-                <th></th>
-
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr>
-                <td></td>
-                <td>가게명</td>
-                <td>가게주소</td>
-                <td>업종</td>
-                <td>전화번호</td>
-                <td>지도에서 보기</td>
-                <td>신고하기</td>
-            </tr>
-            {storeList.map((store,i)=>(
+    return (
+        <div className="container">
+            <Table striped bordered hover className="list_table">
+                <thead>
                 <tr>
-                    <td>{i+1}</td>
-                    <td>{store.storeName}</td>
+                    <th></th>
+                    <th></th>
+                    <th/>
+                    <th>
+                        <Dropdown isOpen={drop1Show} toggle={toggle1}>
+                            <DropdownToggle>
+                                {state} <select/>
+                            </DropdownToggle>
+                            <DropdownMenu
+                                modifiers={{
+                                    setMaxHeight: {
+                                        enabled: true,
+                                        order: 890,
+                                        fn: (data) => {
+                                            return {
+                                                ...data,
+                                                styles: {
+                                                    ...data.styles,
+                                                    overflow: 'auto',
+                                                    maxHeight: '100px',
+                                                },
+                                            };
+                                        },
+                                    },
+                                }}
+                            >
+                                {stateList.map((state)=>(
+                                    <DropdownItem onClick={()=>{stateCheck(state)}}>{state}</DropdownItem>))}
+
+                            </DropdownMenu>
+                        </Dropdown>
+                    </th>
+                    <th>
+                            <Dropdown isOpen={drop2Show} toggle={toggle2}>
+                                <DropdownToggle>
+                                    {cate} <select/>
+                                </DropdownToggle>
+                                <DropdownMenu
+                                    modifiers={{
+                                        setMaxHeight: {
+                                            enabled: true,
+                                            order: 890,
+                                            fn: (data) => {
+                                                return {
+                                                    ...data,
+                                                    styles: {
+                                                        ...data.styles,
+                                                        overflow: 'auto',
+                                                        maxHeight: '100px',
+                                                    },
+                                                };
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {cateList.map((category)=>(<DropdownItem onClick={()=>cateCheck(category)}>{category}</DropdownItem>))}
+                                </DropdownMenu>
+                            </Dropdown>
+                        </th>
+                    <th/>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>#</td>
+                    <td>등록번호</td>
+                    <td>가게명</td>
+                    <td>가게주소</td>
+                    <td>업종</td>
+                    <td>별점</td>
+                </tr>
+
+
+                {storeList.map((store,i)=>(
+                    <tr>
+                    <td></td>
+                {/* 페이지네이션 번호 가져와야 함 */}
+                    <td>{store.id}</td>
+                    <td><Link to={'/storeDetail'} onClick={setStore(store)}>{store.storeName}</Link> </td>
                     <td>{store.address}</td>
                     <td>{store.storeType}</td>
-                    <td>{store.storePhone}</td>
-                    <td>지도</td>
-                    <td><img src={"https://i.pinimg.com/474x/57/62/24/5762245c37514d61a333d1d5d1434670.jpg"} width={30} height={30}
-                             onClick={()=>{setModalShow(true)}}/></td>
-                </tr>)
+                    <td><Stars storeInfo={store}/></td>
+                    </tr>
+                )
+                )}
 
-            )}
 
-            </tbody>
-        </Table>
-        <Pagination>
-            <Pagination.First />
-            <Pagination.Prev />
-            <Pagination.Item>{1}</Pagination.Item>
-            <Pagination.Ellipsis />
+                </tbody>
+            </Table>
+            <Pagination>
+                <Pagination.First />
+                <Pagination.Prev />
+                <Pagination.Item>{1}</Pagination.Item>
+                <Pagination.Ellipsis />
 
-            <Pagination.Item>{10}</Pagination.Item>
-            <Pagination.Item>{11}</Pagination.Item>
-            <Pagination.Item active>{12}</Pagination.Item>
-            <Pagination.Item>{13}</Pagination.Item>
-            <Pagination.Item disabled>{14}</Pagination.Item>
+                <Pagination.Item>{10}</Pagination.Item>
+                <Pagination.Item>{11}</Pagination.Item>
+                <Pagination.Item active>{12}</Pagination.Item>
+                <Pagination.Item>{13}</Pagination.Item>
+                <Pagination.Item disabled>{14}</Pagination.Item>
 
-            <Pagination.Ellipsis />
-            <Pagination.Item>{20}</Pagination.Item>
-            <Pagination.Next />
-            <Pagination.Last />
-        </Pagination>
+                <Pagination.Ellipsis />
+                <Pagination.Item>{20}</Pagination.Item>
+                <Pagination.Next />
+                <Pagination.Last />
+            </Pagination>
 
-    </div>
-  );
+        </div>
+    );
 }
 
 export default MerchantList;

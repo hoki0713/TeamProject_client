@@ -118,7 +118,7 @@ function Recommendation() {
                     <Card.Img id="card-image" variant="top"
                               src={store.imgUrl}/>
                     <Card.Body>
-                        <Card.Title id="card-title"><Link to="/storeDetail">{store.storeName}</Link></Card.Title>
+                        <Card.Title >{store.storeName}</Card.Title>
                         <Card.Text>
                             {store.starRanking}
                             <br/>
@@ -141,7 +141,7 @@ function Recommendation() {
                     <Card.Img id="card-image" variant="top"
                               src={store.imgUrl}/>
                     <Card.Body>
-                        <Card.Title id="card-title"><Link to>{store.storeName}</Link></Card.Title>
+                        <Card.Title>{store.storeName}</Card.Title>
                         <Card.Text>
                             {store.address}
                         </Card.Text>
@@ -152,7 +152,6 @@ function Recommendation() {
                 </Card>))}
         </div>
         <br/><br/>
-
 
         {userFavBased &&
         <div>
@@ -202,7 +201,7 @@ function Recommendation() {
                         <Card.Img id="card-image" variant="top"
                                   src={store.imgUrl}/>
                         <Card.Body>
-                            <Card.Title id="card-title"><Link to="/storeDetail">{store.storeName}</Link></Card.Title>
+                            <Card.Title id="card-title">{store.storeName}</Card.Title>
                             <Card.Text>
                                 {store.address}
                             </Card.Text>
