@@ -6,25 +6,47 @@ import "./UserList.css";
 import axios from "axios";
 
 const UserList = () => {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
   const [userList, setUserList] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
   const { setUser } = useContext(UserDetailContext);
   const history = useHistory();
 
   const [currentPage, setCurrentPage] = useState(0);
-  
+
   const paginate = (page) => {
     setCurrentPage(page);
   };
 
-  const handleSearch = () => {};
+  const setCurrentPageZero = () => {
+    setCurrentPage(0);
+  };
+
+  const handleSearch = (searchWord) => {
+    setCurrentPageZero();
+    if (selectedOption) {
+      axios
+        .get(
+          `http://localhost:8080/admins/searchUserList/${selectedOption}/${searchWord}/${currentPage}`
+        )
+        .then((response) => {
+          setTotalUsers(response.data.totalUsers);
+          setUserList(response.data.users);
+          setTotalPages(response.data.totalPages);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    } else {
+      alert("조건을 선택하세요!");
+    }
+  };
 
   const handleUserDetail = (userId) => {
     axios
       .get(`http://localhost:8080/users/${userId}`)
       .then((response) => {
-        console.log(response.data.salesList);
         setUser(response.data);
         history.push("/admin/user-detail");
       })
@@ -37,8 +59,9 @@ const UserList = () => {
     axios
       .get(`http://localhost:8080/admins/userList/${currentPage}`)
       .then((response) => {
+        setTotalUsers(response.data.totalUsers);
         setUserList(response.data.users);
-        setTotalPages(response.data.totalPages)
+        setTotalPages(response.data.totalPages);
       })
       .catch((error) => {
         throw error;
@@ -53,7 +76,9 @@ const UserList = () => {
     <div>
       <div className="userlist-content-title">
         <h2 className="userlist-menu-h2"> - 회원목록</h2>
-        <h6 className="userlist-menu-h6">총회원수:()</h6>
+        <h6 className="userlist-menu-h6">
+          총 회원수: ({Intl.NumberFormat().format(totalUsers)})
+        </h6>
         <div id="userlist-select-search-bar">
           <select
             className="form-control"
@@ -64,7 +89,6 @@ const UserList = () => {
             <option>선택</option>
             <option value="userid">아이디</option>
             <option value="username">가입자명</option>
-            <option value="userlocal">거주지역</option>
           </select>
 
           <span id="userlist-search-bar">
@@ -88,7 +112,7 @@ const UserList = () => {
         <tbody>
           {userList.map((user, i) => (
             <tr key={i}>
-              <td>{(i + 1)+(20*currentPage)}</td>
+              <td>{i + 1 + 20 * currentPage}</td>
               <td
                 onClick={() => {
                   handleUserDetail(user.id);
@@ -106,11 +130,13 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
-      <NewPagination
-        paginate={paginate}
-        totalPages={totalPages}
-        currentPage={currentPage}
-      />
+      {totalUsers > 20 && (
+        <NewPagination
+          paginate={paginate}
+          totalPages={totalPages}
+          currentPage={currentPage}
+        />
+      )}
     </div>
   );
 };

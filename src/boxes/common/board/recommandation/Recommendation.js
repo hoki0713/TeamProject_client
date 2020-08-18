@@ -122,7 +122,7 @@ function Recommendation() {
 
 
     return (<>
-        <h2>simin님을 위한 우리 동네 추천 가맹점</h2><br/>
+        <h2>{accountDetail.name}님을 위한 우리 동네 추천 가맹점</h2><br/>
 
         <h3>내 주변 인기 가맹점</h3>
         <div className="scrollContainer">
