@@ -187,7 +187,7 @@ function Recommendation() {
         <br/><br/>
 
 
-        <h3>인기 의원 가맹점</h3>
+        <h3>인기 #병원 가맹점</h3>
         <div className="scrollContainer">
             {hospital.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -206,7 +206,7 @@ function Recommendation() {
         </div>
         <br/><br/>
 
-        <h3>인기 많은 음식점 가맹점</h3>
+        <h3>인기 #음식점 가맹점</h3>
         <div className="scrollContainer">
             {restaurant.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -226,7 +226,7 @@ function Recommendation() {
         <br/><br/>
 
 
-        <h3>인기 많은 디저트 가맹점</h3>
+        <h3>인기 #디저트 가맹점</h3>
         <div className="scrollContainer">
             {drinks.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -278,8 +278,8 @@ function Recommendation() {
         </div>}<br/><br/>
 
 
-        <h4>회원님과 유사한 회원들이 좋아하는 가맹점</h4>
-        {(!userWarningMsg || !userBased) &&
+        <h3>회원님과 유사한 회원들이 좋아하는 가맹점</h3>
+        {(!itemWarningMsg && !itemBased) &&
         <div id="msg"> 찾 는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
@@ -314,8 +314,8 @@ function Recommendation() {
 
 
 
-        <h4>즐겨찾기한 가맹점과 유사한 추천 가맹점</h4>
-        {(!itemWarningMsg || !itemBased) && <div id="msg">
+        <h3>즐겨찾기한 가맹점과 유사한 추천 가맹점</h3>
+        {(itemWarningMsg || itemBased) && <div id="msg">
             찾는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
