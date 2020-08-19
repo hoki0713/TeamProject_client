@@ -29,7 +29,6 @@ function FindByTag() {
     const [show, setShow] = useState(false)
     const [option, setOption] = useState(0)
     const {setStore} = useContext(StoreSearchContext);
-    const [clickedStore, setClickedStore] = useState({})
     const history= useHistory();
 
     const radiosGender = [
@@ -99,8 +98,12 @@ function FindByTag() {
 
     }
 
+    const changeGender=(gender)=>{
+        setGender(gender)
+    }
+
     const handleGender = (e) => {
-        setGender(e.target.value);
+        changeGender(e.target.value);
         if (gender === "F") {
             setGenderKor("여성")
         } else if (gender === "M") {
@@ -114,9 +117,9 @@ function FindByTag() {
     }
     const handleAge = e => {
         setAgeGroup(e.target.value);
-        if(ageGroup===100){
+        if(ageGroup>61){
             setAgeKor("연령무관");
-        } else if(ageGroup === 10 || 20 || 30 || 40|| 50)
+        } else if(1<ageGroup <51)
            {setAgeKor(ageGroup+"대")}
         else {setAgeKor("60대 이상")}
         console.log("age시작" + ageGroup + "gender" + gender)
@@ -210,8 +213,10 @@ function FindByTag() {
 
     return (
         <>
-            <div style={{textAlign: 'center'}}><br/>
-                <h1>태그로 찾기</h1><br/>
+            <h2>태그로 검색하기</h2><br/>
+            <div style={{textAlign: 'center'}}>
+               <h2>소비자별 최다 소비 업종</h2>
+
                 <CardDeck>
                     <Card style={{width: '18rem'}}>
                         <Card.Header>전체 업종 TOP 5</Card.Header>
@@ -229,6 +234,7 @@ function FindByTag() {
                             <ListGroup variant="flush">
                                 <ListGroup.Item key={i}>{i + 1}. {industry.industryName}
                                 {totalIndustry[i].industryName===userIndustry[i].industryName ? "" : " √"}
+
                                 </ListGroup.Item>
                             </ListGroup>)
                         )}
@@ -236,6 +242,11 @@ function FindByTag() {
                     {/*{(totalIndustry[i].industryName===userIndustry[i].industryName*/}
                     {/*    && totalIndustry.indexOf(totalIndustry[i]) === userIndustry.indexOf(totalIndustry[i])) ? "같음" : "다름"}*/}
 
+                    {/*{if (totalIndustry.industry.industryName === totalIndustry.industry.industryName) {*/}
+                    {/*    if (totalIndustry.indexof(industry)> )*/}
+                    {/*}*/}
+                    {/*    (totalIndustry.indexOf(industry) > userIndustry.indexOf(industry)) ? "낮음" : "높음"}*/}
+                    {/*    */}
                     {(show) && <Card>
                         <Card.Header>
 
@@ -251,8 +262,8 @@ function FindByTag() {
 
             </div>
             <br/><br/><br/>
-            <h3 style={{textAlign: "center"}}>맞춤검색</h3><br/>
-            <Form>
+            <h3 style={{textAlign: "center"}}>태그 검색</h3><br/>
+           <Form>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
                     <Form.Label column sm={2}>
                         성별
@@ -275,7 +286,7 @@ function FindByTag() {
                         {/*            variant="outline-dark"*/}
                         {/*            name="genderGroup"*/}
                         {/*            value={radio.value}*/}
-                        {/*            onClick={handleGender}*/}
+                        {/*            on={handleGender}*/}
                         {/*            checked={gender === radio.value}*/}
 
                         {/*        >*/}
@@ -308,7 +319,7 @@ function FindByTag() {
                         {/*            name="ageGroups"*/}
                         {/*            value={radios.value}*/}
                         {/*            onChanged={handleAge}*/}
-                        {/*            checked={ageGroup === radios.value}*/}
+                        {/*            checked={ageGroup !== radios.value}*/}
                         {/*        >*/}
                         {/*            {radios.name}*/}
                         {/*        </ToggleButton>*/}
@@ -318,7 +329,7 @@ function FindByTag() {
                 </Form.Group>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
                     <Form.Label column sm={2}>
-                        추천 태그
+                        정렬 조건
                     </Form.Label>
                     <Col sm={10}>
                         {/*<ButtonGroup toggle>*/}
@@ -369,7 +380,7 @@ function FindByTag() {
                             </Card>
                         ))}
 
-                    </div><br/><br/><br/><br/>
+                    </div><br/><br/><br/>
                 </div>
                 ))}
 

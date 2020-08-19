@@ -36,7 +36,9 @@ function BuyLocalCurrency() {
         <>
             <div className="content-title">
                 <h2>경기지역화폐 구매하기</h2>
-                <div>지역화폐를 구매, 선물할 수 있습니다.</div>
+                <div>지역화폐를 구매, 선물할 수 있습니다.<br/>
+                원하는 지역과 금액을 선택해주세요.
+                </div>
                 <Payment show={modalShow} localName={localName} unitPrice={unitPrice}
                          onHide={() => setModalShow(false)}/>
                 <table className="currency_table">
