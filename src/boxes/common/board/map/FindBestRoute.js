@@ -225,8 +225,8 @@ const FindBestRoute = () => {
     }; //네이버 네비 링크
 
     return (
-        <>
-            <h3>&nbsp;&nbsp;최적 경로 찾아보기</h3>
+        <div style={{"text-align" : "center"}}>
+            <h2 className="mt-4">최적 경로 찾아보기</h2>
             <br />
             <table>
                 <tr>
@@ -520,7 +520,7 @@ const FindBestRoute = () => {
                     </td>
                 </tr>
             </table>
-        </>
+        </div>
     );
 };
 

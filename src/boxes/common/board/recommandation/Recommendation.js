@@ -124,10 +124,13 @@ function Recommendation() {
 
 
 
-    return (<>
-        <h2>{accountDetail.name}님을 위한 우리 동네 추천 가맹점</h2><br/>
-
-        <h3>내 주변 인기 가맹점</h3>
+    return (
+    <>
+        <h2 className="mt-4" style={{"text-align" : "center"}}>
+          <span style={{"color" : "pink"}}>{accountDetail.name} 님</span>을 위한 우리 동네 추천 가맹점
+        </h2>
+        <br/>
+        <h3><span style={{"color" : "#a557cc"}}>★</span>내 주변 인기 가맹점</h3>
         <div className="scrollContainer">
             {bestStore.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -147,7 +150,7 @@ function Recommendation() {
         <br/><br/>
 
 
-        <h3>내 주변 별점 높은 가맹점</h3>
+        <h3><span style={{"color" : "#a557cc"}}>★</span>내 주변 별점 높은 가맹점</h3>
         <div className="scrollContainer">
             {bestRated.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -170,7 +173,7 @@ function Recommendation() {
         <br/><br/>
 
 
-        <h3>즐겨찾은 사람이 많은 가맹점</h3>
+        <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾은 사람이 많은 가맹점</h3>
         <div className="scrollContainer">
             {mostFav.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -190,7 +193,7 @@ function Recommendation() {
         <br/><br/>
 
 
-        <h3>인기 #병원 가맹점</h3>
+        <h3><span style={{"color" : "#a557cc"}}>★</span>인기 #병원 가맹점</h3>
         <div className="scrollContainer">
             {hospital.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -209,7 +212,7 @@ function Recommendation() {
         </div>
         <br/><br/>
 
-        <h3>인기 #음식점 가맹점</h3>
+        <h3><span style={{"color" : "#a557cc"}}>★</span>인기 #음식점 가맹점</h3>
         <div className="scrollContainer">
             {restaurant.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -229,7 +232,7 @@ function Recommendation() {
         <br/><br/>
 
 
-        <h3>인기 #디저트 가맹점</h3>
+        <h3><span style={{"color" : "#a557cc"}}>★</span>인기 #디저트 가맹점</h3>
         <div className="scrollContainer">
             {drinks.map((store, i) => (
                 <Card className="cardItem" key={i}>
@@ -251,7 +254,7 @@ function Recommendation() {
 
         {userFavBased &&
         <div>
-            <h3>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h3>
+            <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h3>
             <div className="scrollContainer">
                 {userFavBased.map((store, i) => (
                         <Card className="cardItem" key={i}>
@@ -274,15 +277,17 @@ function Recommendation() {
 
         <br/><br/>
         {noFavMsg && <div>
-            <h4>즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h4>
+            <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h3>
             <div  id="msg">
                 <h6 style={{textAlign:"center"}}>{noFavMsg}<br/>
                 <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h6></div>
         </div>}<br/><br/>
 
 
-        <h3>회원님과 유사한 회원들이 좋아하는 가맹점</h3>
-        {(!userBased && !userWarningMsg) &&
+
+        <h3><span style={{"color" : "#a557cc"}}>★</span>회원님과 유사한 회원들이 좋아하는 가맹점</h3>
+        {(!itemWarningMsg && !itemBased) &&
+
         <div id="msg"> 찾 는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
@@ -317,8 +322,10 @@ function Recommendation() {
 
 
 
-        <h3>별점을 준 가맹점{itemBasedStore}과 유사한 추천 가맹점</h3>
-        {(!itemWarningMsg && !itemBased) && <div id="msg">
+
+        <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 유사한 추천 가맹점</h3>
+        {(itemWarningMsg || itemBased) && <div id="msg">
+
             찾는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
