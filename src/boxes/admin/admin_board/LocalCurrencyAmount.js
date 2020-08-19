@@ -24,8 +24,6 @@ const LocalCurrencyAmount = () => {
   const [localSelect,setLocalSelect]=useState("");
   const [useTotalLocalKeys,setUseTotalLocalKeys] = useState([]);
   const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
-  const [currencyListStartDate,setCurrencyListStartDate] = useState("");
-  const [currencyListEndDate,setCurrencyListEndDate] = useState("");
   const [salesList,setSalesList] = useState([]);
  
   useEffect(()=>{
@@ -232,31 +230,24 @@ const LocalCurrencyAmount = () => {
 
 
   const handleSearch = (searchWord) => {
-    alert(searchWord);
-    if (currencyListStartDate > currencyListEndDate) {
-      alert(`시작날짜보다 빠를 수 없습니다.`);
-      setEndDate("");
-    } else if (currencyListStartDate ==="" ||currencyListEndDate ===""  ) {
-      alert(`기간을 선택해주세요`);
-    } else if (citySelect==="") {
+   
+     if (citySelect==="") {
       alert(`지역을 선택해주세요`);
-    } else if (currencyListStartDate.split("-")[0]!==currencyListEndDate.split("-")[0]) { 
-      alert(` 같은년도 이내로 선택해주세요.`);  
     } else if (useStatusSelect ==="") {
       alert('상태를 선택해 주세요');
-    } else {
+    } else if(searchWord === "") {alert('아이디를 입력해주세요')}
+    else {
        axios
         .get(`http://localhost:8080/admins/sales/search`,{
           params:{
-            currencyListStartDate:currencyListStartDate,
-            currencyListEndDate:currencyListEndDate,
             useStatusSelect:useStatusSelect,
             citySelect:citySelect,
             searchWord:searchWord
           }
         })
         .then((res)=>{
-            console.log(res.data)
+      
+            setSalesList(res.data.sales)
         })
         .catch((err)=>{
             throw err;
@@ -282,8 +273,37 @@ const LocalCurrencyAmount = () => {
               onChange={currencyNameCheck}
             >
               <option value="" selected>화폐명</option>
-              <option value="고양">고양시 지역화폐</option>
-              <option value="의정부">의정부시 지역화폐</option>
+              <option value="의정부">의정부사랑상품권</option>
+              <option value="고양">고양사랑상품권</option>
+                <option value="가평">가평사랑상품권</option>
+                <option value="과천">과천사랑상품권</option>
+                <option value="광명">광명사랑상품권</option>
+                <option value="광주">광주사랑상품권</option>
+                <option value="구리">구리사랑상품권</option>
+                <option value="군포">군포사랑상품권</option>
+                <option value="김포">김포사랑상품권</option>
+                <option value="남양주">남양주사랑상품권</option>
+                <option value="동두천">동두천사랑상품권</option>
+                <option value="부천">부천사랑상품권</option>
+                <option value="성남">성남사랑상품권</option>
+                <option value="수원">수원사랑상품권</option>
+                <option value="시흥">시흥사랑상품권</option>
+                <option value="안산">안산사랑상품권</option>
+                <option value="안성">안성사랑상품권</option>
+                <option value="안양">안양사랑상품권</option>
+                <option value="양주">양주사랑상품권</option>
+                <option value="양평">양평사랑상품권</option>
+                <option value="여주">여주사랑상품권</option>
+                <option value="연천">연천사랑상품권</option>
+                <option value="오산">오산사랑상품권</option>
+                <option value="용인">용인사랑상품권</option>
+                <option value="의왕">의왕사랑상품권</option>
+                <option value="이천">이천사랑상품권</option>
+                <option value="파주">파주사랑상품권</option>
+                <option value="평택">평택사랑상품권</option>
+                <option value="포천">포천사랑상품권</option>
+                <option value="하남">하남사랑상품권</option>
+                <option value="화성">화성사랑상품권</option>
             </select>
           </div>
           <div>
@@ -509,34 +529,50 @@ const LocalCurrencyAmount = () => {
             value={citySelect}
             onChange={(e) => setCitySelect(e.target.value)}
           >
-            <option selected>시도</option>
-            <option>의정부시</option>
-            <option>고양시</option>
-            <option>수원시</option>
+            <option value="" selected>지역선택</option>
+                <option value="고양시">고양시</option>
+                <option value="의정부시">의정부시</option>
+                <option value="연천군">연천군</option>
+                <option value="포천시">포천시</option>
+                <option value="파주시">파주시</option>
+                <option value="동두천시">동두천시</option>
+                <option value="양주시">양주시</option>
+                <option value="가평군">가평군</option>
+                <option value="김포시">김포시</option>
+                <option value="남양주시">남양주시</option>
+                <option value="구리시">구리시</option>
+                <option value="하남시">하남시</option>
+                <option value="양평군">양평군</option>
+                <option value="광주시">광주시</option>
+                <option value="여주시">여주시</option>
+                <option value="이천시">이천시</option>
+                <option value="용인시">용인시</option>
+                <option value="안성시">안성시</option>
+                <option value="평택시">평택시</option>
+                <option value="화성시">화성시</option>
+                <option value="수원시">수원시</option>
+                <option value="오산시">오산시</option>
+                <option value="안산시">안산시</option>
+                <option value="군포시">군포시</option>
+                <option value="의왕시">의왕시</option>
+                <option value="안양시">안양시</option>
+                <option value="과천시">과천시</option>
+                <option value="부천시">부천시</option>
+                <option value="광명시">광명시</option>
+                <option value="성남시">성남시</option>
+                <option value="시흥시">시흥시</option>
           </select>
           <select
             id="localcurrency_statusselect"
             value={useStatusSelect}
             onChange={(e) => setUseStatusSelect(e.target.value)}
           >
-            <option selected>상태</option>
-            <option value="use">사용완료</option>
-            <option value="unused">미사용</option>
+            <option value="" selected>상태</option>
+            <option value="사용완료">사용완료</option>
+            <option value="취소완료">취소완료</option>
+            <option value="미사용">미사용</option>
           </select>
           <div>
-            <input
-              className="currency_startdate"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            <h4 className="currency_date_h4"> ~ </h4>
-            <input
-              className="currency_enddate"
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
             <div id="localCurrency_search_bar">
               <SearchBar onSearch={handleSearch} />
             </div>
@@ -545,12 +581,14 @@ const LocalCurrencyAmount = () => {
           <Table className="Table">
             <tr>
               <th>No</th>
-              <th>일련번호</th>
+        
               <th>상태</th>
               <th>지역명 및 지역화폐</th>
               <th>구매자</th>
               <th>구매일</th>
-              <th>사용일 또는 취소일</th>
+              <th>사용일 </th>
+              <th>취소일 </th>
+              
             </tr>
             <tbody>
             {salesList.map((info,i) => (
@@ -560,12 +598,8 @@ const LocalCurrencyAmount = () => {
                 <td>{info.localCurrencyName}</td>
                 <td>{info.userId}</td>
                 <td>{info.salesDate}</td>
-                {info.useDate !=="" && 
-                  <td>{info.useDate}</td>
-                }
-                {info.cancelDate !=="" && 
-                  <td>{info.cancelDate}</td>
-                }     
+                <td>{info.useDate}</td>   
+                <td>{info.cancelDate}</td> 
               </tr>
               )
             )}
