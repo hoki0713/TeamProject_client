@@ -13,6 +13,7 @@ function Recommendation() {
     const [id, setId] = useState("");
     const [userBased, setUserBased] = useState([])
     const [itemBased, setItemBased] = useState([])
+    const [itemBasedStore, setItemBasedStore] = useState("")
     const [bestStore, setBestStore] = useState([])
     const [topIndustryName, setTopIndustryName] = useState([])
     const [mostFav, setMostFav] = useState([])
@@ -25,6 +26,7 @@ function Recommendation() {
     const [hospital, setHospital] = useState([])
     const [restaurant, setRestaurant] = useState([])
     const [drinks, setDrinks] = useState([])
+
 
     const {setStore} = useContext(StoreSearchContext);
     const [clickedStore, setClickedStore] = useState({})
@@ -45,7 +47,7 @@ function Recommendation() {
                     } else if (res.data.noUserBased) {
                         setUserWarningMsg(res.data.noUserBased)
                     }
-                    console.log(res.data.userBased)
+                    console.log("유저베이스"+res.data.userBased)
                     console.log(res.data.noUserBased)
                 }).catch(
                 error => {
@@ -63,6 +65,7 @@ function Recommendation() {
                     console.log('소통 성공')
                     if (res.data.itemBased) {
                         setItemBased(res.data.itemBased)
+                        setItemBasedStore(res.data.itemBasedStore)
                     } else if (res.data.noItemBased) {
                         setItemWarningMsg(res.data.noItemBased)
                     }
@@ -281,8 +284,10 @@ function Recommendation() {
         </div>}<br/><br/>
 
 
+
         <h3><span style={{"color" : "#a557cc"}}>★</span>회원님과 유사한 회원들이 좋아하는 가맹점</h3>
         {(!itemWarningMsg && !itemBased) &&
+
         <div id="msg"> 찾 는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
@@ -317,8 +322,10 @@ function Recommendation() {
 
 
 
+
         <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 유사한 추천 가맹점</h3>
         {(itemWarningMsg || itemBased) && <div id="msg">
+
             찾는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
