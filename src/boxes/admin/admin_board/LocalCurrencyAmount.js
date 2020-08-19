@@ -257,7 +257,7 @@ const LocalCurrencyAmount = () => {
 
   return (
     <div>
-      <h1>지역화폐 매출</h1>
+      <h2 className="mt-4" style={{"text-align" : "center"}}>지역화폐 매출</h2>
       <div>
         <div className="currencyTotal-div-byCurrencyName">
           <div id="graph-title">

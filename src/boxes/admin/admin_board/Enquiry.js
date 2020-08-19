@@ -92,8 +92,8 @@ const Enquiry = () => {
 
   return (
     <>
+      <h2 className="mt-4" style={{"text-align" : "center"}}>1:1 문의</h2>
       <div className="content-title">
-        <h2 className="menu-h2"> - 1:1 문의</h2>
         <div id="select-search-bar">
           <select
             className="form-control"

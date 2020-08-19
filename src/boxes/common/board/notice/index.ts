@@ -1,5 +1,6 @@
-import Notice from './Notice';
-
+import NoticeList from './NoticeList.js';
+import NoticeDetailClient from './NoticeDetailClient.js'
 export {
-  Notice
+  NoticeList,
+  NoticeDetailClient
 }

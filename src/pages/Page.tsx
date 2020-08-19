@@ -9,6 +9,9 @@ import { StoreSearchProvider } from '../items/context/StoreSearchContext.js';
 
 const Page = () => {
   return (
+    <div style={{fontFamily: "'Do Hyeon', sans-serif"}}>
+
+    
     <StoreSearchProvider>
       <Switch>
         <Route path="/" exact>
@@ -28,6 +31,7 @@ const Page = () => {
         </Route>
       </Switch>
     </StoreSearchProvider>
+    </div>
   );
 }
 

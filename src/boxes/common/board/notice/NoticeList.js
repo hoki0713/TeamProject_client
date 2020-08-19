@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, Container, Row, Col } from "react-bootstrap";
-import { PaginationItem, SearchBar } from "../../../items";
 import { Link } from "react-router-dom";
+import { SearchBar, PaginationItem } from "../../../../items";
 import axios from "axios";
 import "./AdminBoard.css";
-
 const POST_LIST = "POST_LIST";
-
 export const postListAction = (data) => ({
   type: POST_LIST,
   payload: data,
 });
-
 export const postListReducer = (state = {}, action) => {
   switch (action.type) {
     case POST_LIST:
@@ -20,7 +17,6 @@ export const postListReducer = (state = {}, action) => {
       return state;
   }
 };
-
 export const postListThunk = () => (dispatch) => {
   axios
     .get(`http://localhost:8080/posts/postlist`)
@@ -31,33 +27,25 @@ export const postListThunk = () => (dispatch) => {
       throw err;
     });
 };
-
 // export const postOneThunk = (postId) => (dispatch) => {
-
 //             axios
 //             .get(`http://localhost:8080/posts/post/${postId}`)
 //             .then((res)=>{
 //                dispatch(postListAction(res.data))
-
 //             })
 //             .catch((err)=>{
 //                 throw err;
 //             })
 //   };
-
-const Notice = () => {
+const NoticeList = () => {
   const [categorySelect, setCategorySelect] = useState("");
-
   const [postList, setPostList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(5);
-
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPosts = postList.slice(indexOfFirstPost, indexOfLastPost);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   const nextPage = () => {
     if (currentPage < currentPosts.length) {
       setCurrentPage(currentPage + 1);
@@ -67,13 +55,11 @@ const Notice = () => {
       setCurrentPage(currentPage);
     }
   };
-
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
-
   useEffect(() => {
     axios
       .get("http://localhost:8080/posts/postlist")
@@ -84,10 +70,8 @@ const Notice = () => {
         throw err;
       });
   }, []);
-
   const handleSearch = (searchWord) => {
     alert(searchWord);
-
     axios
       .get(`http://localhost:8080/posts/notice/search`, {
         params: {
@@ -102,10 +86,9 @@ const Notice = () => {
         throw err;
       });
   };
-
   return (
     <>
-      <h2 className="mt-4" style={{"text-align" : "center"}}>공지사항</h2>
+      <h2 className="mt-4" style={{"text-align" : "center"}}> 공지사항</h2>
       <div className="content-title">
         <div id="select-search-bar">
           <select
@@ -123,7 +106,6 @@ const Notice = () => {
           </span>
         </div>
       </div>
-
       <div>
         <Table responsive hover>
           <thead style={{ "text-align": "center" }}>
@@ -144,7 +126,7 @@ const Notice = () => {
                 <td style={{ "text-align": "center" }}> {info.category}</td>
                 <td>
                   {" "}
-                  <Link to={`/admin/notice-detail/${info.postId}`}>
+                  <Link to={`/notice-detail/${info.postId}`}>
                     {info.postTitle}
                   </Link>
                 </td>
@@ -159,19 +141,6 @@ const Notice = () => {
             ))}
           </tbody>
         </Table>
-
-        <Container fluid>
-          <Row noGutters>
-            <Col>
-              {" "}
-              <Link to="/admin/notice-write">
-                <Button variant="primary" id="button-right">
-                  글쓰기
-                </Button>
-              </Link>
-            </Col>
-          </Row>
-        </Container>
         <div>
           <PaginationItem
             postPerPage={postPerPage}
@@ -185,5 +154,4 @@ const Notice = () => {
     </>
   );
 };
-
-export default Notice;
+export default NoticeList;

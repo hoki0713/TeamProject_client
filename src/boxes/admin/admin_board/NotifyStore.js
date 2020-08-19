@@ -81,6 +81,7 @@ const NotifyStore = () => {
 
   return (
     <div>
+      <h2 className="mt-4" style={{"text-align" : "center"}}>지역화폐 미사용 신고 가맹점 목록</h2>
       <div className="input-group">
         <input
           type="text"

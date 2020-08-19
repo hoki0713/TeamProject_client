@@ -153,15 +153,15 @@ const UserTotalStatistic = () => {
     });
   }, [genderKeys, genderValues, keys, values, ageKeys, ageValues, localSelect]);
 
-
-
   return (
     <div>
-      <h1>-회원 통계</h1>
+      <h2 className="mt-4" style={{ "text-align": "center" }}>
+        회원 통계
+      </h2>
 
       <div className="userLocal-Total">
         <h5 className="font-weight-bold">전체 지역</h5>
-        <Bar data={chartData} />
+          <Bar data={chartData} />
       </div>
       <div className="parent">
         <h5 className="LocalTotal-h5 font-weight-bold">지역 선택 :</h5>
@@ -204,7 +204,6 @@ const UserTotalStatistic = () => {
           <option value="성남">성남시</option>
           <option value="시흥">시흥시</option>
         </select>
-       
       </div>
       <div id="graph-container">
         <div className="localTotal-genderDoughnut">
@@ -226,8 +225,6 @@ const UserTotalStatistic = () => {
           />
         </div>
       </div>
-
-     
     </div>
   );
 };

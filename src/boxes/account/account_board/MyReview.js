@@ -89,7 +89,7 @@ const MyReview = () => {
 
   return (
     <div className="container">
-      <h2>내 리뷰</h2>
+      <h2 className="mt-4" style={{"text-align" : "center"}}>내 리뷰</h2>
       <table className="table">
         <thead>
           <tr>

@@ -132,7 +132,7 @@ const MyQeustion = () => {
 
   return (
     <div className="container">
-      <h2>1:1 문의</h2>
+      <h2 className="mt-4" style={{"text-align" : "center"}}>1:1 문의</h2>
       <table className="table">
         <thead>
           <tr>
