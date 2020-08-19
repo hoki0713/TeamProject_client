@@ -355,9 +355,17 @@ function Recommendation() {
                 )}
             </div>
         </div>}
-        {itemWarningMsg && <div id="msg">
-            <h6>{itemWarningMsg}
-            <br/><Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h6></div>}
+        {itemWarningMsg && (
+          <div id="msg">
+            <h4>
+              {itemWarningMsg}
+              <br/>
+              <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>
+                즐겨찾기 추가하기
+              </Button>
+            </h4>
+          </div>
+          )}
         <br/><br/><br/><br/>
 
     </>)
