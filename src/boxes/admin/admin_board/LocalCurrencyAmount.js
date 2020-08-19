@@ -341,7 +341,7 @@ const LocalCurrencyAmount = () => {
               scales: {
                 yAxes:[{
                   ticks:{
-                    beginAtZero: true,
+                 
                     callback: function(value) {
                       if(parseInt(value) >= 1000){
                         return Intl.NumberFormat().format(value)
@@ -454,7 +454,7 @@ const LocalCurrencyAmount = () => {
               scales: {
                 yAxes:[{
                   ticks:{
-                    beginAtZero: true,
+                       beginAtZero:true,
                     callback: function(value) {
                       if(parseInt(value) >= 1000){
                         return Intl.NumberFormat().format(value)
