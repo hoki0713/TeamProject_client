@@ -17,33 +17,51 @@ const NotifyStore = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const nextPage = () => {
-    if (currentPage < currentPosts.length) {
-      setCurrentPage(currentPage + 1);
-    } else if (postPerPage < currentPosts.length) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      setCurrentPage(currentPage);
-    }
-  };
 
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  const nextPage = () =>{ 
+      if(currentPage<currentPosts.length){
+          setCurrentPage(currentPage+1)} 
+          else if(postPerPage<currentPosts.length){
+              setCurrentPage(currentPage+1)
+          } else{
+              setCurrentPage(currentPage)
+          }
+      }
+         
+  const prevPage = () => { 
+      if(currentPage>1){
+          setCurrentPage(currentPage-1)
+      }
+     };
 
-  useEffect(() => {
+  useEffect(()=>{
     axios
-      .get(`http://localhost:8080/admins/report/list`)
-      .then((res) => {
-        console.log(res.data.report);
-        setReportList(res.data.report);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  }, []);
+    .get(`http://localhost:8080/admins/report/list`)
+    .then((res)=>{
+  
+      setReportList(res.data.report)
+    })
+    .catch((err)=>{
+      throw err;
+    })
+  },[])
+
+
+
+
+  const storeSearch = (searchWord) =>{
+    
+      axios
+        .get(`http://localhost:8080/admins/store/search/${searchWord}`)
+        .then((res)=>{
+          setReportList(res.data)
+        })
+        .catch((err)=>{
+            throw err;
+        })
+  }
+
+
 
   const reportinitial = (id) => {
     console.log(id);
@@ -75,7 +93,7 @@ const NotifyStore = () => {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => sotreSearch(searchWord)}
+            onClick={() => storeSearch(searchWord)}
           >
             검색
           </button>

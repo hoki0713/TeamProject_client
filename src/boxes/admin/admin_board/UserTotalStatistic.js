@@ -154,17 +154,6 @@ const UserTotalStatistic = () => {
   }, [genderKeys, genderValues, keys, values, ageKeys, ageValues, localSelect]);
 
 
-  const start_end_date = (e) => {
-    e.preventDefault();
-    if (startDate > endDate) {
-      alert("시작날짜보다 빠를수 없습니다.");
-      setEndDate("");
-    }
-   
-
-    let day = startDate.split("-");
-    console.log(day[1]);
-  };
 
   return (
     <div>
