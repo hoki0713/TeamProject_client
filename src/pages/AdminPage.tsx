@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { AdminHeader, AdminMenuBar, AdminContainer } from '../boxes';
+import './AdminPage.css'
 
 const AdminPage = () => {
   const [isLogined, setIsLogined] = useState(false);

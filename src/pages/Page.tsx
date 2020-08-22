@@ -24,7 +24,7 @@ const Page = () => {
           <AccountDetailPage />
         </Route>
         <Route path="/admin">
-          <AdminPage />
+          <AdminPage/>
         </Route>
         <Route>
           <CommonPage />
