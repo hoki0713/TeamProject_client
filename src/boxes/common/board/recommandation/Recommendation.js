@@ -39,7 +39,7 @@ function Recommendation() {
 
     useEffect(() => {
         if (id) {
-            axios.get(`http://localhost:8080/recommends/individualUser/${id}`)
+            axios.get(`http://localhost:8080/recommends/userBased/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
                     if (res.data.userBased) {
@@ -60,7 +60,7 @@ function Recommendation() {
 
     useEffect(() => {
         if (id) {
-            axios.get(`http://localhost:8080/recommends/individualItem/${id}`)
+            axios.get(`http://localhost:8080/recommends/itemBased/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
                     if (res.data.itemBased) {
@@ -254,7 +254,7 @@ function Recommendation() {
 
         {userFavBased &&
         <div>
-            <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h3>
+            <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 {userFavStore}와/과 같은 업종 추천 가맹점</h3>
             <div className="scrollContainer">
                 {userFavBased.map((store, i) => (
                         <Card className="cardItem" key={i}>
@@ -279,15 +279,14 @@ function Recommendation() {
         {noFavMsg && <div>
             <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h3>
             <div  id="msg">
-                <h6 style={{textAlign:"center"}}>{noFavMsg}<br/>
-                <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h6></div>
+                <h4 style={{textAlign:"center"}}>{noFavMsg}<br/>
+                <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h4></div>
         </div>}<br/><br/>
 
 
 
         <h3><span style={{"color" : "#a557cc"}}>★</span>회원님과 유사한 회원들이 좋아하는 가맹점</h3>
-        {(!itemWarningMsg && !itemBased) &&
-
+        {(userBased.length === 0 && !userWarningMsg)&&
         <div id="msg"> 찾 는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
@@ -323,10 +322,9 @@ function Recommendation() {
 
 
 
-        <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 유사한 추천 가맹점</h3>
-        {(itemWarningMsg || itemBased) && <div id="msg">
-
-            찾는 중
+        <h3><span style={{"color" : "#a557cc"}}>★</span>별점을 준 {itemBasedStore} 가맹점과 유사한 추천 가맹점</h3>
+        {(itemBased.length === 0 && !itemWarningMsg)&& <div id="msg">
+            찾 는 중
             <Spinner animation="border" variant="primary"/>
             <Spinner animation="border" variant="secondary"/>
             <Spinner animation="border" variant="success"/>

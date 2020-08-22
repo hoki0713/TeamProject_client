@@ -18,15 +18,12 @@ function FindByTag() {
     const [ageGroup, setAgeGroup] = useState(0);
     const [gender, setGender] = useState("null")
     const [userIndustry, setUserIndustry] = useState([])
-    const [genderIndustry, setGenderIndustry] = useState([])
-    const [ageIndustry, setAgeIndustry] = useState([])
     const [totalIndustry, setTotalIndustry] = useState([])
     const [searchIndustry, setSearchIndustry] = useState([])
     const [industryName, setIndustryName] = useState([])
     const [resultStores, setResultStores] = useState([])
     const [genderKor, setGenderKor] = useState("성별")
     const [ageKor, setAgeKor] = useState("연령")
-    const [show, setShow] = useState(false)
     const [option, setOption] = useState(0)
     const {setStore} = useContext(StoreSearchContext);
     const history= useHistory();
@@ -66,12 +63,10 @@ function FindByTag() {
         if (id) {
             console.log(userGender)
             console.log(userBirthYear)
-            axios.get(`http://localhost:8080/recommends/tag/${userGender}/${userBirthYear}`)
+            axios.get(`http://localhost:8080/recommends/user/${userGender}/${userBirthYear}`)
                 .then((res) => {
                     setTotalIndustry(res.data.byTotal)
                     setUserIndustry(res.data.byGenderAge)
-                    setAgeIndustry(res.data.byAge)
-                    setGenderIndustry(res.data.byGender)
                     setUserGenderKor(res.data.userGenderKor)
                     setUserAgeGroup(res.data.userAgeGroup)
                     console.log("유즈이펙트 성공")
@@ -85,10 +80,10 @@ function FindByTag() {
 
 
     const handleIndustry = () => {
-        if (gender !== "null" || ageGroup !== 0) {
-            axios.get(`http://localhost:8080/recommends/search/${gender}/${ageGroup}`)
+        if (gender !== "null" && ageGroup !== 0) {
+            axios.get(`http://localhost:8080/recommends/rank/${gender}/${ageGroup}`)
                 .then((res) => {
-                    console.log('성공')
+                    console.log('랭킹 성공')
                     setSearchIndustry(res.data.searchResult)
                 })
                 .catch(error => {
@@ -102,8 +97,7 @@ function FindByTag() {
         setGender(gender)
     }
 
-    const handleGender = (e) => {
-        changeGender(e.target.value);
+    const fixGenderKor=(gender)=>{
         if (gender === "F") {
             setGenderKor("여성")
         } else if (gender === "M") {
@@ -111,30 +105,32 @@ function FindByTag() {
         } else if (gender === "none") {
             setGenderKor("성별무관")
         }
+    }
+    const handleGender = (e) => {
+        changeGender(e.target.value);
+        fixGenderKor(gender)
         console.log("gender시작" + gender + "age시작" + ageGroup)
         handleIndustry()
-        setShow(true)
     }
+
     const handleAge = e => {
         setAgeGroup(e.target.value);
         if(ageGroup>61){
             setAgeKor("연령무관");
         } else if(1<ageGroup <51)
            {setAgeKor(ageGroup+"대")}
+        else if(ageGroup===0){ageGroup("연령")}
         else {setAgeKor("60대 이상")}
         console.log("age시작" + ageGroup + "gender" + gender)
         handleIndustry()
-        setShow(true)
     }
 
     const handleOption=(e)=>{
         console.log('몇번이 클릭됐는지'+e.target.value)
-        e.preventDefault()
         setOption(e.target.value)
     }
 
     const submitSearch = (e) => {
-        e.preventDefault()
         if (
             ageGroup === 0 ||
             gender === "null" ||
@@ -143,7 +139,7 @@ function FindByTag() {
             alert("모든 사항을 선택 선택해주세요");
         } else {
             console.log(ageGroup+gender+option)
-            axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}/${option}`, latLng)
+            axios.post(`http://localhost:8080/recommends/result/${gender}/${ageGroup}/${option}`, latLng)
                 .then((res) => {
                     console.log('가게 리스트 가져오기 성공')
                     console.log(res.data);
@@ -161,49 +157,6 @@ function FindByTag() {
                 })
         }}
 
-
-    // const submitUserSearch = (e) => {
-    //     e.preventDefault()
-    //     setGender(userGender);
-    //     setAgeGroup(userAgeGroup);
-    //     console.log(gender + ageGroup)
-    //     axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, latLng)
-    //         .then((res) => {
-    //             console.log('가게 리스트 가져오기 성공')
-    //             console.log(res.data);
-    //             const values = [];
-    //             const keys = [];
-    //             Object.entries(res.data).forEach(([key, value]) => {
-    //                 keys.push(key)
-    //                 values.push(value)
-    //             })
-    //             setIndustryName(keys)
-    //             setResultStores(values)
-    //         })
-    //         .catch(error => {
-    //             throw(error)
-    //         })
-    // }
-
-    const submitTotalSearch = (e) => {
-        e.preventDefault()
-        axios.post(`http://localhost:8080/recommends/storesByIndustry/${gender}/${ageGroup}`, latLng)
-            .then((res) => {
-                console.log('가게 리스트 가져오기 성공')
-                console.log(res.data);
-                const values = [];
-                const keys = [];
-                Object.entries(res.data).forEach(([key, value]) => {
-                    keys.push(key)
-                    values.push(value)
-                })
-                setIndustryName(keys)
-                setResultStores(values)
-            })
-            .catch(error => {
-                throw(error)
-            })
-    }
 
     const clickStore = (store)=>{
         setStore(store);
@@ -247,7 +200,7 @@ function FindByTag() {
                     {/*}*/}
                     {/*    (totalIndustry.indexOf(industry) > userIndustry.indexOf(industry)) ? "낮음" : "높음"}*/}
                     {/*    */}
-                    {(show) && <Card>
+                    {<Card>
                         <Card.Header>
 
                             {ageKor} X {genderKor}의 관심업종 TOP 5</Card.Header>
@@ -269,31 +222,30 @@ function FindByTag() {
                         성별
                     </Form.Label>
                     <Col sm={10}>
-
-                        <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
+                        <div  onClick={handleGender}>
+                        <Button id="button" variant="outline-dark" type="button"
                                 value="M">남성</Button>{' '}
-                        <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
+                        <Button id="button" variant="outline-dark" type="button"
                                 value={"F"}>여성</Button>{' '}
-                        <Button id="button" variant="outline-dark" type="button" onClick={handleGender}
+                        <Button id="button" variant="outline-dark" type="button"
                                 value={"none"}>성별무관</Button>
+                        </div>
 
-
-                        {/*<ButtonGroup toggle>*/}
-                        {/*    {radiosGender.map((radio, idx) => (*/}
-                        {/*        <ToggleButton*/}
-                        {/*            key={idx}*/}
-                        {/*            type="radio"*/}
-                        {/*            variant="outline-dark"*/}
-                        {/*            name="genderGroup"*/}
-                        {/*            value={radio.value}*/}
-                        {/*            on={handleGender}*/}
-                        {/*            checked={gender === radio.value}*/}
-
-                        {/*        >*/}
-                        {/*            {radio.name}*/}
-                        {/*        </ToggleButton>*/}
-                        {/*    ))}*/}
-                        {/*</ButtonGroup>*/}
+                        <ButtonGroup toggle>
+                            {radiosGender.map((radio, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    type="radio"
+                                    variant="outline-dark"
+                                    name="genderGroup"
+                                    value={radio.value}
+                                    onChange={handleGender}
+                                    checked={gender === radio.value}
+                                >
+                                    {radio.name}
+                                </ToggleButton>
+                            ))}
+                        </ButtonGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -310,21 +262,21 @@ function FindByTag() {
                         <Button variant="outline-dark" type="button" value={100} onClick={handleAge}>연령무관</Button>
 
 
-                        {/*<ButtonGroup toggle>*/}
-                        {/*    {radiosAgeGroup.map((radios, idx) => (*/}
-                        {/*        <ToggleButton*/}
-                        {/*            key={idx}*/}
-                        {/*            type="radio"*/}
-                        {/*            variant="outline-dark"*/}
-                        {/*            name="ageGroups"*/}
-                        {/*            value={radios.value}*/}
-                        {/*            onChanged={handleAge}*/}
-                        {/*            checked={ageGroup !== radios.value}*/}
-                        {/*        >*/}
-                        {/*            {radios.name}*/}
-                        {/*        </ToggleButton>*/}
-                        {/*    ))}*/}
-                        {/*</ButtonGroup>*/}
+                        <ButtonGroup toggle>
+                            {radiosAgeGroup.map((radios, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    type="radio"
+                                    variant="outline-dark"
+                                    name="ageGroups"
+                                    value={radios.value}
+                                    onChanged={handleAge}
+                                    checked={ageGroup !== radios.value}
+                                >
+                                    {radios.name}
+                                </ToggleButton>
+                            ))}
+                        </ButtonGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
