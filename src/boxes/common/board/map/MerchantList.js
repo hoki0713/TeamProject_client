@@ -13,7 +13,7 @@ const MerchantList=()=> {
     const [storeList, setStoreList]=useState([]);
     const [drop1Show, setDrop1Show] = useState(false);
     const [drop2Show, setDrop2Show] = useState(false);
-    const [pageNow,setPageNow]=useState(0);
+    let [pageNow,setPageNow]=useState(0);
     const [totalCount,setTotalCount]=useState(0);
     const [pageSize]=useState(10);
     const [blockSize]=useState(10);
@@ -24,13 +24,13 @@ const MerchantList=()=> {
     const [rowStart,setRowStart]=useState(0);
     const [pageCount,setPageCount]=useState(0);
     const [rowEnd,setRowEnd]=useState(0);
-    const [existPrev, setExistPrev]=useState(0);
-    const [existNext,setExistNext]=useState(0);
+    const [existPrev, setExistPrev]=useState(false);
+    const [existNext,setExistNext]=useState(false);
     const [prevBlock,setPrevBlock]=useState(0);
     const [nextBlock,setNextBlock]=useState(0);
     const [pageList, setPageList]=useState([]);
     const [pageNumArr,setPageNumArr]=useState([]);
-    const [trigger,setTrigger]=useState(false);
+    const [checkPageNation,setCheckPageNation]=useState(false);
 
     const [stateList]=useState(
         ['연천군', '포천시', '파주시', '동두천시', '양주시', '의정부시', '가평군', '고양시',
@@ -52,64 +52,71 @@ const MerchantList=()=> {
         setCate(category);
         // getSpecificS();
     };
+
     function pageNation(){
         setBlockNow(parseInt(pageNow/blockSize));
-        setBlockCount(parseInt((pageCount % blockSize != 0) ? pageCount / blockSize +1:pageCount / blockSize));
-        setPageEnd(parseInt((blockNow != (blockCount -1)) ? (blockNow+1)*blockSize -1: pageCount - 1));
-        setPageStart(parseInt(blockNow *  blockSize));
+        setPageEnd((blockNow != blockCount -1) ? (blockNow+1)*blockSize -1: pageCount - 1);
+        setPageStart(blockNow *  blockSize);
         setRowStart(parseInt(pageNow*pageSize));
-        setPageCount(parseInt((totalCount % pageSize != 0) ? (totalCount / pageSize +1) :(totalCount / pageSize )));
-        setRowEnd(parseInt((pageNow != (pageCount -1)) ? (pageNow+1)*pageSize-1:totalCount-1));
-        setExistPrev(parseInt(blockNow!=0));
-        setExistNext( parseInt(blockNow !=(blockCount-1)));
+        setPageCount(parseInt((totalCount % pageSize != 0) ? totalCount / pageSize +1 :totalCount / pageSize ));
+        setRowEnd((pageNow != (pageCount -1)) ? (pageNow+1)*pageSize-1:totalCount-1);
+        setExistPrev(blockNow!=0);
+        setExistNext( blockNow !=(blockCount-1));
         setNextBlock(pageStart + blockSize);
         setPrevBlock(pageStart - blockSize);
+        setBlockCount(parseInt((pageCount % blockSize != 0) ? pageCount / blockSize +1:pageCount / blockSize));
     }
 
     function setPageNums() {
         let pageNumArr=[];
         let startNum=0;
-        for(let i=pageStart;i<nextBlock;i++){
-            pageNumArr[startNum]=i;
-            startNum++;
-        }
+        let limitNum = (existNext)?nextBlock:totalCount/blockSize;
+            for(let i=pageStart;i<limitNum;i++){
+                pageNumArr[startNum]=i;
+                startNum++;
+            }
+
         setPageNumArr(pageNumArr);
+
+    }
+    function setPageArr(){
+        if(totalCount!=0){
+            let startNum =rowStart%(blockSize*pageSize);
+            let tmpArr =[];
+            let limitNum = (pageCount!=0&&pageNow+1==pageCount)?totalCount-pageNow*pageSize:pageSize;
+                for(let i=0;i<limitNum;i++){
+                    tmpArr[i]=storeList[startNum];
+                    startNum++;
+                }
+
+            setPageList(tmpArr);
+            }
 
     }
 
 
     useEffect(()=>{
-        axios.get(`http://localhost:8080/stores/getSome/""/""/${pageNow}/${blockSize*pageSize}`)
+        console.log("//////1");
+        console.log(pageEnd);
+        let offset = (!existNext)?pageEnd*pageSize:blockNow*pageSize*blockSize;
+        axios.get(`http://localhost:8080/stores/getSome/""/""/${offset}/${blockSize*pageSize}`)
             .then(({data})=>{
                 setStoreList(data.list);
                 setTotalCount(data.count);
-                let startNum =0;
-                let tmpArr =[];
-                for(let i=rowStart;i<rowStart+pageSize;i++){
-                    tmpArr[startNum]=data.list[i];
-                    startNum++;
-                }
-                setPageList(tmpArr);
             })
-            .catch(err=>{console.log(err);throw err;})
+            .catch(err=>{console.log(err);throw err;});
+
     },[blockNow]);
     useEffect(()=>{
        pageNation();
-    },[pageNow,totalCount]);
-    useEffect(()=>{
-        if(totalCount!=0){
-        let startNum =0;
-        let tmpArr =[];
-        for(let i=rowStart;i<rowStart+pageSize;i++){
-            tmpArr[startNum]=storeList[i];
-            startNum++;
-        }
-        setPageList(tmpArr);}
-    },[rowStart]);
+    },[pageNow,blockNow,pageList]);
 
     useEffect(()=>{
+        setPageArr();
+    },[rowStart,pageNumArr]);//한 페이지 어레
+    useEffect(()=>{
         setPageNums();
-    },[pageList]);
+    },[storeList]);
 
 
 
@@ -192,7 +199,7 @@ const MerchantList=()=> {
                 </tr>
 
 
-                {pageList.map((store,i)=>(
+                {pageList[pageList.length-1]&&pageList.map((store,i)=>(
                         <tr>
                             <td></td>
                             <td>{store.id}</td>
@@ -208,13 +215,15 @@ const MerchantList=()=> {
             </Table>
             <table className={"paging"}>
                 <tr>
+                    {existPrev&&<td onClick={()=>{setPageNow(0)}}>{"<<"}</td>}
                     <td onClick={()=>{if(pageNow!==1){setPageNow(pageNow-1)}}}>{"<"}</td>
 
 
                             {pageNumArr.map((num)=>(<td onClick={()=>setPageNow(num)}>&nbsp;{num+1}</td>))}
 
 
-                    <td onClick={()=>{if(pageNow!==pageEnd){setPageNow(pageNow+1)}}}>&nbsp;{">"}</td>
+                    <td onClick={()=>{if(pageNow!==blockSize){setPageNow(pageNow+1)}}}>&nbsp;{">"}</td>
+                    {existNext&&<td onClick={e=>{e.preventDefault();setPageNow(parseInt(pageCount/blockSize)*blockSize);}}>&nbsp;{">>"}</td>}
                 </tr>
             </table>
 
