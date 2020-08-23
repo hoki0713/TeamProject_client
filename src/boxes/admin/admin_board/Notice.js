@@ -139,7 +139,7 @@ const Notice = () => {
             {currentPosts.map((info, i) => (
               <tr key={i}>
                 <td style={{ "text-align": "center" }}>
-                  {i + (indexOfFirstPost + 1)}
+                  { (postList.length -i)}
                 </td>
                 <td style={{ "text-align": "center" }}> {info.category}</td>
                 <td>
