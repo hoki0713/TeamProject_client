@@ -88,7 +88,6 @@ const MerchantList=()=> {
                     tmpArr[i]=storeList[startNum];
                     startNum++;
                 }
-
             setPageList(tmpArr);
             }
 
@@ -97,9 +96,7 @@ const MerchantList=()=> {
 
     useEffect(()=>{
         console.log("//////1");
-        console.log(pageEnd);
-        let offset = (!existNext)?pageEnd*pageSize:blockNow*pageSize*blockSize;
-        axios.get(`http://localhost:8080/stores/getSome/""/""/${offset}/${blockSize*pageSize}`)
+        axios.get(`http://localhost:8080/stores/getSome/""/""/${blockNow*pageSize*blockSize}/${blockSize*pageSize}`)
             .then(({data})=>{
                 setStoreList(data.list);
                 setTotalCount(data.count);
@@ -110,7 +107,6 @@ const MerchantList=()=> {
     useEffect(()=>{
        pageNation();
     },[pageNow,blockNow,pageList]);
-
     useEffect(()=>{
         setPageArr();
     },[rowStart,pageNumArr]);//한 페이지 어레
@@ -215,15 +211,20 @@ const MerchantList=()=> {
             </Table>
             <table className={"paging"}>
                 <tr>
-                    {existPrev&&<td onClick={()=>{setPageNow(0)}}>{"<<"}</td>}
-                    <td onClick={()=>{if(pageNow!==1){setPageNow(pageNow-1)}}}>{"<"}</td>
+                    {existPrev&&<td  className={"nums"} onClick={e=>{e.preventDefault();setPageNow(0)}}>{"<<"}</td>}
+                    <td  className={"nums"} onClick={()=>{if(pageNow!==0){setPageNow(pageNow-1)}}}>{"<"}</td>
 
 
-                            {pageNumArr.map((num)=>(<td onClick={()=>setPageNow(num)}>&nbsp;{num+1}</td>))}
+                            {pageNumArr.map((num)=>
+                                (
+                                <td className={"nums"} onClick={()=>setPageNow(num)}>&nbsp;{num+1}</td>
+                                   // <td style={{color:"red"}} onClick={()=>setPageNow(num)}>&nbsp;{num+1}</td>
+                                )
+                            )}
 
 
-                    <td onClick={()=>{if(pageNow!==blockSize){setPageNow(pageNow+1)}}}>&nbsp;{">"}</td>
-                    {existNext&&<td onClick={e=>{e.preventDefault();setPageNow(parseInt(pageCount/blockSize)*blockSize);}}>&nbsp;{">>"}</td>}
+                    <td  className={"nums"} onClick={()=>{if(pageNow!==blockSize){setPageNow(pageNow+1)}}}>&nbsp;{">"}</td>
+                    {existNext&&<td  className={"nums"} onClick={e=>{e.preventDefault();setPageNow(parseInt(pageCount/blockSize)*blockSize);}}>&nbsp;{">>"}</td>}
                 </tr>
             </table>
 

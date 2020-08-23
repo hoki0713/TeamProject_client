@@ -258,3 +258,6 @@ input:checked + .slider:before {
 #content-wrapper {
     text-align: center;
 }
+.nums:hover{
+    color: red;
+}
