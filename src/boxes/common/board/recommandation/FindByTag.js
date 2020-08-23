@@ -1,12 +1,22 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {CardDeck, Card, Button, Form, Row, Col, ListGroup, ButtonGroup, ToggleButton, ToggleButtonGroup} from 'react-bootstrap'
+import {
+    CardDeck,
+    Card,
+    Button,
+    Form,
+    Row,
+    Col,
+    ListGroup,
+    ButtonGroup,
+    ToggleButton,
+    OverlayTrigger, Tooltip
+} from 'react-bootstrap'
 import axios from 'axios'
 import './Recommendation.css'
 import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 function FindByTag() {
-
 
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || `{}`));
     const [latLng] = useState(JSON.parse(sessionStorage.getItem("userLocation") || '{}'))
@@ -26,30 +36,29 @@ function FindByTag() {
     const [ageKor, setAgeKor] = useState("연령")
     const [option, setOption] = useState(0)
     const {setStore} = useContext(StoreSearchContext);
-    const history= useHistory();
+    const history = useHistory();
 
     const radiosGender = [
-        { name: '남성', value: 'M' },
-        { name: '여성', value: 'F' },
-        { name: '성별무관', value: 'none' },
+        {name: '남성', value: 'M'},
+        {name: '여성', value: 'F'},
+        {name: '성별무관', value: 'none'},
     ];
 
     const radiosAgeGroup = [
-        { name: '10대', value: 10 },
-        { name: '20대', value: 20 },
-        { name: '30대', value: 30 },
-        { name: '40대', value: 40 },
-        { name: '50대', value: 50 },
-        { name: '60대 이상', value: 60 },
-        { name: '연령무관', value: 100 },
+        {name: '10대', value: '10'},
+        {name: '20대', value: '20'},
+        {name: '30대', value: '30'},
+        {name: '40대', value: '40'},
+        {name: '50대', value: '50'},
+        {name: '60대 이상', value: '60'},
+        {name: '연령무관', value: '100'},
     ];
 
     const radiosOption = [
-        { name: '#인기많은', value: 1 },
-        { name: '#즐겨찾기 많은', value: 2 },
-        { name: '#별점 높은', value: 3 },
+        {name: '#인기많은', value: '1'},
+        {name: '#즐겨찾기 많은', value: '2'},
+        {name: '#별점 높은', value: '3'},
     ];
-
 
 
     useEffect(() => {
@@ -57,6 +66,12 @@ function FindByTag() {
         setUserGender(accountDetail.gender);
         setUserBirthYear(accountDetail.birthDate.split("-")[0])
     }, [accountDetail], [latLng]);
+
+    useEffect(() => {
+        handleIndustry()
+        fixGenderKor(gender)
+        fixAgeGroup(ageGroup)
+    }, [ageGroup], [gender]);
 
 
     useEffect(() => {
@@ -78,7 +93,6 @@ function FindByTag() {
     }, [id])
 
 
-
     const handleIndustry = () => {
         if (gender !== "null" && ageGroup !== 0) {
             axios.get(`http://localhost:8080/recommends/rank/${gender}/${ageGroup}`)
@@ -93,11 +107,19 @@ function FindByTag() {
 
     }
 
-    const changeGender=(gender)=>{
+    const changeGender = (gender) => {
         setGender(gender)
     }
 
-    const fixGenderKor=(gender)=>{
+    const changeAge = (ageGroup) => {
+        setAgeGroup(ageGroup)
+    }
+
+    const changeOption = (option) => {
+        setOption(option)
+    }
+
+    const fixGenderKor = (gender) => {
         if (gender === "F") {
             setGenderKor("여성")
         } else if (gender === "M") {
@@ -106,31 +128,36 @@ function FindByTag() {
             setGenderKor("성별무관")
         }
     }
+
+    const fixAgeGroup = (ageGroup) => {
+        if (ageGroup > 61) {
+            setAgeKor("연령무관");
+        } else if (ageGroup === 0) {
+            setAgeKor("연령");
+        } else if (1 < ageGroup && ageGroup < 61) {
+            setAgeKor(ageGroup + "대");
+        } 
+    }
+
     const handleGender = (e) => {
+        console.log('몇번이 클릭됐는지' + e.target.value)
         changeGender(e.target.value);
-        fixGenderKor(gender)
-        console.log("gender시작" + gender + "age시작" + ageGroup)
         handleIndustry()
     }
 
     const handleAge = e => {
-        setAgeGroup(e.target.value);
-        if(ageGroup>61){
-            setAgeKor("연령무관");
-        } else if(1<ageGroup <51)
-           {setAgeKor(ageGroup+"대")}
-        else if(ageGroup===0){ageGroup("연령")}
-        else {setAgeKor("60대 이상")}
-        console.log("age시작" + ageGroup + "gender" + gender)
+        console.log('몇번이 클릭됐는지' + e.target.value)
+        changeAge(e.target.value);
         handleIndustry()
     }
 
-    const handleOption=(e)=>{
-        console.log('몇번이 클릭됐는지'+e.target.value)
-        setOption(e.target.value)
+    const handleOption = (e) => {
+        console.log('몇번이 클릭됐는지' + e.target.value)
+        changeOption(e.target.value)
     }
 
     const submitSearch = (e) => {
+        e.preventDefault()
         if (
             ageGroup === 0 ||
             gender === "null" ||
@@ -138,7 +165,7 @@ function FindByTag() {
         ) {
             alert("모든 사항을 선택 선택해주세요");
         } else {
-            console.log(ageGroup+gender+option)
+            console.log(ageGroup + gender + option)
             axios.post(`http://localhost:8080/recommends/result/${gender}/${ageGroup}/${option}`, latLng)
                 .then((res) => {
                     console.log('가게 리스트 가져오기 성공')
@@ -155,24 +182,42 @@ function FindByTag() {
                 .catch(error => {
                     throw(error)
                 })
-        }}
+        }
+    }
 
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            해당 인근 가맹점이 없으면 인기순으로 보여집니다.
+        </Tooltip>
+    );
 
-    const clickStore = (store)=>{
+    const clickStore = (store) => {
         setStore(store);
         history.push("/storeDetail");
     }
-
+    const showRatingStars = (numOfStars) => {
+        let stars = "";
+        for (let i = 0; i < numOfStars; i++) {
+            stars += "★";
+        }
+        if (5 - numOfStars) {
+            for (let i = 0; i < 5 - numOfStars; i++) {
+                stars += "☆";}}
+        return stars;
+    };
 
     return (
         <>
-            <h2>태그로 검색하기</h2><br/>
+            <h2 className="mt-4" style={{"text-align" : "center"}}>
+               태그로 검색하기<br/>
+            </h2>
+            <br/>
             <div style={{textAlign: 'center'}}>
-               <h2>소비자별 최다 소비 업종</h2>
+                <h3>&#128184; 소비자별 인기 업종 &#128184;</h3>
 
                 <CardDeck>
                     <Card style={{width: '18rem'}}>
-                        <Card.Header>전체 업종 TOP 5</Card.Header>
+                        <Card.Header as="h5">전체 업종 TOP 5</Card.Header>
                         {totalIndustry.map((industry, i) => (
                                 <ListGroup variant="flush">
                                     <ListGroup.Item key={i}>{i + 1}. {industry.industryName}</ListGroup.Item>
@@ -181,56 +226,50 @@ function FindByTag() {
                         )}
                     </Card>
                     <Card>
-                        <Card.Header>나({userAgeGroup}대 X {userGenderKor})의 관심업종 TOP
+                        <Card.Header as="h5" >
+                            나(<span style={{"color" : "#7C05F2"}}>{userAgeGroup}대</span>X
+                            <span style={{"color" : "#7C05F2"}}>{userGenderKor}</span>)의 업종 TOP
                             5</Card.Header>
                         {userIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
-                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}
-                                {totalIndustry[i].industryName===userIndustry[i].industryName ? "" : " √"}
+                                <ListGroup.Item key={i}>{totalIndustry[i].industryName !== userIndustry[i].industryName ?
+                                    <span style={{"color" : "#3B6FD9"}}>{i + 1}. {industry.industryName}</span>
+                                    : <span>{i + 1}. {industry.industryName}</span>}
+
 
                                 </ListGroup.Item>
                             </ListGroup>)
                         )}
                     </Card>
-                    {/*{(totalIndustry[i].industryName===userIndustry[i].industryName*/}
-                    {/*    && totalIndustry.indexOf(totalIndustry[i]) === userIndustry.indexOf(totalIndustry[i])) ? "같음" : "다름"}*/}
-
-                    {/*{if (totalIndustry.industry.industryName === totalIndustry.industry.industryName) {*/}
-                    {/*    if (totalIndustry.indexof(industry)> )*/}
-                    {/*}*/}
-                    {/*    (totalIndustry.indexOf(industry) > userIndustry.indexOf(industry)) ? "낮음" : "높음"}*/}
-                    {/*    */}
                     {<Card>
-                        <Card.Header>
-
-                            {ageKor} X {genderKor}의 관심업종 TOP 5</Card.Header>
+                        <Card.Header as="h5">
+                           <span style={{"color" : "#7C05F2"}}>{ageKor}</span>X
+                            <span style={{"color" : "#7C05F2"}}>{genderKor}</span>의 업종 TOP 5</Card.Header>
                         {searchIndustry.map((industry, i) => (
                             <ListGroup variant="flush">
-                                <ListGroup.Item key={i}>{i + 1}. {industry.industryName}{totalIndustry[i].industryName===searchIndustry[i].industryName ? "" : " √"}</ListGroup.Item>
+                                <ListGroup.Item
+                                    key={i}>
+                                    {totalIndustry[i].industryName !== searchIndustry[i].industryName ?
+                                        <span style={{"color" : "#3B6FD9"}}>{i + 1}. {industry.industryName}</span>
+                                        : <span>{i + 1}. {industry.industryName}</span>}
+                                    </ListGroup.Item>
                             </ListGroup>)
                         )}
                     </Card>}
 
                 </CardDeck>
+                <h5 style={{textAlign: 'right'}}>출처 : 경기지역화폐 일반발행카드의 주간 결제금액 정보(2019.09.23~2019.09.29)<br/>
+                <a href={"https://www.bigdata-region.kr/#/dataset/9b6a1038-b8a9-404e-9008-4cc1aa5a16b2"}>-경기지역경제포털</a></h5>
 
             </div>
             <br/><br/><br/>
-            <h3 style={{textAlign: "center"}}>태그 검색</h3><br/>
-           <Form>
+            <h3 style={{textAlign: "center"}}>&#128270; 태그 검색 &#128270;</h3><br/>
+            <Form>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
-                    <Form.Label column sm={2}>
-                        성별
+                    <Form.Label column sm={2} >
+                        <h4 style={{textAlign:'center'}}>성별</h4>
                     </Form.Label>
                     <Col sm={10}>
-                        <div  onClick={handleGender}>
-                        <Button id="button" variant="outline-dark" type="button"
-                                value="M">남성</Button>{' '}
-                        <Button id="button" variant="outline-dark" type="button"
-                                value={"F"}>여성</Button>{' '}
-                        <Button id="button" variant="outline-dark" type="button"
-                                value={"none"}>성별무관</Button>
-                        </div>
-
                         <ButtonGroup toggle>
                             {radiosGender.map((radio, idx) => (
                                 <ToggleButton
@@ -249,60 +288,53 @@ function FindByTag() {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column sm={2}>
-                        연령
+                    <Form.Label column sm={2} >
+                        <h4 style={{textAlign:'center'}}>연령대</h4>
                     </Form.Label>
                     <Col sm={10}>
-                        <Button variant="outline-dark" type="button" value={10} onClick={handleAge}>10대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={20} onClick={handleAge}>20대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={30} onClick={handleAge}>30대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={40} onClick={handleAge}>40대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={50} onClick={handleAge}>50대</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={60} onClick={handleAge}>60대 이상</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={100} onClick={handleAge}>연령무관</Button>
-
-
                         <ButtonGroup toggle>
-                            {radiosAgeGroup.map((radios, idx) => (
+                            {radiosAgeGroup.map((radio, idx) => (
                                 <ToggleButton
                                     key={idx}
                                     type="radio"
                                     variant="outline-dark"
-                                    name="ageGroups"
-                                    value={radios.value}
-                                    onChanged={handleAge}
-                                    checked={ageGroup !== radios.value}
+                                    name="AgesGroup"
+                                    value={radio.value}
+                                    onChange={handleAge}
+                                    checked={ageGroup === radio.value}
                                 >
-                                    {radios.name}
+                                    {radio.name}
                                 </ToggleButton>
                             ))}
                         </ButtonGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="formHorizontalPassword">
-                    <Form.Label column sm={2}>
-                        정렬 조건
+                    <Form.Label column sm={2} >
+                        <h4 style={{textAlign:'center'}}>정렬 조건</h4>
                     </Form.Label>
                     <Col sm={10}>
-                        {/*<ButtonGroup toggle>*/}
-                        {/*    {radiosOption.map((opt, idx) => (*/}
-                        {/*        <ToggleButton*/}
-                        {/*            key={idx}*/}
-                        {/*            type="radio"*/}
-                        {/*            variant="outline-dark"*/}
-                        {/*            name="optionGroup"*/}
-                        {/*            value={opt.value}*/}
-                        {/*            checked={option === opt.value}*/}
-                        {/*            onChange={handleOption}*/}
-                        {/*        >*/}
-                        {/*            {opt.name}*/}
-                        {/*        </ToggleButton>*/}
-                        {/*    ))}*/}
-                        {/*</ButtonGroup>*/}
+                        <OverlayTrigger
+                            placement="bottom"
+                            overlay={renderTooltip}
+                        >
+                        <ButtonGroup toggle>
+                            {radiosOption.map((radio, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    type="radio"
+                                    variant="outline-dark"
+                                    name="optionGroup"
+                                    value={radio.value}
+                                    onChange={handleOption}
+                                    checked={option === radio.value}
+                                >
+                                    {radio.name}
+                                </ToggleButton>
+                            ))}
+                        </ButtonGroup>
+                        </OverlayTrigger>,
 
-                        <Button variant="outline-dark" type="button" value={1} onClick={handleOption}>#인기 많은</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={2} onClick={handleOption}>#즐겨찾기 많은</Button>{' '}
-                        <Button variant="outline-dark" type="button" value={3} onClick={handleOption}>#별점 높은</Button>{' '}
                     </Col>
                     <br/> <br/>
                 </Form.Group>
@@ -314,16 +346,22 @@ function FindByTag() {
             <br/><br/><br/><br/>
             {resultStores.map((list, i) => (
                 <div>
-                    <h2 key={i}>{`${i + 1}. ${industryName[i]}업`}</h2>
-                    <div className="scrollContainer" >
+                    <h2 key={i}>{`#${industryName[i]}업$`}</h2>
+                    <div className="scrollContainer">
                         {list.map((store, j) => (
                             <Card className="cardItem" key={j}>
                                 <Card.Img id="card-image" variant="top"
                                           src={store.imgUrl}/>
                                 <Card.Body>
-                                    <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                                    <Card.Title id="card-title" onClick={() => {
+                                        clickStore(store)
+                                    }}>{store.storeName}</Card.Title>
                                     <Card.Text>
-                                        {store.address}<br/>
+                                        {(store.starRanking) ?
+                                            <span>{showRatingStars(parseInt(store.starRanking))} {store.starRanking}</span> :
+                                            <span></span>}<br/>
+                                        {store.address}
+
                                     </Card.Text>
                                 </Card.Body>
                                 <Card.Footer id="card-footer">
@@ -332,11 +370,12 @@ function FindByTag() {
                             </Card>
                         ))}
 
-                    </div><br/><br/><br/>
+                    </div>
+                    <br/><br/><br/>
                 </div>
-                ))}
+            ))}
 
-</>
+        </>
     )
 }
 
