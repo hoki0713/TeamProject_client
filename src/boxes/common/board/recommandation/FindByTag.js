@@ -50,7 +50,7 @@ function FindByTag() {
         {name: '30대', value: '30'},
         {name: '40대', value: '40'},
         {name: '50대', value: '50'},
-        {name: '60대 이상', value: '60'},
+        {name: '60대', value: '60'},
         {name: '연령무관', value: '100'},
     ];
 
@@ -68,10 +68,16 @@ function FindByTag() {
     }, [accountDetail], [latLng]);
 
     useEffect(() => {
-        handleIndustry()
         fixGenderKor(gender)
+        handleIndustry()
+    }, [gender]);
+
+    useEffect(() => {
         fixAgeGroup(ageGroup)
-    }, [ageGroup], [gender]);
+        handleIndustry()
+    }, [ageGroup]);
+
+
 
 
     useEffect(() => {
@@ -142,13 +148,11 @@ function FindByTag() {
     const handleGender = (e) => {
         console.log('몇번이 클릭됐는지' + e.target.value)
         changeGender(e.target.value);
-        handleIndustry()
     }
 
     const handleAge = e => {
         console.log('몇번이 클릭됐는지' + e.target.value)
         changeAge(e.target.value);
-        handleIndustry()
     }
 
     const handleOption = (e) => {
@@ -346,7 +350,7 @@ function FindByTag() {
             <br/><br/><br/><br/>
             {resultStores.map((list, i) => (
                 <div>
-                    <h2 key={i}>{`#${industryName[i]}업$`}</h2>
+                    <h2 key={i}>{`#${industryName[i]}업`}</h2>
                     <div className="scrollContainer">
                         {list.map((store, j) => (
                             <Card className="cardItem" key={j}>

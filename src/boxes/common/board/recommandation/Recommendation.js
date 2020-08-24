@@ -15,7 +15,6 @@ function Recommendation() {
     const [itemBased, setItemBased] = useState([])
     const [itemBasedStore, setItemBasedStore] = useState("")
     const [bestStore, setBestStore] = useState([])
-    const [topIndustryName, setTopIndustryName] = useState([])
     const [mostFav, setMostFav] = useState([])
     const [bestRated, setBestRated] = useState([])
     const [userFavBased, setUserFavBased] = useState([])
@@ -154,7 +153,7 @@ function Recommendation() {
             <h3>&#127775; 내 주변 별점 높은 가맹점</h3>
             <div className="scrollContainer">
                 {bestRated.length===0 && (<div style={{textAlign : 'center'}}>
-                    <h4>인근에 해당하는 가맹점이 없습니다.</h4>
+                    <h4 >인근에 해당하는 가맹점이 없습니다.</h4>
                 </div>)}
                 {bestRated.map((store, i) => (
                     <Card className="cardItem" key={i}>
@@ -278,7 +277,7 @@ function Recommendation() {
             <br/><br/>
 
 
-            {userFavBased.length!==0 &&
+            {userFavBased &&
             <div>
                 <h3>&#127879; 즐겨찾기한 <span style={{"color": "#7C05F2"}}>{userFavStore}</span>와/과 같은 업종 추천 가맹점</h3>
                 <div className="scrollContainer">
@@ -305,7 +304,7 @@ function Recommendation() {
             {noFavMsg && <div>
                 <h3>&#127879; 즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h3>
                 <div id="msg">
-                    <h4 style={{textAlign: "center"}}>{noFavMsg}<br/>
+                    <br/><h4 style={{textAlign: "center"}}>{noFavMsg}<br/>
                         <Button variant="outline-dark" size="sm" onClick={() => {
                             history.push("/find-by-map")
                         }}>즐겨찾기 추가하기</Button></h4></div>
@@ -396,7 +395,7 @@ function Recommendation() {
                         <Button variant="outline-dark" size="sm" onClick={() => {
                             history.push("/find-by-map")
                         }}>
-                            즐겨찾기 추가하기
+                            별점 추가하기
                         </Button>
                     </h4>
                 </div>
