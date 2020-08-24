@@ -11,7 +11,6 @@ import * as serviceWorker from './serviceWorker';
 import { userListReducer } from './boxes/admin/admin_board/UsersList';
 import { postListReducer } from './boxes/admin/admin_board/Notice.js';
 
-
 const rootReducer = combineReducers({
   userListReducer,
   postListReducer
