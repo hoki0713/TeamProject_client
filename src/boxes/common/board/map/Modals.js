@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 import ReviewModal from "../../../../items/ReviewModal";
 import axios from "axios";
 import {Stars} from "./FindByMap";
-import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
 export const MapModal=({modalClose,isLogined,storeInfo})=> {
     const [reportShow, setReportShow]=useState(false);

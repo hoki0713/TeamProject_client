@@ -22,5 +22,6 @@ import soju from './sojuIcon.png'
 import arrowMarker from './arrowMarker.png'
 import recoInfo from './recoInfo.png'
 import starIcon from './starIcon.png'
+
 export {starIcon,arrowMarker,homeIcon2,bab,soju, conviStore,chinaIcon,hotelIcon,addr,bookStore,favStar,red,cafe,drug,home,homeIcon,
     hospIcon,normal,phoneB,recom,review,selected,storeIcon,recoInfo}

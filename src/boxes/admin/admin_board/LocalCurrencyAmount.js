@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import { SearchBar } from "../../../items";
 import { Line, Bar } from "react-chartjs-2";
 import axios from "axios";
+import {NewPagination} from '../../../items'
 
 const LocalCurrencyAmount = () => {
 
@@ -25,24 +26,36 @@ const LocalCurrencyAmount = () => {
   const [useTotalLocalKeys,setUseTotalLocalKeys] = useState([]);
   const [useTotalLocalValues,setUseTotalLocalValues] =useState([]);
   const [salesList,setSalesList] = useState([]);
+  const [totalPages,setTotalPages] = useState(0);
+  const [currentPage,setCurrentPage] =useState(0);
  
+
+  const paginate = (page) =>{
+    setCurrentPage(page);
+  }
+
   useEffect(()=>{
     axios
-      .get(`http://localhost:8080/admins/sales/list`)
+      .get(`http://localhost:8080/admins/sales/list/${currentPage}`)
       .then((res)=>{
-        setSalesList(res.data.sales)
+        setSalesList(res.data.salesList)
+        setTotalPages(res.data.totalPages)
+        console.log(`list${res.data}`)
+        console.log(res.data)
       
       })
       .catch((err)=>{
         throw err;
       })
-  },[]);
+  },[currentPage]);
 
   useEffect(()=>{
     axios
       .get(`http://localhost:8080/admins/currency/month/total`)
       .then((res) => {
-       
+        
+        
+        console.log(res.data)
         const dataKey = [];
         const dataValue = [];
         Object.entries(res.data).forEach(([key, value]) => {
@@ -110,7 +123,7 @@ const LocalCurrencyAmount = () => {
   useEffect(() => {
     
     setChartData({
-      labels: totalKeys.sort(),
+      labels: totalKeys,
       datasets: [
         {
           data: totalValues,
@@ -129,7 +142,7 @@ const LocalCurrencyAmount = () => {
     })
 
     setSalesTotalChart({
-      labels: salesTotalKeys.sort(),
+      labels: salesTotalKeys,
       datasets: [
         {
           data: salesTotalValues,
@@ -174,6 +187,8 @@ const LocalCurrencyAmount = () => {
           `http://localhost:8080/admins/voucher/name-list/${currencyName}/${startDate}/${endDate}`
         )
         .then((res) => {
+          
+       
           const monthLocalTotalKeys = [];
           const monthLocalTotalValues = [];
 
@@ -585,6 +600,7 @@ const LocalCurrencyAmount = () => {
               <th>상태</th>
               <th>지역명 및 지역화폐</th>
               <th>구매자</th>
+              <th>구매가격</th>
               <th>구매일</th>
               <th>사용일 </th>
               <th>취소일 </th>
@@ -593,10 +609,11 @@ const LocalCurrencyAmount = () => {
             <tbody>
             {salesList.map((info,i) => (
               <tr key={i}>
-                <td>{i+1}</td>
+                <td>{i + 1 + 50 * currentPage}</td>
                 <td>{info.currencyState}</td>
                 <td>{info.localCurrencyName}</td>
                 <td>{info.userId}</td>
+                <td>{info.unitPrice}</td>
                 <td>{info.salesDate}</td>
                 <td>{info.useDate}</td>   
                 <td>{info.cancelDate}</td> 
@@ -605,6 +622,11 @@ const LocalCurrencyAmount = () => {
             )}
             </tbody>
           </Table>
+          <NewPagination
+          paginate={paginate}
+          totalPages={totalPages}
+          currentPage={currentPage}
+        />
         </div>
       </div>
     </div>
