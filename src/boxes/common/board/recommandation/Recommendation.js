@@ -17,7 +17,7 @@ function Recommendation() {
     const [bestStore, setBestStore] = useState([])
     const [mostFav, setMostFav] = useState([])
     const [bestRated, setBestRated] = useState([])
-    const [userFavBased, setUserFavBased] = useState([])
+    const [userFavBased, setUserFavBased] = useState(null)
     const [userFavStore, setUserFavStore] = useState("")
     const [noFavMsg, setNoFavMsg] = useState("")
     const [userWarningMsg, setUserWarningMsg] = useState("")
@@ -39,14 +39,11 @@ function Recommendation() {
         if (id) {
             axios.get(`http://localhost:8080/recommends/userBased/${id}`)
                 .then((res) => {
-                    console.log('소통 성공')
                     if (res.data.userBased) {
                         setUserBased(res.data.userBased)
                     } else if (res.data.noUserBased) {
                         setUserWarningMsg(res.data.noUserBased)
                     }
-                    console.log("유저베이스" + res.data.userBased)
-                    console.log(res.data.noUserBased)
                 }).catch(
                 error => {
                     throw(error)
@@ -60,7 +57,6 @@ function Recommendation() {
         if (id) {
             axios.get(`http://localhost:8080/recommends/itemBased/${id}`)
                 .then((res) => {
-                    console.log('소통 성공')
                     if (res.data.itemBased) {
                         setItemBased(res.data.itemBased)
                         setItemBasedStore(res.data.itemBasedStore)
@@ -80,8 +76,6 @@ function Recommendation() {
         if (id) {
             axios.post(`http://localhost:8080/recommends/all/${id}`, latLng)
                 .then((res) => {
-                    console.log('소통 성공')
-                    console.log(res.data)
                     setBestStore(res.data.bestStore)
                     setBestRated(res.data.bestRated)
                     setMostFav(res.data.mostFavorites)
