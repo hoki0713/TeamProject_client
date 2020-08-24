@@ -9,12 +9,12 @@ import thunk from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import { userListReducer } from './boxes/admin/admin_board/UsersList';
-import { postListReducer } from './boxes/admin/admin_board/Notice.js';
+
 
 
 const rootReducer = combineReducers({
   userListReducer,
-  postListReducer
+  
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

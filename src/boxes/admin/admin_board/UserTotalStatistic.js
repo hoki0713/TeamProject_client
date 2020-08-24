@@ -2,23 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./UserTotalStatistic.css";
 import axios from "axios";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
-import { useDispatch } from "react-redux";
 
-const RECOMMEND_STORE = "RECOMMEND_STORE";
 
-export const userTotalAction = (data) => ({
-  type: RECOMMEND_STORE,
-  payload: data,
-});
 
-export const userTotaldReducer = (state = [], action) => {
-  switch (action.type) {
-    case RECOMMEND_STORE:
-      return action.payload;
-    default:
-      return state;
-  }
-};
 
 const UserTotalStatistic = () => {
   const [startDate, setStartDate] = useState("");
@@ -34,7 +20,7 @@ const UserTotalStatistic = () => {
   const [ageKeys, setAgeKeys] = useState([]);
   const [ageValues, setAgeValues] = useState([]);
 
-  const dispatch = useDispatch();
+
 
   const color = () => {
     const letters = "0123456789ABCDEF";
@@ -45,11 +31,11 @@ const UserTotalStatistic = () => {
     return color;
   };
 
-  const userAgeThunk = (localSelect) => (dispatch) => {
+  const userAgeThunk = (localSelect) => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${localSelect}`)
       .then((res) => {
-        console.log(res.data.age);
+    
         const genderValues = [];
         const getnderKeys = [];
         const ageKeys = [];
@@ -75,7 +61,7 @@ const UserTotalStatistic = () => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${"null"}`)
       .then((res) => {
-        console.log(res.data.age);
+        
         const genderValues = [];
         const getnderKeys = [];
         const ageKeys = [];
@@ -100,7 +86,7 @@ const UserTotalStatistic = () => {
 
   useEffect(() => {
     if (localSelect !== "") {
-      dispatch(userAgeThunk(localSelect));
+      userAgeThunk(localSelect);
     }
     axios
       .get(`http://localhost:8080/admins/chart/ratio-of-user-region`)

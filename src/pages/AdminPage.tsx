@@ -28,7 +28,7 @@ const AdminPage = () => {
   }, [accountDetail])
   return (
     <div>
-   { isAdmin &&
+   { accountDetail.adminKey &&
     <div>
       <AdminHeader
         clickLogout={refreshUser}
@@ -39,7 +39,7 @@ const AdminPage = () => {
       <AdminContainer match />
     </div>}
 
-    {!isAdmin &&
+    {!accountDetail.adminKey &&
        moveToLoginPage()
         }
     </div>

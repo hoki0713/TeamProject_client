@@ -462,10 +462,7 @@ const LocalCurrencyAmount = () => {
               legend: {
                 display: false,
               },
-              // title: { text: "(단위:백만)",
-              //  display: true,
-              // position:'bottom',
-              // fontColor:'blue'},
+            
               scales: {
                 yAxes:[{
                   ticks:{
