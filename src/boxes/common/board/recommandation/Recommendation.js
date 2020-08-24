@@ -15,7 +15,6 @@ function Recommendation() {
     const [itemBased, setItemBased] = useState([])
     const [itemBasedStore, setItemBasedStore] = useState("")
     const [bestStore, setBestStore] = useState([])
-    const [topIndustryName, setTopIndustryName] = useState([])
     const [mostFav, setMostFav] = useState([])
     const [bestRated, setBestRated] = useState([])
     const [userFavBased, setUserFavBased] = useState([])
@@ -29,8 +28,7 @@ function Recommendation() {
 
 
     const {setStore} = useContext(StoreSearchContext);
-    const [clickedStore, setClickedStore] = useState({})
-    const history= useHistory();
+    const history = useHistory();
 
 
     useEffect(() => {
@@ -39,7 +37,7 @@ function Recommendation() {
 
     useEffect(() => {
         if (id) {
-            axios.get(`http://localhost:8080/recommends/individualUser/${id}`)
+            axios.get(`http://localhost:8080/recommends/userBased/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
                     if (res.data.userBased) {
@@ -47,7 +45,7 @@ function Recommendation() {
                     } else if (res.data.noUserBased) {
                         setUserWarningMsg(res.data.noUserBased)
                     }
-                    console.log("유저베이스"+res.data.userBased)
+                    console.log("유저베이스" + res.data.userBased)
                     console.log(res.data.noUserBased)
                 }).catch(
                 error => {
@@ -60,7 +58,7 @@ function Recommendation() {
 
     useEffect(() => {
         if (id) {
-            axios.get(`http://localhost:8080/recommends/individualItem/${id}`)
+            axios.get(`http://localhost:8080/recommends/itemBased/${id}`)
                 .then((res) => {
                     console.log('소통 성공')
                     if (res.data.itemBased) {
@@ -69,13 +67,11 @@ function Recommendation() {
                     } else if (res.data.noItemBased) {
                         setItemWarningMsg(res.data.noItemBased)
                     }
-
                 }).catch(
                 error => {
                     throw(error)
                 }
             )
-
         }
     }, [id])
 
@@ -117,258 +113,296 @@ function Recommendation() {
         return stars;
     };
 
-    const clickStore = (store)=>{
+    const clickStore = (store) => {
         setStore(store);
         history.push("/storeDetail");
     }
 
 
-
     return (
-    <>
-        <h2 className="mt-4" style={{"text-align" : "center"}}>
-          <span style={{"color" : "pink"}}>{accountDetail.name} 님</span>을 위한 우리 동네 추천 가맹점
-        </h2>
-        <br/>
-        <h3><span style={{"color" : "#a557cc"}}>★</span>내 주변 인기 가맹점</h3>
-        <div className="scrollContainer">
-            {bestStore.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top" src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                        <Card.Text>{store.address}</Card.Text>
-                    </Card.Body>
-                    <Card.Footer id="card-footer">
-                        <small className="text-muted">
-                            {store.mainCode}/{store.storeType}
-                        </small>
-                    </Card.Footer>
-                </Card>
-            ))}
-        </div>
-        <br/><br/>
-
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>내 주변 별점 높은 가맹점</h3>
-        <div className="scrollContainer">
-            {bestRated.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top"
-                              src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                        <Card.Text>
-                            {showRatingStars(parseInt(store.starRanking))}
-                            <br/>
-                            {store.address}
-
-                        </Card.Text>
-                    </Card.Body>
-                    <Card.Footer  id="card-footer">
-                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                    </Card.Footer>
-                </Card>))}
-        </div>
-        <br/><br/>
-
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾은 사람이 많은 가맹점</h3>
-        <div className="scrollContainer">
-            {mostFav.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top"
-                              src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                        <Card.Text>
-                            {store.address}
-                        </Card.Text>
-                    </Card.Body>
-                    <Card.Footer  id="card-footer">
-                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                    </Card.Footer>
-                </Card>))}
-        </div>
-        <br/><br/>
-
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>인기 #병원 가맹점</h3>
-        <div className="scrollContainer">
-            {hospital.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top"
-                              src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                        <Card.Text>
-                            {store.address}
-                        </Card.Text>
-                    </Card.Body>
-                    <Card.Footer  id="card-footer">
-                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                    </Card.Footer>
-                </Card>))}
-        </div>
-        <br/><br/>
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>인기 #음식점 가맹점</h3>
-        <div className="scrollContainer">
-            {restaurant.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top"
-                              src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                        <Card.Text>
-                            {store.address}
-                        </Card.Text>
-                    </Card.Body>
-                    <Card.Footer  id="card-footer">
-                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                    </Card.Footer>
-                </Card>))}
-        </div>
-        <br/><br/>
-
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>인기 #디저트 가맹점</h3>
-        <div className="scrollContainer">
-            {drinks.map((store, i) => (
-                <Card className="cardItem" key={i}>
-                    <Card.Img id="card-image" variant="top"
-                              src={store.imgUrl}/>
-                    <Card.Body>
-                        <Card.Title  id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                        <Card.Text>
-                            {store.address}
-                        </Card.Text>
-                    </Card.Body>
-                    <Card.Footer  id="card-footer">
-                        <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                    </Card.Footer>
-                </Card>))}
-        </div>
-        <br/><br/>
-
-
-        {userFavBased &&
-        <div>
-            <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 {userFavStore}와 같은 업종 추천 가맹점</h3>
+        <>
+            <h2 className="mt-4" style={{"text-align": "center"}}>
+                <span style={{"color": "#7C05F2"}}>{accountDetail.name} 님</span>을 위한 우리 동네 추천 가맹점
+            </h2>
+            <br/>
+            <h3>&#128077; 내 주변 인기 가맹점</h3>
             <div className="scrollContainer">
-                {userFavBased.map((store, i) => (
-                        <Card className="cardItem" key={i}>
-                            <Card.Img id="card-image" variant="top"
-                                      src={store.imgUrl}/>
-                            <Card.Body>
-                                <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
-                                <Card.Text>
-                                    {store.address}
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer  id="card-footer">
-                                <small className="text-muted">{store.mainCode}/{store.storeType}</small>
-                            </Card.Footer>
-                        </Card>
-                    )
-                )}
+                {bestStore.length===0 && (<div style={{textAlign : 'center'}}>
+                    <h4>인근에 해당하는 가맹점이 없습니다. </h4>
+                </div>)}
+                {bestStore.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img id="card-image" variant="top" src={store.imgUrl}/>
+                        <Card.Body>
+                            <Card.Title id="card-title" onClick={() => {
+                                clickStore(store)
+                            }}>{store.storeName}</Card.Title>
+                            <Card.Text>{store.address}</Card.Text>
+                        </Card.Body>
+                        <Card.Footer id="card-footer">
+                            <small className="text-muted">
+                                {store.mainCode}/{store.storeType}
+                            </small>
+                        </Card.Footer>
+                    </Card>
+                ))}
             </div>
-        </div>}
-
-        <br/><br/>
-        {noFavMsg && <div>
-            <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h3>
-            <div  id="msg">
-                <h6 style={{textAlign:"center"}}>{noFavMsg}<br/>
-                <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>즐겨찾기 추가하기</Button></h6></div>
-        </div>}<br/><br/>
+            <br/><br/>
 
 
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>회원님과 유사한 회원들이 좋아하는 가맹점</h3>
-        {(!itemWarningMsg && !itemBased) &&
-
-        <div id="msg"> 찾 는 중
-            <Spinner animation="border" variant="primary"/>
-            <Spinner animation="border" variant="secondary"/>
-            <Spinner animation="border" variant="success"/>
-            <Spinner animation="border" variant="danger"/>
-            <Spinner animation="border" variant="warning"/>
-            <Spinner animation="border" variant="info"/></div>}
-
-        {userBased &&
-        <div className="scrollContainer">
-            {userBased.map((store, i) => (
+            <h3>&#127775; 내 주변 별점 높은 가맹점</h3>
+            <div className="scrollContainer">
+                {bestRated.length===0 && (<div style={{textAlign : 'center'}}>
+                    <h4 >인근에 해당하는 가맹점이 없습니다.</h4>
+                </div>)}
+                {bestRated.map((store, i) => (
                     <Card className="cardItem" key={i}>
                         <Card.Img id="card-image" variant="top"
                                   src={store.imgUrl}/>
                         <Card.Body>
-                            <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                            <Card.Title id="card-title" onClick={() => {
+                                clickStore(store)
+                            }}>{store.storeName}</Card.Title>
+                            <Card.Text>
+                                {(store.starRanking) ?
+                                    <span>{showRatingStars(parseInt(store.starRanking))}{store.starRanking}</span> :
+                                    <span></span>}<br/>
+                                {store.address}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer id="card-footer">
+                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                        </Card.Footer>
+                    </Card>))}
+            </div>
+            <br/><br/>
+
+
+            <h3>&#128152; 즐겨찾은 사람이 많은 가맹점</h3>
+            <div className="scrollContainer">
+                {mostFav.length===0 && (<div style={{textAlign : 'center'}}>
+                    <h4>인근에 해당하는 가맹점이 없습니다. </h4>
+                </div>)}
+                {mostFav.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img id="card-image" variant="top"
+                                  src={store.imgUrl}/>
+                        <Card.Body>
+                            <Card.Title id="card-title" onClick={() => {
+                                clickStore(store)
+                            }}>{store.storeName}</Card.Title>
                             <Card.Text>
                                 {store.address}
                             </Card.Text>
                         </Card.Body>
-                        <Card.Footer  id="card-footer">
+                        <Card.Footer id="card-footer">
                             <small className="text-muted">{store.mainCode}/{store.storeType}</small>
                         </Card.Footer>
-                    </Card>
-                )
-            )}
-        </div>}
-        {userWarningMsg && <div id="msg">
-            <h4>{userWarningMsg}<br/>
-            <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>별점 추가하기</Button></h4></div>}
-        <br/><br/><br/><br/>
+                    </Card>))}
+            </div>
+            <br/><br/>
 
 
-
-
-        <h3><span style={{"color" : "#a557cc"}}>★</span>즐겨찾기한 가맹점과 유사한 추천 가맹점</h3>
-        {(itemWarningMsg || itemBased) && <div id="msg">
-
-            찾는 중
-            <Spinner animation="border" variant="primary"/>
-            <Spinner animation="border" variant="secondary"/>
-            <Spinner animation="border" variant="success"/>
-            <Spinner animation="border" variant="danger"/>
-            <Spinner animation="border" variant="warning"/>
-            <Spinner animation="border" variant="info"/><br/><br/></div>}
-
-        {itemBased &&
-        <div>
+            <h3>&#127973; 인기 #병원 가맹점</h3>
             <div className="scrollContainer">
-                {itemBased.map((store, i) => (
+                {hospital.length===0 && (<div style={{textAlign : 'center'}}>
+                    <h4>인근에 해당하는 가맹점이 없습니다. </h4>
+                </div>)}
+                {hospital.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img id="card-image" variant="top"
+                                  src={store.imgUrl}/>
+                        <Card.Body>
+                            <Card.Title id="card-title" onClick={() => {
+                                clickStore(store)
+                            }}>{store.storeName}</Card.Title>
+                            <Card.Text>
+                                {store.address}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer id="card-footer">
+                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                        </Card.Footer>
+                    </Card>))}
+            </div>
+            <br/><br/>
+
+            <h3>&#129368; 인기 #음식점 가맹점</h3>
+            <div className="scrollContainer">
+                {restaurant.length===0 && (<div style={{textAlign : 'center'}}>
+                    <h4>인근에 해당하는 가맹점이 없습니다. </h4>
+                </div>)}
+                {restaurant.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img id="card-image" variant="top"
+                                  src={store.imgUrl}/>
+                        <Card.Body>
+                            <Card.Title id="card-title" onClick={() => {
+                                clickStore(store)
+                            }}>{store.storeName}</Card.Title>
+                            <Card.Text>
+                                {store.address}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer id="card-footer">
+                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                        </Card.Footer>
+                    </Card>))}
+            </div>
+            <br/><br/>
+
+
+            <h3>&#127846; 인기 #음료식품 가맹점</h3>
+            <div className="scrollContainer">
+                {drinks.length===0 && (<div style={{textAlign : 'center'}}>
+                    <h4>인근에 해당하는 가맹점이 없습니다. </h4>
+                </div>)}
+                {drinks.map((store, i) => (
+                    <Card className="cardItem" key={i}>
+                        <Card.Img id="card-image" variant="top"
+                                  src={store.imgUrl}/>
+                        <Card.Body>
+                            <Card.Title id="card-title" onClick={() => {
+                                clickStore(store)
+                            }}>{store.storeName}</Card.Title>
+                            <Card.Text>
+                                {store.address}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer id="card-footer">
+                            <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                        </Card.Footer>
+                    </Card>))}
+            </div>
+            <br/><br/>
+
+
+            {userFavBased &&
+            <div>
+                <h3>&#127879; 즐겨찾기한 <span style={{"color": "#7C05F2"}}>{userFavStore}</span>와/과 같은 업종 추천 가맹점</h3>
+                <div className="scrollContainer">
+                    {userFavBased.map((store, i) => (
+                            <Card className="cardItem" key={i}>
+                                <Card.Img id="card-image" variant="top"
+                                          src={store.imgUrl}/>
+                                <Card.Body>
+                                    <Card.Title id="card-title" onClick={() => {
+                                        clickStore(store)
+                                    }}>{store.storeName}</Card.Title>
+                                    <Card.Text>
+                                        {store.address}
+                                    </Card.Text>
+                                </Card.Body>
+                                <Card.Footer id="card-footer">
+                                    <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                                </Card.Footer>
+                            </Card>
+                        ))}
+                </div>
+            </div>}
+
+            {noFavMsg && <div>
+                <h3>&#127879; 즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h3>
+                <div id="msg">
+                    <br/><h4 style={{textAlign: "center"}}>{noFavMsg}<br/>
+                        <Button variant="outline-dark" size="sm" onClick={() => {
+                            history.push("/find-by-map")
+                        }}>즐겨찾기 추가하기</Button></h4></div>
+            </div>}<br/><br/>
+
+
+            <h3>&#128109; 회원님과 유사한 회원들이 좋아하는 가맹점</h3>
+            {(userBased.length === 0 && !userWarningMsg) &&
+            <div id="msg"><h4>찾 는 중 &#8987;</h4>
+                <Spinner animation="grow" variant="primary"/>
+                <Spinner animation="grow" variant="secondary"/>
+                <Spinner animation="grow" variant="success"/>
+                <Spinner animation="grow" variant="danger"/>
+                <Spinner animation="grow" variant="warning"/>
+                <Spinner animation="grow" variant="info"/>
+                <Spinner animation="grow" variant="light"/>
+                <Spinner animation="grow" variant="dark"/></div>}
+
+            {userBased &&
+            <div className="scrollContainer">
+                {userBased.map((store, i) => (
                         <Card className="cardItem" key={i}>
                             <Card.Img id="card-image" variant="top"
                                       src={store.imgUrl}/>
                             <Card.Body>
-                                <Card.Title id="card-title" onClick={()=>{clickStore(store)}}>{store.storeName}</Card.Title>
+                                <Card.Title id="card-title" onClick={() => {
+                                    clickStore(store)
+                                }}>{store.storeName}</Card.Title>
                                 <Card.Text>
                                     {store.address}
                                 </Card.Text>
                             </Card.Body>
-                            <Card.Footer  id="card-footer">
+                            <Card.Footer id="card-footer">
                                 <small className="text-muted">{store.mainCode}/{store.storeType}</small>
                             </Card.Footer>
                         </Card>
                     )
                 )}
-            </div>
-        </div>}
-        {itemWarningMsg && (
-          <div id="msg">
-            <h4>
-              {itemWarningMsg}
-              <br/>
-              <Button variant="outline-dark" size="sm" onClick={()=>{history.push("/find-by-map")}}>
-                즐겨찾기 추가하기
-              </Button>
-            </h4>
-          </div>
-          )}
-        <br/><br/><br/><br/>
+            </div>}
+            {userWarningMsg && <div id="msg">
+                <h4>{userWarningMsg}<br/>
+                    <Button variant="outline-dark" size="sm" onClick={() => {
+                        history.push("/find-by-map")
+                    }}>별점 추가하기</Button></h4></div>}
+            <br/><br/>
 
-    </>)
+
+            <h3>&#128525; 리뷰한 <span style={{"color": "#7C05F2"}}>{itemBasedStore}</span> 가맹점과 유사한 추천 가맹점</h3>
+            {(itemBased.length === 0 && !itemWarningMsg) && <div id="msg">
+                <h4>찾 는 중 &#8987;</h4>
+                <Spinner animation="grow" variant="primary"/>
+                <Spinner animation="grow" variant="secondary"/>
+                <Spinner animation="grow" variant="success"/>
+                <Spinner animation="grow" variant="danger"/>
+                <Spinner animation="grow" variant="warning"/>
+                <Spinner animation="grow" variant="info"/>
+                <Spinner animation="grow" variant="light"/>
+                <Spinner animation="grow" variant="dark"/><br/><br/></div>}
+
+            {itemBased &&
+            <div>
+                <div className="scrollContainer">
+                    {itemBased.map((store, i) => (
+                            <Card className="cardItem" key={i}>
+                                <Card.Img id="card-image" variant="top"
+                                          src={store.imgUrl}/>
+                                <Card.Body>
+                                    <Card.Title id="card-title" onClick={() => {
+                                        clickStore(store)
+                                    }}>{store.storeName}</Card.Title>
+                                    <Card.Text>
+                                        {store.address}
+                                    </Card.Text>
+                                </Card.Body>
+                                <Card.Footer id="card-footer">
+                                    <small className="text-muted">{store.mainCode}/{store.storeType}</small>
+                                </Card.Footer>
+                            </Card>
+                        )
+                    )}
+                </div>
+            </div>}
+            {itemWarningMsg && (
+                <div id="msg">
+                    <h4>
+                        {itemWarningMsg}
+                        <br/>
+                        <Button variant="outline-dark" size="sm" onClick={() => {
+                            history.push("/find-by-map")
+                        }}>
+                            별점 추가하기
+                        </Button>
+                    </h4>
+                </div>
+            )}
+            <br/><br/><br/><br/>
+
+        </>)
 
 
 }

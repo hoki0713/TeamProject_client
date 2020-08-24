@@ -62,16 +62,13 @@ const MerchanDetail = ({ isLogined }) => {
     }
   }
 
-  if (store.storeName) {
     return (
       <div>
         <LoadScript googleMapsApiKey={appKey} libraries={libraries}>
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            // onUnmount={onUnmount}
             zoom={16}
-            // onLoad={onMapLoad}
           >
             <Marker
               position={center}
@@ -273,13 +270,6 @@ const MerchanDetail = ({ isLogined }) => {
         )}
       </div>
     );
-  } else {
-    return (
-      <>
-        <Link to={"/"}>돌아가기</Link>
-      </>
-    );
-  }
 };
 
 export default MerchanDetail;

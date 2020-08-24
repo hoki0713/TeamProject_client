@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdminHeader, AdminMenuBar, AdminContainer } from '../boxes';
+import './AdminPage.css'
 import { LoginLink } from '../items'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 const AdminPage = () => {
@@ -13,35 +14,35 @@ const AdminPage = () => {
   const refreshUser = (id) => {
     if (id) {
       setIsLogined(true);
-      if(accountDetail.adminKey) setIsAdmin(true);
+      if (accountDetail.adminKey) setIsAdmin(true);
     } else {
       setIsLogined(false);
     }
   }
 
-  const moveToLoginPage = () =>{
-      history.push("/account/login")
+  const moveToLoginPage = () => {
+    history.push("/");
   }
 
   useEffect(() => {
     refreshUser(accountDetail.id);
   }, [accountDetail])
+
   return (
     <div>
-   { accountDetail.adminKey &&
-    <div>
-      <AdminHeader
-        clickLogout={refreshUser}
-        loginedAccount={isLogined}
-        isAdmin={isAdmin}
-      />
-      <AdminMenuBar />
-      <AdminContainer match />
-    </div>}
-
-    {!accountDetail.adminKey &&
-       moveToLoginPage()
-        }
+      {accountDetail.adminKey &&
+        <div>
+          <AdminHeader
+            clickLogout={refreshUser}
+            loginedAccount={isLogined}
+            isAdmin={isAdmin}
+          />
+          <AdminMenuBar />
+          <AdminContainer match />
+        </div>}
+      {!accountDetail.adminKey &&
+        moveToLoginPage()
+      }
     </div>
   );
 };

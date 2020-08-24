@@ -59,7 +59,6 @@ const FindBestRoute = () => {
     } //실시간 검색 드롭다운 함수
 
     useEffect(() => {
-        console.log("useEffect getsearched");
         setDropShow(false);
         getshorList();
     }, [inputValue]); //검색 드롭다운 유즈이펙트
@@ -315,28 +314,14 @@ const FindBestRoute = () => {
                                             <ListGroup.Item>
                                                 <h6>출발:&nbsp;{myLoca}</h6>
                                             </ListGroup.Item>
-                                            {temRoutes[0] && (
+                                            {temRoutes[0]&&temRoutes.map((route,i)=>(
                                                 <ListGroup.Item>
                                                     <h6>
-                                                        &#62;&#62;1번 경유지&#09;{temRoutes[0].storeName}
-                                                        &#09;{temRoutes[0].address}
+                                                        &#62;&#62;{i+1}번째 &#09;{route.storeName}
+                                                        &#09;{route.address}
                                                     </h6>
                                                 </ListGroup.Item>
-                                            )}
-                                            {temRoutes[1] && (
-                                                <ListGroup.Item>
-                                                    <h6>
-                                                        &#62;&#62;2번 경유지&#09;{temRoutes[1].storeName}
-                                                    </h6>
-                                                </ListGroup.Item>
-                                            )}
-                                            {temRoutes[2] && (
-                                                <ListGroup.Item>
-                                                    <h6>
-                                                        &#62;&#62;3번 경유지&#09;{temRoutes[2].storeName}
-                                                    </h6>
-                                                </ListGroup.Item>
-                                            )}
+                                            ))}
                                             <ListGroup.Item>
                                                 <h6>도착:&nbsp;{myLoca}</h6>
                                             </ListGroup.Item>
@@ -359,54 +344,22 @@ const FindBestRoute = () => {
                                         {inputValue && dropShow && (
                                             <div className={"searchDown"}>
                                                 <table>
-                                                    {shortSearched[0] && (
+                                                    {shortSearched[0]&&shortSearched.map((route,i)=>(
                                                         <tr>
                                                             <td>
                                                                 <button
                                                                     className={"addB"}
                                                                     onClick={(e) => {
                                                                         e.preventDefault();
-                                                                        dropDownClick(shortSearched[0]);
+                                                                        dropDownClick(route);
                                                                     }}
                                                                 >
                                                                     +
                                                                 </button>
-                                                                {shortSearched[0].storeName}{" "}
+                                                                {route.storeName}{" "}
                                                             </td>
                                                         </tr>
-                                                    )}
-                                                    {shortSearched[1] && (
-                                                        <tr>
-                                                            <td>
-                                                                <button
-                                                                    className={"addB"}
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        dropDownClick(shortSearched[1]);
-                                                                    }}
-                                                                >
-                                                                    +
-                                                                </button>
-                                                                {shortSearched[1].storeName}{" "}
-                                                            </td>
-                                                        </tr>
-                                                    )}
-                                                    {shortSearched[2] && (
-                                                        <tr>
-                                                            <td>
-                                                                <button
-                                                                    className={"addB"}
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        dropDownClick(shortSearched[2]);
-                                                                    }}
-                                                                >
-                                                                    +
-                                                                </button>
-                                                                {shortSearched[2].storeName}{" "}
-                                                            </td>
-                                                        </tr>
-                                                    )}
+                                                    ))}
                                                 </table>
                                             </div>
                                         )}
