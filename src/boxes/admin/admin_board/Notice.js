@@ -96,8 +96,6 @@ const Notice = () => {
     }, [])
 
     const handleSearch = (searchWord) => {
-        alert(searchWord);
-        
             axios
             .get(`http://localhost:8080/posts/notice/search`,{
                 params:{
