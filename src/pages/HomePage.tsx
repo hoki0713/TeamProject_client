@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
+import MyChatBot from "../boxes/common/board/chatbot/chatbot";
 
 const HomePage = () => {
   const [isLogined, setIsLogined] = useState(false);
@@ -34,6 +35,9 @@ const HomePage = () => {
       <div className="row">
         <MainMap />
       </div>
+        <div>
+            <MyChatBot/>
+        </div>
     </div>
   );
 }

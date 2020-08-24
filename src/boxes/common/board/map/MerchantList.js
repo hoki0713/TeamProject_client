@@ -9,20 +9,17 @@ import {Link} from "react-router-dom";
 const MerchantList=()=> {
     const {setStore}=useContext(StoreSearchContext);
     const [storeList, setStoreList]=useState([]);
-    let [pageNow,setPageNow]=useState(0);
+    const [pageNow,setPageNow]=useState(0);
     const [totalCount,setTotalCount]=useState(0);
     const [pageSize]=useState(10);
     const [blockSize]=useState(10);
     const [blockNow,setBlockNow]=useState(0);
     const [blockCount,setBlockCount]=useState(0)
-    const [pageEnd,setPageEnd]=useState(0);
     const [pageStart,setPageStart]=useState(0);
     const [rowStart,setRowStart]=useState(0);
     const [pageCount,setPageCount]=useState(0);
-    const [rowEnd,setRowEnd]=useState(0);
     const [existPrev, setExistPrev]=useState(false);
     const [existNext,setExistNext]=useState(false);
-    const [prevBlock,setPrevBlock]=useState(0);
     const [nextBlock,setNextBlock]=useState(0);
     const [pageList, setPageList]=useState([]);
     const [pageNumArr,setPageNumArr]=useState([]);
@@ -30,15 +27,12 @@ const MerchantList=()=> {
 
     function pageNation(){
         setBlockNow(parseInt(pageNow/blockSize));
-        setPageEnd((blockNow != blockCount -1) ? (blockNow+1)*blockSize -1: pageCount - 1);
         setPageStart(blockNow *  blockSize);
         setRowStart(parseInt(pageNow*pageSize));
         setPageCount(parseInt((totalCount % pageSize != 0) ? totalCount / pageSize +1 :totalCount / pageSize ));
-        setRowEnd((pageNow != (pageCount -1)) ? (pageNow+1)*pageSize-1:totalCount-1);
         setExistPrev(blockNow!=0);
         setExistNext( blockNow !=(blockCount-1));
         setNextBlock(pageStart + blockSize);
-        setPrevBlock(pageStart - blockSize);
         setBlockCount(parseInt((pageCount % blockSize != 0) ? pageCount / blockSize +1:pageCount / blockSize));
     }
 
@@ -50,9 +44,7 @@ const MerchantList=()=> {
                 pageNumArr[startNum]=i;
                 startNum++;
             }
-
         setPageNumArr(pageNumArr);
-
     }
     function setPageArr(){
         if(totalCount!=0){
@@ -65,10 +57,7 @@ const MerchantList=()=> {
                 }
             setPageList(tmpArr);
             }
-
     }
-
-
     useEffect(()=>{
         console.log("//////1");
         axios.get(`http://localhost:8080/stores/getSome/""/""/${blockNow*pageSize*blockSize}/${blockSize*pageSize}`)

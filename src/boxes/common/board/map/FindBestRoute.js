@@ -59,7 +59,6 @@ const FindBestRoute = () => {
     } //실시간 검색 드롭다운 함수
 
     useEffect(() => {
-        console.log("useEffect getsearched");
         setDropShow(false);
         getshorList();
     }, [inputValue]); //검색 드롭다운 유즈이펙트
