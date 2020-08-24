@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { AdminHeader, AdminMenuBar, AdminContainer } from '../boxes';
+import { LoginLink } from '../items'
+import {useHistory} from 'react-router-dom'
+
 
 const AdminPage = () => {
   const [isLogined, setIsLogined] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'));
+  const history = useHistory();
 
   const refreshUser = (id) => {
     if (id) {
@@ -15,10 +19,16 @@ const AdminPage = () => {
     }
   }
 
+  const moveToLoginPage = () =>{
+      history.push("/account/login")
+  }
+
   useEffect(() => {
     refreshUser(accountDetail.id);
   }, [accountDetail])
   return (
+    <div>
+   { isAdmin &&
     <div>
       <AdminHeader
         clickLogout={refreshUser}
@@ -27,6 +37,11 @@ const AdminPage = () => {
       />
       <AdminMenuBar />
       <AdminContainer match />
+    </div>}
+
+    {!isAdmin &&
+       moveToLoginPage()
+        }
     </div>
   );
 };

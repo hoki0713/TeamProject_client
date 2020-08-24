@@ -1,39 +1,3 @@
-#title {
-    text-align: center;
-}
-
-.currency{
-    width: 100%;
-    height: 100%;
-
-}
-.currency_table {
-    width: 100%;
-    height: auto;
-    display: table;
-    text-align: center;
-}
-.purchaseMap{
-    width: 500px;
-    height: 500px;
-}
-.currency_left{
-    width:50%;
-
-}
-.currency_right{
-
-}
-.currency_img{
-    width: 180px;
-    height: 240px;
-    padding: 0px 5px;
-}
-
-
-
-
-
 .content-title {
     margin-top: 1rem;
     margin-bottom: .5rem;
@@ -81,7 +45,7 @@
     text-align: center;
 
 }
-.form-control{}
+
 
 
 

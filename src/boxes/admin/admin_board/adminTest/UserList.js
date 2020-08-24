@@ -74,12 +74,14 @@ const UserList = () => {
 
   return (
     <div>
+      <h2 className="mt-4" style={{ "text-align": "center" }}>
+        회원목록
+      </h2>
       <div className="userlist-content-title">
-        <h2 className="userlist-menu-h2"> - 회원목록</h2>
-        <h6 className="userlist-menu-h6">
-          총 회원수: ({Intl.NumberFormat().format(totalUsers)})
-        </h6>
         <div id="userlist-select-search-bar">
+          <h6 className="userlist-menu-h6" style={{"margin-right" : "1rem"}}>
+            총 회원수: ({Intl.NumberFormat().format(totalUsers)})
+          </h6>
           <select
             className="form-control"
             id="userlist-select"

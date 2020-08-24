@@ -115,6 +115,7 @@ const MerchantList=()=> {
 
     return (
         <div className="container" id={"merchan_list"}>
+            <h2 className="mt-4">리스트로 찾아보기</h2>
             <Table striped bordered hover className="list_table">
                 {/*<thead>*/}
                 {/*<tr>*/}

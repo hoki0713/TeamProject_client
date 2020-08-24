@@ -80,7 +80,7 @@ const CommonMenuBar = ({isLogined}) => {
             {isLogined && <div className={secondMenuOpen} onClick={() => setIsSecondOpen(false)}>
               <Link to="/recommendation">
                 <p className="dropdown-item">
-                  추천가맹점 보기
+                  회원 맞춤 추천
                 </p>
               </Link>
               <Link to="/find-by-tag">
@@ -92,7 +92,7 @@ const CommonMenuBar = ({isLogined}) => {
             {!isLogined && <div className={secondMenuOpen} onClick={() => setIsSecondOpen(false)}>
               <Link to="/account/login">
                 <p className="dropdown-item">
-                  추천가맹점 보기
+                  회원 맞춤 추천
                 </p>
               </Link>
               <Link to="/account/login">

@@ -1,0 +1,33 @@
+#contents-wrapper {
+  height: 700px;
+}
+#contents-header {
+  margin-top: 2rem;
+}
+.contents-header-items {
+  border: 1px solid rgba(90,91,92,.3);
+  font-size: 1.2rem;
+}
+.contents-header-items-title {
+  display: inline-block;
+  margin: 1rem;
+  width: 100px;
+}
+#contents-header-category {
+  display: inline-block;
+}
+#contents-header-write-date {
+  display: inline-block;
+  float: right;
+  margin-right: 1rem
+}
+#contents-main {
+  height: 60%;
+}
+#contents-footer {
+  text-align: center;
+}
+.notice-buttons {
+  margin-right: 0.5rem;
+  width: 100px;
+}
