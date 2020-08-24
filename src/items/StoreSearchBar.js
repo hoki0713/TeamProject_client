@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from 'react-router-dom';
-import { StoreSearchContext } from '../items/context/StoreSearchContext';
+import { useHistory } from "react-router-dom";
+import { StoreSearchContext } from "../items/context/StoreSearchContext";
 import axios from "axios";
 
 const StoreSearchBar = () => {
@@ -20,9 +20,13 @@ const StoreSearchBar = () => {
   }, [inputValue]);
 
   const handleStoreSearch = (store) => {
-    setStore(store);
-    history.push("/storeDetail");
-  }
+    if (store.storeName) {
+      setStore(store);
+      history.push("/storeDetail");
+    } else {
+      alert("검색어를 입력하세요!");
+    }
+  };
 
   const getshorList = () => {
     if (inputValue) {
@@ -62,23 +66,24 @@ const StoreSearchBar = () => {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => { 
-              handleStoreSearch(searchedStore)
+            onClick={() => {
+              handleStoreSearch(searchedStore);
             }}
           >
             검색
           </button>
         </div>
       </div>
-      <div >
-        <ul className="list-group" style={{position: "absolute", zIndex: 99, width: "95%"}}> 
+      <div>
+        <ul
+          className="list-group"
+          style={{ position: "absolute", zIndex: 99, width: "95%" }}
+        >
           {shortSearched.map((info) => (
             <li
               className="list-group-item"
-              
               onClick={() => {
                 setSearchWord(info.storeName);
-                //setStore(info);
                 setSearchedStore(info);
                 setShortSearched([]);
               }}
