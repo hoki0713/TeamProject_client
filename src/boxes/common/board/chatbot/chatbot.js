@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
-import {StoreChatbot,PolicyInfo,RankState,RecoStores,CateList} from "./chatbotComponents/index";
+import {StoreChatbot, PolicyInfo, RankState, RecoStores, StarRank} from "./chatbotComponents/index";
 
 
 
 
-const MyChatBot = () => {
+const MyChatBot = ({isLogined}) => {
 
     const theme = {
         background: '#ffffff',
@@ -19,11 +19,6 @@ const MyChatBot = () => {
         userBubbleColor: '#fff',
         userFontColor: '#4a4a4a',
     };
-
-    useEffect(()=>{
-
-
-    },[])
 
     return(<ThemeProvider theme={theme}>
         <ChatBot
@@ -42,7 +37,7 @@ const MyChatBot = () => {
                     options: [
                         {value: 1, label: '가맹점 찾기', trigger: 'storeQ'},
                         {value: 2, label: '내게 맞는 지역화폐 지급 정책', trigger: 'policyQ'},
-                        {value: 3, label: '내게 맞는 가맹점', trigger: 'recoInfo'},
+                        {value: 3, label: '내 주변 추천 가맹점', trigger: 'recoInfo'},
                     ],
                 },
                 {
@@ -74,12 +69,12 @@ const MyChatBot = () => {
                 },
                 {
                     id: 'policyInfo',
-                    component: <PolicyInfo/>,
+                    component: <PolicyInfo isLogined={isLogined}/>,
                     trigger: '1'
                 },
                 {
                     id: 'recoInfo',
-                    component: <RecoStores/>,
+                    component: <RecoStores isLogined={isLogined}/>,
                     trigger: 'recoMsg'
                 },
                 {
@@ -90,29 +85,19 @@ const MyChatBot = () => {
                 {
                     id: 'selectReco',
                     options: [
-                        {value: 1, label: '업종 별로 보기', trigger: 'cateQ'},
-                        {value: 2, label: '우리 시 전체 순위 100 보기', trigger: 'storeRank'},
+                        {value: 1, label: '우리 시 전체 별점별 순위 50위 보기', trigger: 'starRank'},
+                        {value: 2, label: '우리 시 전체 검색결과량 순위 50위 보기', trigger: 'storeRank'},
                         {value: 3, label: '돌아가기', trigger: '1'},
                     ],
                 },
                 {
-                    id: 'cateQ',
-                    message: '원하는 업종이 무엇입니까?',
-                    trigger: 'cateIn'
-                },
-                {
-                    id: 'cateIn',
-                    user: true,
-                    trigger: 'cateList'
-                },
-                {
-                    id: 'cateList',
-                    component: <CateList/>,
+                    id: 'storeRank',
+                    component: <RankState isLogined={isLogined}/>,
                     trigger: 'selectReco'
                 },
                 {
-                    id: 'storeRank',
-                    component: <RankState/>,
+                    id: 'starRank',
+                    component:<StarRank isLogined={isLogined}/>,
                     trigger: 'selectReco'
                 }
 

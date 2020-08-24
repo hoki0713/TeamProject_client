@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios'
-const PolicyInfo = (props) => {
+import {useHistory} from "react-router";
+const PolicyInfo = (props,{isLogined}) => {
     const [children,setChildren]=useState('');
     const [userAge,setUserAge]=useState(0);
     const [policyList,setPolicyList]=useState([]);
-
+    const history=useHistory()
     useEffect(()=>{
-        let date = new Date;
-        setChildren(props.steps.policyOp.value);
-        setUserAge(date.getFullYear()-parseInt(JSON.parse(sessionStorage.getItem("accountDetail")).birthDate.substring(0,4)));
-    },[]);
+        if(isLogined) {
+            let date = new Date;
+            setChildren(props.steps.policyOp.value);
+            setUserAge(date.getFullYear() - parseInt(JSON.parse(sessionStorage.getItem("accountDetail")).birthDate.substring(0, 4)));
+        } },[]);
     useEffect(()=>{
-        if(userAge!=0 && children!==''){
+        if(userAge!=0 && children!==''&&isLogined){
             console.log(children)
             console.log(userAge)
             axios.get(`http://localhost:8080/policy/chatbotPolicy/${userAge}/${children}`)
@@ -23,7 +25,7 @@ const PolicyInfo = (props) => {
 
     },[userAge]);
     return (
-        <div>
+        <>{(isLogined)?<div>
             {(policyList[0])?
                 policyList.map((policy,i)=>(
                     <div key={i}>
@@ -34,7 +36,8 @@ const PolicyInfo = (props) => {
                         </div>)):
                 <>현재 회원님과 맞는 정책이 없습니다.</>
             }
-        </div>
+        </div>:<><p>로그인해주세요</p>
+           <p><button onClick={()=>history.push('/account/login')}>로그인하기</button></p></>}</>
     );
 };
 

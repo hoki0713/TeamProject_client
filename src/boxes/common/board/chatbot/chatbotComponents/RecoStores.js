@@ -4,13 +4,15 @@ import Geocode from "react-geocode";
 import {appKey} from "../../map/mapUtils/mapatt";
 import {Link} from "react-router-dom";
 import {StoreSearchContext} from "../../../../../items/context/StoreSearchContext";
+import {useHistory} from "react-router";
 Geocode.setApiKey(appKey);
-const RecoStores = (props) => {
+const RecoStores = ({isLogined}) => {
     const [homePosit, setHomePosit] = useState({});
     const [storeList,setStoreList] = useState([]);
     const {setStore}=useContext(StoreSearchContext);
+    const history = useHistory();
     useEffect(()=>{
-        console.log(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+        if(isLogined){console.log(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
         Geocode.fromAddress(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr).then(
             (response) => {
                 const resLatLng = response.results[0].geometry.location;
@@ -22,18 +24,17 @@ const RecoStores = (props) => {
             (error) => {
                 console.error(error);
             }
-        );
+        );}
     },[])
     useEffect(()=>{
-        console.log(homePosit);
-        if(homePosit.lat){axios.get(`http://localhost:8080/stores/chatbotRecoMain/${homePosit.lat}/${homePosit.lng}`)
+        if(homePosit.lat && isLogined){axios.get(`http://localhost:8080/stores/chatbotRecoMain/${homePosit.lat}/${homePosit.lng}`)
             .then(({data})=>{
                 setStoreList(data);
             })
             .catch(err=>{throw err});}
     },[homePosit])
     return (
-        <div>
+       <> {(isLogined)?<div>
             <>추천 가맹점</><br/>
             {(storeList[0])?
                 storeList.map((store, i)=>(
@@ -51,7 +52,10 @@ const RecoStores = (props) => {
 
                 ):<>로딩중</>
             }
-        </div>
+        </div>:
+           <><h3>로그인 해주세요</h3>
+               <button onClick={()=>history.push('/account/login')}>로그인 하러가기</button></>
+       }</>
     );
 };
 

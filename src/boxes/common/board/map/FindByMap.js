@@ -100,7 +100,7 @@ const FindByMap = ({ isLogined }) => {
         JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr
       );
     } else {
-      setMyLoca("경기도 의정부시");
+      setMyLoca("경기도 의정부시 의정부동");
     }
   }, [isLogined]);
 

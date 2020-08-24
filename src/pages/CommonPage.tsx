@@ -31,7 +31,7 @@ const CommonPage = () => {
             <CommonMenuBar isLogined={isLogined} />
             <CommonContainer isLogined={isLogined}/>
             <CommonFooter/>
-            <MyChatBot/>
+            <MyChatBot isLogined={isLogined}/>
         </div>
     );
 }

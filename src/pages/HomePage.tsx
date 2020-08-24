@@ -36,7 +36,7 @@ const HomePage = () => {
         <MainMap />
       </div>
         <div>
-            <MyChatBot/>
+            <MyChatBot isLogined={isLogined}/>
         </div>
     </div>
   );
