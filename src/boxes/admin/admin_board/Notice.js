@@ -32,76 +32,67 @@ export const postListThunk = () => (dispatch) => {
     });
 };
 
-// export const postOneThunk = (postId) => (dispatch) => {
-
-//             axios
-//             .get(`http://localhost:8080/posts/post/${postId}`)
-//             .then((res)=>{
-//                dispatch(postListAction(res.data))
-
-//             })
-//             .catch((err)=>{
-//                 throw err;
-//             })
-//   };
-
 const Notice = () => {
   const [categorySelect, setCategorySelect] = useState("");
+    const [postList, setPostList] = useState([]);
+    const [currentPage,setCurrentPage] = useState(1);
+    const [postPerPage] = useState(5);
 
-  const [postList, setPostList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(5);
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPosts = postList.slice(indexOfFirstPost,indexOfLastPost);
+ 
 
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = postList.slice(indexOfFirstPost, indexOfLastPost);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const nextPage = () =>{ 
+        if(currentPage<currentPosts.length){
+            setCurrentPage(currentPage+1)} 
+            else if(postPerPage<currentPosts.length){
+                setCurrentPage(currentPage+1)
+            } else{
+                setCurrentPage(currentPage)
+            }
+        }
+           
+    const prevPage = () => { 
+        if(currentPage>1){
+            setCurrentPage(currentPage-1)
+        }
+       };
 
-  const nextPage = () => {
-    if (currentPage < currentPosts.length) {
-      setCurrentPage(currentPage + 1);
-    } else if (postPerPage < currentPosts.length) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      setCurrentPage(currentPage);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/posts/postlist")
-      .then((res) => {
-        setPostList(res.data);
-      })
-      .catch((err) => {
+  
+    useEffect(() => {
+        axios
+        .get('http://localhost:8080/posts/postlist')
+        .then((res)=>{
+             setPostList(res.data)
+        
+        })
+        .catch((err)=>{
         throw err;
-      });
-  }, []);
+        })
+    }, [])
 
-  const handleSearch = (searchWord) => {
-    alert(searchWord);
+    const handleSearch = (searchWord) => {
+            axios
+            .get(`http://localhost:8080/posts/notice/search`,{
+                params:{
+                    searchWord:searchWord,
+                    categorySelect:categorySelect
+                }
+            })
+            .then((res)=>{
+                setPostList(res.data)
+            })
+            .catch((err)=>{
+                throw err;
+            })
+        
+    }
 
-    axios
-      .get(`http://localhost:8080/posts/notice/search`, {
-        params: {
-          searchWord: searchWord,
-          categorySelect: categorySelect,
-        },
-      })
-      .then((res) => {
-        setPostList(res.data);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
+
+  
 
   return (
     <>
