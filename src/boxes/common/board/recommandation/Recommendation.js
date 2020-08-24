@@ -11,8 +11,8 @@ function Recommendation() {
     const [accountDetail] = useState(JSON.parse(sessionStorage.getItem("accountDetail") || '{}'))
     const [latLng] = useState(JSON.parse(sessionStorage.getItem("userLocation") || '{}'))
     const [id, setId] = useState("");
-    const [userBased, setUserBased] = useState([])
-    const [itemBased, setItemBased] = useState([])
+    const [userBased, setUserBased] = useState(null)
+    const [itemBased, setItemBased] = useState(null)
     const [itemBasedStore, setItemBasedStore] = useState("")
     const [bestStore, setBestStore] = useState([])
     const [mostFav, setMostFav] = useState([])
@@ -159,7 +159,7 @@ function Recommendation() {
                             }}>{store.storeName}</Card.Title>
                             <Card.Text>
                                 {(store.starRanking) ?
-                                    <span>{showRatingStars(parseInt(store.starRanking))}{store.starRanking}</span> :
+                                    <span>{showRatingStars(parseInt(store.starRanking))} {parseFloat(store.starRanking).toFixed(1)}</span> :
                                     <span></span>}<br/>
                                 {store.address}
                             </Card.Text>
@@ -273,7 +273,7 @@ function Recommendation() {
 
             {userFavBased &&
             <div>
-                <h3>&#127879; 즐겨찾기한 <span style={{"color": "#7C05F2"}}>{userFavStore}</span>와/과 같은 업종 추천 가맹점</h3>
+                <h3>&#127879; 즐겨찾기한 <span style={{"color": "#7C05F2"}}>{userFavStore}</span> 가맹점과 동일 업종 추천 가맹점</h3>
                 <div className="scrollContainer">
                     {userFavBased.map((store, i) => (
                             <Card className="cardItem" key={i}>
@@ -296,9 +296,9 @@ function Recommendation() {
             </div>}
 
             {noFavMsg && <div>
-                <h3>&#127879; 즐겨찾기한 가맹점과 같은 업종 추천 가맹점</h3>
+                <h3>&#127879; 즐겨찾기한 가맹점과 동일 업종 추천 가맹점</h3>
                 <div id="msg">
-                    <br/><h4 style={{textAlign: "center"}}>{noFavMsg}<br/>
+                    <h4 style={{textAlign: "center"}}>{noFavMsg}<br/>
                         <Button variant="outline-dark" size="sm" onClick={() => {
                             history.push("/find-by-map")
                         }}>즐겨찾기 추가하기</Button></h4></div>
@@ -306,7 +306,7 @@ function Recommendation() {
 
 
             <h3>&#128109; 회원님과 유사한 회원들이 좋아하는 가맹점</h3>
-            {(userBased.length === 0 && !userWarningMsg) &&
+            {(!userWarningMsg && !userBased) &&
             <div id="msg"><h4>찾 는 중 &#8987;</h4>
                 <Spinner animation="grow" variant="primary"/>
                 <Spinner animation="grow" variant="secondary"/>
@@ -347,7 +347,7 @@ function Recommendation() {
 
 
             <h3>&#128525; 리뷰한 <span style={{"color": "#7C05F2"}}>{itemBasedStore}</span> 가맹점과 유사한 추천 가맹점</h3>
-            {(itemBased.length === 0 && !itemWarningMsg) && <div id="msg">
+            {(!itemWarningMsg && !itemBased) && <div id="msg">
                 <h4>찾 는 중 &#8987;</h4>
                 <Spinner animation="grow" variant="primary"/>
                 <Spinner animation="grow" variant="secondary"/>
