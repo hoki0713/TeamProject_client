@@ -262,11 +262,12 @@ const FindByMap = ({ isLogined }) => {
                     position={{ lat: store.latitude, lng: store.longitude }}
                     onClick={() => {
                       setStoreInfo(store);
+                      setStore(store);
                       setCenter({ lat: store.latitude, lng: store.longitude });
                       setModalShow(true);
                     }}
                     title={store.storeName}
-                    store={store}
+                    store={storeInfo}
                     animation={4}
                     icon={{
                       url: store.icon,
@@ -323,7 +324,7 @@ const FindByMap = ({ isLogined }) => {
                     <td className={"side_td_3"}>
                       {" "}
                       &nbsp;
-                      <Link to={"/storeDetail"} onClick={setStore(store)}>
+                      <Link to={"/storeDetail"} onClick={()=>setStore(store)}>
                         <strong>{store.storeName}</strong>
                       </Link>
                       <br />

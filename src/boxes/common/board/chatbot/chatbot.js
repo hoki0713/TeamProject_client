@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
-import {StoreChatbot} from "./chatbotComponents/index";
+import {StoreChatbot,PolicyInfo,RankState,RecoStores,CateList} from "./chatbotComponents/index";
 
 
 // all available props
@@ -16,7 +16,6 @@ const theme = {
     userBubbleColor: '#fff',
     userFontColor: '#4a4a4a',
 };
-let arr = [];
 
 const MyChatBot = () => (
     <ThemeProvider theme={theme}>
@@ -35,7 +34,7 @@ const MyChatBot = () => (
                     id: '2',
                     options: [
                         { value: 1, label: '가맹점 찾기' ,trigger:'storeQ'},
-                        { value: 2, label: '내게 맞는 정책 찾기', trigger: 'policyQ' },
+                        { value: 2, label: '내게 맞는 지역화폐 지급 정책', trigger: 'policyQ' },
                         { value: 3, label: '내게 맞는 가맹점', trigger: 'recoInfo' },
                     ],
                 },
@@ -66,12 +65,12 @@ const MyChatBot = () => (
                 },
                 {
                     id: 'policyInfo',
-                    component: <>{'정책정보'}</>,
+                    component: <PolicyInfo/>,
                     trigger: '1'
                 },
                 {
                     id: 'recoInfo',
-                    component: <>{"유저기반 추천가맹점들"}</>,
+                    component: <RecoStores/>,
                     trigger: 'recoMsg'
                 },
                 {
@@ -94,17 +93,17 @@ const MyChatBot = () => (
                 },
                 {
                     id: 'cateIn',
-                    user:true,
+                    user: true,
                     trigger: 'cateList'
                 },
                 {
                     id: 'cateList',
-                    component: <>{"업종별 리스트"}</>,
+                    component: <CateList/>,
                     trigger: 'selectReco'
                 },
                 {
                     id:'storeRank',
-                    component: <>{"전체순위100"}</>,
+                    component: <RankState/>,
                     trigger: 'selectReco'
                 }
 
