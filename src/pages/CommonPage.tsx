@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CommonHeader, CommonMenuBar, CommonContainer } from '../boxes';
 import CommonFooter from "../boxes/common/CommonFooter";
+import MyChatBot from "../boxes/common/board/chatbot/chatbot";
 
 const CommonPage = () => {
     const [isLogined, setIsLogined] = useState(false);
@@ -30,6 +31,7 @@ const CommonPage = () => {
             <CommonMenuBar isLogined={isLogined} />
             <CommonContainer isLogined={isLogined}/>
             <CommonFooter/>
+            <MyChatBot/>
         </div>
     );
 }
