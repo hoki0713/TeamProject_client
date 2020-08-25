@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios'
 import {useHistory} from "react-router";
-const PolicyInfo = (props,{isLogined}) => {
+import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
+const PolicyInfo = (props) => {
     const [children,setChildren]=useState('');
     const [userAge,setUserAge]=useState(0);
     const [policyList,setPolicyList]=useState([]);
+    const {loginedCheck} = useContext(LoginedCheckContext);
     const history=useHistory()
     useEffect(()=>{
-        if(isLogined) {
+        if(loginedCheck) {
             let date = new Date;
             setChildren(props.steps.policyOp.value);
             setUserAge(date.getFullYear() - parseInt(JSON.parse(sessionStorage.getItem("accountDetail")).birthDate.substring(0, 4)));
-        } },[]);
+        } },[loginedCheck]);
     useEffect(()=>{
-        if(userAge!=0 && children!==''&&isLogined){
-            console.log(children)
-            console.log(userAge)
+        if(userAge!=0 && children!==''&&loginedCheck){
             axios.get(`http://localhost:8080/policy/chatbotPolicy/${userAge}/${children}`)
                 .then(({data})=>{
                         setPolicyList(data);
@@ -23,9 +23,9 @@ const PolicyInfo = (props,{isLogined}) => {
                 .catch(err=>{throw err});
         }
 
-    },[userAge]);
+    },[userAge,loginedCheck]);
     return (
-        <>{(isLogined)?<div>
+        <>{(loginedCheck)?<div>
             {(policyList[0])?
                 policyList.map((policy,i)=>(
                     <div key={i}>

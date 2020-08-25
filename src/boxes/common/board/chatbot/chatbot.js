@@ -1,12 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import {StoreChatbot, PolicyInfo, RankState, RecoStores, StarRank} from "./chatbotComponents/index";
+import {LoginedCheckContext} from "../../../../items/context/LoginedCheckContext";
 
 
 
 
 const MyChatBot = ({isLogined}) => {
+    const {setLoginedCheck} = useContext(LoginedCheckContext);
 
     const theme = {
         background: '#ffffff',
@@ -20,7 +22,11 @@ const MyChatBot = ({isLogined}) => {
         userFontColor: '#4a4a4a',
     };
 
-    return(<ThemeProvider theme={theme}>
+    useEffect(()=>{
+        setLoginedCheck(isLogined);
+    },[isLogined])
+    return(
+        <ThemeProvider theme={theme}>
         <ChatBot
             floating={true}
             headerTitle={'지역화폐 가맹점 정보 서비스'}
@@ -69,12 +75,12 @@ const MyChatBot = ({isLogined}) => {
                 },
                 {
                     id: 'policyInfo',
-                    component: <PolicyInfo isLogined={isLogined}/>,
+                    component: <PolicyInfo/>,
                     trigger: '1'
                 },
                 {
                     id: 'recoInfo',
-                    component: <RecoStores isLogined={isLogined}/>,
+                    component: <RecoStores/>,
                     trigger: 'recoMsg'
                 },
                 {
@@ -92,12 +98,12 @@ const MyChatBot = ({isLogined}) => {
                 },
                 {
                     id: 'storeRank',
-                    component: <RankState isLogined={isLogined}/>,
+                    component: <RankState/>,
                     trigger: 'selectReco'
                 },
                 {
                     id: 'starRank',
-                    component:<StarRank isLogined={isLogined}/>,
+                    component:<StarRank/>,
                     trigger: 'selectReco'
                 }
 

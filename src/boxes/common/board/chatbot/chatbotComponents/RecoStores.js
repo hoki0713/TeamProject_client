@@ -5,14 +5,16 @@ import {appKey} from "../../map/mapUtils/mapatt";
 import {Link} from "react-router-dom";
 import {StoreSearchContext} from "../../../../../items/context/StoreSearchContext";
 import {useHistory} from "react-router";
+import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
 Geocode.setApiKey(appKey);
-const RecoStores = ({isLogined}) => {
+const RecoStores = () => {
     const [homePosit, setHomePosit] = useState({});
     const [storeList,setStoreList] = useState([]);
     const {setStore}=useContext(StoreSearchContext);
+    const {loginedCheck} = useContext(LoginedCheckContext);
     const history = useHistory();
     useEffect(()=>{
-        if(isLogined){console.log(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
+        if(loginedCheck){console.log(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
         Geocode.fromAddress(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr).then(
             (response) => {
                 const resLatLng = response.results[0].geometry.location;
@@ -27,14 +29,14 @@ const RecoStores = ({isLogined}) => {
         );}
     },[])
     useEffect(()=>{
-        if(homePosit.lat && isLogined){axios.get(`http://localhost:8080/stores/chatbotRecoMain/${homePosit.lat}/${homePosit.lng}`)
+        if(homePosit.lat && loginedCheck){axios.get(`http://localhost:8080/stores/chatbotRecoMain/${homePosit.lat}/${homePosit.lng}`)
             .then(({data})=>{
                 setStoreList(data);
             })
             .catch(err=>{throw err});}
     },[homePosit])
     return (
-       <> {(isLogined)?<div>
+       <> {(loginedCheck)?<div>
             <>추천 가맹점</><br/>
             {(storeList[0])?
                 storeList.map((store, i)=>(

@@ -4,14 +4,16 @@ import {StoreSearchContext} from "../../../../../items/context/StoreSearchContex
 import Geocode from "react-geocode";
 import axios from "axios";
 import {useHistory} from 'react-router-dom';
+import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
 
-const StarRank = ({isLogined}) => {
+const StarRank = () => {
     const [homePosit, setHomePosit] = useState({});
     const [storeList,setStoreList] = useState([]);
     const {setStore}=useContext(StoreSearchContext);
+    const {loginedCheck} = useContext(LoginedCheckContext);
     const history = useHistory();
     useEffect(()=>{
-        if(isLogined){Geocode.fromAddress(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr).then(
+        if(loginedCheck){Geocode.fromAddress(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr).then(
             (response) => {
                 const resLatLng = response.results[0].geometry.location;
                 setHomePosit({
@@ -25,14 +27,14 @@ const StarRank = ({isLogined}) => {
         );}
     },[])
     useEffect(()=>{
-        if(homePosit.lat &&isLogined){axios.get(`http://localhost:8080/stores/chatbotStarRank/${JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr.substring(4,8)}`)
+        if(homePosit.lat &&loginedCheck){axios.get(`http://localhost:8080/stores/chatbotStarRank/${JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr.substring(4,8)}`)
             .then(({data})=>{
                 setStoreList(data);
             })
             .catch(err=>{throw err});}
     },[homePosit])
     return (
-       <> {(isLogined)?<div>
+       <> {(loginedCheck)?<div>
              <>우리 시 별점별 순위</><br/>
             {(storeList[0])?
                 storeList.map((store, i)=>(
