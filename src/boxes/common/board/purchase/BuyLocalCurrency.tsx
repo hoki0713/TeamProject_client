@@ -3,11 +3,14 @@ import './purchase.css'
 import { Link } from 'react-router-dom';
 import PurchaseMap from "./PurchaseMap";
 import Payment from "./Payment";
-import PaymentIamPort from "./PaymentIamPort";
-
 
 export const CurrencyImg = ({ imgsrc }) => {
-  return (<img className="currency_img" src={imgsrc} />)
+
+  return (
+    <>
+      <img className="currency_img" src={imgsrc} alt="지도이미지"/>
+    </>
+  )
 }
 
 

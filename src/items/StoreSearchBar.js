@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { StoreSearchContext } from "../items/context/StoreSearchContext";
+import { StoreSearchContext } from "../context/StoreSearchContext";
 import axios from "axios";
 
 const StoreSearchBar = () => {

@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap'
 import axios from 'axios'
 import './Recommendation.css'
-import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 function FindByTag() {

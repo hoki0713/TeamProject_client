@@ -1,32 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./StoreTotalStatistic.css";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { Bar } from "react-chartjs-2";
-import { SSL_OP_TLS_ROLLBACK_BUG } from "constants";
 
-const LOCAL_USERS = "LOCAL_USERS";
 
-export const storeStatisticAction = (data) => ({
-  type: LOCAL_USERS,
-  payload: data,
-});
 
-export const storeStatisticReducer = (state = [], action) => {
-  switch (action.type) {
-    case LOCAL_USERS:
-      return action.payload;
-    default:
-      return state;
-  }
-};
 
 const StoreTotalStatistic = () => {
   const [chartData, setChartData] = useState({});
   const [localSelect, setLocalSelect] = useState("");
   const [storeLocalIndustryKey, setStoreLocalIndustryKey] = useState("");
   const [storeLocalIndustryValue, setStoreLocalIndustryValue] = useState("");
-  const dispatch = useDispatch();
+  const [totalStoreCount,setTotalStoreCount]=useState(0);
 
   const localSelectCheck = (e) => {
     e.preventDefault();
@@ -38,14 +23,16 @@ const StoreTotalStatistic = () => {
       axios
         .get(`http://localhost:8080/admins/store/chart-all`)
         .then((res) => {
-          console.log(res.data);
 
+          setTotalStoreCount(res.data.storeTotalCount)
           const dataKey = [];
           const dataValue = [];
-
-          Object.entries(res.data).forEach(([key, value]) => {
+          
+        
+          Object.entries(res.data.storeChartAll).forEach(([key, value]) => {
             dataKey.push(key);
             dataValue.push(value);
+            
           });
           setStoreLocalIndustryKey(dataKey);
           setStoreLocalIndustryValue(dataValue);
@@ -57,7 +44,6 @@ const StoreTotalStatistic = () => {
       axios
         .get(`http://localhost:8080/admins/store/chart-local/${localSelect}`)
         .then((res) => {
-          console.log(res.data);
 
           const dataKey = [];
           const dataValue = [];
@@ -71,15 +57,6 @@ const StoreTotalStatistic = () => {
         });
     }
   }, [localSelect]);
-
-  const color = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
 
   useEffect(() => {
     setChartData({
@@ -104,8 +81,11 @@ const StoreTotalStatistic = () => {
   return (
     <div>
       <h2 className="mt-4" style={{ "text-align": "center" }}>
-        가맹점 통계
+        가맹점 통계 
       </h2>
+  <h4  className="font-weight-bold" style={{ "text-align": "center" }} >총 가맹점 수: {totalStoreCount}개 ( 2020.07 기준 ) </h4>
+  <h4 className="font-weight-bold" style={{textAlign: 'right'}}>출처 : 경기지역화폐 가맹점 현황(의정부,고양시)<br/>
+<a href={"https://data.gg.go.kr/portal/data/service/selectServicePage.do?page=1&rows=10&sortColumn=&sortDirection=&infId=3NPA52LBMO36CQEQ1GMY28894927&infSeq=1&order=&searchWord=%EC%A7%80%EC%97%AD%ED%99%94%ED%8F%90"}>-경기데이터드림</a></h4>
       <div>
         <div id="graph-store-count-by-local">
           <div className="storeTotal-div">
@@ -151,6 +131,8 @@ const StoreTotalStatistic = () => {
                             return value;
                           }
                         },
+                        max:7000,
+                        min:0
                       },
                     },
                   ],

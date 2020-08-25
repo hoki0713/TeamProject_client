@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AdminHeader, AdminMenuBar, AdminContainer } from '../boxes';
-import './AdminPage.css'
-import { LoginLink } from '../items'
-import { useHistory } from 'react-router-dom'
-
+import { useHistory } from 'react-router-dom';
 
 const AdminPage = () => {
   const [isLogined, setIsLogined] = useState(false);
@@ -29,7 +26,7 @@ const AdminPage = () => {
   }, [accountDetail])
 
   return (
-    <div>
+    <>
       {accountDetail.adminKey &&
         <div>
           <AdminHeader
@@ -43,7 +40,7 @@ const AdminPage = () => {
       {!accountDetail.adminKey &&
         moveToLoginPage()
       }
-    </div>
+    </>
   );
 };
 

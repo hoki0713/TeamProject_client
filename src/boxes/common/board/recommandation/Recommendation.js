@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
 import {Card, Spinner, Button} from "react-bootstrap";
-import {Link} from 'react-router-dom';
 import "./Recommendation.css";
-import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 
