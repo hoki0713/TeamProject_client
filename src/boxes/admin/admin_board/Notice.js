@@ -5,33 +5,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./AdminBoard.css";
 
-const POST_LIST = "POST_LIST";
-
-export const postListAction = (data) => ({
-  type: POST_LIST,
-  payload: data,
-});
-
-export const postListReducer = (state = {}, action) => {
-  switch (action.type) {
-    case POST_LIST:
-      return { ...state, payload: action.payload };
-    default:
-      return state;
-  }
-};
-
-export const postListThunk = () => (dispatch) => {
-  axios
-    .get(`http://localhost:8080/posts/postlist`)
-    .then((res) => {
-      dispatch(postListAction(res.data));
-    })
-    .catch((err) => {
-      throw err;
-    });
-};
-
 const Notice = () => {
   const [categorySelect, setCategorySelect] = useState("");
     const [postList, setPostList] = useState([]);

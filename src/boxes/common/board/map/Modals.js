@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
-import {addr, favStar, phoneB, red, review, starIcon} from "./mapIcons/imgIndex";
+import {addr, favStar, phoneB, red, review} from "./mapIcons/imgIndex";
 import {Link} from "react-router-dom";
 import ReviewModal from "../../../../items/ReviewModal";
 import axios from "axios";
@@ -42,7 +42,7 @@ export const MapModal=({modalClose,isLogined,storeInfo})=> {
                                 &nbsp;{storeInfo.address}<br/>
                                 <img src={phoneB}
                                      alt={"phoneImg"} width={iconsize} height={iconsize}/>
-                                &nbsp;{(storeInfo.storePhone!=0)?<>{storeInfo.storePhone}</>:
+                                &nbsp;{(storeInfo.storePhone!==0)?<>{storeInfo.storePhone}</>:
                                 <>000-000-0000</>}
                             </Col>
                             <Col xs={6} md={4}>
@@ -115,8 +115,8 @@ export const MapModal=({modalClose,isLogined,storeInfo})=> {
                          storeName={storeInfo.storeName}
                          accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
                          storeId={storeInfo.id}
-                         reviewId={null}// findbymap에서는 필요없다
-                         onSubmit={()=>{}}// findbymap에서는 필요없다
+                         reviewId={null}
+                         onSubmit={()=>{}}
             />
             }
         </>

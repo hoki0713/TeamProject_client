@@ -1,43 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Container, Row, Col } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SearchBar, PaginationItem } from "../../../../items";
 import axios from "axios";
 import "./AdminBoard.css";
-const POST_LIST = "POST_LIST";
-export const postListAction = (data) => ({
-  type: POST_LIST,
-  payload: data,
-});
-export const postListReducer = (state = {}, action) => {
-  switch (action.type) {
-    case POST_LIST:
-      return { ...state, payload: action.payload };
-    default:
-      return state;
-  }
-};
-export const postListThunk = () => (dispatch) => {
-  axios
-    .get(`http://localhost:8080/posts/postlist`)
-    .then((res) => {
-      dispatch(postListAction(res.data));
-    })
-    .catch((err) => {
-      throw err;
-    });
-};
-// export const postOneThunk = (postId) => (dispatch) => {
-//             axios
-//             .get(`http://localhost:8080/posts/post/${postId}`)
-//             .then((res)=>{
-//                dispatch(postListAction(res.data))
-//             })
-//             .catch((err)=>{
-//                 throw err;
-//             })
-//   };
+
 const NoticeList = () => {
+
   const [categorySelect, setCategorySelect] = useState("");
   const [postList, setPostList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,7 +14,9 @@ const NoticeList = () => {
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPosts = postList.slice(indexOfFirstPost, indexOfLastPost);
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
   const nextPage = () => {
     if (currentPage < currentPosts.length) {
       setCurrentPage(currentPage + 1);
@@ -55,6 +26,7 @@ const NoticeList = () => {
       setCurrentPage(currentPage);
     }
   };
+
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -70,6 +42,7 @@ const NoticeList = () => {
         throw err;
       });
   }, []);
+
   const handleSearch = (searchWord) => {
     alert(searchWord);
     axios
@@ -86,6 +59,7 @@ const NoticeList = () => {
         throw err;
       });
   };
+
   return (
     <>
       <h2 className="mt-4" style={{"text-align" : "center"}}> 공지사항</h2>
@@ -154,4 +128,5 @@ const NoticeList = () => {
     </>
   );
 };
+
 export default NoticeList;

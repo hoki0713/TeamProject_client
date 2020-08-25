@@ -40,9 +40,6 @@ const LocalCurrencyAmount = () => {
       .then((res)=>{
         setSalesList(res.data.salesList)
         setTotalPages(res.data.totalPages)
-        console.log(`list${res.data}`)
-        console.log(res.data)
-      
       })
       .catch((err)=>{
         throw err;
@@ -53,9 +50,6 @@ const LocalCurrencyAmount = () => {
     axios
       .get(`http://localhost:8080/admins/currency/month/total`)
       .then((res) => {
-        
-        
-        console.log(res.data)
         const dataKey = [];
         const dataValue = [];
         Object.entries(res.data).forEach(([key, value]) => {
@@ -77,7 +71,6 @@ const LocalCurrencyAmount = () => {
         .then((res)=>{
           const datakeys = [];
           const datavalues = [];
-          console.log(res.data)
           Object.entries(res.data).forEach(([key,value])=>{
             datakeys.push(key);
             datavalues.push(value.unitPrice);
@@ -373,9 +366,8 @@ const LocalCurrencyAmount = () => {
                   callbacks: {
                       label: function(tooltipItem) {
                       return Intl.NumberFormat().format(tooltipItem.yLabel)
-                      }//function
-
-            }//callbaks
+                      }
+            }
           }
             }}
           />
@@ -462,10 +454,6 @@ const LocalCurrencyAmount = () => {
               legend: {
                 display: false,
               },
-              // title: { text: "(단위:백만)",
-              //  display: true,
-              // position:'bottom',
-              // fontColor:'blue'},
               scales: {
                 yAxes:[{
                   ticks:{
@@ -486,9 +474,8 @@ const LocalCurrencyAmount = () => {
                   callbacks: {
                       label: function(tooltipItem) {
                       return Intl.NumberFormat().format(tooltipItem.yLabel)
-                      }//function
-
-            }//callbaks
+                      }
+            }
           }
 
             }} />
@@ -526,9 +513,8 @@ const LocalCurrencyAmount = () => {
                     callbacks: {
                         label: function(tooltipItem) {
                         return Intl.NumberFormat().format(tooltipItem.yLabel)
-                        }//function
-  
-              }//callbaks
+                        }
+              }
             }
   
               }}
