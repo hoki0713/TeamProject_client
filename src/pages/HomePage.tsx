@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MainNav, MainMap, MainSearchBar, MainLogo } from '../boxes';
 import MyChatBot from "../boxes/common/board/chatbot/chatbot";
-import AdminPage from './AdminPage';
 
 const HomePage = () => {
   const [isLogined, setIsLogined] = useState(false);
@@ -17,14 +16,14 @@ const HomePage = () => {
 
   useEffect(() => {
     refreshUser(accountDetail.id);
-  },[accountDetail]);
+  }, [accountDetail]);
 
   return (
-    <div className="container">
+    <>
       <div className="row">
-        <MainNav 
+        <MainNav
           clickLogout={refreshUser}
-          loginedAccount={isLogined} 
+          loginedAccount={isLogined}
         />
       </div>
       <div className="row">
@@ -37,7 +36,7 @@ const HomePage = () => {
         <MainMap />
       </div>
         <div>
-            <MyChatBot/>
+            <MyChatBot isLogined={isLogined}/>
         </div>
     </div>
   );

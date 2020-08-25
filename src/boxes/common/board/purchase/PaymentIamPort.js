@@ -12,28 +12,23 @@ const PaymentIamPort = (props) => {
 
 
     const onClickPayment = (props) => {
-        /* 1. 가맹점 식별하기 */
         const {IMP} = window;
         IMP.init('imp15100680');
 
-        /* 2. 결제 데이터 정의하기 */
         const data = {
-            pg: 'kakao',                           // PG사
-            pay_method: 'card',                           // 결제수단
-            merchant_uid: `mid_${new Date().getTime()}`,   // 주문번호
-            amount: props.unitPrice,                            // 결제금액
-            name: `${props.localName} 지역화폐 구매`,               // 주문명
-            buyer_name: accountDetail.name                          // 구매자 이름
+            pg: 'kakao',
+            pay_method: 'card',
+            merchant_uid: `mid_${new Date().getTime()}`,
+            amount: props.unitPrice,
+            name: `${props.localName} 지역화폐 구매`,
+            buyer_name: accountDetail.name
         };
-        /* 4. 결제 창 호출하기 */
         IMP.request_pay(data, callback);
     }
 
-    /* 3. 콜백 함수 정의하기 */
     function callback(res) {
         const {
             success,
-            merchant_uid,
             error_msg,
         } = res;
 
@@ -44,7 +39,7 @@ const PaymentIamPort = (props) => {
                     paymentName: res.pay_method,
                     localName: props.localName
                 })
-                .then((res) => {
+                .then(() => {
                     window.location.href = "/mypage/purchase-history/notice";
                 })
                 .catch((err) => {
@@ -55,8 +50,6 @@ const PaymentIamPort = (props) => {
 
         } else {
             alert(`결제 실패: ${error_msg}`);
-
-
         }
     }
 

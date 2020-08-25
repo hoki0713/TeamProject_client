@@ -10,7 +10,7 @@ const AccountDetailPage = () => {
   const refreshUser = (id) => {
     if (id) {
       setIsLogined(true);
-      if(accountDetail.adminKey) setIsAdmin(true);
+      if (accountDetail.adminKey) setIsAdmin(true);
     } else {
       setIsLogined(false);
     }
@@ -21,15 +21,15 @@ const AccountDetailPage = () => {
   }, [accountDetail])
 
   return (
-    <div className="container">
-      <CommonHeader 
+    <>
+      <CommonHeader
         clickLogout={refreshUser}
-        loginedAccount={isLogined} 
+        loginedAccount={isLogined}
         isAdmin={isAdmin}
       />
       <AccountNavBar />
       <AccountDetailContainer />
-    </div>
+    </>
   );
 };
 

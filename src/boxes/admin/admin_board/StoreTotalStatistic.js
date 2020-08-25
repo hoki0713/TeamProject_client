@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./StoreTotalStatistic.css";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { Bar } from "react-chartjs-2";
 
 
@@ -13,8 +12,6 @@ const StoreTotalStatistic = () => {
   const [storeLocalIndustryKey, setStoreLocalIndustryKey] = useState("");
   const [storeLocalIndustryValue, setStoreLocalIndustryValue] = useState("");
   const [totalStoreCount,setTotalStoreCount]=useState(0);
-  
- 
 
   const localSelectCheck = (e) => {
     e.preventDefault();
@@ -47,7 +44,6 @@ const StoreTotalStatistic = () => {
       axios
         .get(`http://localhost:8080/admins/store/chart-local/${localSelect}`)
         .then((res) => {
-        
 
           const dataKey = [];
           const dataValue = [];
@@ -61,15 +57,6 @@ const StoreTotalStatistic = () => {
         });
     }
   }, [localSelect]);
-
-  const color = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
 
   useEffect(() => {
     setChartData({

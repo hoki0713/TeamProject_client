@@ -3,10 +3,10 @@ import { AccountHeader, AccountContainer } from '../boxes';
 
 const AccountPage = () => {
   return (
-    <div>
+    <>
       <AccountHeader/>
       <AccountContainer/>
-    </div>
+    </>
   );
 };
 

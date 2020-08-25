@@ -3,12 +3,7 @@ import "./UserTotalStatistic.css";
 import axios from "axios";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 
-
-
-
 const UserTotalStatistic = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [localSelect, setLocalSelect] = useState("");
   const [chartData, setChartData] = useState({});
   const [genderChartData, setGenderChartData] = useState({});
@@ -36,7 +31,6 @@ const UserTotalStatistic = () => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${localSelect}`)
       .then((res) => {
-     
         const genderValues = [];
         const getnderKeys = [];
         const ageKeys = [];
