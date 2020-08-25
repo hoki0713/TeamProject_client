@@ -307,7 +307,7 @@ function Recommendation() {
 
             <h3>&#128109; 회원님과 유사한 회원들이 좋아하는 가맹점</h3>
             {(!userWarningMsg && !userBased) &&
-            <div id="msg"><h4>찾 는 중 &#8987;</h4>
+            <div id="msg"><h4>찾 는 중 &#8987; </h4><br/>
                 <Spinner animation="grow" variant="primary"/>
                 <Spinner animation="grow" variant="secondary"/>
                 <Spinner animation="grow" variant="success"/>
@@ -348,7 +348,7 @@ function Recommendation() {
 
             <h3>&#128525; 리뷰한 <span style={{"color": "#7C05F2"}}>{itemBasedStore}</span> 가맹점과 유사한 추천 가맹점</h3>
             {(!itemWarningMsg && !itemBased) && <div id="msg">
-                <h4>찾 는 중 &#8987;</h4>
+                <h4>찾 는 중 &#8987;</h4><br/>
                 <Spinner animation="grow" variant="primary"/>
                 <Spinner animation="grow" variant="secondary"/>
                 <Spinner animation="grow" variant="success"/>

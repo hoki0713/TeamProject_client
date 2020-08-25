@@ -79,7 +79,7 @@ const MerchanDetail = ({ isLogined }) => {
               <InfoWindow>
                 <div>
                   <h6>{store.storeName}</h6>
-                  <table>
+                  <table >
                     <tr>
                       <td>
                         {store.imgUrl && (
@@ -116,8 +116,7 @@ const MerchanDetail = ({ isLogined }) => {
                     <tr>
                       <td></td>
                       <td>
-                        {store.storeType}
-                        {store.starRanking && (
+                        {(store.starRanking !==0) && (
                           <>
                             &nbsp;&nbsp;별점 &nbsp;
                             <Stars store={store} />{" "}
@@ -226,10 +225,8 @@ const MerchanDetail = ({ isLogined }) => {
                     <tr>
                       <td colSpan={2}>소분류: {store.storeType}</td>
                     </tr>
-
                     <tr>
-                      <td></td>
-                      <td>
+                      <td colSpan={2} style={{textAlign:'center'}}>
                         &nbsp;&nbsp;&nbsp;
                         <button
                           className={"find_routeB"}
