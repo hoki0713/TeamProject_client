@@ -38,7 +38,7 @@ const HomePage = () => {
         <div>
             <MyChatBot isLogined={isLogined}/>
         </div>
-    </div>
+    </>
   );
 }
 
