@@ -4,8 +4,8 @@ import axios from 'axios';
 import Geocode from "react-geocode";
 
 const Login = () => {
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState("user_example");
+  const [password, setPassword] = useState("user_example123");
   const history = useHistory();
   
   const getLatLng = async (location) =>  {
