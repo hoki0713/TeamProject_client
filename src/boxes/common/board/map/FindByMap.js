@@ -120,10 +120,6 @@ const FindByMap = ({ isLogined }) => {
           if (data.list.length > 0) {
             data.list.forEach((elem) => {
               switch (elem.storeType) {
-                case "의원":
-                  elem.icon = hospIcon;
-                  temList.push(elem);
-                  break;
                 case "중국식":
                   elem.icon = chinaIcon;
                   temList.push(elem);
@@ -154,30 +150,11 @@ const FindByMap = ({ isLogined }) => {
                       elem.icon = hospIcon;
                       temList.push(elem);
                       break;
-                    case "중국식":
-                      elem.icon = chinaIcon;
-                      temList.push(elem);
-                      break;
-                    case "약국":
-                      elem.icon = drug;
-                      temList.push(elem);
-                      break;
                     case "숙박업":
                       elem.icon = hotelIcon;
                       temList.push(elem);
                       break;
-                    case "주점":
-                      elem.icon = soju;
-                      temList.push(elem);
-                      break;
-                    case "일반한식":
-                      if (!elem.storeName.includes("카페")) {
-                        elem.icon = bab;
-                      } else {
-                        elem.icon = cafe;
-                      }
-                      temList.push(elem);
-                      break;
+
                     default:
                       elem.icon = normal;
                       temList.push(elem);
