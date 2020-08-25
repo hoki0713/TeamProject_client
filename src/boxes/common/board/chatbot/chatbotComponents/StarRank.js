@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import {StoreSearchContext} from "../../../../../items/context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../../context/StoreSearchContext";
 import Geocode from "react-geocode";
 import axios from "axios";
 import {useHistory} from 'react-router-dom';
-import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
+import {LoginedCheckContext} from "../../../../../context/LoginedCheckContext";
 
 const StarRank = () => {
     const [homePosit, setHomePosit] = useState({});

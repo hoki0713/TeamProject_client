@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { UserDetailContext } from "./context/UserDetailContext"; 
+import { UserDetailContext } from "../../../context/UserDetailContext"; 
 import axios from 'axios';
 
 const UserDetail = () => {

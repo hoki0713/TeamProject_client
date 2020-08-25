@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
-import {StoreSearchContext} from "../../../../../items/context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../../context/StoreSearchContext";
 import {Link} from "react-router-dom";
 
 const StoreChatbot = (props) => {

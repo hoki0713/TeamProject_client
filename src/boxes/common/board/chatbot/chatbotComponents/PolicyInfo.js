@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios'
 import {useHistory} from "react-router";
-import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
+import {LoginedCheckContext} from "../../../../../context/LoginedCheckContext";
 const PolicyInfo = (props) => {
     const [children,setChildren]=useState('');
     const [userAge,setUserAge]=useState(0);
