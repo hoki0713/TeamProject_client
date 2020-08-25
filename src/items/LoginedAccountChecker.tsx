@@ -34,8 +34,8 @@ const LoginedAccountChecker = ({ loginedAccount, clickLogout, isAdmin }) => {
             <span className="btn-link btn-sm">내 정보</span>
           </Link>
           {isAdmin &&
-            <Link to="/admin/user-statistic">
-              <span className="btn-link btn-sm">DashBoard</span>
+            <Link to="/admin">
+              <span className="btn-link btn-sm">관리자화면</span>
             </Link>
           }
         </>

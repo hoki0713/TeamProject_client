@@ -283,7 +283,7 @@ const LocalCurrencyAmount = () => {
             <h3 className="currency-h5 font-weight-bold">
               지역화폐 명에 따른 매출
             </h3>
-            <h3 className="font-weight-bold">총 매출 건수 : {salesCount} 건 ( 2020.08 기준 )</h3>
+            <h3 className="font-weight-bold">총 매출 건수 : {Intl.NumberFormat().format(salesCount)} 건 ( 2020.08 기준 )</h3>
             <h6 className="currencyTotal-h6">
               -각 지역화폐 Id 또는 명에 따른 매출 통계
             </h6>

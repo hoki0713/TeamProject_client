@@ -8,7 +8,7 @@ const Payment = (props) => {
 
     return (
 
-        <Modal {...props}>
+        <Modal {...props} style={{textAlign : 'center'}}>
             <Modal.Header closeButton></Modal.Header>
             <Modal.Title>지역화폐 결제하기</Modal.Title>
             <Modal.Body>

@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap'
 import axios from 'axios'
 import './Recommendation.css'
-import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
+import { StoreSearchContext } from "../../../../context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 function FindByTag() {
@@ -362,7 +362,7 @@ function FindByTag() {
                                     }}>{store.storeName}</Card.Title>
                                     <Card.Text>
                                         {(store.starRanking) ?
-                                            <span>{showRatingStars(parseInt(store.starRanking))} {store.starRanking}</span> :
+                                            <span>{showRatingStars(parseInt(store.starRanking))} {parseFloat(store.starRanking).toFixed(1)}</span> :
                                             <span></span>}<br/>
                                         {store.address}
 

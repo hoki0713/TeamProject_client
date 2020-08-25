@@ -26,4 +26,15 @@
 
 .userslist-table{
   margin-top: 50px;
+
+}
+
+.userId {
+  cursor: pointer;
+  color: blue;
+}
+
+.userId:hover {
+  color: skyblue;
+
 }

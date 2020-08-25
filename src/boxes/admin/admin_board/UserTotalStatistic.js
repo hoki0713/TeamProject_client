@@ -148,7 +148,7 @@ const UserTotalStatistic = () => {
 
       <div className="userLocal-Total">
         <h3 className="font-weight-bold">전체 지역</h3>
-  <h3 className="font-weight-bold">총 회원수: {toTalUserCount} 명</h3>
+  <h3 className="font-weight-bold">총 회원수: {Intl.NumberFormat().format(toTalUserCount)} 명</h3>
           <Bar data={chartData} />
       </div>
       <div className="parent">

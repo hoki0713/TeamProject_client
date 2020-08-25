@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { SearchBar, NewPagination } from "../../../../items";
-import { UserDetailContext } from "./context/UserDetailContext";
+import { SearchBar, NewPagination } from "../../../items";
+import { UserDetailContext } from "../../../context/UserDetailContext";
 import "./UserList.css";
 import axios from "axios";
 
