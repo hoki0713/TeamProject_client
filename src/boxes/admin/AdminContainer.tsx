@@ -21,7 +21,7 @@ const AdminContainer = ({match}) => {
       <Route path="/admin/store-statistic">
         <StoreTotalStatistic />
       </Route>
-      <Route path="/admin">
+      <Route path="/admin" exact>
         <UserTotalStatistic />
       </Route>
       <Route path={`/admin/notice-detail/:postId`}
