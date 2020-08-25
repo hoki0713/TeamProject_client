@@ -83,7 +83,7 @@ const StoreTotalStatistic = () => {
       <h2 className="mt-4" style={{ "text-align": "center" }}>
         가맹점 통계 
       </h2>
-  <h4  className="font-weight-bold" style={{ "text-align": "center" }} >총 가맹점 수: {totalStoreCount}개 ( 2020.07 기준 ) </h4>
+  <h4  className="font-weight-bold" style={{ "text-align": "center" }} >총 가맹점 수: {Intl.NumberFormat().format(totalStoreCount)}개 ( 2020.07 기준 ) </h4>
   <h4 className="font-weight-bold" style={{textAlign: 'right'}}>출처 : 경기지역화폐 가맹점 현황(의정부,고양시)<br/>
 <a href={"https://data.gg.go.kr/portal/data/service/selectServicePage.do?page=1&rows=10&sortColumn=&sortDirection=&infId=3NPA52LBMO36CQEQ1GMY28894927&infSeq=1&order=&searchWord=%EC%A7%80%EC%97%AD%ED%99%94%ED%8F%90"}>-경기데이터드림</a></h4>
       <div>

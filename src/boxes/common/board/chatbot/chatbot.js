@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import {StoreChatbot, PolicyInfo, RankState, RecoStores, StarRank} from "./chatbotComponents/index";
-import {LoginedCheckContext} from "../../../../items/context/LoginedCheckContext";
+import {LoginedCheckContext} from "../../../../context/LoginedCheckContext";
 
 
 

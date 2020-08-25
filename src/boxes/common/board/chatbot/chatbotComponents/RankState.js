@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StoreSearchContext} from "../../../../../items/context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../../context/StoreSearchContext";
 import Geocode from "react-geocode";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router";
-import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
+import {LoginedCheckContext} from "../../../../../context/LoginedCheckContext";
 
 const RankState = () => {
     const [homePosit, setHomePosit] = useState({});

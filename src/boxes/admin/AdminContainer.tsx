@@ -7,11 +7,9 @@ import {
   Notice,
   NotifyStore,
   Enquiry,
-  NoticeWrite, NoticeDetail, StoreDetail, NoticeModifyWrite
+  NoticeWrite, NoticeDetail, StoreDetail, NoticeModifyWrite,UserList, UserDetail 
 } from './admin_board';
-import UserList from './admin_board/adminTest/UserList.js'
-import UserDetail from './admin_board/adminTest/UserDetail';
-import { UserDetailProvider } from './admin_board/adminTest/context/UserDetailContext';
+import { UserDetailProvider } from '../../context/UserDetailContext';
 
 const AdminContainer = ({match}) => {
   

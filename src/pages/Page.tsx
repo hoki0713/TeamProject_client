@@ -6,7 +6,7 @@ import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
 import AccountDetailPage from './AccountDetailPage';
 import { StoreSearchProvider } from '../context/StoreSearchContext.js';
-import {LoginedCheckProvider} from "../items/context/LoginedCheckContext";
+import {LoginedCheckProvider} from "../context/LoginedCheckContext";
 
 const Page = () => {
   return (

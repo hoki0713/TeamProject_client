@@ -9,8 +9,10 @@ import NotifyStore from './NotifyStore.js';
 import Enquiry from './Enquiry.js';
 import StoreDetail from './StoreDetail'
 import NoticeModifyWrite from "./NoticeModifyWrite .js"
+import UserDetail from './UserDetail';
+import UserList from './UserList';
+
 export {
-  
   UserTotalStatistic,
   StoreTotalStatistic,
   LocalCurrencyAmount,
@@ -20,6 +22,8 @@ export {
   NotifyStore,
   Enquiry,
   StoreDetail,
-  NoticeModifyWrite
+  NoticeModifyWrite,
+  UserDetail,
+  UserList
 }
 

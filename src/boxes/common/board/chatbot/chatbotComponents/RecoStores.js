@@ -3,9 +3,9 @@ import axios from 'axios';
 import Geocode from "react-geocode";
 import {appKey} from "../../map/mapUtils/mapatt";
 import {Link} from "react-router-dom";
-import {StoreSearchContext} from "../../../../../items/context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../../context/StoreSearchContext";
 import {useHistory} from "react-router";
-import {LoginedCheckContext} from "../../../../../items/context/LoginedCheckContext";
+import {LoginedCheckContext} from "../../../../../context/LoginedCheckContext";
 Geocode.setApiKey(appKey);
 const RecoStores = () => {
     const [homePosit, setHomePosit] = useState({});
