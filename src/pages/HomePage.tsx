@@ -35,10 +35,10 @@ const HomePage = () => {
       <div className="row">
         <MainMap />
       </div>
-      <div>
-        <MyChatBot />
-      </div>
-    </>
+        <div>
+            <MyChatBot isLogined={isLogined}/>
+        </div>
+    </div>
   );
 }
 

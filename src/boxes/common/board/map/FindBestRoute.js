@@ -313,7 +313,7 @@ const FindBestRoute = () => {
                                             {temRoutes[0]&&temRoutes.map((route,i)=>(
                                                 <ListGroup.Item>
                                                     <h6>
-                                                        &#62;&#62;{i+1}번째 &#09;{route.storeName}
+                                                        {i+1}번째 &#09;{route.storeName} <br/>
                                                         &#09;{route.address}
                                                     </h6>
                                                 </ListGroup.Item>
@@ -369,8 +369,7 @@ const FindBestRoute = () => {
                                                     <strong>경로 1!</strong>
                                                     <h6>출발:&nbsp;{myLoca}</h6>
                                                     <h6>
-                                                        {temRoutes[bestWay[0]].storeName}&#09;
-                                                        {temRoutes[bestWay[0]].address}
+                                                        &#62;&#62;&nbsp;{temRoutes[bestWay[0]].storeName}&#09;
                                                     </h6>
                                                     <button
                                                         className={"find_routeB"}
@@ -394,7 +393,7 @@ const FindBestRoute = () => {
                                                 <ListGroup.Item>
                                                     <strong>경로 2!</strong>
                                                     <h6>{temRoutes[bestWay[0]].storeName}</h6>
-                                                    <h6>{temRoutes[bestWay[1]].storeName}</h6>
+                                                    <h6>&#62;&#62;&nbsp;{temRoutes[bestWay[1]].storeName}</h6>
                                                     <button
                                                         className={"find_routeB"}
                                                         onClick={(e) => {
@@ -417,7 +416,7 @@ const FindBestRoute = () => {
                                                 <ListGroup.Item>
                                                     <strong>경로 3!</strong>
                                                     <h6>{temRoutes[bestWay[1]].storeName}</h6>
-                                                    <h6>{temRoutes[bestWay[2]].storeName}</h6>
+                                                    <h6>&#62;&#62;&nbsp;{temRoutes[bestWay[2]].storeName}</h6>
                                                     <button
                                                         className={"find_routeB"}
                                                         onClick={(e) => {

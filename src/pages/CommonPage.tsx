@@ -21,19 +21,19 @@ const CommonPage = () => {
     refreshUser(accountDetail.id)
   }, [accountDetail]);
 
-  return (
-    <>
-      <CommonHeader
-        clickLogout={refreshUser}
-        loginedAccount={isLogined}
-        isAdmin={isAdmin}
-      />
-      <CommonMenuBar isLogined={isLogined} />
-      <CommonContainer isLogined={isLogined} />
-      <CommonFooter />
-      <MyChatBot />
-    </>
-  );
+    return (
+        <div className="container">
+            <CommonHeader 
+                clickLogout={refreshUser}
+                loginedAccount={isLogined} 
+                isAdmin={isAdmin}
+            />
+            <CommonMenuBar isLogined={isLogined} />
+            <CommonContainer isLogined={isLogined}/>
+            <CommonFooter/>
+            <MyChatBot isLogined={isLogined}/>
+        </div>
+    );
 }
 
 export default CommonPage;
