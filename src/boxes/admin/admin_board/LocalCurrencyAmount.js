@@ -28,6 +28,7 @@ const LocalCurrencyAmount = () => {
   const [salesList,setSalesList] = useState([]);
   const [totalPages,setTotalPages] = useState(0);
   const [currentPage,setCurrentPage] =useState(0);
+  const [salesCount, setSalesCount] = useState(0);
  
 
   const paginate = (page) =>{
@@ -38,10 +39,12 @@ const LocalCurrencyAmount = () => {
     axios
       .get(`http://localhost:8080/admins/sales/list/${currentPage}`)
       .then((res)=>{
-        setSalesList(res.data.salesList)
-        setTotalPages(res.data.totalPages)
-        console.log(`list${res.data}`)
-        console.log(res.data)
+     
+        
+        setSalesList(res.data.salesList.salesList)
+        setSalesCount(res.data.salesCount)
+        setTotalPages(res.data.salesList.totalPages)
+        
       
       })
       .catch((err)=>{
@@ -263,6 +266,7 @@ const LocalCurrencyAmount = () => {
         .then((res)=>{
       
             setSalesList(res.data.sales)
+            
         })
         .catch((err)=>{
             throw err;
@@ -276,9 +280,10 @@ const LocalCurrencyAmount = () => {
       <div>
         <div className="currencyTotal-div-byCurrencyName">
           <div id="graph-title">
-            <h5 className="currency-h5 font-weight-bold">
+            <h3 className="currency-h5 font-weight-bold">
               지역화폐 명에 따른 매출
-            </h5>
+            </h3>
+            <h3 className="font-weight-bold">총 매출 건수 : {salesCount} 건 ( 2020.08 기준 )</h3>
             <h6 className="currencyTotal-h6">
               -각 지역화폐 Id 또는 명에 따른 매출 통계
             </h6>
@@ -536,6 +541,7 @@ const LocalCurrencyAmount = () => {
       <div>
         <div className="curreny-div">
           <h2>지역화폐 매출 목록</h2>
+           
           <select
             id="localcurrency_cityselect"
             value={citySelect}

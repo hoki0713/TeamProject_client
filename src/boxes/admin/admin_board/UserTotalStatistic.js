@@ -19,6 +19,7 @@ const UserTotalStatistic = () => {
   const [genderValues, setGenderValues] = useState([]);
   const [ageKeys, setAgeKeys] = useState([]);
   const [ageValues, setAgeValues] = useState([]);
+  const [toTalUserCount,setTotalUserCount]=useState(0);
 
 
 
@@ -35,7 +36,7 @@ const UserTotalStatistic = () => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${localSelect}`)
       .then((res) => {
-    
+     
         const genderValues = [];
         const getnderKeys = [];
         const ageKeys = [];
@@ -61,7 +62,7 @@ const UserTotalStatistic = () => {
     axios
       .get(`http://localhost:8080/admins/userTotal-chart/${"null"}`)
       .then((res) => {
-        
+        setTotalUserCount(res.data.gender.남+res.data.gender.여)
         const genderValues = [];
         const getnderKeys = [];
         const ageKeys = [];
@@ -146,7 +147,8 @@ const UserTotalStatistic = () => {
       </h2>
 
       <div className="userLocal-Total">
-        <h5 className="font-weight-bold">전체 지역</h5>
+        <h3 className="font-weight-bold">전체 지역</h3>
+  <h3 className="font-weight-bold">총 회원수: {toTalUserCount} 명</h3>
           <Bar data={chartData} />
       </div>
       <div className="parent">
