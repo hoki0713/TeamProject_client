@@ -4,12 +4,11 @@ import { PostcodeButton } from "../../../items";
 import axios from "axios";
 
 const StoreDetail = ({match}) => {
-  const [isAfterChange, setIsAfterChange] = useState(false);
   const [storeName, setStoreName] = useState("");
   const [storeType, setStoreType] = useState("");
   const [storeAddress, setStoreAddress] = useState("");
   const [storePhone,setStorePhone] =useState("")
-  const [isReadOnly, setIsReadOnly] = useState(true);
+  const [isReadOnly] = useState(true);
 
  
   useEffect(()=>{
@@ -20,7 +19,6 @@ const StoreDetail = ({match}) => {
         setStoreType(res.data.storeType)
         setStoreAddress(res.data.address)
         setStorePhone(res.data.storePhone)
-          console.log(res.data)
       })
       .catch((err)=>{
         throw err;
@@ -136,8 +134,6 @@ const StoreDetail = ({match}) => {
             </div>
           </>
         )}
-
-        {/* <p>별점:</p> */}
       </form>
     </div>
   );

@@ -5,7 +5,7 @@ import CommonPage from './CommonPage';
 import AccountPage from './AccountPage';
 import AdminPage from './AdminPage';
 import AccountDetailPage from './AccountDetailPage';
-import { StoreSearchProvider } from '../items/context/StoreSearchContext.js';
+import { StoreSearchProvider } from '../context/StoreSearchContext.js';
 import {LoginedCheckProvider} from "../items/context/LoginedCheckContext";
 
 const Page = () => {

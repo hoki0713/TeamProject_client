@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StoreSearchContext } from "../../../../items/context/StoreSearchContext";
+import { StoreSearchContext } from "../../../../context/StoreSearchContext";
 import { appKey, containerStyle, libraries } from "./mapUtils/mapatt";
 import {
   GoogleMap,
@@ -22,8 +22,8 @@ import { Star, StoreReport } from "./Modals";
 
 const MerchanDetail = ({ isLogined }) => {
   const { store } = useContext(StoreSearchContext);
-  const [center, setCenter] = useState({}); //가게좌표
-  const [reportShow, setReportShow] = useState(false); //신고모달 show
+  const [center, setCenter] = useState({});
+  const [reportShow, setReportShow] = useState(false);
   const [starShow, setStarShow] = useState(false);
   const [reviewShow, setReviewShow] = useState(false);
 
@@ -264,8 +264,8 @@ const MerchanDetail = ({ isLogined }) => {
             storeName={store.storeName}
             accountDetail={JSON.parse(sessionStorage.getItem("accountDetail"))}
             storeId={store.id}
-            reviewId={null} // findbymap에서는 필요없다
-            onSubmit={() => {}} // findbymap에서는 필요없다
+            reviewId={null}
+            onSubmit={() => {}}
           />
         )}
       </div>

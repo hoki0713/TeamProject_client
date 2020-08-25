@@ -46,16 +46,12 @@ const newNotice = e =>{
         axios
         .patch(`http://localhost:8080/posts/update/${postId}`, notice)
         .then((res)=>{
-                console.log(res.data)
                 window.location.href="/admin/notice"
         })
         .catch((err)=>{
             throw err;
         })
     }
-   
-
-    
 }
 
 
@@ -117,9 +113,6 @@ const newNotice = e =>{
                             formats={formats}
                             style={{height:'400px'}}
                 />
-               {/* <Form.Label>첨부 링크</Form.Label>
-                <Form.Control as="input"/>
-                <Form.File label="파일 첨부"/>*/}
             </Form>
             <br/>
             <div id="quill-button-center">

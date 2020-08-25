@@ -35,7 +35,7 @@ const NoticeDetail = ({ match }) => {
 
     axios
       .delete(`http://localhost:8080/posts/delete/${match.params.postId}`)
-      .then((res) => {
+      .then(() => {
         window.location.href = "/admin/notice";
       })
       .catch((err) => {

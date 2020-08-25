@@ -16,14 +16,14 @@ const HomePage = () => {
 
   useEffect(() => {
     refreshUser(accountDetail.id);
-  },[accountDetail]);
+  }, [accountDetail]);
 
   return (
-    <div className="container">
+    <>
       <div className="row">
-        <MainNav 
+        <MainNav
           clickLogout={refreshUser}
-          loginedAccount={isLogined} 
+          loginedAccount={isLogined}
         />
       </div>
       <div className="row">

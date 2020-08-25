@@ -1,5 +1,4 @@
 import * as React from 'react';
-import './MapImage.css'
 
 type MapImageProps = {
   Image: string;

@@ -2,29 +2,33 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./NoticeDetail.css";
 import axios from "axios";
+
 const NoticeDetailClient = ({ match }) => {
   const history = useHistory();
   const [post, setPost] = useState({});
   const [isOpen, setOpen] = useState(false);
   const ReactQuill =
     isOpen && typeof window === "object" ? require("react-quill") : () => false;
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/posts/post/${match.params.postId}`)
       .then((res) => {
         setPost(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         throw err;
       });
   }, []);
+
   useEffect(() => {
     setOpen(true);
   }, []);
+
   const noticeList = () => {
-    window.location.href = "/notice";
+    history.push("/notice");
   };
+  
   return (
     <>
       <h2 className="menu-h2">공지사항</h2>

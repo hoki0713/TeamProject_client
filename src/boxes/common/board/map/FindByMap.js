@@ -33,7 +33,7 @@ import axios from "axios";
 import { libraries, containerStyle, appKey } from "./mapUtils/mapatt";
 import Geocode from "react-geocode";
 import { Link } from "react-router-dom";
-import { StoreSearchContext } from "../../../../items/context/StoreSearchContext";
+import { StoreSearchContext } from "../../../../context/StoreSearchContext";
 
 Geocode.setApiKey(appKey);
 
@@ -92,7 +92,7 @@ const FindByMap = ({ isLogined }) => {
         console.error(error);
       }
     );
-  }; //get user latitude and longitude from user address
+  };
 
   useEffect(() => {
     if (isLogined) {
