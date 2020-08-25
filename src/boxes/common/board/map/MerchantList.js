@@ -83,6 +83,9 @@ const MerchantList=()=> {
     return (
         <div className="container" id={"merchan_list"}>
             <h2 className="mt-4">리스트로 찾아보기</h2>
+            <h3 style={{float:"left"}}>&nbsp;&nbsp;총 {totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}개 가맹점&nbsp;</h3>
+            <h6 style={{float:"left"}}>(의정부 공공데이터 기반)</h6>
+
             <Table striped bordered hover className="list_table">
                 <tbody>
                 <tr>

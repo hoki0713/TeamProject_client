@@ -17,7 +17,6 @@ import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 Geocode.setApiKey(appKey);
 
 const FindBestRoute = () => {
-    const {store, setStore} = useContext(StoreSearchContext);//쓸 예정
     const [center, setCenter] = useState({}); //지도 센터 좌표
     const [myLoca, setMyLoca] = useState(""); // 사용자 주소 담는 state
     const [infoShow, setInfoShow] = useState(false); // 인포창 show
@@ -317,7 +316,7 @@ const FindBestRoute = () => {
                                             {temRoutes[0]&&temRoutes.map((route,i)=>(
                                                 <ListGroup.Item>
                                                     <h6>
-                                                        &#62;&#62;{i+1}번째 &#09;{route.storeName}
+                                                        {i+1}번째 &#09;{route.storeName} <br/>
                                                         &#09;{route.address}
                                                     </h6>
                                                 </ListGroup.Item>
@@ -373,8 +372,7 @@ const FindBestRoute = () => {
                                                     <strong>경로 1!</strong>
                                                     <h6>출발:&nbsp;{myLoca}</h6>
                                                     <h6>
-                                                        {temRoutes[bestWay[0]].storeName}&#09;
-                                                        {temRoutes[bestWay[0]].address}
+                                                        &#62;&#62;&nbsp;{temRoutes[bestWay[0]].storeName}&#09;
                                                     </h6>
                                                     <button
                                                         className={"find_routeB"}
@@ -398,7 +396,7 @@ const FindBestRoute = () => {
                                                 <ListGroup.Item>
                                                     <strong>경로 2!</strong>
                                                     <h6>{temRoutes[bestWay[0]].storeName}</h6>
-                                                    <h6>{temRoutes[bestWay[1]].storeName}</h6>
+                                                    <h6>&#62;&#62;&nbsp;{temRoutes[bestWay[1]].storeName}</h6>
                                                     <button
                                                         className={"find_routeB"}
                                                         onClick={(e) => {
@@ -421,7 +419,7 @@ const FindBestRoute = () => {
                                                 <ListGroup.Item>
                                                     <strong>경로 3!</strong>
                                                     <h6>{temRoutes[bestWay[1]].storeName}</h6>
-                                                    <h6>{temRoutes[bestWay[2]].storeName}</h6>
+                                                    <h6>&#62;&#62;&nbsp;{temRoutes[bestWay[2]].storeName}</h6>
                                                     <button
                                                         className={"find_routeB"}
                                                         onClick={(e) => {
