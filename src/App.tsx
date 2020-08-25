@@ -10,7 +10,6 @@ function App() {
     <BrowserRouter>
       <Page />
     </BrowserRouter>
-
   );
 }
 
