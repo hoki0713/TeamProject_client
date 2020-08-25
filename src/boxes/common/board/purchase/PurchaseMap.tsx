@@ -1,6 +1,5 @@
 import React from 'react';
 import PurchaseMapImg from "../../../../items/PurchaseMapimg";
-import './goyang.png'
 
 const pointArray: object = {
     "연천군": "180, 51, 238, 95",

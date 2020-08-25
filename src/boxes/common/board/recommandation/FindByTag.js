@@ -352,7 +352,7 @@ function FindByTag() {
                                     }}>{store.storeName}</Card.Title>
                                     <Card.Text>
                                         {(store.starRanking) ?
-                                            <span>{showRatingStars(parseInt(store.starRanking))} {store.starRanking}</span> :
+                                            <span>{showRatingStars(parseInt(store.starRanking))} {parseFloat(store.starRanking).toFixed(1)}</span> :
                                             <span></span>}<br/>
                                         {store.address}
 
