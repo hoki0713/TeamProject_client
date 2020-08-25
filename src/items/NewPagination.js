@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const NewPagination = ({ paginate, totalPages, currentPage }) => {
   const [currentBlock, setCurrentBlock] = useState(0);
 
+
   const prevPage = () => {
     if (currentPage === 0) {
       alert("첫 번째 페이지 입니다.");
@@ -39,7 +40,7 @@ const NewPagination = ({ paginate, totalPages, currentPage }) => {
 
       {[...Array(5).keys()]
         .map((num) => num + currentBlock * 5)
-        .filter((num) => num <= totalPages)
+        .filter(num => num <= totalPages)
         .map((number) => (
           <li key={number} className="page-item">
             <span

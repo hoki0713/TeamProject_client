@@ -64,6 +64,7 @@ const NotifyStore = () => {
 
 
   const reportinitial = (id) => {
+    console.log(id);
     axios
       .get(`http://localhost:8080/admins/store/report/initialization/${id}`)
       .then((res) => {
@@ -72,6 +73,10 @@ const NotifyStore = () => {
       .catch((err) => {
         throw err;
       });
+  };
+
+  const sotreSearch = (searchWord) => {
+    alert(searchWord);
   };
 
   return (

@@ -1,36 +1,28 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
-import {StoreChatbot, PolicyInfo, RankState, RecoStores, StarRank} from "./chatbotComponents/index";
-import {LoginedCheckContext} from "../../../../items/context/LoginedCheckContext";
+import {StoreChatbot,PolicyInfo,RankState,RecoStores,CateList} from "./chatbotComponents/index";
 
 
+// all available props
+const theme = {
+    background: '#ffffff',
+    fontFamily: '',
+    headerBgColor: '#4b93c4',
+    headerFontColor: '#fff',
+    headerFontSize: '20px',
+    botBubbleColor: '#397692',
+    botFontColor: '#fff',
+    userBubbleColor: '#fff',
+    userFontColor: '#4a4a4a',
+};
 
-
-const MyChatBot = ({isLogined}) => {
-    const {setLoginedCheck} = useContext(LoginedCheckContext);
-
-    const theme = {
-        background: '#ffffff',
-        fontFamily: '',
-        headerBgColor: '#4b93c4',
-        headerFontColor: '#fff',
-        headerFontSize: '20px',
-        botBubbleColor: '#397692',
-        botFontColor: '#fff',
-        userBubbleColor: '#fff',
-        userFontColor: '#4a4a4a',
-    };
-
-    useEffect(()=>{
-        setLoginedCheck(isLogined);
-    },[isLogined])
-    return(
-        <ThemeProvider theme={theme}>
+const MyChatBot = () => (
+    <ThemeProvider theme={theme}>
         <ChatBot
-            floating={true}
-            headerTitle={'지역화폐 가맹점 정보 서비스'}
-            enableSmoothScroll={true}
+            floating = {true}
+            headerTitle = {'지역화폐 가맹점 정보 서비스'}
+            enableSmoothScroll = {true}
             steps={[
                 //서비스선택
                 {
@@ -41,9 +33,9 @@ const MyChatBot = ({isLogined}) => {
                 {
                     id: '2',
                     options: [
-                        {value: 1, label: '가맹점 찾기', trigger: 'storeQ'},
-                        {value: 2, label: '내게 맞는 지역화폐 지급 정책', trigger: 'policyQ'},
-                        {value: 3, label: '내 주변 추천 가맹점', trigger: 'recoInfo'},
+                        { value: 1, label: '가맹점 찾기' ,trigger:'storeQ'},
+                        { value: 2, label: '내게 맞는 지역화폐 지급 정책', trigger: 'policyQ' },
+                        { value: 3, label: '내게 맞는 가맹점', trigger: 'recoInfo' },
                     ],
                 },
                 {
@@ -52,8 +44,8 @@ const MyChatBot = ({isLogined}) => {
                     trigger: 'storeIn',
                 },
                 {
-                    id: 'storeIn',
-                    user: true,
+                    id:'storeIn',
+                    user:true,
                     trigger: 'storeList'
                 },
                 {
@@ -63,15 +55,13 @@ const MyChatBot = ({isLogined}) => {
                 },
                 {
                     id: 'policyQ',
-                    message: '자녀가 있습니까?',
-                    trigger: 'policyOp'
+                    message: '정책관련 질문??',
+                    trigger: 'policyIn'
                 },
                 {
-                    id: 'policyOp',
-                    options: [
-                        {value: '유자녀', label: '자녀있음', trigger: 'policyInfo'},
-                        {value: '무자녀', label: '자녀없음', trigger: 'policyInfo'},
-                    ],
+                    id: 'policyIn',
+                    user:true,
+                    trigger: 'policyInfo'
                 },
                 {
                     id: 'policyInfo',
@@ -91,26 +81,36 @@ const MyChatBot = ({isLogined}) => {
                 {
                     id: 'selectReco',
                     options: [
-                        {value: 1, label: '우리 시 전체 별점별 순위 50위 보기', trigger: 'starRank'},
-                        {value: 2, label: '우리 시 전체 검색결과량 순위 50위 보기', trigger: 'storeRank'},
-                        {value: 3, label: '돌아가기', trigger: '1'},
+                        { value: 1, label: '업종 별로 보기' ,trigger:'cateQ'},
+                        { value: 2, label: '우리 시 전체 순위 100 보기', trigger: 'storeRank'},
+                        { value: 3, label: '돌아가기', trigger: '1'},
                     ],
                 },
                 {
-                    id: 'storeRank',
-                    component: <RankState/>,
+                    id: 'cateQ',
+                    message: '원하는 업종이 무엇입니까?',
+                    trigger: 'cateIn'
+                },
+                {
+                    id: 'cateIn',
+                    user: true,
+                    trigger: 'cateList'
+                },
+                {
+                    id: 'cateList',
+                    component: <CateList/>,
                     trigger: 'selectReco'
                 },
                 {
-                    id: 'starRank',
-                    component:<StarRank/>,
+                    id:'storeRank',
+                    component: <RankState/>,
                     trigger: 'selectReco'
                 }
 
             ]}
         />
-    </ThemeProvider>)
+    </ThemeProvider>
 
-};
+);
 
 export default MyChatBot;

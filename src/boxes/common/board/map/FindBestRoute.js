@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {
     GoogleMap,
     Marker,
@@ -12,22 +12,24 @@ import axios from "axios";
 import { Button, ListGroup } from "react-bootstrap";
 import {libraries, containerStyle, dottedLine, appKey} from "./mapUtils/mapatt";
 import "./map.css";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 
 Geocode.setApiKey(appKey);
 
 const FindBestRoute = () => {
-    const [center, setCenter] = useState({});
-    const [myLoca, setMyLoca] = useState("");
-    const [infoShow, setInfoShow] = useState(false);
-    const [bestWay, setBestWay] = useState([]);
+    const {store, setStore} = useContext(StoreSearchContext);//쓸 예정
+    const [center, setCenter] = useState({}); //지도 센터 좌표
+    const [myLoca, setMyLoca] = useState(""); // 사용자 주소 담는 state
+    const [infoShow, setInfoShow] = useState(false); // 인포창 show
+    const [bestWay, setBestWay] = useState([]); // 최단 경로 순서
     const [map, setMap] = useState(null);
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState(""); //검색어
     const [homePosit, setHomePosit] = useState({});
-    const [dropShow, setDropShow] = useState(false);
-    const [shortSearched, setShortSearched] = useState([]);
-    const [markerShow, setMarkerShow] = useState(false);
-    const [paths, setPaths] = useState([]);
-    const [temRoutes] = useState([]);
+    const [dropShow, setDropShow] = useState(false); // 검색 드롭다운 show
+    const [shortSearched, setShortSearched] = useState([]); // 드롭다운 검색 목록
+    const [markerShow, setMarkerShow] = useState(false); // 마커 show
+    const [paths, setPaths] = useState([]); //polyline pathCoordinate
+    const [temRoutes, setTemRoutes] = useState([]);
     const mapRef = useRef();
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
@@ -42,9 +44,9 @@ const FindBestRoute = () => {
             axios
                 .get(`http://localhost:8080/stores/realTimeSearch/${inputValue}`)
                 .then(({ data }) => {
-                    if (data.list !== 0) {
+                    if (data.list != 0) {
                         setShortSearched(data.list);
-                        shortSearched.length !== 0 ? setDropShow(true) : setDropShow(false);
+                        shortSearched.length != 0 ? setDropShow(true) : setDropShow(false);
                     } else {
                         setDropShow(false);
                     }
@@ -54,18 +56,18 @@ const FindBestRoute = () => {
                     throw err;
                 });
         }
-    }
+    } //실시간 검색 드롭다운 함수
 
     useEffect(() => {
         setDropShow(false);
         getshorList();
-    }, [inputValue]);
+    }, [inputValue]); //검색 드롭다운 유즈이펙트
 
     const realTimeSearch = (e) => {
         e.preventDefault();
         let value = e.target.value;
-        if (value.charAt[0] !== "") setInputValue(e.target.value);
-    };
+        if (value.charAt[0] != "") setInputValue(e.target.value);
+    }; //검색창 온체인지 함수
 
     function selectRoute(routeInfo) {
         if (temRoutes.length < 3) {
@@ -73,7 +75,7 @@ const FindBestRoute = () => {
             routeInfo.longitude = Number(routeInfo.longitude);
             temRoutes.push(routeInfo);
         }
-    }
+    } // 선택한 가게 루트에 추가하기
 
     const getLatLng = (location) => {
         Geocode.fromAddress(location).then(
@@ -86,7 +88,7 @@ const FindBestRoute = () => {
                 console.error(error);
             }
         );
-    }
+    }//get user latitude and longitude from user address
 
     useEffect(()=>{
         setMyLoca(JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr);
@@ -94,11 +96,11 @@ const FindBestRoute = () => {
 
     useEffect(()=>{
         getLatLng(myLoca);
-    },[myLoca]);
+    },[myLoca]);// 주소로 유저 좌표 가져오기
 
     const getBestSeq = (homePosition, stopOverList) => {
-        let homePosi = homePosition;
-        let stopOver = stopOverList;
+        let homePosi = homePosition; // start, end position
+        let stopOver = stopOverList; // middle positions, must be like [{lat: 0, lng: 0}, ...]
         let results = [];
         let index = 0;
         switch (stopOverList.length) {
@@ -115,7 +117,7 @@ const FindBestRoute = () => {
                 console.log("switch 2");
                 for (let i = 0; i < stopOver.length; i++) {
                     for (let j = 0; j < stopOver.length; j++) {
-                        if (i !== j) {
+                        if (i != j) {
                             let ways = [i, j];
                             results[index] = {
                                 way: ways,
@@ -143,7 +145,7 @@ const FindBestRoute = () => {
                 for (let i = 0; i < stopOver.length; i++) {
                     for (let j = 0; j < stopOver.length; j++) {
                         for (let k = 0; k < stopOver.length; k++) {
-                            if (i !== j && j !== k && k !== i) {
+                            if (i != j && j != k && k != i) {
                                 let ways = [i, j, k];
                                 results[index] = {
                                     way: ways,
@@ -182,14 +184,16 @@ const FindBestRoute = () => {
         }
         if (results.length !== 0) {
             const forSortList = [];
-            results.map((elem) => forSortList.push(elem.distance));
+            results.map((elem) => {
+                forSortList.push(elem.distance);
+            });
             for (let i = 0; i < results.length; i++) {
                 if (Math.min.apply(null, forSortList) === results[i].distance) {
                     setBestWay(results[i].way);
                 }
             }
         }
-    };
+    }; //최단거리 구하기
 
     function makePath(tmpRouteList) {
         let tmpPath = [];
@@ -206,20 +210,18 @@ const FindBestRoute = () => {
             setPaths(tmpPath);
             console.log(tmpPath);
         }
-    }
-
+    } //폴리라인 좌표 넣기
     const dropDownClick = (selectedStore) => {
         selectRoute(selectedStore);
         setInputValue("");
         getBestSeq(homePosit, temRoutes);
         setMarkerShow(true);
-    };
-
+    }; //드롭다운 클릭, 경로추가
     const goNaver = (dir1Name, dir1Lat, dir1Lng, dir2Name, dir2Lat, dir2Lng) => {
         window.open( `
             http://map.naver.com/index.nhn?slng=${dir1Lng}&slat=${dir1Lat}&stext=${dir1Name}
             &elng=${dir2Lng}&elat=${dir2Lat}&etext=${dir2Name}&menu=route&pathType=1`,'')
-    };
+    }; //네이버 네비 링크
 
     return (
         <div style={{"text-align" : "center"}}>
@@ -289,6 +291,8 @@ const FindBestRoute = () => {
                                                 icons: [
                                                     {
                                                         icon: dottedLine,
+                                                        // {path:window.google.maps.SymbolPath.FORWARD_OPEN_ARROW},//화살표
+                                                        //strokeOpacity 값 필요, repeat 픽셀 늘려야 함
                                                         offset: "0",
                                                         repeat: "20px",
                                                     },
@@ -313,7 +317,7 @@ const FindBestRoute = () => {
                                             {temRoutes[0]&&temRoutes.map((route,i)=>(
                                                 <ListGroup.Item>
                                                     <h6>
-                                                        {i+1}번째 &#09;{route.storeName} <br/>
+                                                        &#62;&#62;{i+1}번째 &#09;{route.storeName}
                                                         &#09;{route.address}
                                                     </h6>
                                                 </ListGroup.Item>
@@ -369,7 +373,8 @@ const FindBestRoute = () => {
                                                     <strong>경로 1!</strong>
                                                     <h6>출발:&nbsp;{myLoca}</h6>
                                                     <h6>
-                                                        &#62;&#62;&nbsp;{temRoutes[bestWay[0]].storeName}&#09;
+                                                        {temRoutes[bestWay[0]].storeName}&#09;
+                                                        {temRoutes[bestWay[0]].address}
                                                     </h6>
                                                     <button
                                                         className={"find_routeB"}
@@ -393,7 +398,7 @@ const FindBestRoute = () => {
                                                 <ListGroup.Item>
                                                     <strong>경로 2!</strong>
                                                     <h6>{temRoutes[bestWay[0]].storeName}</h6>
-                                                    <h6>&#62;&#62;&nbsp;{temRoutes[bestWay[1]].storeName}</h6>
+                                                    <h6>{temRoutes[bestWay[1]].storeName}</h6>
                                                     <button
                                                         className={"find_routeB"}
                                                         onClick={(e) => {
@@ -416,7 +421,7 @@ const FindBestRoute = () => {
                                                 <ListGroup.Item>
                                                     <strong>경로 3!</strong>
                                                     <h6>{temRoutes[bestWay[1]].storeName}</h6>
-                                                    <h6>&#62;&#62;&nbsp;{temRoutes[bestWay[2]].storeName}</h6>
+                                                    <h6>{temRoutes[bestWay[2]].storeName}</h6>
                                                     <button
                                                         className={"find_routeB"}
                                                         onClick={(e) => {

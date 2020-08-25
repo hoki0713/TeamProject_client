@@ -3,14 +3,11 @@ import './purchase.css'
 import { Link } from 'react-router-dom';
 import PurchaseMap from "./PurchaseMap";
 import Payment from "./Payment";
+import PaymentIamPort from "./PaymentIamPort";
+
 
 export const CurrencyImg = ({ imgsrc }) => {
-
-  return (
-    <>
-      <img className="currency_img" src={imgsrc} alt="지도이미지"/>
-    </>
-  )
+  return (<img className="currency_img" src={imgsrc} />)
 }
 
 
@@ -39,11 +36,14 @@ function BuyLocalCurrency() {
     <>
       <h2 className="mt-4 mb-4" id="title">경기지역화폐 구매하기</h2>
       <div className="content-title">
-        <div>지역화폐를 구매, 선물할 수 있습니다.<br />
-          1. 지도에서 원하는 지역을 선택하세요.<br />
-          2. 원하는 금액을 선택해주세요. <br />
-          3. 결제하기를 버튼을 누르고 카드로 결제하세요.<br />
-          <span style={{ fontSize: "10px", "color": "red" }}>※ 구매취소를 원하시는 경우 070-0000-0000으로 문의 부탁드립니다.</span></div>
+
+      
+        <div>지역화폐를 구매, 선물할 수 있습니다.<br/> 
+          1. 지도에서 원하는 지역을 선택하세요.<br/>
+          2. 원하는 금액을 선택해주세요. <br/>
+          3. 결제하기를 버튼을 누르고 카드로 결제하세요.<br/>
+          <span style={{fontSize : "10px", "color" : "red"}}>※ 구매취소를 원하시는 경우 070-0000-0000으로 문의 부탁드립니다.</span></div>
+
         <Payment show={modalShow} localName={localName} unitPrice={unitPrice}
           onHide={() => setModalShow(false)} />
         <table className="currency_table">

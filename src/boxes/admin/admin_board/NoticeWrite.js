@@ -65,6 +65,7 @@ const NoticeWrite = () => {
       ["clean"],
     ],
     clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
       matchVisual: false,
     },
   };

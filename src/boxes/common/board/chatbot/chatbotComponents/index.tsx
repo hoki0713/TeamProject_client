@@ -1,6 +1,6 @@
+import CateList from "./CateList";
 import PolicyInfo from "./PolicyInfo";
 import RankState from "./RankState";
 import RecoStores from "./RecoStores";
 import StoreChatbot from "./StoreChatbot";
-import StarRank from "./StarRank";
-export {PolicyInfo,RecoStores,RankState,StoreChatbot,StarRank};
+export {CateList,PolicyInfo,RecoStores,RankState,StoreChatbot};

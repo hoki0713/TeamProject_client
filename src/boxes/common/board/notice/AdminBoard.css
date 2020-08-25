@@ -1,41 +1,49 @@
 .content-title {
     margin-top: 1rem;
     margin-bottom: .5rem;
+    /*border: black solid 1px;*/
 }
 
 .menu-h2 {
     display: inline;
     margin-right: 2rem;
+    /*border: black solid 1px;*/
 }
 
 #select-search-bar {
     float: right;
     margin-bottom: 5px;
-}
 
+    /*border: red solid 1px;*/
+
+}
 #select {
     display: inline-block;
     width: 120px;
     margin-right: 5px;
-}
+    /*border: black solid 1px;*/
 
+}
 #search-bar {
     display: inline-block;
     width: 300px;
+    /*border: black solid 1px;*/
+
 }
 
 #button-right{
     float:right;
     margin-top: 0;
+    /*border: black 1px solid;*/
 }
-
 #button-center{
     text-align: center;
-}
 
+}
 #quill-button-center{
     margin-top: 30px;
     text-align: center;
+
 }
 
 

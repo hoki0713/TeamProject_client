@@ -33,7 +33,7 @@ import axios from "axios";
 import { libraries, containerStyle, appKey } from "./mapUtils/mapatt";
 import Geocode from "react-geocode";
 import { Link } from "react-router-dom";
-import { StoreSearchContext } from "../../../../context/StoreSearchContext";
+import { StoreSearchContext } from "../../../../items/context/StoreSearchContext";
 
 Geocode.setApiKey(appKey);
 
@@ -92,7 +92,7 @@ const FindByMap = ({ isLogined }) => {
         console.error(error);
       }
     );
-  };
+  }; //get user latitude and longitude from user address
 
   useEffect(() => {
     if (isLogined) {
@@ -100,7 +100,7 @@ const FindByMap = ({ isLogined }) => {
         JSON.parse(sessionStorage.getItem("accountDetail")).defaultAddr
       );
     } else {
-      setMyLoca("경기도 의정부시 의정부동");
+      setMyLoca("경기도 의정부시");
     }
   }, [isLogined]);
 
@@ -120,6 +120,10 @@ const FindByMap = ({ isLogined }) => {
           if (data.list.length > 0) {
             data.list.forEach((elem) => {
               switch (elem.storeType) {
+                case "의원":
+                  elem.icon = hospIcon;
+                  temList.push(elem);
+                  break;
                 case "중국식":
                   elem.icon = chinaIcon;
                   temList.push(elem);
@@ -150,11 +154,30 @@ const FindByMap = ({ isLogined }) => {
                       elem.icon = hospIcon;
                       temList.push(elem);
                       break;
+                    case "중국식":
+                      elem.icon = chinaIcon;
+                      temList.push(elem);
+                      break;
+                    case "약국":
+                      elem.icon = drug;
+                      temList.push(elem);
+                      break;
                     case "숙박업":
                       elem.icon = hotelIcon;
                       temList.push(elem);
                       break;
-
+                    case "주점":
+                      elem.icon = soju;
+                      temList.push(elem);
+                      break;
+                    case "일반한식":
+                      if (!elem.storeName.includes("카페")) {
+                        elem.icon = bab;
+                      } else {
+                        elem.icon = cafe;
+                      }
+                      temList.push(elem);
+                      break;
                     default:
                       elem.icon = normal;
                       temList.push(elem);

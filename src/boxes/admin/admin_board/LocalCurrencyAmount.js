@@ -39,9 +39,13 @@ const LocalCurrencyAmount = () => {
     axios
       .get(`http://localhost:8080/admins/sales/list/${currentPage}`)
       .then((res)=>{
+     
+        
         setSalesList(res.data.salesList.salesList)
         setSalesCount(res.data.salesCount)
         setTotalPages(res.data.salesList.totalPages)
+        
+      
       })
       .catch((err)=>{
         throw err;
@@ -52,6 +56,9 @@ const LocalCurrencyAmount = () => {
     axios
       .get(`http://localhost:8080/admins/currency/month/total`)
       .then((res) => {
+        
+        
+        console.log(res.data)
         const dataKey = [];
         const dataValue = [];
         Object.entries(res.data).forEach(([key, value]) => {
@@ -73,6 +80,7 @@ const LocalCurrencyAmount = () => {
         .then((res)=>{
           const datakeys = [];
           const datavalues = [];
+          console.log(res.data)
           Object.entries(res.data).forEach(([key,value])=>{
             datakeys.push(key);
             datavalues.push(value.unitPrice);
@@ -370,8 +378,9 @@ const LocalCurrencyAmount = () => {
                   callbacks: {
                       label: function(tooltipItem) {
                       return Intl.NumberFormat().format(tooltipItem.yLabel)
-                      }
-            }
+                      }//function
+
+            }//callbaks
           }
             }}
           />
@@ -458,6 +467,7 @@ const LocalCurrencyAmount = () => {
               legend: {
                 display: false,
               },
+            
               scales: {
                 yAxes:[{
                   ticks:{
@@ -478,8 +488,9 @@ const LocalCurrencyAmount = () => {
                   callbacks: {
                       label: function(tooltipItem) {
                       return Intl.NumberFormat().format(tooltipItem.yLabel)
-                      }
-            }
+                      }//function
+
+            }//callbaks
           }
 
             }} />
@@ -517,8 +528,9 @@ const LocalCurrencyAmount = () => {
                     callbacks: {
                         label: function(tooltipItem) {
                         return Intl.NumberFormat().format(tooltipItem.yLabel)
-                        }
-              }
+                        }//function
+  
+              }//callbaks
             }
   
               }}

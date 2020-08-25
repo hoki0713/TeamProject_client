@@ -19,10 +19,10 @@ const Join = () => {
   const handleIdCheck = e => {
     e.preventDefault();
     axios.get(`http://localhost:8080/users/idCheck/${userId}`)
-      .then(() => {
+      .then(response => {
         alert("이미 존재하는 아이디 입니다.");
         setUserId("");
-      }).catch(() => {
+      }).catch(error => {
         alert("사용한 가능한 아이디 입니다.");
       })
   }
@@ -50,7 +50,7 @@ const Join = () => {
     }
     if (handlePasswordCorrection()) {
       axios.post(`http://localhost:8080/users/`, userJson)
-        .then(() => {
+        .then(response => {
           history.push('/account/login');
         }
         ).catch(

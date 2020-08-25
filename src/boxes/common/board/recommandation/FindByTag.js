@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap'
 import axios from 'axios'
 import './Recommendation.css'
-import {StoreSearchContext} from "../../../../context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {useHistory} from 'react-router-dom'
 
 function FindByTag() {
@@ -82,12 +82,15 @@ function FindByTag() {
 
     useEffect(() => {
         if (id) {
+            console.log(userGender)
+            console.log(userBirthYear)
             axios.get(`http://localhost:8080/recommends/user/${userGender}/${userBirthYear}`)
                 .then((res) => {
                     setTotalIndustry(res.data.byTotal)
                     setUserIndustry(res.data.byGenderAge)
                     setUserGenderKor(res.data.userGenderKor)
                     setUserAgeGroup(res.data.userAgeGroup)
+                    console.log("유즈이펙트 성공")
                 })
                 .catch(error => {
                     throw(error)
@@ -100,6 +103,7 @@ function FindByTag() {
         if (gender !== "null" && ageGroup !== 0) {
             axios.get(`http://localhost:8080/recommends/rank/${gender}/${ageGroup}`)
                 .then((res) => {
+                    console.log('랭킹 성공')
                     setSearchIndustry(res.data.searchResult)
                 })
                 .catch(error => {
@@ -142,14 +146,17 @@ function FindByTag() {
     }
 
     const handleGender = (e) => {
+        console.log('몇번이 클릭됐는지' + e.target.value)
         changeGender(e.target.value);
     }
 
     const handleAge = e => {
+        console.log('몇번이 클릭됐는지' + e.target.value)
         changeAge(e.target.value);
     }
 
     const handleOption = (e) => {
+        console.log('몇번이 클릭됐는지' + e.target.value)
         changeOption(e.target.value)
     }
 
@@ -162,8 +169,11 @@ function FindByTag() {
         ) {
             alert("모든 사항을 선택 선택해주세요");
         } else {
+            console.log(ageGroup + gender + option)
             axios.post(`http://localhost:8080/recommends/result/${gender}/${ageGroup}/${option}`, latLng)
                 .then((res) => {
+                    console.log('가게 리스트 가져오기 성공')
+                    console.log(res.data);
                     const values = [];
                     const keys = [];
                     Object.entries(res.data).forEach(([key, value]) => {

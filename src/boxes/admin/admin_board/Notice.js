@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./AdminBoard.css";
 
+
+
+
 const Notice = () => {
   const [categorySelect, setCategorySelect] = useState("");
     const [postList, setPostList] = useState([]);

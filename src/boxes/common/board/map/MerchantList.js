@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Table} from 'react-bootstrap';
 import axios from 'axios'
 
-import {StoreSearchContext} from "../../../../context/StoreSearchContext";
+import {StoreSearchContext} from "../../../../items/context/StoreSearchContext";
 import {Link} from "react-router-dom";
 
 
@@ -29,11 +29,11 @@ const MerchantList=()=> {
         setBlockNow(parseInt(pageNow/blockSize));
         setPageStart(blockNow *  blockSize);
         setRowStart(parseInt(pageNow*pageSize));
-        setPageCount(parseInt((totalCount % pageSize !== 0) ? totalCount / pageSize +1 :totalCount / pageSize ));
-        setExistPrev(blockNow !== 0);
-        setExistNext( blockNow !== (blockCount-1));
+        setPageCount(parseInt((totalCount % pageSize != 0) ? totalCount / pageSize +1 :totalCount / pageSize ));
+        setExistPrev(blockNow!=0);
+        setExistNext( blockNow !=(blockCount-1));
         setNextBlock(pageStart + blockSize);
-        setBlockCount(parseInt((pageCount % blockSize !== 0) ? pageCount / blockSize +1:pageCount / blockSize));
+        setBlockCount(parseInt((pageCount % blockSize != 0) ? pageCount / blockSize +1:pageCount / blockSize));
     }
 
     function setPageNums() {
@@ -47,10 +47,10 @@ const MerchantList=()=> {
         setPageNumArr(pageNumArr);
     }
     function setPageArr(){
-        if(totalCount!== 0){
+        if(totalCount!=0){
             let startNum =rowStart%(blockSize*pageSize);
             let tmpArr =[];
-            let limitNum = (pageCount!== 0&&pageNow+1 === pageCount)?totalCount-pageNow*pageSize:pageSize;
+            let limitNum = (pageCount!=0&&pageNow+1==pageCount)?totalCount-pageNow*pageSize:pageSize;
                 for(let i=0;i<limitNum;i++){
                     tmpArr[i]=storeList[startNum];
                     startNum++;
@@ -58,8 +58,8 @@ const MerchantList=()=> {
             setPageList(tmpArr);
             }
     }
-
     useEffect(()=>{
+        console.log("//////1");
         axios.get(`http://localhost:8080/stores/getSome/""/""/${blockNow*pageSize*blockSize}/${blockSize*pageSize}`)
             .then(({data})=>{
                 setStoreList(data.list);
@@ -68,25 +68,21 @@ const MerchantList=()=> {
             .catch(err=>{console.log(err);throw err;});
 
     },[blockNow]);
-
     useEffect(()=>{
        pageNation();
     },[pageNow,blockNow,pageList]);
-
     useEffect(()=>{
         setPageArr();
-    },[rowStart,pageNumArr]);
-
+    },[rowStart,pageNumArr]);//한 페이지 어레
     useEffect(()=>{
         setPageNums();
     },[storeList]);
 
+
+
     return (
         <div className="container" id={"merchan_list"}>
             <h2 className="mt-4">리스트로 찾아보기</h2>
-            <h3 style={{float:"left"}}>&nbsp;&nbsp;총 {totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}개 가맹점&nbsp;</h3>
-            <h6 style={{float:"left"}}>(의정부 공공데이터 기반)</h6>
-
             <Table striped bordered hover className="list_table">
                 <tbody>
                 <tr>
