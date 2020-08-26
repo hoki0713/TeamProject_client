@@ -1,6 +1,6 @@
 import Geocode from "react-geocode";
 
-Geocode.setApiKey("AIzaSyBCjj2hELnBZqNrfMSwlka2ezNRrysnlNY");
+Geocode.setApiKey("AIzaSyCzhclpVLv4R5FOEjmP6386O4QItwCYdHA");
 
 export const getLatLng = (location) =>{
     Geocode.fromAddress(location).then(
